@@ -1,0 +1,1443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Team21 Academy Platform</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bl:#1749D1;--bl2:#0E2E8A;--blt:#EEF3FF;--blb:#C9D8FA;
+  --ink:#0B0E14;--inks:#3A4150;--mut:#6B7385;
+  --bg:#F5F7FC;--paper:#FFF;--ln:#E3E8F2;
+  --ok:#0E7B45;--warn:#B45309;--bad:#B42318;--pur:#6B21A8;
+  --r:12px;--sh:0 1px 2px rgba(11,14,20,.05),0 4px 16px rgba(11,14,20,.06);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--ink);font-size:14px;line-height:1.5}
+h1,h2,h3,.sora{font-family:'Sora',sans-serif}
+button{font-family:inherit;cursor:pointer}
+input,select,textarea{font-family:inherit;font-size:14px;color:var(--ink);background:var(--paper);border:1px solid var(--ln);border-radius:8px;padding:8px 11px;width:100%;outline:none}
+input:focus,select:focus,textarea:focus{border-color:var(--bl);box-shadow:0 0 0 3px rgba(23,73,209,.12)}
+textarea{resize:vertical;min-height:70px}
+label{display:block;font-size:12px;font-weight:600;color:var(--inks);margin:10px 0 4px}
+/* buttons */
+.btn{display:inline-flex;align-items:center;gap:6px;border:none;border-radius:9px;padding:9px 16px;font-weight:600;font-size:13.5px;transition:filter .15s}
+.btn:hover{filter:brightness(1.08)}.btn:disabled{opacity:.42;cursor:not-allowed}
+.btn-pri{background:var(--bl);color:#fff}
+.btn-dark{background:var(--ink);color:#fff}
+.btn-ghost{background:var(--paper);color:var(--ink);border:1px solid var(--ln)}
+.btn-ok{background:var(--ok);color:#fff}
+.btn-danger{background:var(--bad);color:#fff}
+.btn-pur{background:var(--pur);color:#fff}
+.btn-sm{padding:5px 11px;font-size:12px;border-radius:7px}
+/* chips */
+.chip{display:inline-block;font-size:11.5px;font-weight:700;padding:3px 9px;border-radius:99px;border:1px solid var(--ln);background:var(--paper)}
+.c-blue{background:var(--blt);border-color:var(--blb);color:var(--bl2)}
+.c-ok{background:#E7F6EE;border-color:#BCE5CE;color:var(--ok)}
+.c-warn{background:#FEF3E2;border-color:#F6D9A8;color:var(--warn)}
+.c-bad{background:#FDECEA;border-color:#F5C6C0;color:var(--bad)}
+.c-pur{background:#F3E8FF;border-color:#D8B4FE;color:var(--pur)}
+.c-gray{color:var(--mut)}
+/* layout */
+#loginWrap{position:fixed;inset:0;z-index:50;display:flex;background:var(--ink)}
+.ll{flex:1.1;padding:48px;display:flex;flex-direction:column;justify-content:space-between;color:#fff;
+  background:radial-gradient(900px 600px at -5% 110%,rgba(23,73,209,.5),transparent 55%),
+             radial-gradient(700px 500px at 110% -5%,rgba(23,73,209,.3),transparent 55%),var(--ink)}
+.ll .mark{font-family:'Sora';font-weight:800;font-size:19px;letter-spacing:.02em}
+.ll h1{font-size:clamp(28px,3.8vw,44px);font-weight:800;line-height:1.12;max-width:500px;margin-top:24px}
+.ll h1 em{font-style:normal;color:#7FA3F5}
+.ll p{color:#9BA5B8;max-width:420px;margin-top:12px}
+.ll .tagline{display:flex;gap:14px;flex-wrap:wrap;margin-top:20px}
+.ll .tagline span{font-size:12px;color:#5E6675;background:rgba(255,255,255,.06);padding:4px 10px;border-radius:99px;border:1px solid rgba(255,255,255,.1)}
+.ll .foot{color:#4A515F;font-size:11.5px}
+.lr{width:min(440px,44%);background:var(--paper);display:flex;align-items:center;justify-content:center;padding:40px}
+.lcard{width:100%;max-width:320px}
+.lcard h2{font-size:21px;margin-bottom:4px}
+.lcard .sub{color:var(--mut);font-size:13px;margin-bottom:18px}
+.lerr{color:var(--bad);font-size:12.5px;min-height:18px;margin-top:8px}
+@media(max-width:780px){.ll{display:none}.lr{width:100%}}
+/* shell */
+#app{display:none;height:100%}
+#app.on{display:flex}
+aside{width:228px;flex-shrink:0;background:var(--ink);color:#C6CCDA;display:flex;flex-direction:column;padding:18px 12px;overflow-y:auto}
+.brand{font-family:'Sora';font-weight:800;color:#fff;font-size:16px;padding:4px 10px 16px;letter-spacing:.02em}
+.brand small{display:block;font-weight:500;font-size:10px;color:#6A7389;letter-spacing:.14em;text-transform:uppercase;margin-top:2px}
+.nav{display:flex;flex-direction:column;gap:2px;flex:1}
+.nav .nsec{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#4E5566;padding:12px 10px 4px}
+.nav .ni{display:flex;align-items:center;gap:9px;background:none;border:none;color:#C6CCDA;text-align:left;padding:9px 12px;border-radius:9px;font-size:13px;font-weight:500;border-left:3px solid transparent;width:100%}
+.nav .ni:hover{background:rgba(255,255,255,.06);color:#fff}
+.nav .ni.on{background:rgba(23,73,209,.28);color:#fff;border-left-color:#5B85EC;font-weight:600}
+.nav .ni .badge{margin-left:auto;background:#E53935;color:#fff;font-size:10px;font-weight:700;border-radius:99px;padding:1px 6px;min-width:18px;text-align:center}
+.me{border-top:1px solid rgba(255,255,255,.09);padding:12px 10px 0;margin-top:8px}
+.me b{color:#fff;display:block;font-size:13px}
+.me .role{font-size:11px;color:#6A7389;margin-bottom:8px}
+.me .av{width:32px;height:32px;border-radius:50%;background:var(--bl);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;margin-right:8px}
+.me button{background:none;border:1px solid rgba(255,255,255,.15);color:#C6CCDA;border-radius:7px;padding:5px 12px;font-size:12px;width:100%}
+main{flex:1;overflow-y:auto;padding:26px 32px}
+/* page */
+.pagehead{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px;margin-bottom:20px}
+.pagehead h2{font-size:21px;font-weight:700}
+.pagehead .psub{color:var(--mut);font-size:13px;margin-top:3px}
+.toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+/* cards/stats */
+.card{background:var(--paper);border:1px solid var(--ln);border-radius:var(--r);box-shadow:var(--sh);padding:18px 20px;margin-bottom:14px}
+.card h3{font-size:14.5px;margin-bottom:10px}
+.grid{display:grid;gap:14px}
+.g4{grid-template-columns:repeat(auto-fit,minmax(186px,1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.g2{grid-template-columns:repeat(auto-fit,minmax(320px,1fr))}
+.stat{background:var(--paper);border:1px solid var(--ln);border-radius:var(--r);padding:15px 17px;box-shadow:var(--sh)}
+.stat .sk{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--mut)}
+.stat .sv{font-family:'Sora';font-size:24px;font-weight:700;margin-top:5px}
+.stat .sv small{font-size:12px;font-weight:500;color:var(--mut)}
+.stat .sdelta{font-size:11.5px;color:var(--ok);margin-top:3px}
+.stat.accent{background:linear-gradient(135deg,var(--bl),var(--bl2));border:none;color:#fff}
+.stat.accent .sk{color:#A3C0F7}.stat.accent .sv{color:#fff}
+/* tables */
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);text-align:left;padding:9px 10px;border-bottom:1.5px solid var(--ln);white-space:nowrap}
+td{padding:9px 10px;border-bottom:1px solid var(--ln);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tbody tr:hover{background:#FAFBFE}
+.num{text-align:right;font-variant-numeric:tabular-nums}
+.tbl{overflow-x:auto}
+.code{font-family:'Sora';font-weight:600;font-size:12px;background:var(--blt);color:var(--bl2);border:1px solid var(--blb);padding:2px 8px;border-radius:6px}
+/* month tabs */
+.mtabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+.mtabs button{border:1px solid var(--ln);background:var(--paper);border-radius:99px;padding:5px 14px;font-size:12.5px;font-weight:600;color:var(--inks)}
+.mtabs button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.mtabs button .n{color:var(--mut);font-weight:400}
+.mtabs button.on .n{color:#9AB4F1}
+/* modal */
+.overlay{position:fixed;inset:0;background:rgba(11,14,20,.55);display:none;align-items:flex-start;justify-content:center;padding:5vh 16px;z-index:70;overflow-y:auto}
+.overlay.on{display:flex}
+.modal{background:var(--paper);border-radius:14px;width:100%;max-width:580px;padding:24px;box-shadow:0 24px 64px rgba(0,0,0,.32)}
+.modal.wide{max-width:860px}
+.modal.xl{max-width:1060px}
+.modal h3{font-size:17px;margin-bottom:4px}
+.modal .msub{color:var(--mut);font-size:12.5px;margin-bottom:10px}
+.mact{display:flex;justify-content:flex-end;gap:8px;margin-top:18px}
+.formrow{display:grid;grid-template-columns:1fr 1fr;gap:0 14px}
+@media(max-width:540px){.formrow{grid-template-columns:1fr}}
+/* wallboard / chat */
+.wall{border:1px solid var(--ln);border-radius:10px;overflow:hidden}
+.wall-msgs{min-height:180px;max-height:380px;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px;background:#FAFBFE}
+.msg{max-width:80%;display:flex;flex-direction:column;gap:3px}
+.msg.me{align-self:flex-end;align-items:flex-end}
+.msg.them{align-self:flex-start}
+.msg .bubble{padding:10px 14px;border-radius:14px;font-size:13px;line-height:1.5;word-break:break-word}
+.msg.me .bubble{background:var(--bl);color:#fff;border-radius:14px 14px 4px 14px}
+.msg.them .bubble{background:var(--paper);border:1px solid var(--ln);border-radius:14px 14px 14px 4px}
+.msg .mmeta{font-size:11px;color:var(--mut);padding:0 4px}
+.wall-input{display:flex;gap:8px;padding:10px;border-top:1px solid var(--ln);background:var(--paper)}
+.wall-input input{border-radius:99px;padding:8px 14px}
+/* assignment */
+.asgn{border:1px solid var(--ln);border-radius:10px;padding:14px;margin-bottom:10px;background:var(--paper)}
+.asgn h4{font-size:13.5px;margin-bottom:4px}
+.asgn .ameta{font-size:12px;color:var(--mut)}
+.sub-block{border:1px solid var(--ln);border-radius:8px;padding:12px;margin-top:8px;background:#FAFBFE}
+/* certificate */
+.cert{border:2px solid var(--bl);border-radius:14px;padding:24px;text-align:center;background:linear-gradient(135deg,#EEF3FF,#fff)}
+.cert .cert-title{font-family:'Sora';font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--bl);margin-bottom:8px}
+.cert .cert-name{font-family:'Sora';font-size:22px;font-weight:800;margin:4px 0}
+.cert .cert-award{font-size:13px;color:var(--inks);margin:6px 0}
+.cert .cert-seal{font-size:36px;margin:10px 0}
+/* progress bar */
+.bar{height:8px;border-radius:99px;background:var(--blt);overflow:hidden}
+.bar i{display:block;height:100%;background:var(--bl);border-radius:99px}
+/* pay letter print */
+@media print{
+  #app aside,#app .pagehead .toolbar,.btn,.nav,aside,.overlay,#toast{display:none!important}
+  .payletter{page-break-inside:avoid;border:none!important;box-shadow:none!important}
+  main{padding:0}
+}
+.payletter{font-family:'Inter',serif;border:2px solid var(--ln);border-radius:14px;padding:40px;max-width:700px;margin:auto}
+.lhd{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:2px solid var(--bl);padding-bottom:18px;margin-bottom:24px}
+.lhd .logo{font-family:'Sora';font-weight:800;font-size:22px;color:var(--bl2)}
+.lhd .logo small{display:block;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--mut);font-weight:500}
+.lhd .ref{text-align:right;font-size:12px;color:var(--mut)}
+.lbody p{margin:6px 0;line-height:1.7}
+.lpay-table{width:100%;border-collapse:collapse;margin:18px 0;font-size:13px}
+.lpay-table th{border-bottom:2px solid var(--ln);padding:7px 10px;text-align:left;font-size:11px;text-transform:uppercase;color:var(--mut);letter-spacing:.06em}
+.lpay-table td{padding:8px 10px;border-bottom:1px solid var(--ln)}
+.lpay-table tfoot td{border-top:2px solid var(--ink);font-weight:700}
+.lsig{margin-top:40px;display:flex;justify-content:space-between}
+.lsig div{border-top:1px solid var(--ln);padding-top:6px;font-size:12px;color:var(--mut);min-width:160px}
+/* misc */
+.pwbox{font-family:'Sora';font-weight:700;font-size:18px;letter-spacing:.05em;background:var(--ink);color:#8FE3B0;border-radius:10px;padding:14px;text-align:center;user-select:all;margin:10px 0}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 20px;border-radius:10px;font-size:13px;font-weight:600;box-shadow:var(--sh);z-index:99;display:none;pointer-events:none}
+.help{font-size:12px;color:var(--mut);line-height:1.5;margin-top:4px}
+.sec-label{font-family:'Sora';font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--bl2);border-left:3px solid var(--bl);padding-left:10px;margin:18px 0 6px}
+.empty{color:var(--mut);text-align:center;padding:24px 8px;font-size:13px}
+.avatar{width:36px;height:36px;border-radius:50%;background:var(--bl);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;flex-shrink:0}
+.viewbanner{background:var(--blt);border:1px solid var(--blb);color:var(--bl2);border-radius:10px;padding:8px 14px;font-size:12.5px;font-weight:600;margin-bottom:14px}
+.currency-sel{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0}
+.currency-sel button{border:1px solid var(--ln);background:var(--paper);border-radius:6px;padding:4px 10px;font-size:12px;font-weight:600}
+.currency-sel button.on{background:var(--bl);color:#fff;border-color:var(--bl)}
+.star{color:#F59E0B;font-size:18px}
+.prog-ring{position:relative;display:inline-flex;align-items:center;justify-content:center}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="loginWrap">
+  <div class="ll">
+    <div class="mark">TEAM21 ACADEMY · T21</div>
+    <div>
+      <h1>Learning and management,<br><em>in one platform.</em></h1>
+      <p>Registrations, payroll, mentor reports, student LMS, assignments, discussion boards, micro-certificates and competitions — for every role in the programme.</p>
+      <div class="tagline"><span>Students</span><span>Mentors</span><span>Finance</span><span>Administration</span></div>
+      <a href="Team21_NewStudents.html" style="display:inline-flex;align-items:center;gap:9px;margin-top:28px;background:rgba(23,73,209,.3);border:1.5px solid rgba(122,176,255,.45);color:#fff;font-family:'Inter',sans-serif;font-weight:700;font-size:14px;padding:13px 22px;border-radius:10px;text-decoration:none;transition:background .2s;width:fit-content" onmouseover="this.style.background='rgba(23,73,209,.55)'" onmouseout="this.style.background='rgba(23,73,209,.3)'">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="#7AB0FF" stroke-width="2.5" stroke-linecap="round"/></svg>
+        New Students — Browse Courses &amp; Enrol
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="rgba(255,255,255,.7)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+    <div class="foot">inno4te · Team21 Academy — Unified Platform v2.0</div>
+  </div>
+  <div class="lr">
+    <div class="lcard">
+      <h2>Sign in</h2>
+      <div class="sub">Credentials are issued by your administrator.</div>
+      <label>Username</label>
+      <input id="lUser" autocomplete="username" placeholder="your username">
+      <label>Password</label>
+      <input id="lPass" type="password" placeholder="••••••••">
+      <div class="lerr" id="lErr"></div>
+      <button class="btn btn-pri" style="width:100%;justify-content:center;margin-top:8px" onclick="doLogin()">Sign in →</button>
+      <div style="margin-top:20px;padding-top:16px;border-top:1px solid rgba(255,255,255,.1);text-align:center">
+        <div style="font-size:11.5px;color:#8892a8;margin-bottom:10px;font-weight:500">Not yet enrolled?</div>
+        <a href="Team21_NewStudents.html" style="display:inline-flex;align-items:center;justify-content:center;gap:8px;width:100%;background:linear-gradient(135deg,#1749D1,#0E2E8A);color:#fff;font-family:'Inter',sans-serif;font-weight:700;font-size:13.5px;padding:11px 18px;border-radius:9px;text-decoration:none;transition:opacity .15s" onmouseover="this.style.opacity='.88'" onmouseout="this.style.opacity='1'">
+          <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M8 1v14M1 8h14" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+          Browse Courses &amp; Register
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <aside>
+    <div class="brand">TEAM21<br>ACADEMY<small>Unified Platform</small></div>
+    <a href="Team21_NewStudents.html" style="display:flex;align-items:center;gap:8px;background:linear-gradient(135deg,#1749D1,#0E2E8A);color:#fff;font-size:12.5px;font-weight:700;padding:10px 14px;border-radius:9px;margin:0 10px 10px;text-decoration:none;transition:opacity .15s;box-shadow:0 2px 10px rgba(23,73,209,.4)" onmouseover="this.style.opacity='.88'" onmouseout="this.style.opacity='1'">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M8 1v14M1 8h14" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+      <span style="flex:1">New Students &amp; Courses</span>
+      <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="rgba(255,255,255,.75)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+    <nav class="nav" id="navBox"></nav>
+    <div class="me">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+        <div class="av" id="meAv">?</div>
+        <div><b id="meName">—</b><div class="role" id="meRole">—</div></div>
+      </div>
+      <button onclick="logout()">Sign out</button>
+    </div>
+  </aside>
+  <main id="main"></main>
+</div>
+
+<div class="overlay" id="overlay"><div class="modal" id="modalBox"></div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* =====================================================================
+   TEAM21 ACADEMY UNIFIED PLATFORM v2.0
+   Roles: admin · coadmin · finance · mentor · intern · student
+   ===================================================================== */
+const LS='t21v2';let DB=null,ME=null,V='dash';
+const SEL={year:null,month:'2026-07',payMonth:'2026-07',payDay:1,wallTarget:null,groupId:null};
+
+/* ---- crypto ---- */
+async function sha(s){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));return[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')}
+function genPw(){const A='ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789';let p='T21-';for(let i=0;i<8;i++)p+=A[Math.floor(Math.random()*A.length)];return p}
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+
+/* ---- currencies ---- */
+const CURRENCIES=['XAF','USD','EUR','GBP','NGN','GHS','KES','ZAR','CAD'];
+const CUR_SYM={XAF:'FCFA',USD:'$',EUR:'€',GBP:'£',NGN:'₦',GHS:'₵',KES:'Ksh',ZAR:'R',CAD:'CA$'};
+function cur(n,c){c=c||(DB&&DB.settings&&DB.settings.currency)||'XAF';const s=CUR_SYM[c]||c;return s+(+n||0).toLocaleString('en-US')}
+
+/* ---- helpers ---- */
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fmt=n=>(+n||0).toLocaleString('en-US');
+const MN=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const mLbl=m=>MN[+m.split('-')[1]-1]+' '+m.split('-')[0];
+function toast(m,d=2800){const t=document.getElementById('toast');t.textContent=m;t.style.display='block';clearTimeout(t._h);t._h=setTimeout(()=>t.style.display='none',d)}
+function log(w){DB.audit.unshift({t:new Date().toISOString(),who:(ME&&ME.username)||'system',what:w});DB.audit=DB.audit.slice(0,500)}
+function save(){localStorage.setItem(LS,JSON.stringify(DB))}
+function uid2init(n){return(n||'?').trim().split(' ').map(x=>x[0]).join('').slice(0,2).toUpperCase()}
+function acadYear(m){const[y,mo]=m.split('-').map(Number),s=mo>=DB.settings.yearStartMonth?y:y-1;return s+'/'+(s+1)%100}
+function yearMonths(lbl){const y=+lbl.split('/')[0],s=DB.settings.yearStartMonth,out=[];for(let i=0;i<12;i++){const mm=(s-1+i)%12+1,yy=y+(s-1+i>=12?1:0);out.push(yy+'-'+String(mm).padStart(2,'0'))}return out}
+function paidFor(s){return DB.payments.filter(p=>p.studentId===s.id).reduce((a,p)=>a+(+p.amountXAF||0),0)}
+function balFor(s){return s.status==='Scholarship'?0:Math.max(0,(+s.feeXAF||0)-paidFor(s))}
+function isAdmin(){return (ME&&ME.roles&&ME.roles.includes('admin'))}
+function isCo(){return (ME&&ME.roles&&ME.roles.includes('coadmin'))}
+function isFin(){return (ME&&ME.roles&&ME.roles.includes('finance'))||isAdmin()}
+function isMentor(){return (ME&&ME.roles&&ME.roles.includes('mentor'))||(ME&&ME.roles&&ME.roles.includes('intern'))}
+function isStudent(){return (ME&&ME.roles&&ME.roles.includes('student'))}
+function rOnly(){return isCo()&&!isAdmin()}
+function openModal(html,lock,cls){const o=document.getElementById('overlay'),m=document.getElementById('modalBox');m.className='modal'+(cls?' '+cls:'');m.innerHTML=html;o.classList.add('on');o.onclick=lock?null:e=>{if(e.target===o)closeModal()}}
+function closeModal(){document.getElementById('overlay').classList.remove('on')}
+function unread(){return DB.wallMessages.filter(m=>!m.read&&m.toId===(ME&&ME.id)).length}
+
+/* ---- SEED ---- */
+function seed(){
+  const students=[
+    {id:uid(),num:1,name:'Fohtung Moses Yummunbia',lang:'Eng',contact:'698004435',mentorName:'Elisiane',code:'T21J-FMY',feeXAF:35000,feeCurrency:'XAF',status:'Incomplete',month:'2026-07',tasks:{},createdAt:'2026-06-24'},
+    {id:uid(),num:2,name:'Moujongue Estelle Ingrid',lang:'Fr',contact:'691711237',mentorName:'Joseline',code:'T21J-MEI',feeXAF:45000,feeCurrency:'XAF',status:'Completed',month:'2026-07',tasks:{},createdAt:'2026-06-30'},
+    {id:uid(),num:3,name:'Foba Moyave Ebenezer',lang:'Eng',contact:'681700863',mentorName:'Liberator',code:'T21J-FME',feeXAF:45000,feeCurrency:'XAF',status:'Completed',month:'2026-07',tasks:{},createdAt:'2026-06-30'},
+    {id:uid(),num:4,name:'Wirngo Honorine Nyuydzejei',lang:'Eng',contact:'674295555',mentorName:'Deron',code:'T21J-WHN',feeXAF:35000,feeCurrency:'XAF',status:'Incomplete',month:'2026-07',tasks:{'PLAixBox Wk1':1,'BMC':1,'SOSTAC':1,'Group Project':1},createdAt:'2026-07-05'},
+    {id:uid(),num:5,name:'Esambe Emmanuel',lang:'Eng',contact:'676155082',mentorName:'Deron',code:'T21J-EE',feeXAF:45000,feeCurrency:'XAF',status:'Completed',month:'2026-07',tasks:{'PLAixBox Wk1':1,'BMC':1,'SOSTAC':1,'Group Project':1},createdAt:'2026-07-05'},
+    {id:uid(),num:6,name:'Abdoulaye Mahamat Djiddah Khalid',lang:'Fr',contact:'23599900231',mentorName:'Joseline',code:'T21J-AMD',feeXAF:44500,feeCurrency:'XAF',status:'Completed',month:'2026-07',tasks:{},createdAt:'2026-07-06'},
+    {id:uid(),num:7,name:'Elangwe Eugenia Bie',lang:'Eng',contact:'672156976',mentorName:'Liberator',code:'T21J-EEB',feeXAF:45000,feeCurrency:'XAF',status:'Completed',month:'2026-07',tasks:{},createdAt:'2026-07-06'},
+    {id:uid(),num:8,name:'Issoufou Mahamadou',lang:'Fr',contact:'22790010304',mentorName:'Joseline',code:'T21J-IM',feeXAF:0,feeCurrency:'XAF',status:'Scholarship',month:'2026-07',tasks:{},createdAt:'2026-07-08'},
+    {id:uid(),num:9,name:'Akenji Rachel Mangwi epse Ngala',lang:'Eng',contact:'674720929',mentorName:'Liberator',code:'T21J-ARM',feeXAF:35000,feeCurrency:'XAF',status:'Incomplete',month:'2026-07',tasks:{},createdAt:'2026-07-08'},
+    {id:uid(),num:10,name:'Batikum Martha Tengu',lang:'Eng',contact:'650519448',mentorName:'Elisiane',code:'T21J-BMT',feeXAF:35000,feeCurrency:'XAF',status:'Incomplete',month:'2026-07',tasks:{},createdAt:'2026-07-08'},
+    {id:uid(),num:11,name:'Ignatius Esene',lang:'Eng',contact:'690873447',mentorName:'Liberator',code:'T21J-IE',feeXAF:45000,feeCurrency:'XAF',status:'Completed',month:'2026-07',tasks:{},createdAt:'2026-07-10'},
+    {id:uid(),num:12,name:'Tchinda Tsague Ange',lang:'Fr',contact:'675229107',mentorName:'Joseline',code:'T21-TTA',feeXAF:30000,feeCurrency:'XAF',status:'Discounted',month:'2026-07',tasks:{},createdAt:'2026-07-10'},
+    {id:uid(),num:13,name:'Malla Moussa',lang:'Fr',contact:'',mentorName:'Elisiane',code:'',feeXAF:45000,feeCurrency:'XAF',status:'Unpaid',month:'2026-07',tasks:{},createdAt:'2026-07-12'}
+  ];
+  const stf=(nm,cat,role)=>({id:uid(),name:nm,category:cat,role,active:true});
+  const staff=[
+    stf('Inno','Senior','Founder'),stf('Divine','Senior','Founder'),stf('Deron','Senior','Mentor'),stf('Bethel','Senior','Mentor'),
+    stf('Elisiane','Junior','Mentor'),stf('Odette','Junior','Mentor'),stf('Delia','Junior','Mentor'),stf('Emmanuel','Junior','Mentor'),
+    stf('Joseline','Other','Mentor'),stf('Liberator','Other','Mentor'),stf('Marie Nicole','Other','Mentor'),stf('Carine Chin','Other','Mentor'),
+    stf('Linda','Other','Mentor'),stf('Marion','Other','Mentor'),stf('Marie Genevieve','Other','Mentor'),stf('Chrysantus','Other','Mentor'),
+    stf('Intern Alpha','Intern','Intern'),stf('Intern Emi','Intern','Intern'),stf('Intern Audrey','Intern','Intern'),
+    stf('Sara','Intern','Intern'),stf('Christelle','Intern','Intern'),stf('PA Ariel','Other','PA')
+  ];
+  const adminId=uid(),deronId=uid();
+  const users=[
+    {id:adminId,username:'forteh',name:'Innocent Forteh',roles:['admin'],staffName:'Inno',passHash:null,mustChange:true,active:true},
+    {id:deronId,username:'deron',name:'Deron Jay',roles:['mentor'],staffName:'Deron',passHash:null,mustChange:false,active:true}
+  ];
+  const payments=[
+    {id:uid(),studentId:students[0].id,date:'2026-06-24',amount:25000,currency:'XAF',amountXAF:25000,method:'MoMo',recordedBy:'forteh',note:''},
+    {id:uid(),studentId:students[1].id,date:'2026-06-30',amount:45000,currency:'XAF',amountXAF:45000,method:'OM',recordedBy:'forteh',note:''},
+    {id:uid(),studentId:students[2].id,date:'2026-06-30',amount:45000,currency:'XAF',amountXAF:45000,method:'Cash',recordedBy:'forteh',note:''},
+    {id:uid(),studentId:students[3].id,date:'2026-07-05',amount:15000,currency:'XAF',amountXAF:15000,method:'MoMo',recordedBy:'forteh',note:''},
+    {id:uid(),studentId:students[4].id,date:'2026-07-05',amount:45000,currency:'XAF',amountXAF:45000,method:'MoMo',recordedBy:'forteh',note:''},
+    {id:uid(),studentId:students[5].id,date:'2026-07-06',amount:44500,currency:'XAF',amountXAF:44500,method:'Western Union',recordedBy:'forteh',note:''},
+    {id:uid(),studentId:students[6].id,date:'2026-07-06',amount:45000,currency:'XAF',amountXAF:45000,method:'Cash',recordedBy:'forteh',note:''},
+    {id:uid(),studentId:students[8].id,date:'2026-07-08',amount:20000,currency:'XAF',amountXAF:20000,method:'MoMo',recordedBy:'forteh',note:''},
+    {id:uid(),studentId:students[9].id,date:'2026-07-08',amount:15000,currency:'XAF',amountXAF:15000,method:'OM',recordedBy:'forteh',note:''},
+    {id:uid(),studentId:students[10].id,date:'2026-07-10',amount:45000,currency:'XAF',amountXAF:45000,method:'Cash',recordedBy:'forteh',note:''},
+    {id:uid(),studentId:students[11].id,date:'2026-07-10',amount:30000,currency:'XAF',amountXAF:30000,method:'MoMo',recordedBy:'forteh',note:''}
+  ];
+  const comps=[
+    {code:'PRE',label:'Precourse preparation',freq:'One off'},
+    {code:'AP',label:'Active participation in training',freq:'Daily'},
+    {code:'AMC',label:'Active mentoring during class',freq:'Daily'},
+    {code:'AMW',label:'Active mentoring during week',freq:'Daily'},
+    {code:'TC',label:'Trainer commission',freq:'Daily'},
+    {code:'FM',label:'Finance management',freq:'Daily'},
+    {code:'T',label:'Translation',freq:'Daily'},
+    {code:'REP',label:'Prompt reporting (Mon & Wed)',freq:'One off'},
+    {code:'GB',label:'General bonus',freq:'One off'},
+    {code:'REC',label:'Recommendations / leads',freq:'One off'},
+    {code:'FB',label:'Founders bonus',freq:'One off'},
+    {code:'ENG',label:'Engagement with students',freq:'One off'},
+    {code:'SP',label:'Special contribution',freq:'One off'},
+    {code:'BK',label:'Book / publication',freq:'One off'}
+  ].map(c=>({...c,rates:{Senior:0,Junior:0,Other:0,Intern:0}}));
+  const pe=(nm,code,amt)=>({id:uid(),month:'2026-07',day:1,staffName:nm,component:code,amount:amt});
+  const payEntries=[
+    pe('Inno','FB',15000),
+    pe('Deron','PRE',5500),pe('Deron','AP',10000),pe('Deron','AMC',10000),pe('Deron','AMW',2000),pe('Deron','TC',12000),pe('Deron','REP',8000),pe('Deron','GB',5000),pe('Deron','FB',10000),pe('Deron','ENG',10000),pe('Deron','SP',2000),
+    pe('Elisiane','PRE',5500),pe('Elisiane','AP',10000),pe('Elisiane','AMC',10000),pe('Elisiane','AMW',5000),pe('Elisiane','TC',15000),pe('Elisiane','REP',10000),pe('Elisiane','GB',5000),pe('Elisiane','ENG',10000),pe('Elisiane','SP',2500),
+    pe('Liberator','PRE',5500),pe('Liberator','AP',10000),pe('Liberator','AMC',10000),pe('Liberator','AMW',5000),pe('Liberator','TC',15000),pe('Liberator','REP',10000),pe('Liberator','GB',5000),pe('Liberator','FB',10000),pe('Liberator','ENG',10000),pe('Liberator','SP',2000),
+    pe('Joseline','AP',10000),pe('Joseline','AMC',10000),pe('Joseline','AMW',5000),pe('Joseline','REP',10000),pe('Joseline','GB',5000),pe('Joseline','SP',1500),
+    pe('Intern Emi','AP',3000),pe('Intern Emi','AMC',3000),pe('Intern Emi','AMW',2000),pe('Intern Emi','REP',1000),pe('Intern Emi','GB',5000),pe('Intern Emi','SP',1500),
+    pe('Intern Alpha','AP',3000),pe('Intern Alpha','AMC',3000),pe('Intern Alpha','AMW',2000),pe('Intern Alpha','REP',1000),pe('Intern Alpha','GB',5000),pe('Intern Alpha','SP',1500),
+    pe('Intern Audrey','AP',3000),pe('Intern Audrey','AMC',3000),pe('Intern Audrey','AMW',2000),pe('Intern Audrey','REP',1000),pe('Intern Audrey','GB',5000),pe('Intern Audrey','SP',1500),
+    pe('PA Ariel','GB',5000),pe('PA Ariel','SP',1500)
+  ];
+  const advances=['Deron','Elisiane','Liberator','Joseline','Intern Emi','Intern Alpha','Intern Audrey'].map(n=>({id:uid(),month:'2026-07',staffName:n,amount:5000}));
+  const TASKS=['PLAixBox Wk1','BMC','SOSTAC','Group Project','Capstone','Gamma','NotebookLM','Veo Video'];
+  const assignments=[
+    {id:uid(),title:'Business Model Canvas (BMC)',description:'Research your chosen business idea and fill out all 9 blocks of the Business Model Canvas. Upload your completed BMC here.',dueDate:'2026-07-10',month:'2026-07',mentorName:'Deron',targetStudents:['all'],groupId:null,submissions:[],createdAt:'2026-07-07',taskCode:'BMC'},
+    {id:uid(),title:'SOSTAC Marketing Plan',description:'Develop a full SOSTAC marketing plan for your business idea. Cover Situation, Objectives, Strategy, Tactics, Actions and Control.',dueDate:'2026-07-14',month:'2026-07',mentorName:'Deron',targetStudents:['all'],groupId:null,submissions:[],createdAt:'2026-07-10',taskCode:'SOSTAC'}
+  ];
+  const groups=[{id:uid(),name:'Deron Group A',mentorName:'Deron',month:'2026-07',studentIds:[students[3].id,students[4].id],project:'AI Business Pitch',description:'Group project: design and pitch an AI-powered business.',createdAt:'2026-07-05'}];
+  const reports=[{id:uid(),mentor:'Deron',coSupport:'Intern Alpha',cohort:'TEAM21 & Liberty Tech AI – July Cohort',week:'Week 3',reportDay:'Monday',date:'2026-07-20',status:'Submitted',submittedAt:'2026-07-20T09:00:00Z',a_did:'Supported Wirngo in delivering the Group Project presentation Saturday 19 July. Followed up on Friday absences.',a_worked:'Wirngo presented the Group Project. Both students informed of Capstone requirements.',a_gaps:'Both absent Friday 18 July. Gamma, NotebookLM and Veo tasks pending.',a_improve:'Use Tuesday call to re-engage both students and drive Capstone start.',b_class:'Both absent Friday. Wirngo present Saturday and delivered the Group Project presentation.',b_meetings:'Group call scheduled Tuesday 22 July.',d_priorities:'1. Brief both students on Capstone on Tuesday. 2. Drive Gamma/NotebookLM/Veo. 3. Re-engage Esambe.',d_actions:'Hold Tuesday call. Follow up individually with Esambe. Track tool task submissions.',d_outcomes:'Capstone topics confirmed; pending tasks completed; Esambe re-engaged.',e_risks:'Esambe absent both sessions — early warning if repeated.',e_prevent:'Confirm Esambe re-engagement Tuesday; monitor attendance; resolve pending tasks.',students:[{name:'Esambe Emmanuel',observation:'Absent Friday and Saturday. Group Project complete via Wirngo presentation.',participation:'Strong',progress:'PLAixBox Wk1, BMC, SOSTAC, Group Project complete. Capstone pending.',challenge:'Absent both sessions; Gamma/NotebookLM/Veo pending.',strategy:'Follow up individually; use Tuesday call to re-engage.'},{name:'Wirngo Honorine Nyuydzejei',observation:'Absent Friday; present Saturday and delivered the Group Project alone.',participation:'Strong',progress:'PLAixBox Wk1, BMC, SOSTAC, Group Project complete. Capstone pending.',challenge:'Gamma/NotebookLM/Veo pending.',strategy:'Acknowledge Saturday performance; drive Capstone start.'}]}];
+  const certificates=[{id:uid(),studentId:students[1].id,title:'AI Foundations — Module 1',award:'Certificate of Completion',issued:'2026-07-15',issuer:'Team21 Academy',badge:'🏅'},{id:uid(),studentId:students[2].id,title:'AI Foundations — Module 1',award:'Certificate of Completion',issued:'2026-07-15',issuer:'Team21 Academy',badge:'🏅'},{id:uid(),studentId:students[4].id,title:'BMC Champion',award:'Certificate of Excellence',issued:'2026-07-12',issuer:'Team21 Academy',badge:'🥇'}];
+  const competitions=[{id:uid(),title:'AI Pitch Competition',description:'Students present a 3-minute AI business pitch. Best pitch wins a Google Pixel 8.',month:'2026-07',endDate:'2026-07-28',prizePool:'Google Pixel 8 + Team21 Special Award',participants:[],results:[],status:'Closed',createdBy:'forteh'}];
+
+  /* ---- AUGUST 2026 COHORT (22 students from spreadsheet) ---- */
+  const aug=[
+    {num:1,name:'Sonita Younyi',lang:'Eng',contact:'670745886',mentorName:'Liberator',code:'T21M-SY',feeXAF:45000,feeCurrency:'XAF',status:'Completed'},
+    {num:2,name:'Foba Moyave Ebenezer',lang:'Eng',contact:'681700863',mentorName:'Liberator',code:'T21M-FME',feeXAF:22500,feeCurrency:'XAF',status:'Discounted'},
+    {num:3,name:'Abdul Karim Garga Haman Adji',lang:'Fr',contact:'678744874',mentorName:'Elisiane',code:'T21M-AK',feeXAF:45000,feeCurrency:'XAF',status:'Completed'},
+    {num:4,name:'Wirngo Honorine Nyuydzejei',lang:'Eng',contact:'674295555',mentorName:'',code:'T21M-WHN',feeXAF:20000,feeCurrency:'XAF',status:'Completed'},
+    {num:5,name:'Fohtung Moses Yummunbia',lang:'Eng',contact:'698004435',mentorName:'',code:'T21M-FMY',feeXAF:10000,feeCurrency:'XAF',status:'Completed'},
+    {num:6,name:'Akenji Rachel Mangwi epse Ngala',lang:'Eng',contact:'674720929',mentorName:'',code:'T21M-ARM',feeXAF:15000,feeCurrency:'XAF',status:'Completed'},
+    {num:7,name:'Charlotte Remteng Fomum',lang:'Eng',contact:'670416179',mentorName:'Liberator',code:'T21M-CRF',feeXAF:45000,feeCurrency:'XAF',status:'Incomplete'},
+    {num:8,name:'Safiyatou Dalil Epse Abdul-Karim',lang:'Fr',contact:'697799292',mentorName:'Joseline',code:'T21M-SD',feeXAF:45000,feeCurrency:'XAF',status:'Completed'},
+    {num:9,name:'Joseph Ngarto',lang:'Fr',contact:'23563917190',mentorName:'Joseline',code:'T21M-JN',feeXAF:0,feeCurrency:'XAF',status:'Scholarship'},
+    {num:10,name:'Gladys Tifu Tanwan epse Atekwana',lang:'Eng',contact:'677471626',mentorName:'Deron',code:'T21M-GTA',feeXAF:45000,feeCurrency:'XAF',status:'Completed'},
+    {num:11,name:'Sob Teponnou Camel',lang:'Fr',contact:'656170596',mentorName:'Joseline',code:'T21M-STC',feeXAF:35000,feeCurrency:'XAF',status:'Discounted'},
+    {num:12,name:'Moh Assyame Boguiyana',lang:'Fr',contact:'23566675605',mentorName:'Elisiane',code:'T21M-MAB',feeXAF:0,feeCurrency:'XAF',status:'Scholarship'},
+    {num:13,name:'Mariam Issaka Daoud',lang:'Fr',contact:'23566476127',mentorName:'Elisiane',code:'T21M-MID',feeXAF:45000,feeCurrency:'XAF',status:'Unpaid'},
+    {num:14,name:'Dabsou Guidaoussou',lang:'Fr',contact:'23566278216',mentorName:'Joseline',code:'T21M-DG',feeXAF:45000,feeCurrency:'XAF',status:'Unpaid'},
+    {num:15,name:'Youssouf Issaka',lang:'Fr',contact:'23566535709',mentorName:'Joseline',code:'T21M-YI',feeXAF:45000,feeCurrency:'XAF',status:'Unpaid'},
+    {num:16,name:'Ngaibe Galy',lang:'Fr',contact:'23566919446',mentorName:'Elisiane',code:'T21M-NG',feeXAF:45000,feeCurrency:'XAF',status:'Unpaid'},
+    {num:17,name:'Mamubah Derick Nforche',lang:'Eng',contact:'679333245',mentorName:'Deron',code:'T21M-MDN',feeXAF:45000,feeCurrency:'XAF',status:'Completed'},
+    {num:18,name:'Quella Kelita Tamfu',lang:'Eng',contact:'9733950157',mentorName:'Deron',code:'T21M-QKT',feeXAF:45000,feeCurrency:'XAF',status:'Incomplete'},
+    {num:19,name:'Ryan Esene',lang:'Eng',contact:'673789369',mentorName:'Deron',code:'T21M-RE',feeXAF:45000,feeCurrency:'XAF',status:'Completed'},
+    {num:20,name:'Adela Njingo',lang:'Eng',contact:'14058610203',mentorName:'Liberator',code:'T21M-AN',feeXAF:45000,feeCurrency:'XAF',status:'Completed'},
+    {num:21,name:'Esame Wilcliff',lang:'Eng',contact:'677002597',mentorName:'Deron',code:'T21M-EW',feeXAF:45000,feeCurrency:'XAF',status:'Completed'},
+    {num:22,name:'Ahmat Issaka Daoud',lang:'Fr',contact:'23566366102',mentorName:'Elisiane',code:'T21M-AID',feeXAF:45000,feeCurrency:'XAF',status:'Unpaid'}
+  ].map(s=>({...s,id:uid(),month:'2026-08',tasks:{},createdAt:'2026-08-01'}));
+  students.push(...aug);
+
+  /* August payments (from Financial sheet — 505,000 XAF collected) */
+  const augPaid=[
+    {sCode:'T21M-SY',amt:45000},{sCode:'T21M-FME',amt:22500},{sCode:'T21M-AK',amt:45000},
+    {sCode:'T21M-WHN',amt:20000},{sCode:'T21M-FMY',amt:10000},{sCode:'T21M-ARM',amt:15000},
+    {sCode:'T21M-CRF',amt:22500},{sCode:'T21M-SD',amt:45000},{sCode:'T21M-GTA',amt:45000},
+    {sCode:'T21M-STC',amt:35000},{sCode:'T21M-MDN',amt:45000},{sCode:'T21M-QKT',amt:20000},
+    {sCode:'T21M-RE',amt:45000},{sCode:'T21M-EW',amt:45000},{sCode:'T21M-AN',amt:45000}
+  ];
+  augPaid.forEach(p=>{const s=aug.find(x=>x.code===p.sCode);if(s)payments.push({id:uid(),studentId:s.id,date:'2026-08-01',amount:p.amt,currency:'XAF',amountXAF:p.amt,method:'Cash',recordedBy:'forteh',note:''})});
+
+  /* August payroll — 8 pay days from spreadsheet */
+  const ape=(day,nm,code,amt)=>({id:uid(),month:'2026-08',day,staffName:nm,component:code,amount:amt});
+  /* Day 1 (week 1) */
+  const augPE=[
+    ape(1,'Deron','AMW',5000),ape(1,'Deron','REP',9000),ape(1,'Deron','GB',10000),ape(1,'Deron','FB',15000),ape(1,'Deron','ENG',9000),ape(1,'Deron','SP',3000),
+    ape(1,'Inno','PRE',5000),ape(1,'Inno','AMC',5000),ape(1,'Inno','AMW',7500),ape(1,'Inno','TC',15000),ape(1,'Inno','REP',10000),ape(1,'Inno','GB',9000),ape(1,'Inno','FB',15000),ape(1,'Inno','ENG',10000),ape(1,'Inno','BK',52500),
+    ape(1,'Emma','PRE',500),ape(1,'Emma','AMW',3000),ape(1,'Emma','REP',6000),ape(1,'Emma','GB',10000),ape(1,'Emma','ENG',9500),ape(1,'Emma','SP',4000),
+    ape(1,'Elisiane','PRE',1500),ape(1,'Elisiane','AMW',3500),ape(1,'Elisiane','REP',5000),ape(1,'Elisiane','GB',10000),ape(1,'Elisiane','ENG',10000),ape(1,'Elisiane','SP',2000),
+    ape(1,'Marie Nicole','AMW',3000),ape(1,'Marie Nicole','REP',7500),ape(1,'Marie Nicole','GB',10000),ape(1,'Marie Nicole','ENG',9000),ape(1,'Marie Nicole','SP',2500),
+    ape(1,'Chrysantus','AMW',3000),ape(1,'Chrysantus','REP',6500),ape(1,'Chrysantus','GB',10000),ape(1,'Chrysantus','ENG',9000),ape(1,'Chrysantus','SP',1500),
+    ape(1,'Carine Chin','AMW',3000),ape(1,'Carine Chin','REP',4500),ape(1,'Carine Chin','GB',10000),ape(1,'Carine Chin','ENG',9000),ape(1,'Carine Chin','SP',2500),
+    ape(1,'Linda','AMW',3000),ape(1,'Linda','REP',7500),ape(1,'Linda','GB',10000),ape(1,'Linda','ENG',9000),ape(1,'Linda','SP',5500),
+    ape(1,'Intern Liberator','AMW',1500),ape(1,'Intern Liberator','GB',5000),ape(1,'Intern Liberator','REC',35000),ape(1,'Intern Liberator','ENG',4000),
+    ape(1,'PA Ariel','REP',2000),ape(1,'PA Ariel','GB',8000),ape(1,'PA Ariel','ENG',4000),ape(1,'PA Ariel','SP',3000),
+    ape(1,'Intern Joseline','AMW',1500),ape(1,'Intern Joseline','REP',3000),ape(1,'Intern Joseline','GB',8000),ape(1,'Intern Joseline','REC',6500),ape(1,'Intern Joseline','ENG',5000),ape(1,'Intern Joseline','SP',5000),
+    /* Day 2 (week 1) */
+    ape(2,'Deron','AP',7000),ape(2,'Inno','AP',14000),ape(2,'Inno','AMC',5000),ape(2,'Emma','AP',7000),
+    ape(2,'Elisiane','AP',7000),ape(2,'Marie Nicole','AP',7000),ape(2,'Chrysantus','AP',7000),ape(2,'Carine Chin','AP',7000),
+    ape(2,'Intern Liberator','AP',5000),ape(2,'PA Ariel','AP',5000),ape(2,'Intern Joseline','AP',5000),
+    /* Day 3 (week 2) */
+    ape(3,'Inno','AMC',5000),ape(3,'Inno','BK',3500),ape(3,'Linda','REC',4500),
+    /* Day 4 (week 2) */
+    ape(4,'Inno','AMC',5000),
+    /* Day 5 (week 3) */
+    ape(5,'Inno','AMC',5000),
+    /* Day 6 (week 4) */
+    ape(6,'Inno','AMC',5000),
+    /* Day 7 (week 4) */
+    ape(7,'Inno','PRE',5000),ape(7,'Inno','AMC',5000),ape(7,'Emma','PRE',500),ape(7,'Elisiane','PRE',1500),
+    /* Day 8 (week 4) */
+    ape(8,'Inno','AMC',5000),ape(8,'Inno','BK',1500)
+  ];
+  payEntries.push(...augPE);
+
+  /* August advances — 5,000 each × 11 staff = 55,000 XAF */
+  ['Deron','Inno','Emma','Elisiane','Marie Nicole','Chrysantus','Carine Chin','Linda','Intern Liberator','PA Ariel','Intern Joseline'].forEach(n=>advances.push({id:uid(),month:'2026-08',staffName:n,amount:5000}));
+  return{
+    settings:{orgName:'Team21 Academy',currency:'XAF',defaultFee:45000,yearStartMonth:8,gasUrl:'https://script.google.com/macros/s/AKfycbxnT_PC0LQluYhq5z4g1DtoQL-HQkPqCq9DUHr5XrpRt8HjELwtvUbQkRn9_WaOa6qi_A/exec',syncKey:'CHANGE-ME-team21',payLetterSignatory:'Innocent Forteh (PMP)',payLetterTitle:'Executive Director, Team21 Academy',exchangeRates:{USD:620,EUR:660,GBP:790,NGN:0.4,GHS:46,KES:4.8,ZAR:33,CAD:460}},
+    users,staff,students,payments,components:comps,payEntries,advances,reports,assignments,groups,certificates,competitions,wallMessages:[],audit:[{t:new Date().toISOString(),who:'system',what:'Database initialised — v2.0'}]
+  };
+}
+
+/* ---- BOOT ---- */
+async function boot(){
+  const raw=localStorage.getItem(LS);
+  if(raw)try{DB=JSON.parse(raw)}catch(e){DB=seed()}
+  else{DB=seed();const h=await sha('f0rteh');DB.users[0].passHash=h;const dh=await sha('deron123');DB.users[1].passHash=dh;save()}
+  // patch missing fields on old DBs
+  if(!DB.assignments)DB.assignments=[];if(!DB.groups)DB.groups=[];if(!DB.certificates)DB.certificates=[];
+  if(!DB.competitions)DB.competitions=[];if(!DB.wallMessages)DB.wallMessages=[];
+  if(!DB.settings.exchangeRates)DB.settings.exchangeRates={USD:620,EUR:660,GBP:790,NGN:0.4,GHS:46,KES:4.8,ZAR:33,CAD:460};
+  // always keep the hardwired GAS URL — overrides any blank or stale value
+  DB.settings.gasUrl='https://script.google.com/macros/s/AKfycbxnT_PC0LQluYhq5z4g1DtoQL-HQkPqCq9DUHr5XrpRt8HjELwtvUbQkRn9_WaOa6qi_A/exec';
+  if(!DB.settings.syncKey)DB.settings.syncKey='CHANGE-ME-team21';
+  document.getElementById('lPass').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin()});
+}
+boot();
+
+/* ---- AUTH ---- */
+async function doLogin(){
+  const u=document.getElementById('lUser').value.trim(),p=document.getElementById('lPass').value;
+  const e=document.getElementById('lErr');e.textContent='';
+  const user=DB.users.find(x=>x.username.toLowerCase()===u.toLowerCase()&&x.active);
+  if(!user||user.passHash!==await sha(p)){e.textContent='Incorrect username or password.';return}
+  ME=user;if(user.mustChange){forceChg();return}enter();
+}
+function enter(){
+  document.getElementById('loginWrap').style.display='none';
+  document.getElementById('app').classList.add('on');
+  document.getElementById('meName').textContent=ME.name;
+  document.getElementById('meAv').textContent=uid2init(ME.name);
+  const roleMap={admin:'Administrator',coadmin:'Co-Admin (view only)',finance:'Financial Manager',mentor:'Mentor',intern:'Intern',student:'Student'};
+  document.getElementById('meRole').textContent=ME.roles.map(r=>roleMap[r]||r).join(' · ');
+  const now=new Date();const cm=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0');
+  SEL.month=DB.students.some(s=>s.month===cm)?cm:'2026-08';SEL.year=acadYear(SEL.month);SEL.payMonth=SEL.month;
+  if(isAdmin()||isCo())V='dash';else if(isStudent())V='s_home';else V='ms_students';
+  render();
+}
+function logout(){ME=null;document.getElementById('app').classList.remove('on');document.getElementById('loginWrap').style.display='flex';document.getElementById('lPass').value=''}
+function forceChg(){openModal(`<h3>Set your password</h3><div class="msub">You must change your password before continuing, ${esc(ME.name)}.</div>
+<label>New password (min 6 chars)</label><input id="np1" type="password">
+<label>Confirm</label><input id="np2" type="password">
+<div class="lerr" id="npErr"></div>
+<div class="mact"><button class="btn btn-pri" onclick="saveChg()">Save and continue</button></div>`,true)}
+async function saveChg(){const a=document.getElementById('np1').value,b=document.getElementById('np2').value,e=document.getElementById('npErr');
+  if(a.length<6){e.textContent='Min 6 characters.';return}if(a!==b){e.textContent='Passwords do not match.';return}
+  ME.passHash=await sha(a);ME.mustChange=false;log('Password changed for '+ME.username);save();closeModal();enter();toast('Password updated')}
+
+/* ---- NAV ---- */
+function nav(){
+  const sections=[];const add=(v,l,ico,badge)=>sections.push({v,l,ico,badge});
+  if(isAdmin()||isCo()){
+    sections.push({sec:'Overview'});add('dash','Dashboard','📊');add('activity','Activity feed','🔔',unread()||null);
+    sections.push({sec:'Students'});add('reg','Registrations','🎓');add('ledger','Payments ledger','💳');add('stud_all','All students (LMS)','📚');
+    sections.push({sec:'Staff'});add('staff','Staff directory','👥');add('payroll','Payroll & rates','💰');add('rep','Mentor reports','📋');
+    sections.push({sec:'Learning'});add('assignments','Assignments','📝');add('groups','Groups','🤝');add('certs','Certificates','🏅');add('compete','Competitions','🏆');
+    sections.push({sec:'Admin'});add('users','Users & passwords','🔑');add('exports','Export & analysis','📤');add('payletter','Pay letters','📄');add('settings','Settings','⚙️');
+  }else if(isMentor()){
+    sections.push({sec:'My work'});add('ms_students','My students','🎓');add('ms_wall','Discussions','💬',unread()||null);add('ms_assign','Assignments','📝');add('ms_groups','Groups','🤝');add('rep','My reports','📋');add('mypay','My pay','💰');
+  }else if(isStudent()){
+    sections.push({sec:'My learning'});add('s_home','My dashboard','🏠');add('s_wall','My mentor','💬',unread()||null);add('s_assignments','Homework','📝');add('s_certs','My certificates','🏅');add('s_compete','Competitions','🏆');add('s_progress','My progress','📈');
+  }else if(isFin()){
+    sections.push({sec:'Finance'});add('reg','Registrations','🎓');add('ledger','Payments ledger','💳');add('exports','Export data','📤');
+  }
+  return sections;
+}
+function render(){
+  const nb=document.getElementById('navBox');
+  nb.innerHTML=nav().map(i=>i.sec?`<div class="nsec">${i.sec}</div>`:`<button class="ni ${V===i.v?'on':''}" onclick="go('${i.v}')">${i.ico} ${i.l}${i.badge?`<span class="badge">${i.badge}</span>`:''}</button>`).join('');
+  const m=document.getElementById('main');
+  const views={dash,activity:activityFeed,reg:registrations,ledger,stud_all:allStudents,staff:staffView,payroll,rep:reportsView,assignments:assignmentsView,groups:groupsView,certs:certsView,compete:competeView,users:usersView,exports:exportsView,payletter:payLetterView,settings:settingsView,ms_students:mentorStudents,ms_wall:mentorWall,ms_assign:mentorAssign,ms_groups:mentorGroups,mypay,s_home:studentHome,s_wall:studentWall,s_assignments:studentAssignments,s_certs:studentCerts,s_compete:studentCompete,s_progress:studentProgress};
+  m.innerHTML=(rOnly()?'<div class="viewbanner">Co-Admin — view only, editing disabled.</div>':'')+(views[V]||dash)();
+  // re-bind live elements after render
+  const wi=document.querySelector('.wall-input input');if(wi)wi.addEventListener('keydown',e=>{if(e.key==='Enter')sendMsg()});
+}
+function go(v){V=v;render()}
+function head(t,sub,tools){return`<div class="pagehead"><div><h2>${t}</h2><div class="psub">${sub||''}</div></div><div class="toolbar">${tools||''}</div></div>`}
+
+/* ==========================================================
+   ADMIN DASHBOARD
+========================================================== */
+function dash(){
+  const ms=yearMonths(SEL.year),stY=DB.students.filter(s=>ms.includes(s.month));
+  const coll=DB.payments.filter(p=>{const st=DB.students.find(x=>x.id===p.studentId);return st&&ms.includes(st.month)}).reduce((a,p)=>a+(+p.amountXAF||0),0);
+  const outs=stY.reduce((a,s)=>a+balFor(s),0);
+  const pay=DB.payEntries.filter(e=>ms.includes(e.month)).reduce((a,e)=>a+(+e.amount||0),0);
+  const reps=DB.reports.filter(r=>ms.includes((r.date||'').slice(0,7))).length;
+  const newRep=DB.assignments.filter(a=>ms.includes(a.month)).length;
+  const byM=ms.map(m=>({m,n:DB.students.filter(s=>s.month===m).length,inc:DB.payments.filter(p=>{const st=DB.students.find(x=>x.id===p.studentId);return st&&st.month===m}).reduce((a,p)=>a+(+p.amountXAF||0),0)}));
+  const mx=Math.max(1,...byM.map(x=>x.inc));
+  return head('Dashboard',`Academic year ${SEL.year} ${yearSel()}`)+
+  `<div class="grid g4" style="margin-bottom:14px">
+    <div class="stat accent"><div class="sk">Students</div><div class="sv">${stY.length}</div></div>
+    <div class="stat"><div class="sk">Fees collected</div><div class="sv">${fmt(coll)} <small>${DB.settings.currency}</small></div></div>
+    <div class="stat"><div class="sk">Outstanding</div><div class="sv" style="color:var(--bad)">${fmt(outs)} <small>${DB.settings.currency}</small></div></div>
+    <div class="stat"><div class="sk">Payroll committed</div><div class="sv">${fmt(pay)} <small>${DB.settings.currency}</small></div></div>
+    <div class="stat"><div class="sk">Reports filed</div><div class="sv">${reps}</div></div>
+    <div class="stat"><div class="sk">Assignments</div><div class="sv">${newRep}</div></div>
+    <div class="stat"><div class="sk">Certificates issued</div><div class="sv">${DB.certificates.length}</div></div>
+    <div class="stat"><div class="sk">Active competitions</div><div class="sv">${DB.competitions.filter(c=>c.status==='Open').length}</div></div>
+  </div>
+  <div class="grid g2">
+    <div class="card"><h3>Income by month — ${SEL.year}</h3>
+      ${byM.map(x=>`<div style="display:flex;align-items:center;gap:10px;margin:6px 0">
+        <div style="width:66px;font-size:12px;color:var(--mut)">${mLbl(x.m)}</div>
+        <div class="bar" style="flex:1"><i style="width:${Math.round(x.inc/mx*100)}%"></i></div>
+        <div style="width:110px;text-align:right;font-size:12px">${fmt(x.inc)} <span style="color:var(--mut)">· ${x.n} st.</span></div></div>`).join('')}
+    </div>
+    <div class="card"><h3>Status breakdown — ${mLbl(SEL.month)}</h3>
+      ${['Completed','Incomplete','Discounted','Scholarship','Unpaid'].map(st=>{const g=DB.students.filter(s=>s.month===SEL.month&&s.status===st);if(!g.length)return'';
+        return`<div style="display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--ln)">
+        <div><span class="chip ${st==='Completed'?'c-ok':st==='Incomplete'?'c-warn':st==='Unpaid'?'c-bad':'c-blue'}">${st}</span></div>
+        <div style="font-size:13px"><b>${g.length}</b> students · collected <b>${fmt(g.reduce((a,s)=>a+paidFor(s),0))}</b></div></div>`}).join('')}
+      <h3 style="margin-top:14px">Recent activity</h3>
+      ${DB.audit.slice(0,5).map(a=>`<div style="font-size:12px;padding:5px 0;border-bottom:1px solid var(--ln)"><span style="color:var(--mut)">${a.t.slice(0,16).replace('T',' ')}</span> <b>${esc(a.who)}</b>: ${esc(a.what)}</div>`).join('')}
+      ${isAdmin()?`<div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn btn-pri btn-sm" onclick="go('reg')">Registrations</button>
+        <button class="btn btn-ghost btn-sm" onclick="go('payroll')">Payroll</button>
+        <button class="btn btn-ghost btn-sm" onclick="go('rep')">Reports</button>
+        <button class="btn btn-ghost btn-sm" onclick="go('compete')">Competitions</button></div>`:''}
+    </div>
+  </div>`;
+}
+function yearSel(){const yrs=[...new Set(DB.students.map(s=>acadYear(s.month)))];const n=new Date();const cy=acadYear(n.getFullYear()+'-'+String(n.getMonth()+1).padStart(2,'0'));if(!yrs.includes(cy))yrs.push(cy);yrs.sort();
+  return`<select style="width:auto;padding:4px 8px;font-size:12.5px;display:inline-block;margin-left:8px" onchange="SEL.year=this.value;SEL.month=yearMonths(this.value)[0];render()">${yrs.map(y=>`<option ${y===SEL.year?'selected':''}>${y}</option>`).join('')}</select>`}
+
+/* ==========================================================
+   REGISTRATIONS
+========================================================== */
+function registrations(){
+  const ms=yearMonths(SEL.year);if(!ms.includes(SEL.month))SEL.month=ms[0];
+  const rows=DB.students.filter(s=>s.month===SEL.month).sort((a,b)=>a.num-b.num);
+  const canEdit=(isFin()||isAdmin())&&!rOnly();
+  let totF=0,totP=0,totB=0;
+  const body=rows.map(s=>{const p=paidFor(s),b=balFor(s);totF+=+s.feeXAF||0;totP+=p;totB+=b;
+    return`<tr><td>${s.num}</td><td><b>${esc(s.name)}</b><br><span style="color:var(--mut);font-size:11.5px">${esc(s.contact||'no contact')} · ${esc(s.lang)}</span></td>
+    <td>${s.code?`<span class="code">${esc(s.code)}</span>`:'—'}</td>
+    <td>${esc(s.mentorName||'—')}</td>
+    <td class="num">${fmt(s.feeXAF)}<br><span style="color:var(--mut);font-size:11px">${esc(s.feeCurrency||'XAF')}</span></td>
+    <td class="num">${fmt(p)}</td>
+    <td class="num" style="color:${b>0?'var(--bad)':'var(--ok)'};font-weight:600">${fmt(b)}</td>
+    <td><span class="chip ${s.status==='Completed'?'c-ok':s.status==='Incomplete'?'c-warn':s.status==='Unpaid'?'c-bad':'c-blue'}">${esc(s.status)}</span></td>
+    <td style="white-space:nowrap">${canEdit?`<button class="btn btn-ghost btn-sm" onclick="payModal('${s.id}')">+ Pay</button> <button class="btn btn-ghost btn-sm" onclick="studModal('${s.id}')">Edit</button> ${isAdmin()?`<button class="btn btn-ghost btn-sm" onclick="genStudPw('${s.id}')">🔑 Login</button>`:''}`:''}</td></tr>`}).join('');
+  return head('Registrations',`${yearSel()}`,canEdit?`<button class="btn btn-pri" onclick="studModal()">+ Register student</button><button class="btn btn-ghost" onclick="exportStudCSV()">Export CSV</button>`:'<button class="btn btn-ghost" onclick="exportStudCSV()">Export CSV</button>')+
+  `<div class="mtabs">${ms.map(m=>{const n=DB.students.filter(s=>s.month===m).length;return`<button class="${m===SEL.month?'on':''}" onclick="SEL.month='${m}';render()">${mLbl(m)} <span class="n">${n?'· '+n:''}</span></button>`}).join('')}</div>
+  <div class="card"><div class="tbl"><table>
+  <thead><tr><th>N°</th><th>Student</th><th>Code</th><th>Mentor</th><th class="num">Fee (XAF)</th><th class="num">Paid</th><th class="num">Balance</th><th>Status</th><th></th></tr></thead>
+  <tbody>${body||`<tr><td colspan="9" class="empty">No registrations for ${mLbl(SEL.month)} yet.${canEdit?' Click "Register student" to add the first one.':''}</td></tr>`}</tbody>
+  ${rows.length?`<tfoot><tr style="background:var(--blt)"><td colspan="4" style="font-weight:700">Totals — ${rows.length} students</td><td class="num" style="font-weight:700">${fmt(totF)}</td><td class="num" style="font-weight:700">${fmt(totP)}</td><td class="num" style="font-weight:700">${fmt(totB)}</td><td colspan="2"></td></tr></tfoot>`:''}
+  </table></div></div>`;
+}
+function studModal(id){
+  const s=id?DB.students.find(x=>x.id===id):null;
+  const mentors=DB.staff.filter(x=>x.active&&(x.role==='Mentor'||x.role==='Founder')).map(x=>x.name);
+  openModal(`<h3>${s?'Edit student':'Register student'}</h3>
+  <div class="formrow">
+    <div><label>Full name</label><input id="fN" value="${esc((s&&s.name)||'')}"></div>
+    <div><label>Language</label><select id="fL"><option ${(s&&s.lang)==='Eng'?'selected':''}>Eng</option><option ${(s&&s.lang)==='Fr'?'selected':''}>Fr</option></select></div>
+    <div><label>Contact</label><input id="fC" value="${esc((s&&s.contact)||'')}"></div>
+    <div><label>Code</label><input id="fCo" value="${esc((s&&s.code)||'')}" placeholder="T21J-XXX"></div>
+    <div><label>Mentor</label><select id="fM"><option value="">— unassigned —</option>${mentors.map(m=>`<option ${(s&&s.mentorName)===m?'selected':''}>${esc(m)}</option>`).join('')}</select></div>
+    <div><label>Fee</label><div style="display:flex;gap:6px"><input id="fF" type="number" value="${s?s.feeXAF:DB.settings.defaultFee}" style="flex:1">
+    <select id="fFC" style="width:90px">${CURRENCIES.map(c=>`<option ${((s&&s.feeCurrency)||DB.settings.currency)===c?'selected':''}>${c}</option>`).join('')}</select></div>
+    <div class="help">Fees in non-XAF currencies will be converted to XAF using the exchange rate in Settings.</div></div>
+    <div><label>Status</label><select id="fSt">${['Incomplete','Completed','Discounted','Scholarship','Unpaid'].map(x=>`<option ${(s&&s.status)===x?'selected':''}>${x}</option>`).join('')}</select></div>
+    <div><label>Month</label><select id="fMo">${yearMonths(SEL.year).map(m=>`<option value="${m}" ${((s&&s.month)||SEL.month)===m?'selected':''}>${mLbl(m)}</option>`).join('')}</select></div>
+  </div>
+  <div class="mact">${s?`<button class="btn btn-danger btn-sm" onclick="delStud('${s.id}')">Delete</button>`:''}
+  <button class="btn btn-ghost" onclick="closeModal()">Cancel</button>
+  <button class="btn btn-pri" onclick="saveStud('${id||''}')">Save</button></div>`);
+}
+function saveStud(id){
+  const g=x=>document.getElementById(x).value,name=g('fN').trim();if(!name){toast('Name required');return}
+  const feeRaw=+g('fF')||0,fCur=g('fFC'),rate=DB.settings.exchangeRates[fCur]||1;
+  const feeXAF=fCur==='XAF'?feeRaw:Math.round(feeRaw*rate);
+  if(id){const s=DB.students.find(x=>x.id===id);Object.assign(s,{name,lang:g('fL'),contact:g('fC').trim(),code:g('fCo').trim(),mentorName:g('fM'),feeXAF,feeCurrency:fCur,status:g('fSt'),month:g('fMo')});log('Updated student '+name)}
+  else{const mo=g('fMo');const num=Math.max(0,...DB.students.filter(s=>s.month===mo).map(s=>s.num))+1;
+    DB.students.push({id:uid(),num,name,lang:g('fL'),contact:g('fC').trim(),code:g('fCo').trim(),mentorName:g('fM'),feeXAF,feeCurrency:fCur,status:g('fSt'),month:mo,tasks:{},createdAt:new Date().toISOString().slice(0,10)});log('Registered '+name)}
+  save();closeModal();render();toast('Student saved');
+}
+function delStud(id){const s=DB.students.find(x=>x.id===id);if(!confirm('Delete '+s.name+'?'))return;DB.students=DB.students.filter(x=>x.id!==id);log('Deleted '+s.name);save();closeModal();render()}
+function payModal(id){
+  const s=DB.students.find(x=>x.id===id);
+  openModal(`<h3>Record payment</h3><div class="msub">${esc(s.name)} — balance <b>${fmt(balFor(s))} XAF</b></div>
+  <div class="formrow">
+    <div><label>Amount</label><div style="display:flex;gap:6px">
+      <input id="pA" type="number" value="${balFor(s)||''}" style="flex:1">
+      <select id="pC" style="width:90px" onchange="updateXAFHint()">${CURRENCIES.map(c=>`<option ${c===DB.settings.currency?'selected':''}>${c}</option>`).join('')}</select></div>
+      <div class="help" id="pHint"></div></div>
+    <div><label>Date</label><input id="pD" type="date" value="${new Date().toISOString().slice(0,10)}"></div>
+  </div>
+  <label>Method / reference</label>
+  <select id="pM"><option>MoMo</option><option>Orange Money</option><option>Cash</option><option>Western Union</option><option>Bank Transfer</option><option>PayPal</option><option>Stripe</option><option>Other</option></select>
+  <label>Note</label><input id="pNo" placeholder="Optional reference">
+  <div class="mact"><button class="btn btn-ghost" onclick="closeModal()">Cancel</button><button class="btn btn-pri" onclick="savePay('${id}')">Record</button></div>`);
+}
+function updateXAFHint(){const c=(document.getElementById('pC')||{}).value,a=+(document.getElementById('pA')||{}).value,h=document.getElementById('pHint');if(!h)return;if(!a||c==='XAF'){h.textContent='';return}const r=DB.settings.exchangeRates[c]||1;h.textContent=`≈ ${fmt(Math.round(a*r))} XAF`}
+function savePay(id){const s=DB.students.find(x=>x.id===id),amt=+document.getElementById('pA').value,c=document.getElementById('pC').value;if(!amt){toast('Enter amount');return}
+  const r=DB.settings.exchangeRates[c]||1,amtXAF=c==='XAF'?amt:Math.round(amt*r);
+  DB.payments.push({id:uid(),studentId:id,date:document.getElementById('pD').value,amount:amt,currency:c,amountXAF:amtXAF,method:document.getElementById('pM').value,recordedBy:ME.username,note:document.getElementById('pNo').value});
+  if(balFor(s)===0&&s.status==='Incomplete')s.status='Completed';
+  log(`Payment ${fmt(amtXAF)} XAF recorded for ${s.name} (${c})`);save();closeModal();render();toast('Payment recorded');
+}
+async function genStudPw(id){
+  const s=DB.students.find(x=>x.id===id);
+  const uname=s.code.toLowerCase().replace(/[^a-z0-9]/g,'')||'stud'+s.id.slice(-4);
+  const pw=genPw();const h=await sha(pw);
+  let u=DB.users.find(x=>x.studentId===id);
+  if(u){u.passHash=h;u.mustChange=true;log('Reset student login for '+s.name)}
+  else{u={id:uid(),username:uname,name:s.name,roles:['student'],studentId:id,passHash:h,mustChange:true,active:true};DB.users.push(u);log('Created student login for '+s.name)}
+  save();openModal(`<h3>Student login created</h3><div class="msub">${esc(s.name)} — share these securely.</div>
+  <label>Username</label><div class="pwbox" style="color:#fff">${esc(uname)}</div>
+  <label>One-time password</label><div class="pwbox">${esc(pw)}</div>
+  <div class="help">Student must change this password at first login. They will then see their personal learning dashboard.</div>
+  <div class="mact"><button class="btn btn-ghost" onclick="navigator.clipboard&&navigator.clipboard.writeText('Team21 login — user: ${esc(uname)} / pass: ${esc(pw)}');toast('Copied')">Copy</button><button class="btn btn-pri" onclick="closeModal()">Done</button></div>`,true);
+}
+
+/* ==========================================================
+   LEDGER
+========================================================== */
+function ledger(){
+  const ms=yearMonths(SEL.year),rows=DB.payments.filter(p=>{const s=DB.students.find(x=>x.id===p.studentId);return s&&ms.includes(s.month)}).sort((a,b)=>(a.date||'').localeCompare(b.date||''));
+  let run=0;
+  return head('Payments ledger',`All income · ${SEL.year} ${yearSel()}`,`<button class="btn btn-ghost" onclick="exportPayCSV()">Export CSV</button>`)+
+  `<div class="card"><div class="tbl"><table>
+  <thead><tr><th>Date</th><th>Student</th><th>Month</th><th>Amount</th><th>XAF equiv.</th><th>Method</th><th>By</th><th></th></tr></thead><tbody>
+  ${rows.map(p=>{run+=+p.amountXAF||0;const s=DB.students.find(x=>x.id===p.studentId);
+    return`<tr><td>${esc(p.date||'—')}</td><td><b>${esc((s&&s.name)||'?')}</b></td><td>${mLbl((s&&s.month)||'')}</td>
+    <td class="num">${p.currency!=='XAF'?`${fmt(p.amount)} <span class="chip c-blue">${esc(p.currency)}</span>`:`${fmt(p.amount)} XAF`}</td>
+    <td class="num">${p.currency!=='XAF'?fmt(p.amountXAF)+' XAF':'—'}</td>
+    <td>${esc(p.method||'—')}</td><td>${esc(p.recordedBy)}</td>
+    <td>${(isFin()&&!rOnly())?`<button class="btn btn-ghost btn-sm" onclick="delPay('${p.id}')">✕</button>`:''}</td></tr>`}).join('')||'<tr><td colspan="8" class="empty">No payments recorded yet.</td></tr>'}
+  </tbody>${rows.length?`<tfoot><tr style="background:var(--blt)"><td colspan="3" style="font-weight:700">Total — ${rows.length} transactions</td><td colspan="2" class="num" style="font-weight:700">${fmt(run)} XAF</td><td colspan="3"></td></tr></tfoot>`:''}</table></div></div>`;
+}
+function delPay(id){if(!confirm('Remove payment?'))return;const p=DB.payments.find(x=>x.id===id);DB.payments=DB.payments.filter(x=>x.id!==id);log('Removed payment of '+p.amountXAF+' XAF');save();render()}
+
+/* ==========================================================
+   ALL STUDENTS (admin LMS overview)
+========================================================== */
+function allStudents(){
+  const TASKS=['PLAixBox Wk1','BMC','SOSTAC','Group Project','Capstone','Gamma','NotebookLM','Veo Video'];
+  const rows=DB.students.filter(s=>s.month===SEL.month).sort((a,b)=>a.num-b.num);
+  return head('All students — LMS view',`Task completion and learning status for ${mLbl(SEL.month)}`)+
+  `<div class="mtabs">${yearMonths(SEL.year).map(m=>{const n=DB.students.filter(s=>s.month===m).length;return`<button class="${m===SEL.month?'on':''}" onclick="SEL.month='${m}';render()">${mLbl(m)} <span class="n">${n?'· '+n:''}</span></button>`}).join('')}</div>
+  <div class="card"><div class="tbl"><table>
+  <thead><tr><th>Student</th><th>Mentor</th>${TASKS.map(t=>`<th style="font-size:10px;max-width:60px;white-space:normal;line-height:1.2">${esc(t)}</th>`).join('')}<th class="num">Progress</th><th>Certs</th><th></th></tr></thead><tbody>
+  ${rows.map(s=>{const done=TASKS.filter(t=>(s.tasks&&s.tasks[t])).length;const pct=Math.round(done/TASKS.length*100);const nc=DB.certificates.filter(c=>c.studentId===s.id).length;
+    return`<tr><td><b>${esc(s.name)}</b><br><span class="chip ${s.status==='Completed'?'c-ok':s.status==='Incomplete'?'c-warn':'c-bad'}" style="font-size:10.5px">${s.status}</span></td>
+    <td>${esc(s.mentorName||'—')}</td>
+    ${TASKS.map(t=>`<td style="text-align:center;font-size:16px">${(s.tasks&&s.tasks[t])?'✅':'⬜'}</td>`).join('')}
+    <td class="num"><div class="bar" style="min-width:60px"><i style="width:${pct}%"></i></div><div style="font-size:11px;text-align:right;margin-top:2px">${pct}%</div></td>
+    <td class="num">${nc?`<span class="chip c-pur">${nc}</span>`:'—'}</td>
+    <td>${isAdmin()?`<button class="btn btn-ghost btn-sm" onclick="genStudPw('${s.id}')">🔑</button> <button class="btn btn-ghost btn-sm" onclick="awardCert('${s.id}')">🏅</button>`:''}</td></tr>`}).join('')||'<tr><td colspan="15" class="empty">No students for this month.</td></tr>'}
+  </tbody></table></div></div>`;
+}
+
+/* ==========================================================
+   STAFF
+========================================================== */
+function staffView(){
+  const canEdit=isAdmin()&&!rOnly();
+  return head('Staff directory','All founders, mentors, interns and support staff.',canEdit?`<button class="btn btn-pri" onclick="staffModal()">+ Add staff</button>`:'')+
+  `<div class="card"><div class="tbl"><table>
+  <thead><tr><th>Name</th><th>Role</th><th>Category</th><th>Students (${mLbl(SEL.month)})</th><th>Login</th><th>Status</th><th></th></tr></thead><tbody>
+  ${DB.staff.map(s=>{const n=DB.students.filter(x=>x.month===SEL.month&&x.mentorName===s.name).length;
+    const u=DB.users.find(x=>x.staffName===s.name);
+    return`<tr><td><b>${esc(s.name)}</b></td><td>${esc(s.role)}</td><td><span class="chip c-blue">${esc(s.category)}</span></td>
+    <td>${(s.role==='Mentor'||s.role==='Founder')?n:'—'}</td>
+    <td>${u?`<span class="chip ${u.active?'c-ok':'c-gray'}">${esc(u.username)}</span>`:'<span class="chip c-gray">no account</span>'}</td>
+    <td><span class="chip ${s.active?'c-ok':'c-gray'}">${s.active?'Active':'Inactive'}</span></td>
+    <td style="white-space:nowrap">${canEdit?`<button class="btn btn-ghost btn-sm" onclick="staffModal('${s.id}')">Edit</button>`:''}</td></tr>`}).join('')}
+  </tbody></table></div></div>`;
+}
+function staffModal(id){
+  const s=id?DB.staff.find(x=>x.id===id):null;
+  openModal(`<h3>${s?'Edit staff':'Add staff'}</h3>
+  <div class="formrow">
+    <div><label>Name</label><input id="sN" value="${esc((s&&s.name)||'')}"></div>
+    <div><label>Role</label><select id="sR">${['Founder','Mentor','Intern','PA','Finance','Other'].map(r=>`<option ${(s&&s.role)===r?'selected':''}>${r}</option>`).join('')}</select></div>
+    <div><label>Pay category</label><select id="sC">${['Senior','Junior','Other','Intern'].map(c=>`<option ${(s&&s.category)===c?'selected':''}>${c}</option>`).join('')}</select></div>
+    <div><label>Status</label><select id="sA"><option value="1" ${!s||s.active?'selected':''}>Active</option><option value="0" ${s&&!s.active?'selected':''}>Inactive</option></select></div>
+  </div>
+  <div class="mact"><button class="btn btn-ghost" onclick="closeModal()">Cancel</button><button class="btn btn-pri" onclick="saveStaff('${id||''}')">Save</button></div>`);
+}
+function saveStaff(id){const g=x=>document.getElementById(x).value,name=g('sN').trim();if(!name){toast('Name required');return}
+  if(id){const s=DB.staff.find(x=>x.id===id);Object.assign(s,{name,role:g('sR'),category:g('sC'),active:g('sA')==='1'})}
+  else DB.staff.push({id:uid(),name,role:g('sR'),category:g('sC'),active:g('sA')==='1'});
+  log('Saved staff '+name);save();closeModal();render();toast('Saved')}
+
+/* ==========================================================
+   PAYROLL
+========================================================== */
+function payroll(){
+  const m=SEL.payMonth,canEdit=isAdmin()&&!rOnly();
+  const staff=DB.staff.filter(s=>s.active);const comps=DB.components;
+  const days=[...new Set(DB.payEntries.filter(e=>e.month===m&&e.staffName!=='—').map(e=>e.day))].sort((a,b)=>a-b);
+  if(!days.includes(SEL.payDay))SEL.payDay=days[0]||1;
+  const cell=(nm,code)=>{const e=DB.payEntries.find(x=>x.month===m&&x.day===SEL.payDay&&x.staffName===nm&&x.component===code);return e?+e.amount:''};
+  const totFor=nm=>DB.payEntries.filter(e=>e.month===m&&e.staffName===nm).reduce((a,e)=>a+(+e.amount||0),0);
+  const advFor=nm=>DB.advances.filter(a=>a.month===m&&a.staffName===nm).reduce((a,x)=>a+(+x.amount||0),0);
+  const gTot=staff.reduce((a,s)=>a+totFor(s.name),0),gAdv=staff.reduce((a,s)=>a+advFor(s.name),0);
+  const months=[...new Set([...DB.payEntries.map(e=>e.month),...DB.students.map(s=>s.month)])].sort();
+  return head('Payroll & rates','Earnings per staff member, per pay day, per component.',
+    `<select style="width:auto" onchange="SEL.payMonth=this.value;SEL.payDay=1;render()">${months.map(x=>`<option value="${x}" ${x===m?'selected':''}>${mLbl(x)}</option>`).join('')}</select>
+    ${canEdit?`<button class="btn btn-ghost" onclick="rateCardModal()">Rate card</button><button class="btn btn-ghost" onclick="advModal()">Advances</button><button class="btn btn-pri" onclick="addPayDay()">+ Pay day</button>`:''}
+    <button class="btn btn-ghost" onclick="exportPayroll()">Export</button>`)+
+  `<div class="mtabs">${(days.length?days:[1]).map(d=>`<button class="${d===SEL.payDay?'on':''}" onclick="SEL.payDay=${d};render()">Day ${d}</button>`).join('')}</div>
+  <div class="card"><h3>Entries — ${mLbl(m)}, day ${SEL.payDay}</h3><div class="tbl"><table>
+  <thead><tr><th>Staff</th><th>Cat</th>${comps.map(c=>`<th class="num" title="${esc(c.label)}">${c.code}</th>`).join('')}<th class="num">Day total</th></tr></thead><tbody>
+  ${staff.map(s=>{const dt=comps.reduce((a,c)=>a+(+cell(s.name,c.code)||0),0);
+    return`<tr><td><b>${esc(s.name)}</b></td><td><span class="chip c-blue">${s.category[0]}</span></td>
+    ${comps.map(c=>`<td class="num" style="padding:5px 6px">${canEdit?`<input type="number" value="${cell(s.name,c.code)}" placeholder="${c.rates[s.category]||''}" style="width:72px;padding:4px 6px;font-size:12px;text-align:right" onchange="setEntry('${m}',${SEL.payDay},'${esc(s.name)}','${c.code}',this.value)">`:fmt(cell(s.name,c.code)||0)}</td>`).join('')}
+    <td class="num" style="font-weight:700">${fmt(dt)}</td></tr>`}).join('')}
+  </tbody></table></div></div>
+  <div class="card"><h3>Month summary — ${mLbl(m)}</h3><div class="tbl"><table>
+  <thead><tr><th>Staff</th><th class="num">Earnings</th><th class="num">Advances</th><th class="num">Final pay</th><th></th></tr></thead><tbody>
+  ${staff.filter(s=>totFor(s.name)||advFor(s.name)).map(s=>`<tr><td><b>${esc(s.name)}</b></td><td class="num">${fmt(totFor(s.name))}</td><td class="num">${fmt(advFor(s.name))}</td>
+  <td class="num" style="font-weight:700">${fmt(totFor(s.name)+advFor(s.name))}</td>
+  <td>${isAdmin()?`<button class="btn btn-ghost btn-sm" onclick="go('payletter');SEL.plStaff='${esc(s.name)}';SEL.plMonth='${m}';render()">📄 Letter</button>`:''}</td></tr>`).join('')||'<tr><td colspan="5" class="empty">No payroll entries.</td></tr>'}
+  </tbody><tfoot><tr style="background:var(--blt)"><td style="font-weight:700">Grand total</td><td class="num" style="font-weight:700">${fmt(gTot)}</td><td class="num" style="font-weight:700">${fmt(gAdv)}</td><td class="num" style="font-weight:700">${fmt(gTot+gAdv)}</td><td></td></tr></tfoot></table></div>
+  <div class="help">Fees collected ${mLbl(m)}: <b>${fmt(DB.payments.filter(p=>{const s=DB.students.find(x=>x.id===p.studentId);return s&&s.month===m}).reduce((a,p)=>a+(+p.amountXAF||0),0))} XAF</b> · Payroll: <b>${fmt(gTot+gAdv)} XAF</b></div></div>`;
+}
+function setEntry(m,d,nm,code,val){
+  const i=DB.payEntries.findIndex(x=>x.month===m&&x.day===d&&x.staffName===nm&&x.component===code);
+  if(!val||isNaN(+val)){if(i>-1)DB.payEntries.splice(i,1)}
+  else if(i>-1)DB.payEntries[i].amount=+val;
+  else DB.payEntries.push({id:uid(),month:m,day:d,staffName:nm,component:code,amount:+val});
+  log(`Payroll ${nm} ${code}=${val||'cleared'} (${m} d${d})`);save();
+}
+function addPayDay(){const days=DB.payEntries.filter(e=>e.month===SEL.payMonth&&e.staffName!=='—').map(e=>e.day);SEL.payDay=(days.length?Math.max(...days):0)+1;DB.payEntries.push({id:uid(),month:SEL.payMonth,day:SEL.payDay,staffName:'—',component:'—',amount:0});save();render();toast('Pay day '+SEL.payDay+' added')}
+function rateCardModal(){openModal(`<h3>Rate card</h3><div class="msub">Default amounts per component per category. These populate hints in payroll cells and are used in pay letters.</div>
+<div class="tbl"><table><thead><tr><th>Code</th><th>Component</th><th>Freq.</th><th class="num">Senior</th><th class="num">Junior</th><th class="num">Other</th><th class="num">Intern</th><th></th></tr></thead><tbody>
+${DB.components.map((c,i)=>`<tr><td><b>${esc(c.code)}</b></td><td style="font-size:12px">${esc(c.label)}</td><td><span class="chip c-gray">${esc(c.freq)}</span></td>
+${['Senior','Junior','Other','Intern'].map(cat=>`<td class="num" style="padding:4px 6px"><input type="number" value="${c.rates[cat]||''}" style="width:76px;text-align:right;padding:4px;font-size:12px" onchange="DB.components[${i}].rates['${cat}']=+this.value||0;save()"></td>`).join('')}
+<td><button class="btn btn-ghost btn-sm" onclick="DB.components.splice(${i},1);save();rateCardModal()">✕</button></td></tr>`).join('')}
+</tbody></table></div>
+<div style="display:flex;gap:6px;margin-top:10px"><input id="ncC" placeholder="Code" style="max-width:80px"><input id="ncL" placeholder="Component name"><select id="ncF" style="max-width:100px"><option>Daily</option><option>One off</option></select><button class="btn btn-pri btn-sm" onclick="addComp()">Add</button></div>
+<div class="mact"><button class="btn btn-pri" onclick="closeModal();render()">Done</button></div>`,false,'wide')}
+function addComp(){const c=document.getElementById('ncC').value.trim().toUpperCase(),l=document.getElementById('ncL').value.trim();if(!c||!l){toast('Code and name required');return}
+  DB.components.push({code:c,label:l,freq:document.getElementById('ncF').value,rates:{Senior:0,Junior:0,Other:0,Intern:0}});log('Added component '+c);save();rateCardModal()}
+function advModal(){const m=SEL.payMonth;openModal(`<h3>Advances — ${mLbl(m)}</h3>
+<table><thead><tr><th>Staff</th><th class="num">Amount</th><th></th></tr></thead><tbody>
+${DB.advances.filter(a=>a.month===m).map(a=>`<tr><td>${esc(a.staffName)}</td><td class="num">${fmt(a.amount)}</td><td><button class="btn btn-ghost btn-sm" onclick="DB.advances=DB.advances.filter(x=>x.id!=='${a.id}');save();advModal()">✕</button></td></tr>`).join('')||'<tr><td colspan="3" class="empty">No advances.</td></tr>'}
+</tbody></table>
+<div style="display:flex;gap:6px;margin-top:10px"><select id="aW">${DB.staff.filter(s=>s.active).map(s=>`<option>${esc(s.name)}</option>`).join('')}</select><input id="aA" type="number" placeholder="Amount" style="max-width:130px"><button class="btn btn-pri btn-sm" onclick="addAdv()">Add</button></div>
+<div class="mact"><button class="btn btn-pri" onclick="closeModal();render()">Done</button></div>`)}
+function addAdv(){const amt=+document.getElementById('aA').value;if(!amt){toast('Enter amount');return}DB.advances.push({id:uid(),month:SEL.payMonth,staffName:document.getElementById('aW').value,amount:amt});log('Advance recorded');save();advModal()}
+
+/* ==========================================================
+   PAY LETTERS
+========================================================== */
+SEL.plStaff=null;SEL.plMonth=null;
+function payLetterView(){
+  const canEdit=isAdmin()&&!rOnly();
+  const months=[...new Set(DB.payEntries.filter(e=>e.staffName!=='—').map(e=>e.month))].sort().reverse();
+  if(!SEL.plMonth)SEL.plMonth=months[0]||SEL.payMonth;
+  if(!SEL.plStaff&&DB.staff.length)SEL.plStaff=DB.staff[0].name;
+  const m=SEL.plMonth,nm=SEL.plStaff;
+  const entries=DB.payEntries.filter(e=>e.month===m&&e.staffName===nm&&e.staffName!=='—');
+  const adv=DB.advances.filter(a=>a.month===m&&a.staffName===nm).reduce((a,x)=>a+(+x.amount||0),0);
+  const tot=entries.reduce((a,e)=>a+(+e.amount||0),0);
+  const ref='T21-PAY-'+m.replace('-','')+'-'+nm.replace(/\s/g,'').toUpperCase().slice(0,4);
+  const stf=DB.staff.find(s=>s.name===nm);
+  return head('Pay letters','Generate and print official pay letters on Team21 letterhead.')+
+  `<div class="grid g2" style="margin-bottom:14px">
+    <div>
+      <label>Staff member</label>
+      <select onchange="SEL.plStaff=this.value;render()">${DB.staff.filter(s=>s.active).map(s=>`<option ${s.name===nm?'selected':''}>${esc(s.name)}</option>`).join('')}</select>
+      <label>Month</label>
+      <select onchange="SEL.plMonth=this.value;render()">${months.map(x=>`<option value="${x}" ${x===m?'selected':''}>${mLbl(x)}</option>`).join('')}</select>
+      <div style="margin-top:10px;display:flex;gap:8px">
+        <button class="btn btn-pri" onclick="window.print()">🖨️ Print / PDF</button>
+      </div>
+    </div>
+  </div>
+  <div class="payletter">
+    <div class="lhd">
+      <div class="logo">TEAM21 ACADEMY<small>inno4te · Team21 Academy</small></div>
+      <div class="ref"><div style="font-weight:700;color:var(--ink);font-size:13px">PAY CONFIRMATION LETTER</div><div>Ref: ${esc(ref)}</div><div>Date: ${new Date().toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'})}</div></div>
+    </div>
+    <div class="lbody">
+      <p>To: <b>${esc(nm)}</b></p>
+      <p>Category: <b>${esc((stf&&stf.category)||'—')}</b> · Role: <b>${esc((stf&&stf.role)||'—')}</b></p>
+      <p>Programme: <b>${mLbl(m)} Cohort</b></p>
+      <p style="margin-top:12px">This letter confirms the following compensation components for <b>${esc(nm)}</b> for the <b>${mLbl(m)}</b> programme period:</p>
+      <table class="lpay-table">
+        <thead><tr><th>Day</th><th>Component</th><th class="num">Amount (XAF)</th></tr></thead>
+        <tbody>${entries.map(e=>{const c=DB.components.find(x=>x.code===e.component);return`<tr><td>Day ${e.day}</td><td>${esc(c?c.label:e.component)}</td><td class="num">${fmt(e.amount)}</td></tr>`}).join('')||'<tr><td colspan="3" class="empty">No entries recorded for this month and staff member.</td></tr>'}</tbody>
+        <tfoot>
+          ${adv?`<tr><td colspan="2">Advances</td><td class="num">${fmt(adv)}</td></tr>`:''}
+          <tr><td colspan="2"><b>Total Compensation</b></td><td class="num"><b>${fmt(tot+adv)}</b></td></tr>
+        </tfoot>
+      </table>
+      <p>Amount in words: <b>${amtWords(tot+adv)} Francs CFA</b></p>
+      <p style="margin-top:12px">This letter is issued in good faith and constitutes official confirmation of the above-mentioned compensation for the period stated. All amounts are subject to final reconciliation.</p>
+    </div>
+    <div class="lsig">
+      <div>Received by (Signature &amp; Date)<br><br>___________________________<br>${esc(nm)}</div>
+      <div>Issued by<br><br>___________________________<br><b>${esc(DB.settings.payLetterSignatory||'Innocent Forteh (PMP)')}</b><br><span style="font-size:11px">${esc(DB.settings.payLetterTitle||'Executive Director, Team21 Academy')}</span></div>
+    </div>
+  </div>`;
+}
+function amtWords(n){if(!n)return'Zero';const ones=['','One','Two','Three','Four','Five','Six','Seven','Eight','Nine','Ten','Eleven','Twelve','Thirteen','Fourteen','Fifteen','Sixteen','Seventeen','Eighteen','Nineteen'];const tens=['','','Twenty','Thirty','Forty','Fifty','Sixty','Seventy','Eighty','Ninety'];function two(n){return n<20?ones[n]:tens[Math.floor(n/10)]+(n%10?' '+ones[n%10]:'')}function three(n){return n>=100?ones[Math.floor(n/100)]+' Hundred'+(n%100?' and '+two(n%100):''):two(n)}const th=Math.floor(n/1000),rem=n%1000;return(th?three(th)+' Thousand':'')+(th&&rem?' and ':'')+three(rem)}
+
+/* ==========================================================
+   REPORTS
+========================================================== */
+function reportsView(){
+  const mine=isMentor()&&!isAdmin()&&!isCo();
+  const mn=ME.staffName||ME.name;
+  const list=DB.reports.filter(r=>mine?r.mentor===mn:true).sort((a,b)=>(b.date||'').localeCompare(a.date||''));
+  const can=(isMentor()||isAdmin())&&!rOnly();
+  return head(mine?'My reports':'Mentor reports','Twice-weekly performance reports on assigned students.',can?`<button class="btn btn-pri" onclick="reportForm()">+ New report</button>`:'')+
+  `<div class="card"><div class="tbl"><table>
+  <thead><tr><th>Date</th><th>Mentor</th><th>Week</th><th>Day</th><th>Students</th><th>Status</th><th></th></tr></thead><tbody>
+  ${list.map(r=>`<tr><td>${esc(r.date)}</td><td><b>${esc(r.mentor)}</b>${r.coSupport?`<br><span style="font-size:11px;color:var(--mut)">with ${esc(r.coSupport)}</span>`:''}</td>
+  <td>${esc(r.week)}</td><td>${esc(r.reportDay)}</td><td>${r.students.map(s=>esc(s.name.split(' ')[0])).join(', ')}</td>
+  <td><span class="chip c-ok">${esc(r.status)}</span></td>
+  <td><button class="btn btn-ghost btn-sm" onclick="viewRpt('${r.id}')">Open</button>${(isAdmin()&&!rOnly())?`<button class="btn btn-ghost btn-sm" onclick="delRpt('${r.id}')">✕</button>`:''}</td></tr>`).join('')||'<tr><td colspan="7" class="empty">No reports yet.</td></tr>'}
+  </tbody></table></div></div>`;
+}
+function reportForm(){
+  const mn=isAdmin()?null:(ME.staffName||ME.name);const mentors=DB.staff.filter(s=>s.active&&(s.role==='Mentor'||s.role==='Founder')).map(s=>s.name);
+  const mySt=DB.students.filter(s=>s.month===SEL.month&&(mn?s.mentorName===mn:true));const today=new Date();
+  openModal(`<h3>Mentor performance report</h3><div class="msub">TEAM21 — filed Monday and Wednesday</div>
+  <div class="formrow">
+    <div><label>Mentor</label>${mn?`<input value="${esc(mn)}" disabled>`:`<select id="rMn">${mentors.map(x=>`<option>${esc(x)}</option>`).join('')}</select>`}</div>
+    <div><label>Co-support</label><input id="rCo" placeholder="e.g. Intern Alpha"></div>
+    <div><label>Week</label><input id="rWk" placeholder="Week 4"></div>
+    <div><label>Day</label><select id="rDy"><option ${today.getDay()===1?'selected':''}>Monday</option><option ${today.getDay()===3?'selected':''}>Wednesday</option></select></div>
+    <div><label>Date</label><input id="rDt" type="date" value="${today.toISOString().slice(0,10)}"></div>
+    <div><label>Cohort</label><input id="rCh" value="TEAM21 & Liberty Tech AI – ${mLbl(SEL.month)} Cohort"></div>
+  </div>
+  <div class="sec-label">A · Reflection</div>
+  <label>What I did for student success</label><textarea id="rA1"></textarea>
+  <label>What worked well</label><textarea id="rA2"></textarea>
+  <label>Gaps / what did not work</label><textarea id="rA3"></textarea>
+  <label>Personal improvement this week</label><textarea id="rA4"></textarea>
+  <div class="sec-label">B · Class & meeting observations</div>
+  <label>Virtual class participation</label><textarea id="rB1"></textarea>
+  <label>Group meetings participation</label><textarea id="rB2"></textarea>
+  <div class="sec-label">C · Students</div>
+  <div id="rSt">${mySt.map((s,i)=>`<div class="sub-block" data-n="${esc(s.name)}"><b>Student ${i+1}: ${esc(s.name)}</b>
+  <label>Observation</label><textarea class="sb-obs"></textarea>
+  <div class="formrow"><div><label>Participation</label><select class="sb-p"><option>Strong</option><option>Average</option><option>Weak</option><option>Absent</option></select></div>
+  <div><label>Progress</label><input class="sb-pg" placeholder="tasks completed, what's next"></div></div>
+  <label>Key challenge</label><textarea class="sb-ch"></textarea>
+  <label>Strategy</label><textarea class="sb-st"></textarea></div>`).join('')||'<div class="empty">No students assigned for this month.</div>'}</div>
+  <div class="sec-label">D · Weekly plan</div>
+  <label>Top 3 priorities</label><textarea id="rD1"></textarea>
+  <label>Planned actions</label><textarea id="rD2"></textarea>
+  <label>Expected outcomes</label><textarea id="rD3"></textarea>
+  <div class="sec-label">E · Risk & early warnings</div>
+  <label>Students at risk</label><textarea id="rE1"></textarea>
+  <label>Preventive actions</label><textarea id="rE2"></textarea>
+  <div class="mact"><button class="btn btn-ghost" onclick="closeModal()">Cancel</button><button class="btn btn-pri" onclick="submitRpt('${mn||''}')">Submit report</button></div>`,false,'wide');
+}
+function submitRpt(mf){
+  const g=x=>(document.getElementById(x)||{}).value||'';const mentor=mf||g('rMn');
+  const blks=[...document.querySelectorAll('#rSt .sub-block')].map(b=>({name:b.dataset.n,observation:b.querySelector('.sb-obs').value,participation:b.querySelector('.sb-p').value,progress:b.querySelector('.sb-pg').value,challenge:b.querySelector('.sb-ch').value,strategy:b.querySelector('.sb-st').value}));
+  DB.reports.push({id:uid(),mentor,coSupport:g('rCo'),cohort:g('rCh'),week:g('rWk'),reportDay:g('rDy'),date:g('rDt'),status:'Submitted',submittedAt:new Date().toISOString(),a_did:g('rA1'),a_worked:g('rA2'),a_gaps:g('rA3'),a_improve:g('rA4'),b_class:g('rB1'),b_meetings:g('rB2'),d_priorities:g('rD1'),d_actions:g('rD2'),d_outcomes:g('rD3'),e_risks:g('rE1'),e_prevent:g('rE2'),students:blks});
+  log('Report submitted by '+mentor+' ('+g('rWk')+' '+g('rDy')+')');save();closeModal();render();toast('Report submitted');
+}
+function viewRpt(id){
+  const r=DB.reports.find(x=>x.id===id);const P=(t,v)=>v?`<div style="margin:8px 0"><b style="font-size:11.5px;color:var(--mut)">${t}</b><div style="white-space:pre-wrap;font-size:13px;line-height:1.55;margin-top:3px">${esc(v)}</div></div>`:'';
+  openModal(`<h3>${esc(r.mentor)} — ${esc(r.week)}, ${esc(r.reportDay)} ${esc(r.date)}</h3><div class="msub">${esc(r.cohort||'')} · <span class="chip c-ok">${esc(r.status)}</span></div>
+  <div class="sec-label">A · Reflection</div>${P('Did for student success',r.a_did)}${P('What worked',r.a_worked)}${P('Gaps',r.a_gaps)}${P('Personal improvement',r.a_improve)}
+  <div class="sec-label">B · Observations</div>${P('Classes',r.b_class)}${P('Group meetings',r.b_meetings)}
+  <div class="sec-label">C · Students</div>
+  ${r.students.map((s,i)=>`<div class="sub-block"><b>${i+1}. ${esc(s.name)}</b> <span class="chip ${s.participation==='Strong'?'c-ok':s.participation==='Absent'?'c-bad':'c-warn'}">${esc(s.participation)}</span>
+  ${P('Observation',s.observation)}${P('Progress',s.progress)}${P('Challenge',s.challenge)}${P('Strategy',s.strategy)}</div>`).join('')}
+  <div class="sec-label">D · Plan</div>${P('Priorities',r.d_priorities)}${P('Actions',r.d_actions)}${P('Outcomes',r.d_outcomes)}
+  <div class="sec-label">E · Risks</div>${P('At risk',r.e_risks)}${P('Prevention',r.e_prevent)}
+  <div class="mact"><button class="btn btn-pri" onclick="closeModal()">Close</button></div>`,false,'wide');
+}
+function delRpt(id){if(!confirm('Delete report?'))return;DB.reports=DB.reports.filter(x=>x.id!==id);save();render()}
+
+/* ==========================================================
+   ASSIGNMENTS
+========================================================== */
+function assignmentsView(){
+  const can=isAdmin()&&!rOnly();
+  const list=DB.assignments.sort((a,b)=>(b.createdAt||'').localeCompare(a.createdAt||''));
+  return head('Assignments','Tasks and homework assigned to students.',can?`<button class="btn btn-pri" onclick="assignModal()">+ New assignment</button>`:'')+
+  list.map(a=>assignCard(a,true)).join('')+(!list.length?'<div class="card"><div class="empty">No assignments yet.</div></div>':'');
+}
+function assignCard(a,full){
+  const subs=a.submissions||[];const total=a.targetStudents[0]==='all'?DB.students.filter(s=>s.month===a.month).length:a.targetStudents.length;
+  return`<div class="card"><div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;align-items:flex-start">
+  <div><h3>${esc(a.title)}</h3><div style="font-size:12.5px;color:var(--mut)">By ${esc(a.mentorName)} · Due ${esc(a.dueDate)} · ${mLbl(a.month)}</div></div>
+  <div style="display:flex;gap:6px;flex-wrap:wrap"><span class="chip c-blue">${subs.length}/${total} submitted</span>${full&&isAdmin()?`<button class="btn btn-ghost btn-sm" onclick="viewSubs('${a.id}')">Submissions</button><button class="btn btn-danger btn-sm" onclick="delAssign('${a.id}')">✕</button>`:''}${isMentor()&&!isAdmin()?`<button class="btn btn-ghost btn-sm" onclick="viewSubs('${a.id}')">View submissions</button>`:''}${isStudent()?`<button class="btn btn-pri btn-sm" onclick="submitHW('${a.id}')">Submit</button>`:''}
+  </div></div>
+  <p style="margin-top:8px;font-size:13px;line-height:1.55">${esc(a.description)}</p>
+  <div class="bar" style="margin-top:10px"><i style="width:${total?Math.round(subs.length/total*100):0}%"></i></div></div>`;
+}
+function assignModal(){
+  const mentors=DB.staff.filter(s=>s.active&&(s.role==='Mentor'||s.role==='Founder')).map(s=>s.name);
+  openModal(`<h3>Create assignment</h3>
+  <label>Title</label><input id="atl" placeholder="e.g. BMC Week 2">
+  <label>Instructions</label><textarea id="ads"></textarea>
+  <div class="formrow">
+    <div><label>Mentor</label><select id="amn">${mentors.map(m=>`<option ${(ME.staffName||ME.name)===m?'selected':''}>${esc(m)}</option>`).join('')}</select></div>
+    <div><label>Month (class)</label><select id="amo">${yearMonths(SEL.year).map(m=>`<option value="${m}" ${m===SEL.month?'selected':''}>${mLbl(m)}</option>`).join('')}</select></div>
+    <div><label>Due date</label><input id="adl" type="date" value="${new Date(Date.now()+7*864e5).toISOString().slice(0,10)}"></div>
+    <div><label>Task code (optional)</label><input id="atc" placeholder="e.g. BMC"></div>
+  </div>
+  <div class="mact"><button class="btn btn-ghost" onclick="closeModal()">Cancel</button><button class="btn btn-pri" onclick="saveAssign()">Create</button></div>`);
+}
+function saveAssign(){const g=x=>document.getElementById(x).value;const t=g('atl').trim();if(!t){toast('Title required');return}
+  DB.assignments.push({id:uid(),title:t,description:g('ads'),dueDate:g('adl'),month:g('amo'),mentorName:g('amn'),targetStudents:['all'],groupId:null,submissions:[],createdAt:new Date().toISOString(),taskCode:g('atc').trim()});
+  log('Assignment "'+t+'" created');save();closeModal();render();toast('Assignment created')}
+function delAssign(id){if(!confirm('Delete assignment?'))return;DB.assignments=DB.assignments.filter(x=>x.id!==id);save();render()}
+function viewSubs(id){
+  const a=DB.assignments.find(x=>x.id===id);const subs=a.submissions||[];
+  openModal(`<h3>Submissions — ${esc(a.title)}</h3><div class="msub">${subs.length} submitted</div>
+  ${subs.length?subs.map(s=>`<div class="sub-block"><div style="display:flex;justify-content:space-between;align-items:center"><b>${esc(s.studentName)}</b><span class="chip c-gray">${esc(s.submittedAt?s.submittedAt.slice(0,10):'')}</span></div>
+  <div style="margin-top:8px;white-space:pre-wrap;font-size:13px">${esc(s.text)}</div>
+  ${s.feedback?`<div style="margin-top:8px;background:var(--blt);border-radius:8px;padding:8px;font-size:12.5px"><b>Mentor feedback:</b> ${esc(s.feedback)}</div>`:''}
+  ${(isMentor()||isAdmin())?`<div style="margin-top:8px"><textarea id="fb_${s.id}" placeholder="Add/edit feedback…">${esc(s.feedback||'')}</textarea><button class="btn btn-ghost btn-sm" style="margin-top:6px" onclick="saveFeedback('${id}','${s.id}')">Save feedback</button></div>`:''}
+  </div>`).join(''):'<div class="empty">No submissions yet.</div>'}
+  <div class="mact"><button class="btn btn-pri" onclick="closeModal()">Close</button></div>`,false,'wide');
+}
+function saveFeedback(aId,sId){const a=DB.assignments.find(x=>x.id===aId),s=a.submissions.find(x=>x.id===sId);const v=document.getElementById('fb_'+sId).value;s.feedback=v;s.feedbackAt=new Date().toISOString();log('Feedback added by '+ME.name+' for '+s.studentName);save();toast('Feedback saved');viewSubs(aId)}
+
+/* ==========================================================
+   GROUPS
+========================================================== */
+function groupsView(){
+  const can=isAdmin()&&!rOnly();
+  return head('Groups','Mentor-created groups for collaborative projects.',can?`<button class="btn btn-pri" onclick="groupModal()">+ Create group</button>`:'')+
+  DB.groups.map(g=>groupCard(g,true)).join('')+(!DB.groups.length?'<div class="card"><div class="empty">No groups yet.</div></div>':'');
+}
+function groupCard(g,full){
+  const members=DB.students.filter(s=>g.studentIds.includes(s.id));
+  return`<div class="card"><div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px">
+  <div><h3>${esc(g.name)}</h3><div style="font-size:12.5px;color:var(--mut)">Mentor: ${esc(g.mentorName)} · ${mLbl(g.month)}</div></div>
+  <div style="display:flex;gap:6px">${full&&isAdmin()?`<button class="btn btn-ghost btn-sm" onclick="groupModal('${g.id}')">Edit</button><button class="btn btn-danger btn-sm" onclick="DB.groups=DB.groups.filter(x=>x.id!=='${g.id}');save();render()">✕</button>`:''}</div></div>
+  <p style="margin-top:8px;font-size:13px">${esc(g.project||'')}</p>
+  <div style="margin-top:10px;display:flex;flex-wrap:wrap;gap:6px">${members.map(s=>`<span class="chip c-blue">${esc(s.name.split(' ')[0])}</span>`).join('')}</div>
+  ${g.description?`<div class="help" style="margin-top:6px">${esc(g.description)}</div>`:''}</div>`;
+}
+function groupModal(id){
+  const g=id?DB.groups.find(x=>x.id===id):null;const mentors=DB.staff.filter(s=>s.active&&(s.role==='Mentor'||s.role==='Founder')).map(s=>s.name);
+  const mySt=DB.students.filter(s=>s.month===SEL.month);
+  openModal(`<h3>${g?'Edit group':'Create group'}</h3>
+  <div class="formrow">
+    <div><label>Group name</label><input id="gnm" value="${esc((g&&g.name)||'')}"></div>
+    <div><label>Mentor</label><select id="gmn">${mentors.map(m=>`<option ${(g&&g.mentorName)===m?'selected':''}>${esc(m)}</option>`).join('')}</select></div>
+    <div><label>Month</label><select id="gmo">${yearMonths(SEL.year).map(m=>`<option value="${m}" ${((g&&g.month)||SEL.month)===m?'selected':''}>${mLbl(m)}</option>`).join('')}</select></div>
+    <div><label>Project title</label><input id="gpr" value="${esc((g&&g.project)||'')}"></div>
+  </div>
+  <label>Description</label><textarea id="gds">${esc((g&&g.description)||'')}</textarea>
+  <label>Members</label>
+  <div style="display:flex;flex-wrap:wrap;gap:8px;padding:8px 0">${mySt.map(s=>`<label style="display:flex;gap:6px;align-items:center;margin:0;font-weight:500"><input type="checkbox" class="gm" value="${s.id}" ${(g&&g.studentIds&&g.studentIds.includes(s.id))?'checked':''} style="width:auto">${esc(s.name)}</label>`).join('')}</div>
+  <div class="mact"><button class="btn btn-ghost" onclick="closeModal()">Cancel</button><button class="btn btn-pri" onclick="saveGroup('${id||''}')">Save</button></div>`);
+}
+function saveGroup(id){const g2=x=>document.getElementById(x).value,nm=g2('gnm').trim();if(!nm){toast('Name required');return}
+  const members=[...document.querySelectorAll('.gm:checked')].map(c=>c.value);
+  if(id){const g=DB.groups.find(x=>x.id===id);Object.assign(g,{name:nm,mentorName:g2('gmn'),month:g2('gmo'),project:g2('gpr'),description:g2('gds'),studentIds:members})}
+  else DB.groups.push({id:uid(),name:nm,mentorName:g2('gmn'),month:g2('gmo'),project:g2('gpr'),description:g2('gds'),studentIds:members,createdAt:new Date().toISOString()});
+  log('Group "'+nm+'" saved');save();closeModal();render();}
+
+/* ==========================================================
+   WALLBOARD (discussion)
+========================================================== */
+function wallUI(toId,toName,context){
+  const msgs=DB.wallMessages.filter(m=>(m.fromId===ME.id&&m.toId===toId)||(m.fromId===toId&&m.toId===ME.id)||(m.context===context&&context)).sort((a,b)=>a.ts.localeCompare(b.ts));
+  msgs.filter(m=>m.toId===ME.id&&!m.read).forEach(m=>{m.read=true});save();
+  return`<div class="wall">
+  <div class="wall-msgs" id="wallMsgs">
+    ${msgs.length?msgs.map(m=>`<div class="msg ${m.fromId===ME.id?'me':'them'}">
+    <div class="mmeta">${esc(m.fromName)}${m.type==='assignment'?` 📎 Assignment`:''}</div>
+    <div class="bubble">${esc(m.text)}</div>
+    <div class="mmeta">${m.ts.slice(0,16).replace('T',' ')}</div></div>`).join(''):'<div class="empty">No messages yet. Start the conversation.</div>'}
+  </div>
+  <div class="wall-input">
+    <input id="wallIn" placeholder="Type a message…" data-to="${toId}" data-name="${esc(toName)}" data-ctx="${context||''}">
+    <button class="btn btn-pri" onclick="sendMsg()">Send</button>
+  </div></div>`;
+}
+function sendMsg(){const inp=document.getElementById('wallIn');if(!inp)return;const text=inp.value.trim();if(!text)return;
+  const toId=inp.dataset.to,toName=inp.dataset.name,ctx=inp.dataset.ctx;
+  DB.wallMessages.push({id:uid(),fromId:ME.id,fromName:ME.name,toId,toName,text,context:ctx,type:'text',ts:new Date().toISOString(),read:false});
+  log('Message sent to '+toName);save();render();}
+function sendAssignment(toId,toName,aTitle){
+  DB.wallMessages.push({id:uid(),fromId:ME.id,fromName:ME.name,toId,toName,text:'📎 New assignment: '+aTitle+'\nPlease check the Homework tab.',context:'',type:'assignment',ts:new Date().toISOString(),read:false});save();}
+
+/* ==========================================================
+   CERTIFICATES
+========================================================== */
+function certsView(){
+  const can=isAdmin()&&!rOnly();
+  return head('Certificates','Micro-certificates and awards for students.',can?`<button class="btn btn-pri" onclick="certModal()">+ Issue certificate</button>`:'')+
+  `<div class="grid g3">${DB.certificates.map(c=>{const s=DB.students.find(x=>x.id===c.studentId);return`<div class="cert"><div class="cert-title">${esc(c.issuer||'Team21 Academy')}</div><div class="cert-seal">${c.badge||'🏅'}</div><div class="cert-award">${esc(c.award)}</div><div class="cert-name">${esc((s&&s.name)||'?')}</div><div class="cert-award" style="margin-top:4px">${esc(c.title)}</div><div style="font-size:12px;color:var(--mut);margin-top:8px">Issued ${esc(c.issued)}</div>${can?`<div style="margin-top:10px"><button class="btn btn-ghost btn-sm" onclick="DB.certificates=DB.certificates.filter(x=>x.id!=='${c.id}');save();render()">Revoke</button></div>`:''}</div>`}).join('')||'<div class="card" style="grid-column:1/-1"><div class="empty">No certificates issued yet.</div></div>'}</div>`;
+}
+function certModal(){
+  openModal(`<h3>Issue certificate</h3>
+  <div class="formrow">
+    <div><label>Student</label><select id="cSt">${DB.students.map(s=>`<option value="${s.id}">${esc(s.name)}</option>`).join('')}</select></div>
+    <div><label>Award title</label><input id="cAw" value="Certificate of Completion"></div>
+    <div><label>Module / achievement</label><input id="cTl" placeholder="e.g. AI Foundations — Module 1"></div>
+    <div><label>Badge emoji</label><input id="cBd" value="🏅" style="max-width:80px"></div>
+    <div><label>Date issued</label><input id="cDt" type="date" value="${new Date().toISOString().slice(0,10)}"></div>
+    <div><label>Issued by</label><input id="cIs" value="Team21 Academy"></div>
+  </div>
+  <div class="mact"><button class="btn btn-ghost" onclick="closeModal()">Cancel</button><button class="btn btn-pri" onclick="saveCert()">Issue</button></div>`);
+}
+function saveCert(){const g=x=>document.getElementById(x).value;const sId=g('cSt'),s=DB.students.find(x=>x.id===sId);
+  DB.certificates.push({id:uid(),studentId:sId,title:g('cTl'),award:g('cAw'),issued:g('cDt'),issuer:g('cIs'),badge:g('cBd')});
+  log('Certificate issued to '+((s&&s.name)||sId));save();closeModal();render();toast('Certificate issued')}
+function awardCert(sId){const s=DB.students.find(x=>x.id===sId);SEL.certSt=sId;certModal();document.getElementById('cSt').value=sId}
+
+/* ==========================================================
+   COMPETITIONS
+========================================================== */
+function competeView(){
+  const can=isAdmin()&&!rOnly();
+  return head('Competitions','Student challenges, prize pools and leaderboards.',can?`<button class="btn btn-pri" onclick="compModal()">+ Create competition</button>`:'')+
+  DB.competitions.map(c=>`<div class="card"><div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px">
+  <div><h3>${esc(c.title)}</h3><div style="font-size:12.5px;color:var(--mut)">${mLbl(c.month)} · Closes ${esc(c.endDate)} · <span class="chip ${c.status==='Open'?'c-ok':'c-gray'}">${esc(c.status)}</span></div></div>
+  <div style="display:flex;gap:6px">${can?`<button class="btn btn-ghost btn-sm" onclick="compEntries('${c.id}')">Entries & results</button><button class="btn btn-ghost btn-sm" onclick="DB.competitions.find(x=>x.id==='${c.id}').status=c.status==='Open'?'Closed':'Open';save();render()">Toggle status</button><button class="btn btn-danger btn-sm" onclick="DB.competitions=DB.competitions.filter(x=>x.id!=='${c.id}');save();render()">✕</button>`:''}</div></div>
+  <p style="margin:8px 0;font-size:13px">${esc(c.description)}</p>
+  <div style="font-size:13px">🏆 Prize pool: <b>${esc(c.prizePool||'TBA')}</b> · ${c.participants?c.participants.length:0} participant(s)</div>
+  ${(c.results&&c.results.length)?`<div class="sec-label" style="margin-top:12px">Results</div><div style="display:flex;flex-wrap:wrap;gap:8px">${c.results.map((r,i)=>`<div style="text-align:center;padding:8px 12px;background:var(--blt);border-radius:8px;border:1px solid var(--blb)"><div style="font-size:18px">${['🥇','🥈','🥉'][i]||'🏅'}</div><div style="font-size:12px;font-weight:700">${esc(r.name)}</div><div style="font-size:11px;color:var(--mut)">${esc(r.prize)}</div></div>`).join('')}</div>`:''}
+  </div>`).join('')+(!DB.competitions.length?'<div class="card"><div class="empty">No competitions yet.</div></div>':'');
+}
+function compModal(){
+  openModal(`<h3>Create competition</h3>
+  <label>Title</label><input id="cpTl" placeholder="AI Pitch Competition">
+  <label>Description</label><textarea id="cpDs"></textarea>
+  <div class="formrow">
+    <div><label>Month</label><select id="cpMo">${yearMonths(SEL.year).map(m=>`<option value="${m}" ${m===SEL.month?'selected':''}>${mLbl(m)}</option>`).join('')}</select></div>
+    <div><label>End date</label><input id="cpEd" type="date"></div>
+    <div><label>Prize pool</label><input id="cpPr" placeholder="e.g. Google Pixel 8 + T21 Award"></div>
+  </div>
+  <div class="mact"><button class="btn btn-ghost" onclick="closeModal()">Cancel</button><button class="btn btn-pri" onclick="saveComp()">Create</button></div>`);
+}
+function saveComp(){const g=x=>document.getElementById(x).value,t=g('cpTl').trim();if(!t){toast('Title required');return}
+  DB.competitions.push({id:uid(),title:t,description:g('cpDs'),month:g('cpMo'),endDate:g('cpEd'),prizePool:g('cpPr'),participants:[],results:[],status:'Open',createdBy:ME.username});
+  log('Competition "'+t+'" created');save();closeModal();render();}
+function compEntries(id){
+  const c=DB.competitions.find(x=>x.id===id);
+  const pts=c.participants||[];const allSt=DB.students.filter(s=>s.month===c.month);
+  openModal(`<h3>Entries & results — ${esc(c.title)}</h3>
+  <h4 style="margin:12px 0 6px;font-size:13px">Participants (${pts.length})</h4>
+  ${pts.map(p=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--ln)"><span>${esc(p.name)}</span><button class="btn btn-ghost btn-sm" onclick="removeParticipant('${id}','${p.studentId}')">✕</button></div>`).join('')||'<div class="empty">No participants yet.</div>'}
+  <div style="display:flex;gap:6px;margin-top:10px"><select id="cpSt">${allSt.map(s=>`<option value="${s.id}">${esc(s.name)}</option>`).join('')}</select><button class="btn btn-pri btn-sm" onclick="addParticipant('${id}')">Add</button></div>
+  <div class="sec-label">Results</div>
+  <div class="help">Enter podium positions (1st, 2nd, 3rd) with prize details.</div>
+  ${[1,2,3].map(pos=>{const r=(c.results&&c.results[pos-1]);return`<div style="display:flex;gap:8px;margin-top:8px;align-items:center"><span style="font-size:18px">${['🥇','🥈','🥉'][pos-1]}</span><select id="rSt${pos}" style="flex:1">${['—',...pts.map(p=>p.name)].map(n=>`<option ${(r&&r.name)===n?'selected':''}>${n}</option>`).join('')}</select><input id="rPz${pos}" placeholder="Prize…" value="${esc((r&&r.prize)||'')}" style="flex:1"></div>`}).join('')}
+  <div class="mact"><button class="btn btn-ghost" onclick="closeModal()">Cancel</button><button class="btn btn-pri" onclick="saveResults('${id}')">Save results</button></div>`);
+}
+function addParticipant(cId){const sId=document.getElementById('cpSt').value,c=DB.competitions.find(x=>x.id===cId),s=DB.students.find(x=>x.id===sId);if(!c||!s)return;if(c.participants.some(p=>p.studentId===sId)){toast('Already added');return}c.participants.push({studentId:sId,name:s.name});save();compEntries(cId)}
+function removeParticipant(cId,sId){const c=DB.competitions.find(x=>x.id===cId);c.participants=c.participants.filter(p=>p.studentId!==sId);save();compEntries(cId)}
+function saveResults(id){const c=DB.competitions.find(x=>x.id===id);c.results=[];for(let i=1;i<=3;i++){const n=document.getElementById('rSt'+i).value,p=document.getElementById('rPz'+i).value;if(n&&n!=='—')c.results.push({name:n,prize:p})}log('Competition results updated for '+c.title);save();closeModal();render();toast('Results saved')}
+
+/* ==========================================================
+   USERS & PASSWORDS
+========================================================== */
+function usersView(){
+  const can=isAdmin()&&!rOnly();
+  return head('Users & passwords','Manage accounts for all platform roles — staff and students.',can?`<button class="btn btn-pri" onclick="userModal()">+ Create user</button>`:'')+
+  `<div class="card"><div class="tbl"><table>
+  <thead><tr><th>Username</th><th>Name</th><th>Linked to</th><th>Roles</th><th>Status</th><th></th></tr></thead><tbody>
+  ${DB.users.map(u=>`<tr><td><b>${esc(u.username)}</b>${u.mustChange?` <span class="chip c-warn" style="font-size:10px">⚠ must change pw</span>`:''}</td>
+  <td>${esc(u.name)}</td>
+  <td>${u.studentId?`<span class="chip c-pur">Student: ${esc(DB.students.find(x=>x.id===u.studentId)?.name||u.studentId)}</span>`:u.staffName?`<span class="chip c-blue">Staff: ${esc(u.staffName)}</span>`:'—'}</td>
+  <td>${u.roles.map(r=>`<span class="chip ${r==='admin'?'c-blue':r==='finance'?'c-ok':r==='student'?'c-pur':'c-gray'}">${{admin:'Admin',coadmin:'Co-Admin',finance:'Finance Mgr',mentor:'Mentor',intern:'Intern',student:'Student'}[r]||r}</span>`).join(' ')}</td>
+  <td><span class="chip ${u.active?'c-ok':'c-gray'}">${u.active?'Active':'Disabled'}</span></td>
+  <td style="white-space:nowrap">${can?`<button class="btn btn-ghost btn-sm" onclick="resetPw('${u.id}')">Reset pw</button> <button class="btn btn-ghost btn-sm" onclick="userModal('${u.id}')">Edit</button>`:''}</td></tr>`).join('')}
+  </tbody></table></div>
+  <div class="help">Roles: <b>Mentor</b> sees their students, wallboard, assignments, groups, reports. <b>Finance</b> registers students and records payments. <b>Co-Admin</b> sees the full admin view in read-only mode. <b>Student</b> sees their personal LMS dashboard.</div></div>`;
+}
+function userModal(id){const u=id?DB.users.find(x=>x.id===id):null;
+  openModal(`<h3>${u?'Edit user':'Create user'}</h3>
+  <div class="formrow">
+    <div><label>Link to staff</label><select id="uSf"><option value="">— none —</option>${DB.staff.map(s=>`<option ${(u&&u.staffName)===s.name?'selected':''}>${esc(s.name)}</option>`).join('')}</select></div>
+    <div><label>Display name</label><input id="uNm" value="${esc((u&&u.name)||'')}"></div>
+    <div><label>Username</label><input id="uUs" value="${esc((u&&u.username)||'')}"></div>
+    <div><label>Status</label><select id="uAc"><option value="1" ${!u||u.active?'selected':''}>Active</option><option value="0" ${u&&!u.active?'selected':''}>Disabled</option></select></div>
+  </div>
+  <label>Roles</label>
+  <div style="display:flex;flex-wrap:wrap;gap:12px;padding:6px 0">
+    ${[['mentor','Mentor'],['finance','Financial Manager'],['coadmin','Co-Admin (view only)'],['intern','Intern'],['admin','Administrator']].map(([r,l])=>`<label style="display:flex;gap:6px;align-items:center;margin:0;font-weight:500"><input type="checkbox" class="uRl" style="width:auto" value="${r}" ${(u&&u.roles).includes(r)?'checked':''}>${l}</label>`).join('')}
+  </div>
+  <div class="mact"><button class="btn btn-ghost" onclick="closeModal()">Cancel</button><button class="btn btn-pri" onclick="saveUser('${id||''}')">${u?'Save':'Create & generate password'}</button></div>`);
+}
+async function saveUser(id){
+  const g=x=>document.getElementById(x).value,un=g('uUs').trim().toLowerCase(),nm=g('uNm').trim();
+  if(!un||!nm){toast('Name and username required');return}
+  const roles=[...document.querySelectorAll('.uRl:checked')].map(c=>c.value);if(!roles.length){toast('Select at least one role');return}
+  if(DB.users.some(x=>x.username===un&&x.id!==id)){toast('Username taken');return}
+  if(id){const u=DB.users.find(x=>x.id===id);Object.assign(u,{username:un,name:nm,staffName:g('uSf'),roles,active:g('uAc')==='1'});log('Updated user '+un);save();closeModal();render()}
+  else{const pw=genPw();DB.users.push({id:uid(),username:un,name:nm,staffName:g('uSf'),roles,passHash:await sha(pw),mustChange:true,active:g('uAc')==='1'});log('Created user '+un);save();showPw(un,nm,pw);render()}
+}
+async function resetPw(id){const u=DB.users.find(x=>x.id===id);if(!confirm('Reset password for '+u.name+'?'))return;const pw=genPw();u.passHash=await sha(pw);u.mustChange=true;log('PW reset for '+u.username);save();showPw(u.username,u.name,pw);render()}
+function showPw(un,nm,pw){openModal(`<h3>Credentials — ${esc(nm)}</h3><div class="msub">Share securely. Password shown once only and must be changed at first login.</div>
+<label>Username</label><div class="pwbox" style="color:#fff">${esc(un)}</div>
+<label>One-time password</label><div class="pwbox">${esc(pw)}</div>
+<div class="mact"><button class="btn btn-ghost" onclick="navigator.clipboard&&navigator.clipboard.writeText('Team21 Platform — Username: ${esc(un)}  Password: ${esc(pw)}');toast('Copied')">Copy both</button><button class="btn btn-pri" onclick="closeModal()">Done</button></div>`,true)}
+
+/* ==========================================================
+   EXPORTS
+========================================================== */
+function exportsView(){
+  return head('Export & analysis','Download CSVs for Excel / Sheets, or backup the full database.')+
+  `<div class="grid g2">
+  <div class="card"><h3>Students & payments</h3><p class="help">Students with fee, paid, balance, task completion and status. Payments with currency and XAF equivalent.</p>
+  <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap"><button class="btn btn-pri" onclick="exportStudCSV()">Students CSV</button><button class="btn btn-ghost" onclick="exportPayCSV()">Payments CSV</button></div></div>
+  <div class="card"><h3>Payroll</h3><p class="help">All payroll entries and advances, pivot-ready for ${mLbl(SEL.payMonth)}.</p>
+  <div style="display:flex;gap:8px;margin-top:12px"><button class="btn btn-pri" onclick="exportPayroll()">Payroll CSV</button></div></div>
+  <div class="card"><h3>Mentor reports</h3><p class="help">All reports flattened to one row per student evaluation.</p>
+  <div style="display:flex;gap:8px;margin-top:12px"><button class="btn btn-pri" onclick="exportReports()">Reports CSV</button></div></div>
+  <div class="card"><h3>Full backup</h3><p class="help">Complete JSON snapshot of the database — all tables and settings.</p>
+  <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap"><button class="btn btn-dark" onclick="dlJSON()">Download backup</button>
+  ${isAdmin()?`<label class="btn btn-ghost" style="margin:0;cursor:pointer">Restore<input type="file" accept=".json" style="display:none" onchange="restoreDB(this)"></label>`:''}</div></div>
+  </div>`;
+}
+const csv=rows=>rows.map(r=>r.map(c=>{c=String(c??'');return/[",\n]/.test(c)?'"'+c.replace(/"/g,'""')+'"':c}).join(',')).join('\n');
+const dl=(n,c)=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([c],{type:'text/plain'}));a.download=n;a.click()}
+function exportStudCSV(){const TASKS=['PLAixBox Wk1','BMC','SOSTAC','Group Project','Capstone','Gamma','NotebookLM','Veo Video'];const r=[['Month','No','Name','Language','Contact','Mentor','Code','Fee','FeeCurrency','FeeXAF','Paid XAF','Balance XAF','Status',...TASKS]];
+  DB.students.forEach(s=>r.push([s.month,s.num,s.name,s.lang,s.contact,s.mentorName,s.code,s.feeXAF,s.feeCurrency,s.feeXAF,paidFor(s),balFor(s),s.status,...TASKS.map(t=>(s.tasks&&s.tasks[t])?'Done':'')]));
+  dl('t21-students-'+SEL.year.replace('/','-')+'.csv',csv(r));toast('Students CSV downloaded')}
+function exportPayCSV(){const r=[['Date','Student','Month','Amount','Currency','AmountXAF','Method','RecordedBy','Note']];
+  DB.payments.forEach(p=>{const s=DB.students.find(x=>x.id===p.studentId);r.push([p.date,(s&&s.name)||'?',(s&&s.month)||'?',p.amount,p.currency,p.amountXAF,p.method,p.recordedBy,p.note])});
+  dl('t21-payments.csv',csv(r));toast('Payments CSV downloaded')}
+function exportPayroll(){const m=SEL.payMonth,r=[['Month','Day','Staff','Component','Label','Amount']];
+  DB.payEntries.filter(e=>e.month===m&&e.staffName!=='—').forEach(e=>{const c=DB.components.find(x=>x.code===e.component);r.push([e.month,e.day,e.staffName,e.component,c?c.label:'',e.amount])});
+  DB.advances.filter(a=>a.month===m).forEach(a=>r.push([a.month,'',a.staffName,'ADV','Advance',a.amount]));
+  dl('t21-payroll-'+m+'.csv',csv(r));toast('Payroll CSV downloaded')}
+function exportReports(){const r=[['Date','Week','Day','Mentor','Student','Participation','Observation','Progress','Challenge','Strategy','Risks']];
+  DB.reports.forEach(rp=>rp.students.forEach(st=>r.push([rp.date,rp.week,rp.reportDay,rp.mentor,st.name,st.participation,st.observation,st.progress,st.challenge,st.strategy,rp.e_risks])));
+  dl('t21-reports.csv',csv(r));toast('Reports CSV downloaded')}
+function dlJSON(){dl('t21-backup-'+new Date().toISOString().slice(0,10)+'.json',JSON.stringify(DB,null,2));toast('Backup downloaded')}
+function restoreDB(inp){const f=inp.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const d=JSON.parse(r.result);if(!d.users||!d.students)throw 0;DB=d;save();toast('Backup restored');render()}catch(e){toast('Not a valid Team21 backup')}};r.readAsText(f)}
+
+/* ==========================================================
+   SETTINGS
+========================================================== */
+function settingsView(){const can=isAdmin()&&!rOnly();const dis=can?'':'disabled';
+  return head('Settings','Organisation settings, exchange rates and the Google Apps Script backend.')+
+  `<div class="grid g2">
+  <div class="card"><h3>Organisation</h3>
+    <label>Default fee (XAF)</label><input id="stF" type="number" value="${DB.settings.defaultFee}" ${dis}>
+    <label>Base currency</label><select id="stC" ${dis}>${CURRENCIES.map(c=>`<option ${DB.settings.currency===c?'selected':''}>${c}</option>`).join('')}</select>
+    <label>Academic year starts</label><select id="stY" ${dis}>${MN.map((m,i)=>`<option value="${i+1}" ${DB.settings.yearStartMonth===i+1?'selected':''}>${m}</option>`).join('')}</select>
+    <label>Pay letter signatory</label><input id="stSg" value="${esc(DB.settings.payLetterSignatory||'')}" ${dis}>
+    <label>Signatory title</label><input id="stSt" value="${esc(DB.settings.payLetterTitle||'')}" ${dis}>
+    ${can?`<div class="mact"><button class="btn btn-pri" onclick="saveSettings()">Save</button></div>`:''}
+  </div>
+  <div class="card"><h3>Exchange rates (per XAF)</h3>
+    <div class="help">Enter how many XAF equal 1 unit of each currency. Used for multi-currency fee and payment entry.</div>
+    ${Object.keys(DB.settings.exchangeRates).map(c=>`<div style="display:flex;align-items:center;gap:10px;margin-top:8px"><label style="margin:0;width:50px;flex-shrink:0">${c}</label><input id="xr_${c}" type="number" value="${DB.settings.exchangeRates[c]}" ${dis} style="max-width:130px"> <span class="help">XAF per ${c}</span></div>`).join('')}
+    ${can?`<div class="mact"><button class="btn btn-pri" onclick="saveRates()">Save rates</button></div>`:''}
+  </div>
+  <div class="card"><h3>Google Apps Script backend</h3>
+    <div class="help">Paste your deployed Web App URL and sync key. Push uploads data and rebuilds clean analysis tabs in your Google Sheet; Pull replaces this device's data with the cloud copy.</div>
+    <label>Web App URL</label><input id="stG" value="${esc(DB.settings.gasUrl||'')}" ${dis} placeholder="https://script.google.com/…/exec">
+    <label>Sync key</label><input id="stK" value="${esc(DB.settings.syncKey||'')}" ${dis}>
+    ${can?`<div class="mact"><button class="btn btn-ghost" onclick="syncPull()">Pull from cloud</button><button class="btn btn-pri" onclick="syncPush()">Push to cloud</button></div>`:''}
+    <div class="help" id="syncMsg"></div>
+  </div></div>`;
+}
+function saveSettings(){const g=x=>document.getElementById(x).value;DB.settings.defaultFee=+g('stF')||0;DB.settings.currency=g('stC');DB.settings.yearStartMonth=+g('stY');DB.settings.gasUrl=g('stG').trim();DB.settings.syncKey=g('stK').trim();DB.settings.payLetterSignatory=g('stSg');DB.settings.payLetterTitle=g('stSt');log('Settings updated');save();render();toast('Settings saved')}
+function saveRates(){Object.keys(DB.settings.exchangeRates).forEach(c=>{const v=+(document.getElementById('xr_'+c)||{}).value;if(v)DB.settings.exchangeRates[c]=v});log('Exchange rates updated');save();toast('Rates saved')}
+async function syncPush(){DB.settings.gasUrl=(document.getElementById('stG')||{}).value||DB.settings.gasUrl;DB.settings.syncKey=(document.getElementById('stK')||{}).value||DB.settings.syncKey;save();const msg=document.getElementById('syncMsg');if(!DB.settings.gasUrl){if(msg)msg.textContent='Enter the Web App URL first.';return}if(msg)msg.textContent='Pushing…';
+  try{const res=await fetch(DB.settings.gasUrl,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'save',key:DB.settings.syncKey,db:DB})});const j=await res.json();if(j.ok){log('Pushed to GAS');save();if(msg)msg.textContent='✓ Pushed at '+new Date().toLocaleTimeString();toast('Synced')}else if(msg)msg.textContent='Error: '+(j.error||'unknown')}catch(e){if(msg)msg.textContent='Could not reach backend — check URL and deployment access.'}}
+async function syncPull(){const msg=document.getElementById('syncMsg');if(!DB.settings.gasUrl){if(msg)msg.textContent='Enter the Web App URL first.';return}if(!confirm('Pull will replace all data on this device with the cloud copy. Continue?'))return;if(msg)msg.textContent='Pulling…';
+  try{const res=await fetch(DB.settings.gasUrl,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'load',key:DB.settings.syncKey})});const j=await res.json();if(j.ok&&j.db){const keep={gasUrl:DB.settings.gasUrl,syncKey:DB.settings.syncKey};DB=j.db;Object.assign(DB.settings,keep);save();if(msg)msg.textContent='✓ Pulled cloud data.';toast('Loaded from cloud');render()}else if(msg)msg.textContent=j.error||'No cloud data yet — push first.'}catch(e){if(msg)msg.textContent='Could not reach backend.'}}
+
+/* ==========================================================
+   ACTIVITY FEED
+========================================================== */
+function activityFeed(){
+  const unreadMsgs=DB.wallMessages.filter(m=>m.toId===ME.id&&!m.read);
+  unreadMsgs.forEach(m=>{m.read=true});if(unreadMsgs.length)save();
+  // recent submissions across all assignments
+  const allSubs=[];DB.assignments.forEach(a=>(a.submissions||[]).forEach(s=>allSubs.push({...s,assignTitle:a.title})));
+  allSubs.sort((a,b)=>(b.submittedAt||'').localeCompare(a.submittedAt||''));
+  // recent wall messages (all, not just to me)
+  const allWall=DB.wallMessages.slice().sort((a,b)=>b.ts.localeCompare(a.ts));
+  return head('Activity feed','Submissions, messages and system events at a glance.',
+    `<button class="btn btn-ghost" onclick="go('assignments')">All assignments</button> <button class="btn btn-ghost" onclick="go('users')">Manage users</button>`)+
+  `<div class="grid g2">
+  <div class="card"><h3>Recent homework submissions</h3>
+    ${allSubs.slice(0,8).map(s=>`<div style="display:flex;justify-content:space-between;align-items:flex-start;padding:9px 0;border-bottom:1px solid var(--ln)">
+    <div><div style="font-weight:600;font-size:13px">${esc(s.studentName)}</div>
+    <div style="font-size:12px;color:var(--mut)">${esc(s.assignTitle)} · ${s.submittedAt?s.submittedAt.slice(0,10):''}</div>
+    <div style="font-size:12.5px;margin-top:4px;color:var(--inks)">${esc(s.text.slice(0,80))}${s.text.length>80?'…':''}</div></div>
+    ${s.feedback?'<span class="chip c-ok" style="flex-shrink:0">Feedback ✓</span>':'<span class="chip c-warn" style="flex-shrink:0">Needs feedback</span>'}
+    </div>`).join('')||'<div class="empty">No submissions yet.</div>'}
+  </div>
+  <div>
+    <div class="card"><h3>Discussion board activity</h3>
+      ${allWall.slice(0,6).map(m=>`<div style="display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--ln)">
+      <div class="avatar" style="width:28px;height:28px;font-size:11px;flex-shrink:0">${uid2init(m.fromName)}</div>
+      <div><div style="font-size:12px"><b>${esc(m.fromName)}</b> <span style="color:var(--mut)">→ ${esc(m.toName)}</span></div>
+      <div style="font-size:12.5px;color:var(--inks)">${esc(m.text.slice(0,70))}${m.text.length>70?'…':''}</div>
+      <div style="font-size:11px;color:var(--mut)">${m.ts.slice(0,16).replace('T',' ')}</div></div></div>`).join('')||'<div class="empty">No messages yet.</div>'}
+    </div>
+    <div class="card"><h3>Audit trail</h3>
+      ${DB.audit.slice(0,12).map(a=>`<div style="font-size:12px;padding:5px 0;border-bottom:1px solid var(--ln)"><span style="color:var(--mut)">${a.t.slice(0,16).replace('T',' ')}</span> <b>${esc(a.who)}</b>: ${esc(a.what)}</div>`).join('')}
+    </div>
+  </div></div>`;
+}
+
+/* ==========================================================
+   MENTOR VIEWS
+========================================================== */
+function mentorStudents(){
+  const mn=ME.staffName||ME.name;const TASKS=['PLAixBox Wk1','BMC','SOSTAC','Group Project','Capstone','Gamma','NotebookLM','Veo Video'];
+  const myS=DB.students.filter(s=>s.month===SEL.month&&s.mentorName===mn);
+  const myMs=yearMonths(SEL.year||acadYear(SEL.month)).filter(m=>DB.students.some(s=>s.month===m&&s.mentorName===mn));
+  return head('My students',`Assigned to ${esc(mn)} · tap tasks to update, open wall to chat.`)+
+  `<div class="mtabs">${myMs.map(m=>`<button class="${m===SEL.month?'on':''}" onclick="SEL.month='${m}';render()">${mLbl(m)} <span class="n">· ${DB.students.filter(s=>s.month===m&&s.mentorName===mn).length}</span></button>`).join('')}</div>
+  ${myS.length?myS.map(s=>{const done=TASKS.filter(t=>(s.tasks&&s.tasks[t])).length;const pct=Math.round(done/TASKS.length*100);const u=DB.users.find(x=>x.studentId===s.id);
+    return`<div class="card"><div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;align-items:flex-start">
+    <div><b style="font-size:15px">${esc(s.name)}</b> ${s.code?`<span class="code">${esc(s.code)}</span>`:''}<br>
+    <span style="font-size:12.5px;color:var(--mut)">${esc(s.contact||'no contact')} · ${esc(s.lang)} · <span class="chip ${s.status==='Completed'?'c-ok':s.status==='Incomplete'?'c-warn':'c-bad'}">${s.status}</span></span></div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap">
+      <button class="btn btn-ghost btn-sm" onclick="openWallWithStudent('${s.id}','${esc(s.name)}')">💬 Message</button>
+      <button class="btn btn-ghost btn-sm" onclick="dropAssignment('${s.id}','${esc(s.name)}')">📎 Drop assignment</button>
+      <button class="btn btn-ghost btn-sm" onclick="viewStudentSubs('${s.id}')">📋 Homework</button>
+    </div></div>
+    <div style="margin-top:10px"><div style="font-size:12px;color:var(--mut);margin-bottom:4px">${done}/${TASKS.length} tasks · ${pct}%</div>
+    <div class="bar"><i style="width:${pct}%"></i></div></div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px">${TASKS.map(t=>`<span style="padding:4px 10px;border:1px solid var(--ln);border-radius:99px;font-size:12px;cursor:pointer;background:${(s.tasks&&s.tasks[t])?'#E7F6EE':'var(--paper)'};color:${(s.tasks&&s.tasks[t])?'var(--ok)':'inherit'}" onclick="toggleTask('${s.id}','${t}')">${(s.tasks&&s.tasks[t])?'✓ ':''} ${t}</span>`).join('')}</div></div>`}).join('')
+  :`<div class="card"><div class="empty">No students assigned to ${esc(mn)} for ${mLbl(SEL.month)}.</div></div>`}`;
+}
+function toggleTask(id,t){const s=DB.students.find(x=>x.id===id);s.tasks=s.tasks||{};s.tasks[t]=!s.tasks[t];log((s.tasks[t]?'Completed':'Reopened')+' "'+t+'" for '+s.name);save();render()}
+function openWallWithStudent(sId,sName){const u=DB.users.find(x=>x.studentId===sId&&x.active);if(!u){openModal(`<h3>💬 Message ${esc(sName)}</h3><div class="msub">This student doesn't have a platform login yet, so the discussion wall isn't available for them.</div><p style="margin:12px 0;font-size:13.5px">Generate a student login from <b>Registrations → 🔑 Login</b> for ${esc(sName)}. Once they sign in and change their password, you can open a conversation here.</p>${isAdmin()?`<div class="mact"><button class="btn btn-ghost" onclick="closeModal()">Close</button><button class="btn btn-pri" onclick="closeModal();go('reg')">Go to Registrations →</button></div>`:`<div class="mact"><button class="btn btn-pri" onclick="closeModal()">OK</button></div>`}`);return}SEL.wallTarget={id:u.id,name:sName};go('ms_wall')}
+function dropAssignment(sId,sName){assignModal();setTimeout(()=>{document.querySelector('#atl')&&(document.querySelector('#atl').focus())},200);toast('Create the assignment, then it will appear in the student\'s Homework tab.')}
+function viewStudentSubs(sId){
+  const s=DB.students.find(x=>x.id===sId);const myA=DB.assignments.filter(a=>a.targetStudents[0]==='all'&&a.month===s.month||a.targetStudents.includes(sId));
+  openModal(`<h3>Homework — ${esc(s.name)}</h3>
+  ${myA.map(a=>{const sub=a.submissions.find(x=>x.studentId===sId);const fbId='mfb_'+a.id;const subHtml=sub?('<div style="margin-top:8px;font-size:13px;white-space:pre-wrap">'+esc(sub.text)+'</div>'+(sub.feedback?'<div style="margin-top:6px;background:var(--blt);border-radius:8px;padding:8px;font-size:12.5px">Feedback: '+esc(sub.feedback)+'</div>':'')+'<textarea style="margin-top:8px" id="'+fbId+'" placeholder="Add / edit feedback">'+esc(sub.feedback||'')+'</textarea><button class="btn btn-ghost btn-sm" style="margin-top:6px" onclick="saveMentorFB(\''+a.id+'\',\''+sId+'\')">Save feedback</button>'):'<div class="empty" style="padding:6px 0">Not submitted yet.</div>';return'<div class="sub-block"><b>'+esc(a.title)+'</b> <span class="chip c-gray">Due '+esc(a.dueDate)+'</span>'+subHtml+'</div>'}).join('')||'<div class="empty">No assignments for this month.</div>'}
+  <div class="mact"><button class="btn btn-pri" onclick="closeModal()">Close</button></div>`,false,'wide');
+}
+function saveMentorFB(aId,sId){const a=DB.assignments.find(x=>x.id===aId);let sub=a.submissions.find(x=>x.studentId===sId);if(!sub){toast('Student has not submitted yet');return}const v=document.getElementById('mfb_'+aId).value;sub.feedback=v;sub.feedbackAt=new Date().toISOString();log('Feedback saved');save();toast('Feedback saved')}
+function mentorWall(){
+  const mn=ME.staffName||ME.name;const tgt=SEL.wallTarget;
+  const myStudents=DB.students.filter(s=>s.mentorName===mn&&s.month===SEL.month);
+  const sideList=`<div class="card" style="min-width:200px;max-width:240px;flex-shrink:0"><div class="sec-label" style="margin:0 0 10px">Students</div>
+    ${myStudents.map(s=>{const u=DB.users.find(x=>x.studentId===s.id&&x.active);const unr=u?DB.wallMessages.filter(m=>m.fromId===u.id&&m.toId===ME.id&&!m.read).length:0;
+      return`<div style="display:flex;align-items:center;gap:10px;padding:8px;border-radius:9px;cursor:pointer;background:${tgt&&tgt.id===u?.id?'var(--blt)':'transparent'}" onclick="${u?`SEL.wallTarget={id:'${u.id}',name:'${esc(s.name)}'};render()`:`openWallWithStudent('${s.id}','${esc(s.name)}')`}">
+        <div class="avatar" style="width:30px;height:30px;font-size:12px">${uid2init(s.name)}</div>
+        <div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(s.name.split(' ')[0])}</div>
+        <div style="font-size:11px;color:var(--mut)">${u?'online':'no login'}</div></div>
+        ${unr?`<span class="badge">${unr}</span>`:''}</div>`}).join('')||'<div class="empty">No students this month.</div>'}
+  </div>`;
+  const chatArea=tgt?`<div class="card" style="flex:1">${wallUI(tgt.id,tgt.name,'')}</div>`
+    :`<div class="card" style="flex:1;display:flex;align-items:center;justify-content:center;color:var(--mut);font-size:13.5px">← Select a student to start chatting</div>`;
+  return head('Discussions',`${mLbl(SEL.month)} cohort${tgt?' · '+esc(tgt.name):''}`)+
+    `<div style="display:flex;gap:14px;align-items:flex-start">${sideList}${chatArea}</div>`;
+}
+function mentorAssign(){const mn=ME.staffName||ME.name;const list=DB.assignments.filter(a=>a.mentorName===mn).sort((a,b)=>(b.createdAt||'').localeCompare(a.createdAt||''));
+  return head('My assignments','Assignments you have created for students.',`<button class="btn btn-pri" onclick="assignModal()">+ New assignment</button>`)+
+  list.map(a=>assignCard(a,true)).join('')+(!list.length?'<div class="card"><div class="empty">No assignments yet.</div></div>':'');
+}
+function mentorGroups(){const mn=ME.staffName||ME.name;const list=DB.groups.filter(g=>g.mentorName===mn);
+  return head('My groups','Groups you manage.',`<button class="btn btn-pri" onclick="groupModal()">+ Create group</button>`)+
+  list.map(g=>groupCard(g,true)).join('')+(!list.length?'<div class="card"><div class="empty">No groups yet.</div></div>':'');
+}
+function mypay(){const nm=ME.staffName||ME.name;const months=[...new Set(DB.payEntries.filter(e=>e.staffName===nm&&e.staffName!=='—').map(e=>e.month))].sort().reverse();
+  return head('My pay','Your confirmed compensation by month.')+
+  (months.length?months.map(m=>{const es=DB.payEntries.filter(e=>e.month===m&&e.staffName===nm);const adv=DB.advances.filter(a=>a.month===m&&a.staffName===nm).reduce((a,x)=>a+(+x.amount||0),0);const tot=es.reduce((a,e)=>a+(+e.amount||0),0);
+    const advNote=adv?' (incl. '+fmt(adv)+' advance)':'';
+    return`<div class="card"><h3>${mLbl(m)}</h3><table><thead><tr><th>Day</th><th>Component</th><th class="num">XAF</th></tr></thead><tbody>
+    ${es.map(e=>{const c=DB.components.find(x=>x.code===e.component);return`<tr><td>Day ${e.day}</td><td>${esc(c?c.label:e.component)}</td><td class="num">${fmt(e.amount)}</td></tr>`}).join('')}
+    </tbody><tfoot><tr style="background:var(--blt)"><td colspan="2" style="font-weight:700">Total${advNote}</td><td class="num" style="font-weight:700">${fmt(tot+adv)}</td></tr></tfoot></table></div>`}).join('')
+  :`<div class="card"><div class="empty">No pay entries recorded for "${esc(nm)}" yet.</div></div>`);}
+
+/* ==========================================================
+   STUDENT VIEWS
+========================================================== */
+function myStudent(){return DB.students.find(x=>x.id===ME.studentId)||null}
+function studentHome(){
+  const s=myStudent();if(!s)return'<div class="card"><div class="empty">Student record not found. Contact your administrator.</div></div>';
+  const TASKS=['PLAixBox Wk1','BMC','SOSTAC','Group Project','Capstone','Gamma','NotebookLM','Veo Video'];
+  const done=TASKS.filter(t=>(s.tasks&&s.tasks[t])).length,pct=Math.round(done/TASKS.length*100);
+  const paid=paidFor(s),bal=balFor(s);
+  const myA=DB.assignments.filter(a=>(a.targetStudents[0]==='all'&&a.month===s.month)||a.targetStudents.includes(s.id));
+  const pending=myA.filter(a=>!(a.submissions&&a.submissions.some(sb=>sb.studentId===s.id)));
+  const myCerts=DB.certificates.filter(c=>c.studentId===s.id);
+  const myComps=DB.competitions.filter(c=>c.month===s.month);
+  const mentorUser=DB.users.find(x=>x.staffName===s.mentorName&&(x.roles.includes('mentor')||x.roles.includes('admin')));
+  const unreadMsgs=DB.wallMessages.filter(m=>m.toId===ME.id&&!m.read).length;
+  return head('My dashboard',`Welcome, ${esc(s.name.split(' ')[0])}! 👋`)+
+  `<div class="grid g4" style="margin-bottom:14px">
+    <div class="stat accent"><div class="sk">My progress</div><div class="sv">${pct}<small>%</small></div></div>
+    <div class="stat"><div class="sk">Tasks done</div><div class="sv">${done}<small>/${TASKS.length}</small></div></div>
+    <div class="stat"><div class="sk">Balance</div><div class="sv" style="color:${bal>0?'var(--bad)':'var(--ok)'}">${fmt(bal)}<small> XAF</small></div></div>
+    <div class="stat"><div class="sk">Certificates</div><div class="sv">${myCerts.length}</div></div>
+    <div class="stat"><div class="sk">Pending homework</div><div class="sv" style="color:${pending.length?'var(--warn)':'var(--ok)'}">${pending.length}</div></div>
+    ${unreadMsgs?`<div class="stat" style="cursor:pointer" onclick="go('s_wall')"><div class="sk">Messages</div><div class="sv" style="color:var(--bl)">${unreadMsgs}</div></div>`:''}
+  </div>
+  <div class="grid g2">
+    <div class="card"><h3>My task progress</h3>
+      <div class="bar" style="height:12px;margin-bottom:12px"><i style="width:${pct}%"></i></div>
+      ${TASKS.map(t=>`<div style="display:flex;align-items:center;gap:10px;margin:7px 0">
+        <span style="font-size:16px">${(s.tasks&&s.tasks[t])?'✅':'⬜'}</span>
+        <span style="font-size:13px;${(s.tasks&&s.tasks[t])?'color:var(--ok)':'}'}">${t}</span>
+      </div>`).join('')}
+    </div>
+    <div>
+      <div class="card"><h3>Pending homework</h3>
+        ${pending.length?pending.map(a=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--ln)">
+        <div><b style="font-size:13px">${esc(a.title)}</b><div class="help">Due ${esc(a.dueDate)} · by ${esc(a.mentorName)}</div></div>
+        <button class="btn btn-pri btn-sm" onclick="go('s_assignments')">Submit</button></div>`).join(''):'<div class="empty">All caught up! 🎉</div>'}
+      </div>
+      <div class="card"><h3>My certificates</h3>
+        ${myCerts.length?myCerts.map(c=>`<div style="display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid var(--ln)"><span style="font-size:24px">${c.badge||'🏅'}</span><div><b style="font-size:13px">${esc(c.title)}</b><div class="help">${esc(c.award)} · ${esc(c.issued)}</div></div></div>`).join(''):'<div class="empty">Complete tasks and assignments to earn certificates.</div>'}
+      </div>
+    </div>
+  </div>`;
+}
+function studentWall(){
+  const s=myStudent();if(!s)return'<div class="card empty">Student record not found.</div>';
+  const mentorUser=DB.users.find(x=>x.staffName===s.mentorName);
+  const mentorStaff=DB.staff.find(x=>x.name===s.mentorName);
+  const mentorCard=`<div class="card" style="min-width:200px;max-width:240px;flex-shrink:0;text-align:center">
+    <div class="avatar" style="width:52px;height:52px;font-size:20px;margin:0 auto 10px">${uid2init(s.mentorName||'M')}</div>
+    <div style="font-weight:700;font-size:14px">${esc(s.mentorName||'—')}</div>
+    <div style="font-size:12px;color:var(--mut);margin-top:2px">${esc(mentorStaff?.role||'Mentor')} · ${esc(mentorStaff?.category||'')}</div>
+    <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--ln);font-size:12px;color:var(--mut);text-align:left">
+      <div>💬 Use the chat to ask questions, share ideas or request feedback</div>
+      <div style="margin-top:8px">📝 Check the Homework tab for assignments from your mentor</div>
+    </div>
+  </div>`;
+  if(!mentorUser)return head('My mentor','Chat with your assigned mentor.')+
+    `<div style="display:flex;gap:14px;align-items:flex-start">${mentorCard}<div class="card" style="flex:1"><div class="empty" style="padding:24px">Your mentor <b>${esc(s.mentorName)}</b> doesn't have a platform login yet. Contact your administrator to set one up.</div></div></div>`;
+  return head('My mentor',`Chat with ${esc(s.mentorName)}`)+
+    `<div style="display:flex;gap:14px;align-items:flex-start">${mentorCard}<div class="card" style="flex:1">${wallUI(mentorUser.id,s.mentorName,'')}</div></div>`;
+}
+function studentAssignments(){
+  const s=myStudent();if(!s)return'<div class="card empty">Record not found.</div>';
+  const myA=DB.assignments.filter(a=>(a.targetStudents[0]==='all'&&a.month===s.month)||a.targetStudents.includes(s.id)).sort((a,b)=>(b.createdAt||'').localeCompare(a.createdAt||''));
+  return head('Homework','Submit your assignments and see mentor feedback here.')+
+  (myA.length?myA.map(a=>{const sub=(a.submissions&&a.submissions.find(x=>x.studentId===s.id));
+    return`<div class="card"><div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px">
+    <div><h3>${esc(a.title)}</h3><div style="font-size:12.5px;color:var(--mut)">By ${esc(a.mentorName)} · Due ${esc(a.dueDate)}</div></div>
+    <span class="chip ${sub?'c-ok':'c-warn'}">${sub?'Submitted':'Pending'}</span></div>
+    <p style="margin-top:8px;font-size:13px">${esc(a.description)}</p>
+    ${sub?`<div class="sub-block"><b>Your submission:</b><div style="white-space:pre-wrap;margin-top:4px;font-size:13px">${esc(sub.text)}</div>${sub.feedback?`<div style="margin-top:10px;background:var(--blt);border-radius:8px;padding:10px;font-size:13px"><b>Mentor feedback:</b> ${esc(sub.feedback)}</div>`:''}</div>`
+    :`<div style="margin-top:10px"><textarea id="hw_${a.id}" placeholder="Type your submission here…"></textarea><button class="btn btn-pri" style="margin-top:8px" onclick="submitHWText('${a.id}')">Submit homework</button></div>`}
+    </div>`}).join(''):'<div class="card"><div class="empty">No assignments posted yet. Check back soon.</div></div>');
+}
+function submitHWText(aId){const s=myStudent(),a=DB.assignments.find(x=>x.id===aId);const text=document.getElementById('hw_'+aId).value.trim();if(!text){toast('Write something before submitting.');return}
+  if(a.submissions.some(x=>x.studentId===s.id)){toast('Already submitted.');return}
+  a.submissions.push({id:uid(),studentId:s.id,studentName:s.name,text,submittedAt:new Date().toISOString(),feedback:'',feedbackAt:null});
+  // mark task if taskCode matches
+  if(a.taskCode&&typeof s.tasks==='object')s.tasks[a.taskCode]=1;
+  log(s.name+' submitted "'+a.title+'"');save();render();toast('Homework submitted! ✅')}
+function submitHW(aId){go('s_assignments')}
+function studentCerts(){const s=myStudent();if(!s)return'';const c=DB.certificates.filter(x=>x.studentId===s.id);
+  return head('My certificates','Certificates and awards you have earned.')+
+  `<div class="grid g3">${c.map(cert=>`<div class="cert"><div class="cert-title">${esc(cert.issuer||'Team21 Academy')}</div><div class="cert-seal">${cert.badge||'🏅'}</div><div class="cert-award">${esc(cert.award)}</div><div class="cert-name">${esc(s.name)}</div><div class="cert-award" style="margin-top:4px">${esc(cert.title)}</div><div style="font-size:12px;color:var(--mut);margin-top:8px">Issued ${esc(cert.issued)}</div></div>`).join('')||'<div class="card" style="grid-column:1/-1"><div class="empty">No certificates yet. Complete your assignments to earn them!</div></div>'}</div>`;
+}
+function studentCompete(){const s=myStudent();if(!s)return'';
+  const c=DB.competitions.filter(x=>x.month===s.month||x.status==='Open');
+  return head('Competitions','Challenges and competitions you can join.')+
+  c.map(comp=>{const isIn=(comp.participants&&comp.participants.some(p=>p.studentId===s.id));
+    return`<div class="card"><div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px">
+    <div><h3>${esc(comp.title)}</h3><div style="font-size:12.5px;color:var(--mut)">Closes ${esc(comp.endDate)} · <span class="chip ${comp.status==='Open'?'c-ok':'c-gray'}">${esc(comp.status)}</span></div></div>
+    ${comp.status==='Open'&&!isIn?`<button class="btn btn-pri" onclick="joinComp('${comp.id}')">Join</button>`:isIn?`<span class="chip c-ok">✓ Entered</span>`:''}
+    </div><p style="margin-top:8px;font-size:13px">${esc(comp.description)}</p>
+    <div style="margin-top:6px;font-size:13px">🏆 Prize: <b>${esc(comp.prizePool||'TBA')}</b></div>
+    ${(comp.results&&comp.results.length)?`<div class="sec-label" style="margin-top:12px">Results</div><div style="display:flex;gap:8px;flex-wrap:wrap">${comp.results.map((r,i)=>`<span class="chip">${['🥇','🥈','🥉'][i]||'🏅'} ${esc(r.name)}</span>`).join('')}</div>`:''}
+    </div>`}).join('')||'<div class="card"><div class="empty">No competitions available right now.</div></div>';
+}
+function joinComp(cId){const s=myStudent(),c=DB.competitions.find(x=>x.id===cId);if(!c||!s)return;if(c.participants.some(p=>p.studentId===s.id)){toast('Already entered');return}c.participants.push({studentId:s.id,name:s.name});log(s.name+' joined competition "'+c.title+'"');save();render();toast('Entered! Good luck 🏆')}
+function studentProgress(){const s=myStudent();if(!s)return'';
+  const TASKS=['PLAixBox Wk1','BMC','SOSTAC','Group Project','Capstone','Gamma','NotebookLM','Veo Video'];
+  const done=TASKS.filter(t=>(s.tasks&&s.tasks[t])).length,pct=Math.round(done/TASKS.length*100);
+  const myA=DB.assignments.filter(a=>(a.targetStudents[0]==='all'&&a.month===s.month)||a.targetStudents.includes(s.id));
+  const subCount=myA.filter(a=>(a.submissions&&a.submissions.some(x=>x.studentId===s.id))).length;
+  return head('My progress','Your full learning journey.')+
+  `<div class="grid g4" style="margin-bottom:14px">
+    <div class="stat accent"><div class="sk">Overall</div><div class="sv">${pct}%</div></div>
+    <div class="stat"><div class="sk">Tasks complete</div><div class="sv">${done}/${TASKS.length}</div></div>
+    <div class="stat"><div class="sk">Homework submitted</div><div class="sv">${subCount}/${myA.length}</div></div>
+    <div class="stat"><div class="sk">Certificates</div><div class="sv">${DB.certificates.filter(c=>c.studentId===s.id).length}</div></div>
+  </div>
+  <div class="card"><h3>Programme tasks</h3>
+    ${TASKS.map((t,i)=>`<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--ln)">
+    <div style="display:flex;align-items:center;gap:12px"><span style="font-size:20px">${(s.tasks&&s.tasks[t])?'✅':'⬜'}</span><span style="font-size:13.5px;font-weight:${(s.tasks&&s.tasks[t])?600:400}">${t}</span></div>
+    <span class="chip ${(s.tasks&&s.tasks[t])?'c-ok':'c-gray'}">${(s.tasks&&s.tasks[t])?'Done':'Pending'}</span></div>`).join('')}
+  </div>
+  <div class="card" style="margin-top:14px"><h3>Assignment history</h3>
+    ${myA.map(a=>{const sub=(a.submissions&&a.submissions.find(x=>x.studentId===s.id));return`<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--ln)">
+    <div><b style="font-size:13px">${esc(a.title)}</b><div class="help">Due ${esc(a.dueDate)}</div></div>
+    <div style="text-align:right"><span class="chip ${sub?'c-ok':'c-warn'}">${sub?'Submitted':'Pending'}</span>${(sub&&sub.feedback)?'<div style="font-size:11px;color:var(--ok);margin-top:2px">✓ Feedback received</div>':''}</div></div>`}).join('')||'<div class="empty">No assignments yet.</div>'}
+  </div>`;
+}
+</script>
+</body>
+</html>

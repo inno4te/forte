@@ -1,0 +1,1229 @@
+/* ===================================================================
+   FORTE — SOFT EXTRUDED
+   A single monochrome surface. Controls are pressed into or extruded
+   out of that surface with dual soft shadows, light source upper-left.
+   No borders. No colour blocking. Accent appears only on active state.
+
+   Loaded AFTER each page's own <style> block; it remaps the legacy
+   token names those pages already use, then restates the components.
+   =================================================================== */
+
+/* ---------- TOKENS ---------- */
+:root,
+:root[data-theme="light"]{
+  --surface:#E7E8EF;
+  --text:#33354A;
+  --muted:#8385A0;
+  --accent:#1D4E89;
+  --accent-2:#D2932E;
+
+  /* dual shadow pair — the whole language lives here */
+  --hi:#FFFFFF;
+  --lo:#C2C4D0;
+
+  --sh-out: -5px -5px 11px var(--hi), 5px 5px 11px var(--lo);
+  --sh-out-sm: -3px -3px 6px var(--hi), 3px 3px 6px var(--lo);
+  --sh-out-lg: -9px -9px 20px var(--hi), 9px 9px 20px var(--lo);
+  --sh-in: inset -3px -3px 7px var(--hi), inset 4px 4px 8px var(--lo);
+  --sh-in-deep: inset -4px -4px 9px var(--hi), inset 6px 6px 12px var(--lo);
+  --sh-flat: -1px -1px 3px var(--hi), 1px 1px 3px var(--lo);
+
+  --r:18px;
+  --r-sm:12px;
+  --r-pill:999px;
+  --gap:24px;
+
+  --display:'Poppins', sans-serif;
+  --body:'Inter', sans-serif;
+
+  /* --- legacy names used by the existing pages, remapped --- */
+  --ink:var(--text);
+  --ink-dim:var(--muted);
+  --ink-faint:var(--muted);
+  --bg:var(--surface);
+  --bg-raised:var(--surface);
+  --bg-card:var(--surface);
+  --line:transparent;
+  --cobalt:var(--accent);
+  --cobalt-dim:var(--muted);
+  --copper:var(--accent-2);
+  --verdigris:var(--accent);
+  --alert:var(--accent-2);
+  --gold:var(--accent-2);
+  --serif:var(--display);
+  --sans:var(--body);
+  --mono:var(--body);
+}
+
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --surface:#2B2D3A;
+    --text:#DFE0EA;
+    --muted:#9294AE;
+    --accent:#6FA0DC;
+    --accent-2:#D2932E;
+    --hi:#353748;
+    --lo:#1F2029;
+  }
+}
+:root[data-theme="dark"]{
+  --surface:#2B2D3A;
+  --text:#DFE0EA;
+  --muted:#9294AE;
+  --accent:#6FA0DC;
+  --accent-2:#D2932E;
+  --hi:#353748;
+  --lo:#1F2029;
+}
+
+/* ---------- RESET THE OLD SKIN ---------- */
+html,body{
+  background:var(--surface) !important;
+  color:var(--text) !important;
+  font-family:var(--body) !important;
+  font-size:16px;
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+
+body *{
+  border-color:transparent !important;
+}
+
+/* Strip every border and hard background the old dark theme relied on. */
+body *:not(svg):not(path):not(circle):not(line):not(rect):not(polygon):not(input):not(textarea):not(select){
+  border-style:none !important;
+  text-shadow:none !important;
+}
+
+h1,h2,h3,h4,h5,.brand-mark,.hero h1,.c-name,.plan-body h3{
+  font-family:var(--display) !important;
+  font-weight:500 !important;
+  color:var(--text) !important;
+  letter-spacing:-0.015em;
+}
+h1{font-size:clamp(28px,5.2vw,46px); line-height:1.18;}
+h2{font-size:clamp(22px,3.6vw,31px); line-height:1.25;}
+h3{font-size:clamp(18px,2.6vw,22px);}
+p,li,td,th,span,div{color:inherit;}
+em,i{font-style:normal; color:var(--accent);}
+a{color:var(--accent); text-decoration:none;}
+strong,b{font-weight:600; color:var(--text);}
+
+::selection{background:var(--accent); color:var(--surface);}
+
+/* ---------- THE SURFACE COMPONENTS ----------
+   Everything the old pages called a card, panel, box, or strip becomes
+   one extruded plane of the same material. ---------- */
+.econ-card, .candidate-card, .import-card, .trap-card, .pledge-card,
+.news-card, .clock-country-card, .clock-summary-card, .sim-result-card,
+.country-card, .mini-card, .stat-card, .case-card, .playbook-card,
+.jump-card, .plan, .resource-link, .cost-table, .info-table,
+.abstract-box, .gold-callout, .alert-callout, .critique-box, .quote-block,
+.callout, .pullquote, .sources-box, .section-block, .pathway-panel,
+.leak-node, .loss-block, .region-block, .cta-block, .toc, .doc-meta,
+.hero-stat, .stat-rail, .live-strip, .econ-strip, .map-strip,
+.timeline-item, .phase-row, .search-box, .sim-shell, .reset-inner,
+.skip-note, .section-note, .detail-header, .detail-meta > div,
+.cover, .signoff, .authorship, .export-table, .stat-grid > *,
+.pop-panel, .pop-stat{
+  background:var(--surface) !important;
+  border-radius:var(--r) !important;
+  box-shadow:var(--sh-out) !important;
+  padding:20px 22px;
+  outline:none !important;
+}
+
+/* Things that are recessed rather than raised: inputs, wells, readouts. */
+input[type="text"], input[type="number"], input[type="search"],
+input[type="range"], select, textarea,
+.sim-bar-track, .phase-track, .search-box, .toc, .sources-box,
+.section-note, .skip-note, .ticker-band, .leak-row, .lm-item{
+  background:var(--surface) !important;
+  border-radius:var(--r-sm) !important;
+  box-shadow:var(--sh-in) !important;
+  color:var(--text) !important;
+}
+input, select, textarea{
+  font-family:var(--body) !important;
+  font-size:15px;
+  padding:13px 16px;
+  width:100%;
+}
+input::placeholder, textarea::placeholder{color:var(--muted); opacity:1;}
+input:focus, select:focus, textarea:focus{
+  box-shadow:var(--sh-in-deep), 0 0 0 2px var(--accent) !important;
+  outline:none;
+}
+
+/* ---------- BUTTONS — one system, everywhere ---------- */
+.btn, .btn-primary, .btn-ghost, button, .nav-cta, .tab-btn,
+.pathway-tab-btn, .region-tab, .region-pill, .full-report-link,
+.tb-cta, .tb-print, .mobile-cta{
+  font-family:var(--body) !important;
+  font-weight:500;
+  font-size:14.5px;
+  letter-spacing:0.005em;
+  color:var(--text) !important;
+  background:var(--surface) !important;
+  border-radius:var(--r-pill) !important;
+  box-shadow:var(--sh-out) !important;
+  padding:13px 26px;
+  display:inline-flex; align-items:center; justify-content:center; gap:9px;
+  min-height:46px;
+  cursor:pointer;
+  transition:box-shadow .16s ease, color .16s ease, transform .16s ease;
+  text-align:center;
+}
+.btn:active, button:active, .btn-primary:active, .btn-ghost:active,
+.tab-btn:active, .region-tab:active, .pathway-tab-btn:active{
+  box-shadow:var(--sh-in) !important;
+  transform:translateY(1px);
+}
+/* Accent only on active / selected state — never as decoration. */
+.btn-primary, .nav-cta, .tab-btn.active, .pathway-tab-btn.active,
+.region-tab.active, .region-pill.active, .toc-item.active{
+  color:var(--accent) !important;
+  box-shadow:var(--sh-in) !important;
+  font-weight:600;
+}
+.btn[disabled], button[disabled]{opacity:.5; cursor:not-allowed;}
+
+/* Loading + success feedback states (applied by forte-soft.js) */
+.is-loading{color:var(--muted) !important; box-shadow:var(--sh-in) !important; pointer-events:none;}
+.is-loading::after{
+  content:""; width:13px; height:13px; border-radius:50%;
+  border:2px solid var(--muted); border-top-color:transparent;
+  animation:fs-spin .7s linear infinite; display:inline-block;
+}
+@keyframes fs-spin{to{transform:rotate(360deg);}}
+.is-success{color:var(--accent) !important; box-shadow:var(--sh-in) !important;}
+
+/* ---------- NAV / CHROME ---------- */
+.site-nav, .topbar, .site-switcher, .tabnav, .nav-inner, .topbar-inner,
+.site-switcher-inner, .tabnav-inner, .region-rail, .region-nav{
+  background:var(--surface) !important;
+  box-shadow:none !important;
+  color:var(--text) !important;
+}
+.site-nav, .topbar{box-shadow:0 6px 16px -10px var(--lo) !important;}
+.nav-links a, .site-switcher a, .sw-label, .sw-sep, .tb-back, .tb-brand{
+  color:var(--muted) !important;
+}
+.nav-links a:hover, .site-switcher a.active, .nav-links a.active{color:var(--accent) !important;}
+
+/* ---------- TYPOGRAPHIC ACCENTS ---------- */
+.eyebrow, .section-label, .sec-label, .co-label, .cs-label, .l,
+.ccc-pop-label, .lc-label, .country-region-tag, .tag, .r-tag, .c-tag,
+.hero-eyebrow, .clock-live-tag, .form-tag, .ph-tag, .map-tag{
+  font-family:var(--body) !important;
+  font-size:11.5px !important;
+  font-weight:600 !important;
+  letter-spacing:0.13em !important;
+  text-transform:uppercase;
+  color:var(--muted) !important;
+}
+.eyebrow::before{display:none !important;}
+.mark, mark{background:transparent !important; color:var(--accent) !important; font-weight:600;}
+.num, .v, .cs-value, .ccc-pop, .lc-value, .hero-stat .n, .sr-value, .sv{
+  font-family:var(--display) !important;
+  font-weight:500 !important;
+  font-variant-numeric:tabular-nums;
+  color:var(--text) !important;
+}
+.death, .loss, .alert, .raw{color:var(--accent-2) !important;}
+.proc, .semi{color:var(--accent) !important;}
+.pulse{background:var(--accent-2) !important;}
+
+/* ---------- LAYOUT RHYTHM — symmetrical, centred, even ---------- */
+.wrap{max-width:1140px; margin:0 auto; padding:0 20px;}
+section, .paper-section, .grid-section, .clock-section, .plans{
+  padding:clamp(40px,7vw,76px) 0;
+  background:var(--surface) !important;
+}
+.section-head, .hero, .cover, .hero-grid, .clock-summary{
+  text-align:center;
+  max-width:760px; margin-left:auto; margin-right:auto;
+}
+.hero-actions, .cta-block, .reset-actions, .mobile-cta{
+  display:flex; flex-wrap:wrap; gap:14px; justify-content:center;
+}
+.econ-grid, .candidate-grid, .import-grid, .trap-grid, .pledge-grid,
+.news-grid, .clock-country-grid, .country-grid, .playbook-grid,
+.jump-grid, .resource-grid, .stat-grid, .hero-stats, .two-col{
+  display:grid !important;
+  grid-template-columns:repeat(auto-fit, minmax(260px,1fr)) !important;
+  gap:var(--gap) !important;
+  align-items:stretch;
+}
+table{border-collapse:separate; border-spacing:0; width:100%;}
+th,td{padding:12px 14px; text-align:left;}
+th{color:var(--muted) !important; font-size:12px; letter-spacing:.09em; text-transform:uppercase; font-weight:600;}
+tr + tr td{box-shadow:0 -1px 0 var(--lo);}
+
+hr, .line, .dot, .sw-sep{background:var(--lo) !important; height:1px; border:none !important;}
+
+/* ---------- FOOTER ---------- */
+.footer, .site-footer, .c-footer, .d-footer, .p-footer, .pl-footer{
+  background:var(--surface) !important;
+  color:var(--muted) !important;
+  box-shadow:inset 0 8px 16px -14px var(--lo) !important;
+  padding:44px 0;
+  text-align:center;
+}
+
+/* ===================================================================
+   SIGNATURE ELEMENT — the moulded dial
+   A rate selector for the live population counter, cut from the same
+   surface rather than placed on it.
+   =================================================================== */
+.fs-dial{
+  display:inline-flex;
+  padding:6px;
+  border-radius:var(--r-pill);
+  background:var(--surface);
+  box-shadow:var(--sh-in-deep);
+  gap:4px;
+}
+.fs-dial button{
+  min-height:38px !important;
+  padding:8px 18px !important;
+  border-radius:var(--r-pill) !important;
+  box-shadow:none !important;
+  background:transparent !important;
+  color:var(--muted) !important;
+  font-size:13px !important;
+  font-weight:500 !important;
+}
+.fs-dial button[aria-pressed="true"]{
+  background:var(--surface) !important;
+  box-shadow:var(--sh-out-sm) !important;
+  color:var(--accent) !important;
+  font-weight:600 !important;
+}
+.fs-dial button:active{transform:translateY(1px);}
+
+/* Theme switch — moulded from the surface, same material */
+.fs-theme{
+  position:fixed; right:16px; bottom:16px; z-index:900;
+  width:60px; height:34px; padding:4px;
+  border-radius:var(--r-pill);
+  background:var(--surface);
+  box-shadow:var(--sh-in-deep);
+  cursor:pointer; display:flex; align-items:center;
+}
+.fs-theme .knob{
+  width:26px; height:26px; border-radius:50%;
+  background:var(--surface); box-shadow:var(--sh-out-sm);
+  transition:transform .22s cubic-bezier(.4,0,.2,1);
+  display:flex; align-items:center; justify-content:center;
+  font-size:12px; color:var(--muted);
+}
+:root[data-theme="dark"] .fs-theme .knob{transform:translateX(26px); color:var(--accent);}
+
+/* ===================================================================
+   POPULATION MODULE
+   =================================================================== */
+.pop-panel{
+  margin:26px 0;
+  display:grid; gap:18px; justify-items:center; text-align:center;
+}
+.pop-live{
+  font-family:var(--display); font-weight:500;
+  font-size:clamp(34px,7vw,56px);
+  line-height:1.05; letter-spacing:-0.02em;
+  font-variant-numeric:tabular-nums;
+  color:var(--text);
+}
+.pop-live .fs-tick{color:var(--accent); transition:color .5s ease;}
+.pop-cap{font-size:12px; letter-spacing:.13em; text-transform:uppercase; color:var(--muted); font-weight:600;}
+.pop-rate{
+  padding:16px 26px; border-radius:var(--r);
+  box-shadow:var(--sh-in); background:var(--surface);
+  display:inline-flex; flex-direction:column; gap:3px; align-items:center;
+  min-width:240px;
+}
+.pop-rate .n{
+  font-family:var(--display); font-weight:500; font-size:30px;
+  color:var(--accent); font-variant-numeric:tabular-nums;
+}
+.pop-rate .u{font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); font-weight:600;}
+.pop-grid{
+  display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+  gap:14px; width:100%;
+}
+.pop-stat{padding:16px 14px !important; text-align:center;}
+.pop-stat .n{font-family:var(--display); font-weight:500; font-size:20px; color:var(--text); font-variant-numeric:tabular-nums;}
+.pop-stat .l{font-size:10.5px !important; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); font-weight:600; margin-top:4px;}
+.pop-src{font-size:12px; color:var(--muted); max-width:620px; line-height:1.6;}
+.pop-src a{color:var(--accent);}
+
+/* Card-level population line on the country grid */
+.country-card .cc-pop{
+  margin-top:12px; padding-top:12px;
+  box-shadow:inset 0 1px 0 var(--lo);
+  font-size:13px; color:var(--muted); font-variant-numeric:tabular-nums;
+}
+.country-card .cc-pop b{font-family:var(--display); font-weight:500; color:var(--text);}
+
+/* ---------- SMALL SCREENS — 4in, bright sun, no hover needed ---------- */
+@media (max-width:640px){
+  html,body{font-size:16px;}
+  .wrap{padding:0 16px;}
+  :root{--gap:16px; --r:16px;}
+  .econ-grid, .candidate-grid, .import-grid, .trap-grid, .pledge-grid,
+  .news-grid, .clock-country-grid, .country-grid, .playbook-grid,
+  .jump-grid, .resource-grid, .stat-grid, .hero-stats, .two-col{
+    grid-template-columns:1fr !important;
+  }
+  .btn, button, .btn-primary, .btn-ghost{width:100%; min-height:50px;}
+  .fs-dial{width:100%; justify-content:stretch;}
+  .fs-dial button{flex:1;}
+  .pop-live{font-size:clamp(30px,10vw,44px);}
+}
+
+@media (prefers-reduced-motion: reduce){
+  *{animation-duration:.01ms !important; transition-duration:.01ms !important;}
+}
+
+/* Print */
+@media print{
+  .fs-theme, .site-nav, .topbar, .site-switcher, .mobile-cta{display:none !important;}
+  *{box-shadow:none !important; background:#fff !important; color:#222 !important;}
+}
+
+/* ===================================================================
+   POLISH PASS — contrast, single accent, layout width
+   =================================================================== */
+
+/* One accent only. The old copper/gold italics become the primary accent. */
+:root,:root[data-theme="light"]{ --muted:#6E7191; }
+:root[data-theme="dark"]{ --muted:#A3A5BD; }
+
+em, i, .hero h1 em, h1 em, h2 em, h3 em, .brand em, .brand-mark em,
+.mark, mark, .c-name em{
+  font-style:normal !important;
+  color:var(--accent) !important;
+}
+
+/* Body copy must stay readable on a low-contrast surface. */
+p, li, .hero-lede, .lede, .p-intro, .prose, .sub, .subhead, .hero p,
+.section-head p, td, .bullets li, .country-meta{
+  color:var(--text) !important;
+}
+.hero-lede, .lede, .sub, .subhead, .section-head p, .pop-src, .hint,
+.legacy-note, .cite, .attribution, .clock-methodology, .skip-note,
+.section-note, .sources-box, .footer, .site-footer{
+  color:var(--muted) !important;
+}
+.hero-lede, .lede{font-size:clamp(16px,2vw,18.5px); line-height:1.7;}
+
+/* Let full-bleed heroes keep their own width; only centre the headers. */
+.hero, .hero-grid, .cover, .clock-summary{max-width:none !important; text-align:left;}
+.section-head{max-width:820px;}
+.hero-grid{
+  display:grid !important;
+  grid-template-columns:repeat(auto-fit,minmax(340px,1fr)) !important;
+  gap:clamp(24px,4vw,52px) !important;
+  align-items:center;
+}
+.encyclopedia-hero, #app .hero{text-align:center !important;}
+#app .hero .hero-lede{margin-left:auto; margin-right:auto; max-width:720px;}
+.hero-stats{
+  grid-template-columns:repeat(auto-fit,minmax(190px,1fr)) !important;
+  max-width:840px; margin-left:auto; margin-right:auto;
+}
+
+/* Detail meta on the encyclopedia country page — a readable label row. */
+.detail-meta{
+  display:grid !important;
+  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:14px; margin-top:20px;
+}
+.detail-meta > div{padding:16px 18px; text-align:left;}
+.detail-meta strong{
+  display:block; font-size:11px; letter-spacing:.13em; text-transform:uppercase;
+  color:var(--muted) !important; font-weight:600; margin-bottom:5px;
+}
+.detail-header{text-align:left; padding:28px 26px !important;}
+
+/* Search: one recessed well, not a box inside a box. */
+.search-box{padding:0 !important; display:flex; align-items:center; gap:10px; padding-left:16px !important;}
+.search-box input{box-shadow:none !important; background:transparent !important; padding:14px 16px 14px 0 !important;}
+.search-icon{width:17px; height:17px; color:var(--muted); flex:none;}
+.search-results{
+  background:var(--surface) !important; box-shadow:var(--sh-out-lg) !important;
+  border-radius:var(--r) !important; padding:8px !important;
+}
+.search-result-item{padding:12px 14px; border-radius:var(--r-sm); cursor:pointer;}
+.search-result-item:hover, .search-result-item:focus{box-shadow:var(--sh-in);}
+.sr-country{display:block; font-family:var(--display); font-weight:500;}
+.sr-section{display:block; font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--accent);}
+.sr-snip{display:block; font-size:12.5px; color:var(--muted);}
+
+/* Region rail — pills with room to breathe, no overlap. */
+.region-rail-inner, .region-nav{
+  display:flex !important; flex-wrap:wrap; gap:10px;
+  justify-content:center; padding:18px 0 !important;
+}
+.region-tab, .region-pill{padding:11px 20px !important; min-height:42px;}
+.region-tab .count{
+  margin-left:8px; font-size:11px; color:var(--muted);
+  padding:2px 7px; border-radius:var(--r-pill); box-shadow:var(--sh-in);
+}
+
+/* Country cards — a consistent pressable plane. */
+.country-card{
+  cursor:pointer; text-align:left;
+  transition:box-shadow .18s ease, transform .18s ease;
+}
+.country-card:active{box-shadow:var(--sh-in) !important; transform:translateY(1px);}
+.country-name{font-family:var(--display) !important; font-weight:500 !important; font-size:19px; margin:6px 0 2px;}
+.country-meta{font-size:13px; color:var(--muted) !important;}
+
+/* Table of contents — recessed list, accent only on the active item. */
+.toc{padding:14px !important;}
+.toc-item{
+  display:flex; align-items:center; gap:11px;
+  padding:11px 14px; border-radius:var(--r-sm); cursor:pointer;
+  color:var(--muted); font-size:14px;
+}
+.toc-item svg{width:17px; height:17px; flex:none;}
+.toc-item.active{box-shadow:var(--sh-out-sm); color:var(--accent) !important; background:var(--surface);}
+.section-block h2 svg{width:21px; height:21px; margin-right:10px; vertical-align:-4px; color:var(--accent);}
+.section-block{margin-bottom:22px; padding:26px 28px !important;}
+.bullets{list-style:none; padding:0; display:grid; gap:14px;}
+.bullets li{padding-left:18px; position:relative;}
+.bullets li::before{
+  content:""; position:absolute; left:0; top:11px;
+  width:6px; height:6px; border-radius:50%;
+  background:var(--surface); box-shadow:var(--sh-flat);
+}
+.detail-body{display:grid; grid-template-columns:250px 1fr; gap:28px; align-items:start; padding-top:26px;}
+.detail-body .toc{position:sticky; top:96px;}
+@media (max-width:900px){
+  .detail-body{grid-template-columns:1fr;}
+  .detail-body .toc{position:static;}
+}
+
+/* Stray chrome the old dark theme lit up. */
+.nav-toggle, .mobile-menu{box-shadow:none !important; background:transparent !important;}
+.ticker-band, .ticker-track{box-shadow:none !important;}
+.flag, .c-flag, .c-flag-big{font-size:inherit;}
+
+/* ---------- FINAL PASS ---------- */
+
+/* Secondary accent is reserved for loss / risk figures only — never decoration. */
+.leak-node, .leak-row, .lm-item, .chain-step, .pathway-steps > *{
+  color:var(--text) !important;
+}
+.leak-node .leak-note, .leak-node span:not(.leak-value){color:var(--muted) !important;}
+.leak-value, .loss, .death, .loss-figure, .v-loss, .v-death, .raw{color:var(--accent-2) !important;}
+.leak-node, .chain-step{
+  display:flex; align-items:center; gap:12px;
+  padding:16px 20px !important; text-align:left;
+}
+.leak-diagram, .chain-build, .pathway-steps{display:grid; gap:14px;}
+
+/* Search field: the icon sits inside the well, in flow. */
+.search-box .search-icon{position:static !important; margin:0 !important;}
+.search-box{position:relative;}
+.search-results{position:absolute; top:calc(100% + 10px); left:0; right:0; z-index:60;}
+
+/* Ticker band reads as a quiet seam, not a lit strip. */
+.ticker-band{padding:14px 0 !important; box-shadow:inset 0 1px 0 var(--lo), inset 0 -1px 0 var(--lo) !important;}
+.ticker-item{color:var(--muted) !important;}
+.ticker-item strong{color:var(--text) !important;}
+
+/* Keep focus visible for keyboard users on a low-contrast surface. */
+a:focus-visible, button:focus-visible, .country-card:focus-visible,
+.toc-item:focus-visible, .region-tab:focus-visible{
+  outline:2px solid var(--accent) !important;
+  outline-offset:3px;
+  border-radius:var(--r-sm);
+}
+
+/* ---------- GRID + CARD CORRECTIONS ---------- */
+.country-grid, .econ-grid, .candidate-grid, .news-grid, .clock-country-grid,
+.playbook-grid, .jump-grid, .resource-grid, .stat-grid, .import-grid,
+.trap-grid, .pledge-grid, .region-block{
+  background:transparent !important;
+}
+.country-card{background:var(--surface) !important; padding:20px 22px !important;}
+.country-name, .c-name, .ec-name, .jc-name, .cc-how, .cc-where{
+  color:var(--text) !important;
+}
+.country-card .cc-pop{color:var(--muted) !important;}
+.country-card .cc-pop b{color:var(--text) !important;}
+
+/* ===================================================================
+   RESPONSIVE PASS — phones and tablets
+   One column at phone width, two at tablet, never a clipped control.
+   =================================================================== */
+
+/* Controls that live in a horizontal rail must keep their own width —
+   the full-width button rule below must not reach them. */
+.tabnav-inner .tab-btn,
+.fs-dial button,
+.region-tab, .region-pill,
+.pathway-tabs .pathway-tab-btn,
+.nav-toggle, .fs-theme{
+  width:auto !important;
+}
+
+/* Tab rails scroll horizontally with a snap, and say so with an edge fade. */
+.tabnav, .pathway-tabs, .region-rail{
+  overflow-x:auto !important;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:none;
+  scroll-snap-type:x proximity;
+}
+.tabnav::-webkit-scrollbar, .pathway-tabs::-webkit-scrollbar,
+.region-rail::-webkit-scrollbar{display:none;}
+.tabnav-inner, .pathway-tabs{
+  display:flex !important; flex-wrap:nowrap; gap:8px;
+  padding:12px 16px !important; width:max-content; min-width:100%;
+}
+.tabnav-inner .tab-btn, .pathway-tab-btn{
+  flex:none; scroll-snap-align:start; white-space:nowrap;
+  padding:11px 18px !important; min-height:44px;
+}
+
+/* Tables become their own scroll region rather than clipping. */
+table{display:block; overflow-x:auto; -webkit-overflow-scrolling:touch; max-width:100%;}
+table thead, table tbody, table tr{width:max-content; min-width:100%;}
+.cost-table, .info-table, .export-table{padding:14px !important;}
+th, td{white-space:nowrap;}
+td:first-child, th:first-child{white-space:normal; min-width:150px;}
+
+/* Nothing smaller than 12px — the surface is deliberately low contrast. */
+.eyebrow, .section-label, .sec-label, .co-label, .cs-label, .l,
+.ccc-pop-label, .lc-label, .country-region-tag, .tag, .r-tag, .c-tag,
+.hero-eyebrow, .clock-live-tag, .form-tag, .ph-tag, .map-tag,
+.pop-cap, .pop-rate .u, .pop-stat .l, th{
+  font-size:12px !important;
+}
+.pop-src, .hint, .cite, .attribution, .legacy-note, .nc-source,
+.clock-methodology, .sr-snip, .country-meta, .section-note{
+  font-size:13.5px !important;
+}
+small, .sub, .p-intro{font-size:14px;}
+
+/* The second accent is semantic only — taglines go quiet. */
+.c-tagline, .c-quicklede, .ec-title, .cs-sub, .sr-sub, .p-subhead{
+  color:var(--muted) !important;
+}
+
+/* ---------- TABLET ---------- */
+@media (max-width:1024px){
+  .detail-body{grid-template-columns:1fr !important;}
+  .detail-body .toc{
+    position:static !important;
+    display:flex; flex-wrap:wrap; gap:8px;
+  }
+  .detail-body .toc .toc-item{flex:1 1 200px;}
+  .hero-grid{grid-template-columns:1fr !important; gap:28px !important;}
+  .two-col, .lead-compare{grid-template-columns:1fr !important;}
+}
+@media (max-width:900px) and (min-width:641px){
+  .econ-grid, .candidate-grid, .import-grid, .trap-grid, .pledge-grid,
+  .news-grid, .clock-country-grid, .country-grid, .playbook-grid,
+  .jump-grid, .resource-grid, .stat-grid{
+    grid-template-columns:repeat(2,1fr) !important;
+  }
+}
+
+/* ---------- PHONE ---------- */
+@media (max-width:640px){
+  /* Even gutters — every grid and card row sits inside the same margin. */
+  .wrap, .econ-grid, .candidate-grid, .import-grid, .trap-grid,
+  .pledge-grid, .news-grid, .clock-country-grid, .country-grid,
+  .playbook-grid, .jump-grid, .resource-grid, .stat-grid, .hero-stats,
+  .plans, .process-list, .rec-list, .timeline, .sections, .detail-body{
+    padding-left:16px !important; padding-right:16px !important;
+    margin-left:0 !important; margin-right:0 !important;
+    max-width:100% !important;
+  }
+  /* Shadows need room to fall, or they clip against the viewport edge. */
+  .econ-grid, .candidate-grid, .import-grid, .trap-grid, .pledge-grid,
+  .news-grid, .clock-country-grid, .country-grid, .playbook-grid,
+  .jump-grid, .resource-grid, .stat-grid, .hero-stats{
+    gap:18px !important; padding-top:6px !important; padding-bottom:6px !important;
+  }
+
+  /* Tighter vertical rhythm — less scrolling to reach the point. */
+  section, .paper-section, .grid-section, .clock-section, .plans{
+    padding:34px 0 !important;
+  }
+  .section-block{padding:20px 18px !important; margin-bottom:16px;}
+  .detail-header{padding:22px 18px !important;}
+  .pop-panel{gap:14px; padding:22px 18px !important;}
+  .live-strip, .stat-rail, .econ-strip{
+    display:grid !important; grid-template-columns:1fr; gap:4px;
+    padding:16px 18px !important;
+  }
+  .live-cell, .sr-item, .econ-item{padding:10px 0 !important;}
+  h1{font-size:clamp(27px,8vw,34px) !important;}
+  h2{font-size:clamp(21px,6vw,26px) !important;}
+  p, li{font-size:15.5px; line-height:1.62;}
+
+  /* Full-width actions, but only real buttons. */
+  .btn, .btn-primary, .btn-ghost, .nav-cta, .mobile-cta a, .full-report-link{
+    width:100% !important; min-height:50px;
+  }
+  .hero-actions, .cta-block, .reset-actions{flex-direction:column; width:100%;}
+
+  /* The dial stays one row, thumb-sized. */
+  .fs-dial{width:100%; padding:5px;}
+  .fs-dial button{flex:1 1 0; padding:11px 8px !important; min-height:44px; font-size:13px !important;}
+
+  /* The switch clears the content and the thumb reaches it. */
+  .fs-theme{right:12px; bottom:12px; width:54px; height:32px;}
+  .fs-theme .knob{width:24px; height:24px;}
+  :root[data-theme="dark"] .fs-theme .knob{transform:translateX(22px);}
+  body{padding-bottom:56px;}
+
+  /* Every tappable thing meets the 44px target. */
+  a, button, .toc-item, .country-card, .region-tab, .tab-btn{min-height:44px;}
+  .nav-links a, .site-switcher a{padding:10px 6px; display:inline-block;}
+}
+
+/* Very small phones — 320px, still readable. */
+@media (max-width:360px){
+  .wrap{padding-left:13px !important; padding-right:13px !important;}
+  h1{font-size:25px !important;}
+  .pop-live{font-size:30px !important;}
+  .fs-dial button{font-size:12px !important; padding:11px 4px !important;}
+}
+
+/* Landscape phone — don't let a sticky rail eat the screen. */
+@media (max-height:480px) and (orientation:landscape){
+  .tabnav, .site-nav, .topbar{position:static !important;}
+  .detail-body .toc{position:static !important;}
+}
+
+/* ---------- NAV ROW + REMAINING SMALL TYPE ---------- */
+
+/* The top nav is a row, not a stack — its controls keep intrinsic width. */
+.site-nav .nav-inner, .topbar .topbar-inner, .site-switcher-inner{
+  display:flex !important; align-items:center; gap:12px;
+  flex-wrap:nowrap; max-width:100%; overflow:hidden;
+}
+.site-nav .nav-cta, .topbar .tb-cta, .topbar .tb-print{
+  width:auto !important; flex:none; margin-left:auto;
+  padding:10px 16px !important; min-height:42px; font-size:13.5px !important;
+}
+.nav-toggle{
+  width:44px !important; height:44px !important; flex:none;
+  padding:0 !important; min-height:44px;
+  display:inline-flex; align-items:center; justify-content:center;
+}
+.brand, .tb-brand, .brand-mark{flex:0 1 auto; min-width:0; overflow:hidden; text-overflow:ellipsis;}
+
+/* Site switcher — a quiet strip that scrolls rather than wraps or shrinks. */
+.site-switcher{overflow-x:auto; scrollbar-width:none;}
+.site-switcher::-webkit-scrollbar{display:none;}
+.site-switcher, .site-switcher-inner, .sw-label,
+.site-switcher a, .site-switcher .active{
+  font-size:12.5px !important; white-space:nowrap;
+}
+.site-switcher-inner{padding:10px 16px !important; width:max-content; min-width:100%;}
+
+/* Last of the sub-12px type. */
+.mm-label, .cap, .leak-value, .ccc-row, .subhead, .lm-l, .lm-v, .lm-op,
+.sr-label, .ct-label, .ct-value, .e-l, .e-v, .cb-label, .ab-label,
+.ac-label, .gc-label, .t-year, .pc-num, .p-num, .jc-num, .nc-date{
+  font-size:12.5px !important;
+}
+.ticker-item, .ticker-item b{font-size:13px !important;}
+
+/* The marquee is deliberately wider than the screen — keep it off the page. */
+.ticker-band{overflow:hidden !important; max-width:100%;}
+main, body{overflow-x:hidden;}
+
+/* Final sweep — nothing under 12.5px anywhere. */
+.cs-icon, .brand-sub, .ec-title, .skip-note, .mm-item,
+h4, em, .p-item, .lc-label, .sl, .sv, .ph-text, .r-text{
+  font-size:12.5px !important;
+}
+h4{font-size:15px !important; letter-spacing:0;}
+.skip-note, .section-note{font-size:13.5px !important; line-height:1.6;}
+.cs-icon{letter-spacing:.1em; color:var(--muted) !important;}
+.ic-badge, .cc-where, .cc-how, .val, LABEL, label, .sim-field label,
+.ic-fact, .ic-top, .pe-row, .mm-countries a{font-size:12.5px !important;}
+h5, .footer h5, .footer-grid h5{font-size:13px !important; letter-spacing:.1em; text-transform:uppercase; color:var(--muted) !important;}
+
+/* ---------- VALUE-CHAIN DIAGRAM ---------- */
+.leak-row{
+  display:flex !important; align-items:center; gap:10px;
+  background:transparent !important; box-shadow:none !important; padding:0 !important;
+}
+.leak-node{
+  display:inline-flex !important; align-items:center; gap:8px;
+  flex:0 1 auto; padding:12px 16px !important;
+  border-radius:var(--r-sm) !important;
+  box-shadow:var(--sh-out-sm) !important;
+  background:var(--surface) !important;
+  color:var(--text) !important;
+  font-size:14px !important; line-height:1.35;
+}
+/* The end of the chain — where the value comes back marked up — is the
+   only part that carries the accent. */
+.leak-node.proc{box-shadow:var(--sh-in) !important; color:var(--accent) !important;}
+.leak-node.raw{color:var(--text) !important;}
+.leak-arrow{flex:1 1 20px; min-width:20px;}
+.leak-value{
+  color:var(--muted) !important; text-align:left !important;
+  font-size:12.5px !important; margin:6px 0 16px !important;
+  white-space:normal !important; padding-left:2px;
+}
+.leak-note{color:var(--muted) !important; box-shadow:inset 0 1px 0 var(--lo); padding-top:16px;}
+.leak-note strong{color:var(--text) !important;}
+
+@media (max-width:640px){
+  .leak-row{flex-wrap:wrap;}
+  .leak-node{width:100%; flex:1 1 100%;}
+  .leak-arrow{display:none;}
+  .leak-value{text-align:center !important;}
+}
+
+/* ---------- TABLET GUTTERS + STRAY MONOSPACE ---------- */
+
+/* Nothing touches the screen edge between 641px and 1180px. */
+@media (max-width:1180px){
+  .grid-section, .sections, .detail-body, .detail-header,
+  .country-grid, .section-label, .skip-note, .region-rail,
+  .hero, .clock-section > *, .plans, .paper-section{
+    padding-left:max(20px, env(safe-area-inset-left)) ;
+    padding-right:max(20px, env(safe-area-inset-right));
+    box-sizing:border-box;
+  }
+  .country-grid, .region-rail{padding-top:8px; padding-bottom:8px;}
+}
+@media (max-width:640px){
+  .grid-section, .sections, .detail-body, .detail-header,
+  .country-grid, .section-label, .skip-note, .region-rail{
+    padding-left:16px !important; padding-right:16px !important;
+  }
+}
+
+/* The old skin used a monospace face for notes and figures — the brief
+   allows two families only, so everything resolves to Inter or Poppins. */
+body, body *, .skip-note, .section-note, .sources-box, .leak-value,
+.cap, .eyebrow, .mono, code, .clock-methodology, .cs-icon{
+  font-family:var(--body);
+}
+h1,h2,h3,h4,h5,.brand-mark,.country-name,.pop-live,.pop-rate .n,
+.pop-stat .n,.num,.v,.cs-value,.ccc-pop,.hero-stat .n,.lc-value{
+  font-family:var(--display) !important;
+}
+.skip-note, .sources-box{text-align:left; line-height:1.65;}
+
+/* Detail-meta values read at full strength; only the label is muted. */
+.detail-meta > div{color:var(--text) !important;}
+
+/* Country tagline and label dots are structure, not signal. */
+.c-hero .c-tagline, .c-hero-top .c-tagline, .c-tagline,
+.live-strip .lc-label, .lc-label, .live-cell .lc-label{
+  color:var(--muted) !important;
+}
+.lc-label .dot, .live-cell .dot, .c-tagline .dot{background:var(--muted) !important;}
+
+/* ===================================================================
+   TYPOGRAPHY & SCROLL — authoritative pass
+   Poppins carries tall ascenders and deep descenders, so every heading
+   needs a line box larger than the old dark theme allowed. Nothing here
+   constrains a text box below its natural height.
+   =================================================================== */
+
+/* ---------- SCROLL ---------- */
+html{
+  scroll-behavior:smooth;
+  /* set from the measured sticky header by forte-soft.js; this is the floor */
+  scroll-padding-top:var(--sticky-h, 96px);
+}
+@media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto;} }
+
+/* The sticky stack must never eat more than a sliver of a phone screen. */
+@media (max-width:820px){
+  /* The network switcher scrolls away; only the working bar stays. */
+  .site-switcher{position:static !important;}
+  .site-switcher-group{position:sticky; top:0;}
+  .site-switcher-group.is-scrolled .site-switcher{
+    display:none !important;
+  }
+  .topbar, .site-nav{padding:6px 0 !important;}
+  .topbar-inner, .nav-inner{padding-top:6px !important; padding-bottom:6px !important;}
+}
+/* Landscape phones: nothing sticks at all, the screen is too short. */
+@media (max-height:520px) and (orientation:landscape){
+  .site-switcher-group, .topbar, .site-nav, .tabnav, .site-switcher{
+    position:static !important;
+  }
+  html{scroll-padding-top:12px;}
+}
+
+/* ---------- HEADINGS ---------- */
+h1, h2, h3, h4, h5,
+.hero h1, .country-name, .c-name, .brand-mark, .pop-live{
+  font-family:var(--display) !important;
+  color:var(--text) !important;
+  text-wrap:balance;
+  overflow-wrap:break-word;
+  hyphens:manual;
+}
+
+h1{
+  font-weight:600 !important;
+  font-size:clamp(30px, 6vw, 46px) !important;
+  line-height:1.16 !important;
+  letter-spacing:-0.022em !important;
+  padding-bottom:0.08em;          /* room for descenders */
+  margin-bottom:0.35em;
+}
+h2{
+  font-weight:600 !important;
+  font-size:clamp(22px, 3.4vw, 30px) !important;
+  line-height:1.3 !important;
+  letter-spacing:-0.014em !important;
+  padding-bottom:0.1em;
+  margin-bottom:0.5em;
+}
+h3{
+  font-weight:600 !important;
+  font-size:clamp(18px, 2.4vw, 21px) !important;
+  line-height:1.38 !important;
+  letter-spacing:-0.008em !important;
+  margin-bottom:0.45em;
+}
+h4{
+  font-weight:600 !important;
+  font-size:16px !important;
+  line-height:1.45 !important;
+  letter-spacing:0 !important;
+  margin-bottom:0.4em;
+}
+h5{
+  font-weight:600 !important;
+  font-size:12.5px !important;
+  line-height:1.5 !important;
+  letter-spacing:0.11em !important;
+  text-transform:uppercase;
+  color:var(--muted) !important;
+}
+
+/* Section headings inside an entry carry their icon on the same baseline. */
+.section-block h2{
+  display:flex; align-items:flex-start; gap:11px;
+  font-size:clamp(19px, 2.6vw, 23px) !important;
+  line-height:1.34 !important;
+}
+.section-block h2 svg{
+  width:20px; height:20px; flex:none;
+  margin-top:0.24em; color:var(--accent);
+}
+
+/* The page title block breathes. */
+.detail-header h1, .c-hero h1, .hero h1{
+  margin-bottom:0.3em;
+  padding-bottom:0.1em;
+}
+.country-name{
+  font-weight:600 !important;
+  font-size:19px !important;
+  line-height:1.32 !important;
+  letter-spacing:-0.01em;
+  padding-bottom:0.06em;
+}
+
+/* ---------- BODY COPY ---------- */
+p, li, .bullets li, .prose p, .lede, .hero-lede{
+  font-family:var(--body) !important;
+  font-weight:400;
+  line-height:1.68 !important;
+  letter-spacing:0.002em;
+}
+p{margin-bottom:1em;}
+p:last-child{margin-bottom:0;}
+
+/* A comfortable measure — long lines are the other half of hard scrolling. */
+.section-block p, .section-block li, .bullets li, .prose p,
+.skip-note, .sources-box, .pop-src, .section-note, .abstract-box p,
+.paper-section p, .callout p, .p-intro{
+  max-width:68ch;
+}
+.hero-lede, .lede{max-width:60ch; line-height:1.62 !important;}
+
+/* Bold means bold — the surface is low contrast, so weight does the work. */
+strong, b, .mark, mark{
+  font-weight:600 !important;
+  color:var(--text) !important;
+}
+.mark, mark{color:var(--accent) !important; font-weight:600 !important;}
+.bullets li strong, .section-block strong{font-weight:600 !important;}
+
+/* Bulleted facts get air between them so the eye can find the next one. */
+.bullets{display:grid !important; gap:17px !important;}
+.bullets li{
+  padding-left:20px; line-height:1.68 !important;
+  max-width:68ch;
+}
+.bullets li::before{top:0.62em;}
+
+/* Numerals stay aligned and confident wherever they appear. */
+.num, .v, .cs-value, .ccc-pop, .lc-value, .hero-stat .n, .sr-value, .sv,
+.pop-live, .pop-rate .n, .pop-stat .n, .country-card .cc-pop b{
+  font-family:var(--display) !important;
+  font-weight:600 !important;
+  font-variant-numeric:tabular-nums;
+  letter-spacing:-0.015em;
+  line-height:1.2 !important;
+  padding-bottom:0.04em;
+}
+.pop-live{
+  font-size:clamp(32px, 8.5vw, 54px) !important;
+  line-height:1.14 !important;
+  letter-spacing:-0.025em;
+}
+
+/* Uppercase labels need letter-spacing to stay legible at small sizes. */
+.eyebrow, .section-label, .sec-label, .co-label, .cs-label, .l,
+.pop-cap, .pop-rate .u, .pop-stat .l, .country-region-tag, .lc-label,
+.hero-stat .l, .detail-meta strong, th{
+  font-weight:600 !important;
+  letter-spacing:0.12em !important;
+  line-height:1.5 !important;
+}
+
+/* ---------- PHONE TYPE ---------- */
+@media (max-width:640px){
+  h1{font-size:clamp(27px, 7.6vw, 34px) !important; line-height:1.18 !important;}
+  h2{font-size:21px !important; line-height:1.32 !important;}
+  .section-block h2{font-size:19px !important;}
+  h3{font-size:17.5px !important;}
+  p, li, .bullets li{font-size:16px !important; line-height:1.66 !important;}
+  .bullets{gap:15px !important;}
+  .section-block p, .section-block li, .bullets li{max-width:none;}
+  .detail-header h1{font-size:30px !important;}
+}
+
+/* The working bar keeps its own soft edge once the strip above is gone. */
+.site-switcher-group.is-scrolled .topbar,
+body.fs-scrolled .site-nav{
+  box-shadow:0 8px 18px -12px var(--lo) !important;
+}
+
+/* index.html and business-plans use #top-fixed-group for the same stack. */
+@media (max-width:820px){
+  #top-fixed-group.is-scrolled .site-switcher,
+  body.fs-scrolled #top-fixed-group .site-switcher{display:none !important;}
+}
+
+/* ===================================================================
+   READING DETAIL — icon alignment, bullets, contents list
+   =================================================================== */
+
+/* The old skin drew a gradient rule beside each block; the surface
+   carries that job now, so it goes. */
+.section-block::before, .sections::before, .biblical-block::before{
+  display:none !important; content:none !important;
+}
+
+/* Icon sits with the heading, not adrift from it. */
+.section-block h2 svg{margin-right:0 !important;}
+.section-block h2{gap:12px !important;}
+
+/* Bullets you can actually see, on the baseline of the first line. */
+.bullets li::before{
+  width:7px; height:7px; top:0.58em;
+  background:var(--accent) !important;
+  box-shadow:none !important;
+  opacity:.55;
+}
+.bullets li{padding-left:22px;}
+
+/* Contents list: a readable index, and chips rather than a wall on phones. */
+.toc-item{
+  font-size:14.5px !important;
+  line-height:1.45 !important;
+  color:var(--text) !important;
+  padding:10px 13px;
+}
+.toc-item svg{width:16px; height:16px; opacity:.5; color:var(--accent);}
+.toc-item.active{font-weight:600;}
+.toc-item.active svg{opacity:1;}
+
+@media (max-width:900px){
+  .detail-body .toc{
+    display:flex !important; flex-wrap:wrap; gap:8px !important;
+    padding:12px !important;
+  }
+  .detail-body .toc .toc-item{
+    flex:0 1 auto; width:auto;
+    padding:9px 13px !important;
+    border-radius:var(--r-pill);
+    box-shadow:var(--sh-out-sm);
+    font-size:13.5px !important;
+    min-height:40px;
+  }
+  .detail-body .toc .toc-item svg{display:none;}
+  .detail-body .toc .toc-item.active{box-shadow:var(--sh-in); color:var(--accent) !important;}
+}
+
+/* The tradition note reads as an aside, not a headline. */
+.section-note{
+  font-style:normal !important;
+  color:var(--muted) !important;
+  line-height:1.6 !important;
+  padding:14px 16px !important;
+  margin-bottom:18px;
+}
+
+/* Sources close the entry quietly. */
+.sources-box{line-height:1.7 !important; padding:18px 20px !important;}
+.sources-box strong{display:block; margin-bottom:6px;}
+
+/* ===================================================================
+   FINAL TYPE POLISH
+   =================================================================== */
+
+/* Centred intros keep a readable measure instead of running edge to edge. */
+.section-head p, .clock-summary p, .cover p, #app .hero .hero-lede,
+.hero.centered p{
+  max-width:64ch;
+  margin-left:auto !important;
+  margin-right:auto !important;
+}
+.section-head h2, .section-head h1{margin-bottom:0.45em;}
+.section-head{margin-bottom:34px;}
+
+/* Breadcrumbs and back links read as UI, not as tracked-out labels. */
+.breadcrumb, .tb-back, .co-label{
+  letter-spacing:0.06em !important;
+  font-size:12.5px !important;
+  font-weight:600 !important;
+  text-transform:uppercase;
+  color:var(--muted) !important;
+}
+.breadcrumb{cursor:pointer; display:inline-block; margin-bottom:14px;}
+.breadcrumb:hover{color:var(--accent) !important;}
+
+/* Links inside running text carry weight, not decoration. */
+.section-block a, .prose a, p a, li a{
+  font-weight:500;
+  color:var(--accent) !important;
+  text-underline-offset:3px;
+  text-decoration:underline;
+  text-decoration-thickness:1px;
+  text-decoration-color:color-mix(in srgb, var(--accent) 35%, transparent);
+}
+.section-block a:hover, p a:hover{text-decoration-color:var(--accent);}
+
+/* Quotes and callouts get a clear voice of their own. */
+.pullquote, .quote-block, blockquote{
+  font-family:var(--display) !important;
+  font-weight:500 !important;
+  font-size:clamp(17px,2.2vw,20px) !important;
+  line-height:1.5 !important;
+  letter-spacing:-0.01em;
+  color:var(--text) !important;
+}
+.callout, .gold-callout, .alert-callout, .critique-box{
+  line-height:1.65 !important;
+}
+.callout strong, .gold-callout strong, .alert-callout strong{
+  display:block; margin-bottom:5px; color:var(--text) !important;
+}
+
+/* Trim the dead air the old dark theme left between blocks. */
+.leak-diagram{margin-bottom:0 !important;}
+.section-head + *, .clock-summary{margin-top:0;}
+.hero + section, section + section{padding-top:clamp(34px,5vw,60px) !important;}
+
+@media (max-width:640px){
+  .section-head{margin-bottom:24px;}
+  .section-head p, .clock-summary p{max-width:none;}
+}
+
+/* ===================================================================
+   LAST PASS — badges, subtitles, document blocks
+   =================================================================== */
+
+/* Badges and tags are pressed chips, never colour blocks. */
+.ic-badge, .tag, .r-tag, .c-tag, .ph-tag, .map-tag, .form-tag,
+.country-region-tag, .region-tab .count, .cb-label{
+  background:var(--surface) !important;
+  box-shadow:var(--sh-in) !important;
+  color:var(--muted) !important;
+  border-radius:var(--r-pill) !important;
+  padding:5px 12px !important;
+  display:inline-block;
+  font-weight:600 !important;
+  letter-spacing:0.06em !important;
+  white-space:nowrap;
+}
+.country-region-tag{box-shadow:none !important; padding:0 !important; background:none !important;}
+
+/* Subtitles carry the page, so they read in the text colour, upright. */
+.subtitle, .c-tagline, .p-subhead, .doc-meta, .ec-title{
+  font-style:normal !important;
+  color:var(--muted) !important;
+  font-family:var(--body) !important;
+  font-weight:500 !important;
+  letter-spacing:0 !important;
+}
+.subtitle{
+  font-size:clamp(16px,2.1vw,19px) !important;
+  line-height:1.55 !important;
+  max-width:60ch;
+  margin-bottom:26px;
+}
+
+/* Document blocks: the label sits above its text, not in a wide empty column. */
+.abstract-box, .gold-callout, .alert-callout, .callout, .critique-box{
+  display:block !important;
+  padding:22px 24px !important;
+}
+.ab-label, .ac-label, .gc-label, .co-label, .sec-label{
+  display:block; margin-bottom:10px;
+  color:var(--accent) !important;
+}
+.doc-meta{display:grid; gap:12px; max-width:760px;}
+.doc-meta > *{padding:14px 18px !important;}
+
+/* Headings that share a row with a badge stay on one baseline. */
+.ic-top, .region-title, .cc-head, .p-head-left, .c-head-left, .ccc-head{
+  display:flex !important; align-items:center; gap:10px; flex-wrap:wrap;
+}
+.ic-top h4, .region-title h3{margin-bottom:0 !important; flex:1 1 auto;}
+
+/* Section label above a block of cards. */
+.section-label{
+  display:block; margin-bottom:18px;
+  color:var(--muted) !important;
+}
+
+/* A two-line display title needs the extra leading that one line does not. */
+h1{line-height:1.2 !important; padding-bottom:0.14em;}
+.cover h1, .subtitle + *{margin-top:0;}
+@media (max-width:640px){ h1{line-height:1.22 !important;} }
+
+/* Auto-centring belongs to centred section intros only — a paragraph
+   inside a panel stays left-aligned against its own edge. */
+.abstract-box p, .callout p, .gold-callout p, .alert-callout p,
+.critique-box p, .doc-meta p, .cover .abstract-box p, .sources-box p{
+  margin-left:0 !important;
+  margin-right:0 !important;
+  max-width:72ch;
+}
+.abstract-box p{font-size:15.5px !important; line-height:1.7 !important; color:var(--text) !important;}
+
+/* Long chips wrap rather than push the page sideways. */
+.map-tag, .ph-tag, .r-tag{white-space:normal !important;}
+.map-strip{display:flex; flex-wrap:wrap; gap:10px;}
+.map-strip .map-tag{flex:0 1 auto; max-width:100%;}
+
+/* Nothing may push the page sideways. `clip` is used rather than `hidden`
+   because `hidden` on the root would break position:sticky. */
+html{overflow-x:clip;}
+body{overflow-x:clip;}

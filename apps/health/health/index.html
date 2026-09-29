@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Team21 Health Platform — Preventive Health & Chronic Disease Intelligence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700;9..144,800&family=Inter+Tight:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<style>
+  /* Landing-specific */
+  .hero{max-width:1320px;margin:0 auto;padding:70px 28px 40px;position:relative}
+  .hero-grid{display:grid;grid-template-columns:1.35fr 1fr;gap:60px;align-items:end}
+  .eyebrow{font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--accent);font-weight:600;margin-bottom:18px;display:flex;align-items:center;gap:10px}
+  .eyebrow::before{content:"";width:30px;height:1px;background:var(--accent)}
+  h1.display{font-family:"Fraunces",serif;font-weight:400;font-size:clamp(48px,7vw,100px);line-height:.95;letter-spacing:-.03em;margin:0 0 24px;font-variation-settings:"opsz" 144}
+  h1.display em{font-style:italic;font-weight:300;color:var(--accent)}
+  .lede{font-family:"Fraunces",serif;font-size:21px;line-height:1.45;color:var(--ink-soft);font-weight:300;max-width:600px;font-variation-settings:"opsz" 14}
+  .hero-meta{border-top:1px solid var(--rule);padding-top:20px;font-size:12px;color:var(--mute);display:flex;flex-direction:column;gap:8px}
+  .hero-meta strong{color:var(--ink);font-weight:600;letter-spacing:.05em;text-transform:uppercase;font-size:11px}
+  .hero-actions{display:flex;gap:12px;margin-top:30px;flex-wrap:wrap}
+  .hero-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin:50px auto 0;max-width:1320px;padding:32px 28px 0;border-top:1px solid var(--rule)}
+  .stat .num{font-family:"Fraunces",serif;font-size:42px;font-weight:500;line-height:1;letter-spacing:-.02em}
+  .stat .lbl{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--mute);margin-top:8px}
+  .stat .src{font-size:11px;color:var(--mute);margin-top:6px;font-style:italic}
+
+  /* Section overview */
+  .overview{max-width:1320px;margin:90px auto 0;padding:0 28px}
+  .overview h2{font-family:"Fraunces",serif;font-weight:400;font-size:clamp(34px,4.5vw,56px);letter-spacing:-.02em;margin:0 0 14px;line-height:1.05}
+  .overview h2 em{font-style:italic;color:var(--accent)}
+  .overview > p{max-width:780px;font-size:15.5px;color:var(--ink-soft);margin:0 0 40px}
+  .sect-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  .sect-card{background:var(--paper);border:1px solid var(--rule);padding:28px;text-decoration:none;color:inherit;display:flex;flex-direction:column;gap:10px;position:relative;transition:transform .2s ease,box-shadow .2s ease,background .2s ease}
+  .sect-card:hover{transform:translateY(-3px);box-shadow:var(--shadow);background:var(--paper-2)}
+  .sect-card .num{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--accent);letter-spacing:.15em}
+  .sect-card h3{font-family:"Fraunces",serif;font-size:26px;margin:0;font-weight:500;letter-spacing:-.01em;line-height:1.15}
+  .sect-card p{font-size:13.5px;color:var(--ink-soft);margin:0;line-height:1.55;flex:1}
+  .sect-card .arrow{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:500;color:var(--accent);text-transform:uppercase;letter-spacing:.1em;margin-top:8px}
+
+  /* Quote */
+  .pull{max-width:1100px;margin:90px auto;padding:0 28px;font-family:"Fraunces",serif;font-style:italic;font-weight:300;font-size:clamp(24px,3.4vw,40px);line-height:1.2;letter-spacing:-.015em;color:var(--ink)}
+  .pull::before{content:"“";font-size:1.4em;color:var(--accent);font-style:normal;line-height:0;vertical-align:-.2em;margin-right:.1em}
+  .pull cite{display:block;margin-top:18px;font-style:normal;font-family:"Inter Tight",sans-serif;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--mute);font-weight:500}
+
+  /* Feature row */
+  .features{max-width:1320px;margin:0 auto 80px;padding:0 28px;display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+  .feature{padding-top:18px;border-top:2px solid var(--ink)}
+  .feature .lab{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--accent);letter-spacing:.1em;margin-bottom:10px}
+  .feature h4{font-family:"Fraunces",serif;font-size:22px;margin:0 0 6px;font-weight:500;letter-spacing:-.01em;line-height:1.15}
+  .feature p{font-size:13.5px;color:var(--ink-soft);margin:0;line-height:1.55}
+
+  @media (max-width:960px){
+    .hero-grid{grid-template-columns:1fr;gap:30px}
+    .hero-stats{grid-template-columns:1fr;gap:20px}
+    .sect-grid{grid-template-columns:1fr}
+    .features{grid-template-columns:1fr 1fr}
+  }
+
+  /* ===== Health Tips Marquee ===== */
+  .tips-marquee{
+    max-width:1320px;
+    margin:50px auto 20px;
+    padding:0 28px;
+    display:grid;
+    grid-template-columns:auto 1fr;
+    gap:20px;
+    align-items:center;
+  }
+  .marquee-label{
+    font-family:"JetBrains Mono",monospace;
+    font-size:10px;
+    letter-spacing:.16em;
+    color:var(--accent);
+    white-space:nowrap;
+    padding:10px 14px;
+    border:1px solid var(--accent);
+    border-radius:2px;
+    background:var(--bg);
+  }
+  .marquee-viewport{
+    overflow:hidden;
+    position:relative;
+    border-top:1px solid var(--rule);
+    border-bottom:1px solid var(--rule);
+    padding:14px 0;
+    mask-image:linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+    -webkit-mask-image:linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+  }
+  .marquee-track{
+    display:inline-flex;
+    gap:0;
+    animation: marquee 80s linear infinite;
+    white-space:nowrap;
+    will-change:transform;
+  }
+  .marquee-track:hover{animation-play-state:paused}
+  .marquee-tip{
+    display:inline-flex;
+    align-items:center;
+    gap:12px;
+    padding:0 32px;
+    font-family:"Fraunces",serif;
+    font-style:italic;
+    font-weight:300;
+    font-size:17px;
+    color:var(--ink);
+    line-height:1.4;
+    flex-shrink:0;
+  }
+  .marquee-tip .dot{
+    width:5px;
+    height:5px;
+    border-radius:50%;
+    background:var(--accent);
+    flex-shrink:0;
+  }
+  .marquee-icon{
+    font-size:18px;
+    line-height:1;
+    font-style:normal;
+  }
+  @keyframes marquee{
+    from{transform:translateX(0)}
+    to{transform:translateX(-50%)}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .marquee-track{animation-duration:200s}
+  }
+  @media (max-width:700px){
+    .tips-marquee{grid-template-columns:1fr;gap:10px}
+    .marquee-label{justify-self:start;padding:6px 10px;font-size:9px}
+    .marquee-tip{font-size:15px;padding:0 22px}
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="brand">
+      <div class="brand-mark">T21</div>
+      <div>
+        <div class="brand-name">Team21 Health Platform</div>
+        <div class="brand-sub">Preventive Intelligence · Est. 2025</div>
+      </div>
+    </a>
+    <div class="nav-cta" id="navCta"></div>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="hero-grid">
+    <div>
+      <div class="eyebrow">A Peer-Reviewed Preventive Health Resource</div>
+      <h1 class="display">The science of <em>not</em> getting sick.</h1>
+      <p class="lede">A comprehensive, evidence-based platform mapping the dietary, environmental, and behavioural factors implicated in cancer and chronic disease — drawn from IARC monographs, WHO position papers, NIH reviews, and peer-reviewed cohort studies.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="carcinogens.html">Browse the library →</a>
+        <a class="btn" href="tracker.html">Start tracking</a>
+        <a class="btn" href="community.html">Ask a question</a>
+      </div>
+    </div>
+    <aside class="hero-meta">
+      <div><strong>Edition</strong> Volume 02 · 2026</div>
+      <div><strong>Sources</strong> IARC · WHO · NIH · AHA · AICR · ACS · Lancet · BMJ · NEJM · JAMA</div>
+      <div><strong>Coverage</strong> 9 body systems · 60+ exposures · 15+ natural remedies · 8 quizzes · daily tracker · community Q&amp;A</div>
+      <div><strong>Editor</strong> Innocent Forteh</div>
+    </aside>
+  </div>
+</header>
+
+<div class="hero-stats">
+  <div class="stat">
+    <div class="num">30–50%</div>
+    <div class="lbl">of cancers are preventable</div>
+    <div class="src">— WHO, Cancer Prevention (2023)</div>
+  </div>
+  <div class="stat">
+    <div class="num">74%</div>
+    <div class="lbl">of global deaths from NCDs</div>
+    <div class="src">— WHO, Noncommunicable Diseases Factsheet</div>
+  </div>
+  <div class="stat">
+    <div class="num">~40%</div>
+    <div class="lbl">of new cancer cases linked to modifiable risk</div>
+    <div class="src">— American Cancer Society, 2024</div>
+  </div>
+</div>
+
+<!-- ===== Daily Tips Marquee ===== -->
+<div class="tips-marquee" aria-label="Rotating health tips">
+  <div class="marquee-label">DAILY · GENTLE · REMINDERS</div>
+  <div class="marquee-viewport">
+    <div class="marquee-track" id="tipsTrack"></div>
+  </div>
+</div>
+
+<!-- ===== Body Systems ===== -->
+<section class="overview">
+  <h2>Care for every <em>system in the body</em>.</h2>
+  <p>Nine dedicated sections, each with the targets, practices, foods and red-flag symptoms specific to that organ system — grounded in IARC, WHO, AHA, NIH and peer-reviewed evidence.</p>
+  <div class="system-grid">
+    <a class="sys-card" href="heart.html">
+      <span class="icon">🫀</span>
+      <h3>Heart &amp; Circulation</h3>
+      <p>BP, cholesterol, exercise, salt, the cardio-friendly plate. Nine high-impact practices and when to seek emergency help.</p>
+      <span class="arrow">Open →</span>
+    </a>
+    <a class="sys-card" href="sleep.html">
+      <span class="icon">😴</span>
+      <h3>Sleep &amp; Recovery</h3>
+      <p>The four stages of sleep explained, why deep and REM sleep matter, and a seven-day sleep reset protocol.</p>
+      <span class="arrow">Open →</span>
+    </a>
+    <a class="sys-card" href="brain.html">
+      <span class="icon">🧠</span>
+      <h3>Brain &amp; Mind</h3>
+      <p>Cognitive reserve, mid-life hearing loss, the MIND diet, mental health — what protects 40% of dementia risk.</p>
+      <span class="arrow">Open →</span>
+    </a>
+    <a class="sys-card" href="gut.html">
+      <span class="icon">🦠</span>
+      <h3>Gut &amp; Digestion</h3>
+      <p>30+ plants a week, fibre targets, fermented foods, gut-brain axis, and the red-flag symptoms not to ignore.</p>
+      <span class="arrow">Open →</span>
+    </a>
+    <a class="sys-card" href="kidneys.html">
+      <span class="icon">🩺</span>
+      <h3>Kidneys &amp; Liver</h3>
+      <p>The silent organs. NSAID caution, salt, alcohol, and why most "detox" remedies are at best useless and at worst toxic.</p>
+      <span class="arrow">Open →</span>
+    </a>
+    <a class="sys-card" href="skin.html">
+      <span class="icon">✋</span>
+      <h3>Skin Health</h3>
+      <p>SPF, the ABCDE rule for moles, gentle cleansing, acne and the lifestyle factors that age skin fastest.</p>
+      <span class="arrow">Open →</span>
+    </a>
+    <a class="sys-card" href="eyes.html">
+      <span class="icon">👁️</span>
+      <h3>Eyes &amp; Vision</h3>
+      <p>The 20-20-20 rule, why outdoor time prevents myopia in children, lutein for macular health, urgent symptoms.</p>
+      <span class="arrow">Open →</span>
+    </a>
+    <a class="sys-card" href="women.html">
+      <span class="icon">♀️</span>
+      <h3>Women's Health</h3>
+      <p>HPV, cervical and breast screening, iron and folate, pelvic floor, bone health, modern menopause care.</p>
+      <span class="arrow">Open →</span>
+    </a>
+    <a class="sys-card" href="men.html">
+      <span class="icon">♂️</span>
+      <h3>Men's Health</h3>
+      <p>Colorectal, prostate and testicular screening, mental health, and why ED is often an early vascular warning.</p>
+      <span class="arrow">Open →</span>
+    </a>
+  </div>
+</section>
+
+<!-- ===== Section overview ===== -->
+<section class="overview" style="margin-top:60px">
+  <h2>Know the <em>risks</em>. Use the <em>tools</em>.</h2>
+  <p>From understanding hazards, to decoding food labels, to evidence-based natural remedies and daily habit tracking — eight more sections complete the platform.</p>
+  <div class="sect-grid">
+    <a class="sect-card" href="carcinogens.html">
+      <span class="num">01 / KNOW</span>
+      <h3>The Carcinogen Library</h3>
+      <p>Detailed entries for every major dietary, environmental, occupational and lifestyle carcinogen, with IARC classification, common sources, hidden label aliases and the evidence behind the risk.</p>
+      <span class="arrow">Open library →</span>
+    </a>
+    <a class="sect-card" href="additives.html">
+      <span class="num">02 / DECODE</span>
+      <h3>Food Additives Decoded</h3>
+      <p>Carrageenan, aspartame, nitrites, BHA/BHT, titanium dioxide, dyes, MSG aliases, emulsifiers, potassium bromate — what they are, every name they hide behind, and where they appear.</p>
+      <span class="arrow">Decode labels →</span>
+    </a>
+    <a class="sect-card" href="african-diet.html">
+      <span class="num">03 / REGION</span>
+      <h3>African Diet &amp; Cooking</h3>
+      <p>40+ traditional foods rated, ten cooking methods ranked, and the chemistry of frying, roasting, grilling and smoking — what to keep, what to change.</p>
+      <span class="arrow">Open →</span>
+    </a>
+    <a class="sect-card" href="natural-remedies.html">
+      <span class="num">04 / NATURAL</span>
+      <h3>Natural Remedies</h3>
+      <p>Ginger, lemongrass, cloves, turmeric, garlic, hibiscus, moringa, leafy greens — 15+ pantry staples with peer-reviewed evidence behind them. And what doesn't work.</p>
+      <span class="arrow">Open the pantry →</span>
+    </a>
+    <a class="sect-card" href="lifestyle.html">
+      <span class="num">05 / UNDERSTAND</span>
+      <h3>Lifestyle &amp; Environment</h3>
+      <p>Obesity, sedentary behaviour, sleep loss, chronic stress, infections, oral health, sun, air pollution and radon — the everyday exposures with the strongest evidence behind them.</p>
+      <span class="arrow">Read the evidence →</span>
+    </a>
+    <a class="sect-card" href="proposals.html">
+      <span class="num">06 / ACT</span>
+      <h3>24 Evidence-Based Proposals</h3>
+      <p>Practical, peer-reviewed practices — from Mediterranean diet patterns to radon testing — each mapped to its primary supporting study.</p>
+      <span class="arrow">See proposals →</span>
+    </a>
+    <a class="sect-card" href="tracker.html">
+      <span class="num">07 / TRACK</span>
+      <h3>Daily Habit Tracker</h3>
+      <p>Sign in to check off 16 daily habits, watch your weekly streak, and print a clinical-grade summary for your records or your physician.</p>
+      <span class="arrow">Start tracking →</span>
+    </a>
+    <a class="sect-card" href="quizzes.html">
+      <span class="num">08 / TEST</span>
+      <h3>Knowledge Quizzes</h3>
+      <p>Eight short quizzes — carcinogens, heart, sleep, cooking, natural remedies, sleep cycle, skin &amp; eyes, kidneys — about 50 questions with explanations and sources.</p>
+      <span class="arrow">Take a quiz →</span>
+    </a>
+    <a class="sect-card" href="community.html">
+      <span class="num">09 / ASK</span>
+      <h3>Community Q&amp;A</h3>
+      <p>Submit your own questions, leave notes on entries, and read what others are asking. Sign in to post; anyone can read.</p>
+      <span class="arrow">Join the conversation →</span>
+    </a>
+    <a class="sect-card" href="medicines.html">
+      <span class="num">10 / PHARMACY</span>
+      <h3>Medicines &amp; Natural Alternatives</h3>
+      <p>20+ common medicines used across Africa, Europe and the US — Efferalgan, Artefan, Amoxil, Brufen and more — with brand names, doses, real side effects, and evidence-based natural alternatives.</p>
+      <span class="arrow">Open the medicine cabinet →</span>
+    </a>
+    <a class="sect-card" href="encouragement.html">
+      <span class="num">11 / FAITH</span>
+      <h3>Faith &amp; Encouragement</h3>
+      <p>Scripture for hard seasons — for fear, exhaustion, grief, hopelessness, and uncertainty. Eight life situations, forty verses, practical spiritual disciplines that support wellbeing.</p>
+      <span class="arrow">Find encouragement →</span>
+    </a>
+  </div>
+</section>
+
+<div class="pull">
+  Prevention is not the avoidance of life. It is the construction of an environment, a routine, and a mindset in which the cellular machinery of the body is given its best possible chance to keep working — quietly, reliably, for as long as we live.
+  <cite>— Editorial, Team21 Health Platform</cite>
+</div>
+
+<section class="features">
+  <div class="feature">
+    <div class="lab">01 / FREE ACCOUNT</div>
+    <h4>Save anything, anywhere</h4>
+    <p>Bookmarks, notes and tracker data persist across devices once you sign in. No card. No upsell.</p>
+  </div>
+  <div class="feature">
+    <div class="lab">02 / INTERACTIVE</div>
+    <h4>Notes on every entry</h4>
+    <p>Add private notes against any topic. Ask the community a question directly from the source entry.</p>
+  </div>
+  <div class="feature">
+    <div class="lab">03 / PRINTABLE</div>
+    <h4>Take it to your doctor</h4>
+    <p>A one-click weekly summary prints a clinical-grade record of your habits for any clinical conversation.</p>
+  </div>
+  <div class="feature">
+    <div class="lab">04 / OPEN EVIDENCE</div>
+    <h4>Every claim, sourced</h4>
+    <p>Each entry is footed with its IARC monograph, WHO guideline or peer-reviewed citation — verifiable, not vibes.</p>
+  </div>
+</section>
+
+<script src="data.js"></script>
+<script src="lang-data.js"></script>
+<script src="lang.js"></script>
+<script src="shared.js"></script>
+<script src="components.js"></script>
+<script>
+T21.boot('index.html');
+
+// ===== Health tips marquee =====
+const TIPS = [
+  {ic:'💧', en:'Drink water — your body is 60% water', fr:'Buvez de l\'eau — votre corps est composé à 60 % d\'eau'},
+  {ic:'☀️', en:'Go outside and enjoy God\'s creation', fr:'Sortez et profitez de la création de Dieu'},
+  {ic:'🌬️', en:'Breathe in deeply — slow, six breaths a minute', fr:'Respirez profondément — six respirations lentes par minute'},
+  {ic:'🚶', en:'Stand up. Stretch. Walk a little — every hour', fr:'Levez-vous. Étirez-vous. Marchez un peu — chaque heure'},
+  {ic:'🥗', en:'Add one extra vegetable to your next meal', fr:'Ajoutez un légume supplémentaire à votre prochain repas'},
+  {ic:'🍵', en:'Try hibiscus tea (bissap) — it gently lowers blood pressure', fr:'Essayez le thé d\'hibiscus (bissap) — il abaisse doucement la tension'},
+  {ic:'😴', en:'Protect 7–9 hours of sleep — it heals what nothing else can', fr:'Protégez 7–9 heures de sommeil — il guérit ce qui ne se guérit pas autrement'},
+  {ic:'📵', en:'Put the phone down an hour before bed', fr:'Posez le téléphone une heure avant le coucher'},
+  {ic:'💭', en:'Name three things you are grateful for today', fr:'Nommez trois choses pour lesquelles vous êtes reconnaissant aujourd\'hui'},
+  {ic:'🙏', en:'Pause. Pray. Even one minute of stillness changes the day', fr:'Faites une pause. Priez. Une minute de calme change la journée'},
+  {ic:'☎️', en:'Call someone you love today — voice, not text', fr:'Appelez quelqu\'un que vous aimez aujourd\'hui — la voix, pas un SMS'},
+  {ic:'🥥', en:'Replace one sugary drink with water or coconut water', fr:'Remplacez une boisson sucrée par de l\'eau ou de l\'eau de coco'},
+  {ic:'🦷', en:'Brush twice, floss once — gum health protects the heart', fr:'Brossez-vous les dents deux fois, fil dentaire une fois — la santé des gencives protège le cœur'},
+  {ic:'🌞', en:'Get 10 minutes of morning sunlight — it sets your sleep clock', fr:'Prenez 10 minutes de soleil matinal — cela règle votre horloge du sommeil'},
+  {ic:'🧂', en:'Swap the salt shaker for ginger, garlic and lemon', fr:'Remplacez la salière par du gingembre, de l\'ail et du citron'},
+  {ic:'🫶', en:'Forgive someone — first for yourself, then for them', fr:'Pardonnez à quelqu\'un — d\'abord pour vous, ensuite pour lui'},
+  {ic:'📖', en:'Read one page. Then another. Reading is medicine for the mind', fr:'Lisez une page. Puis une autre. La lecture est un remède pour l\'esprit'},
+  {ic:'🎵', en:'Sing along to one song — it changes your breathing pattern', fr:'Chantez avec une chanson — cela modifie votre respiration'},
+  {ic:'🌳', en:'Stand among trees for 20 minutes — measurably lowers stress', fr:'Restez 20 minutes parmi les arbres — réduit le stress de façon mesurable'},
+  {ic:'🥜', en:'A small handful of nuts a day protects your heart', fr:'Une petite poignée de noix par jour protège votre cœur'},
+  {ic:'❤️', en:'You are wonderfully made — take care of the body you were given', fr:'Vous êtes merveilleusement faits — prenez soin du corps que vous avez reçu'},
+  {ic:'😊', en:'Smile at a stranger today — kindness is contagious', fr:'Souriez à un inconnu aujourd\'hui — la gentillesse est contagieuse'},
+  {ic:'🧘', en:'Sit still for two minutes. Listen. Then continue', fr:'Restez immobile deux minutes. Écoutez. Puis continuez'},
+  {ic:'🍌', en:'Eat fruit you can hold in your hand — not from a packet', fr:'Mangez un fruit que vous tenez dans la main — pas en sachet'},
+  {ic:'🏃', en:'A brisk 30-minute walk lowers blood pressure for 24 hours', fr:'30 minutes de marche rapide abaissent la tension pendant 24 heures'},
+  {ic:'🛌', en:'Make your bedroom dark, cool and quiet — your sleep will follow', fr:'Rendez votre chambre sombre, fraîche et silencieuse — le sommeil suivra'},
+  {ic:'🤝', en:'Help someone today — it heals the helper more than the helped', fr:'Aidez quelqu\'un aujourd\'hui — cela guérit l\'aidant plus que l\'aidé'},
+  {ic:'🍋', en:'Warm water and lemon in the morning — gentle and grounding', fr:'Eau tiède au citron le matin — doux et ancrant'},
+  {ic:'💪', en:'Build strength twice a week — your future self will thank you', fr:'Renforcez votre musculature deux fois par semaine — votre futur vous remerciera'},
+  {ic:'✨', en:'Rest is sacred. The world will keep turning if you stop.', fr:'Le repos est sacré. Le monde continuera de tourner si vous vous arrêtez.'}
+];
+
+const fr = window.T21Lang && T21Lang.current==='fr';
+const track = document.getElementById('tipsTrack');
+// Double the list so the loop is seamless
+const renderTip = t => `<span class="marquee-tip"><span class="marquee-icon">${t.ic}</span><span>${fr ? t.fr : t.en}</span><span class="dot"></span></span>`;
+track.innerHTML = TIPS.map(renderTip).join('') + TIPS.map(renderTip).join('');
+</script>
+</body>
+</html>

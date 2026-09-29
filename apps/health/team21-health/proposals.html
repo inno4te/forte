@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Evidence-Based Proposals — Team21 Health Platform</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700;9..144,800&family=Inter+Tight:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<style>
+  .proposals{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  .proposal{background:var(--paper);border:1px solid var(--rule);padding:24px;position:relative;display:flex;flex-direction:column;gap:10px;transition:transform .2s ease,box-shadow .2s ease}
+  .proposal:hover{transform:translateY(-2px);box-shadow:var(--shadow)}
+  .proposal-icon{width:42px;height:42px;border:1.5px solid var(--ink);display:grid;place-items:center;font-family:"Fraunces",serif;font-weight:600;color:var(--accent-2);font-size:18px;background:var(--paper-2)}
+  .proposal h4{font-family:"Fraunces",serif;font-size:20px;font-weight:500;margin:0;line-height:1.2;letter-spacing:-.01em}
+  .proposal p{font-size:13.5px;color:var(--ink-soft);margin:0;line-height:1.55}
+  .proposal .ev{font-size:11px;color:var(--mute);font-style:italic;margin-top:auto;padding-top:10px;border-top:1px dashed var(--rule)}
+  .proposal .actions{display:flex;gap:8px;margin-top:6px}
+  @media (max-width:960px){.proposals{grid-template-columns:1fr}}
+</style>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#2d2823">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Team21">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="brand">
+      <div class="brand-mark">T21</div>
+      <div>
+        <div class="brand-name">Team21 Health Platform</div>
+        <div class="brand-sub">Preventive Intelligence</div>
+      </div>
+    </a>
+    <div class="nav-cta" id="navCta"></div>
+  </div>
+</nav>
+
+<main class="page">
+  <header class="page-head">
+    <div>
+      <div class="eyebrow">Part Four · Proposals</div>
+      <h1>24 evidence-based <em>practices</em>.</h1>
+      <p class="intro">These are the dietary, behavioural, and environmental practices supported by the strongest peer-reviewed evidence for reducing cancer and chronic-disease risk. Each is mapped to its primary evidence source. Bookmark the ones you want to commit to, then track them daily.</p>
+    </div>
+    <div class="meta">
+      24 PROPOSALS<br>
+      EVIDENCE-MAPPED<br>
+      BOOKMARK + TRACK
+    </div>
+  </header>
+
+  <div class="search-bar">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+    <input type="text" id="propSearch" placeholder="Search proposals — e.g. mediterranean, alcohol, screenings…" />
+  </div>
+
+  <div class="proposals" id="propGrid"></div>
+
+  <div style="margin-top:50px;text-align:center">
+    <a class="btn btn-primary" href="tracker.html">Open your tracker →</a>
+  </div>
+</main>
+
+<script src="data.js"></script>
+<script src="lang-data.js"></script>
+<script src="lang.js"></script>
+<script src="shared.js"></script>
+<script src="components.js"></script>
+<script>
+T21.boot('proposals.html');
+
+const grid = document.getElementById('propGrid');
+const _fr = window.T21Lang && T21Lang.current==='fr';
+const _bL = _fr ? '☆ Favori' : '☆ Bookmark';
+const _nL = _fr ? '✎ Ajouter une note' : '✎ Add note';
+PROPOSALS.forEach((p, idx)=>{
+  const id = 'proposal-' + idx;
+  const tr = _fr ? T21Lang.Td('proposal', idx) : null;
+  const h = (tr && tr.h) || p.h;
+  const pTxt = (tr && tr.p) || p.p;
+  const hay = [h, pTxt, p.ev].join(' ').toLowerCase();
+  const el = document.createElement('div');
+  el.className = 'proposal';
+  el.dataset.search = hay;
+  el.innerHTML = `
+    <div class="proposal-icon">${p.ic}</div>
+    <h4>${h}</h4>
+    <p>${pTxt}</p>
+    <div class="ev">${p.ev}</div>
+    <div class="actions">
+      <button class="action-btn" data-act="bookmark" data-id="${id}" data-name="${h.replace(/"/g,'&quot;')}">${_bL}</button>
+      <button class="action-btn" data-act="note" data-id="${id}" data-name="${h.replace(/"/g,'&quot;')}">${_nL}</button>
+    </div>`;
+  grid.appendChild(el);
+});
+
+wireTopicActions(grid);
+
+document.getElementById('propSearch').addEventListener('input', e=>{
+  const q = e.target.value.toLowerCase().trim();
+  grid.querySelectorAll('.proposal').forEach(p=>{
+    p.style.display = (!q || (p.dataset.search||'').includes(q)) ? '' : 'none';
+  });
+});
+
+window.onUserAuthChange = ()=> refreshBookmarkStates(grid);
+</script>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('service-worker.js')
+      .then(reg => console.log('[Team21] Service Worker registered:', reg.scope))
+      .catch(err => console.warn('[Team21] SW registration failed:', err));
+  });
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+{
+  "appId": "com.forte.notes",
+  "appName": "ForTe Notes",
+  "webDir": "www",
+  "bundledWebRuntime": false,
+  "android": {
+    "allowMixedContent": false
+  }
+}

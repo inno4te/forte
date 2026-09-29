@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Guided Labs · inno4te Networking Academy</title>
+<meta name="description" content="Step-by-step Cisco IOS lab scenarios for CCNA and Network+ preparation. Basic routing, VLANs, OSPF, ACLs and NAT.">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%231F6FEB'/><text x='50' y='68' font-size='44' text-anchor='middle' fill='white' font-weight='bold'>i4</text></svg>">
+<style>
+.lab-section{border:1px solid var(--border);border-radius:var(--radius);margin-bottom:22px;overflow:hidden;}
+.lab-section summary{padding:16px 20px;cursor:pointer;font-weight:700;font-size:1.05rem;background:var(--surface);display:flex;align-items:center;gap:12px;list-style:none;}
+.lab-section summary::marker,.lab-section summary::-webkit-details-marker{display:none;}
+.lab-section summary::after{content:"▼";margin-left:auto;font-size:.8rem;color:var(--text-3);transition:transform .2s;}
+.lab-section[open] summary::after{transform:rotate(-180deg);}
+.lab-section summary:hover{background:var(--surface-3);}
+.lab-body{padding:20px;border-top:1px solid var(--border);}
+.step-grid{display:grid;gap:12px;}
+.step{background:var(--surface-2);border:1px solid var(--border);border-radius:9px;padding:14px 16px;}
+.step .step-num{display:inline-block;background:var(--accent);color:#fff;font-size:.72rem;font-weight:900;padding:3px 8px;border-radius:999px;margin-bottom:8px;}
+.step h4{font-size:.96rem;margin-bottom:6px;}
+.step p{font-size:.87rem;color:var(--text-2);margin-bottom:8px;}
+.codeblock{background:var(--bg);border:1px solid var(--border);border-radius:7px;padding:12px 14px;font-family:var(--mono);font-size:.84rem;line-height:1.7;overflow-x:auto;margin-bottom:8px;}
+.codeblock .prompt{color:var(--green);}
+.codeblock .cmd{color:var(--text);}
+.codeblock .comment{color:var(--text-3);}
+.codeblock .out{color:var(--cyan);}
+.codeblock .warn{color:var(--yellow);}
+.verify-block{background:rgba(63,185,80,.07);border:1px solid rgba(63,185,80,.25);border-radius:7px;padding:12px 14px;font-family:var(--mono);font-size:.84rem;line-height:1.7;margin-top:8px;}
+.verify-block .vhead{color:var(--green);font-weight:700;font-size:.78rem;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;}
+.topology{background:var(--bg);border:1px solid var(--border);border-radius:9px;padding:16px;margin-bottom:16px;font-family:var(--mono);font-size:.85rem;color:var(--cyan);line-height:1.8;white-space:pre;}
+.obj-list{list-style:none;display:grid;gap:6px;margin-bottom:14px;}
+.obj-list li::before{content:"→ ";color:var(--accent-2);}
+.obj-list li{font-size:.9rem;color:var(--text-2);}
+.tip-box{background:rgba(31,111,235,.08);border:1px solid rgba(88,166,255,.2);border-radius:8px;padding:12px 14px;font-size:.87rem;color:var(--text-2);margin-bottom:12px;}
+.tip-box strong{color:var(--accent-2);}
+.difficulty{font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;padding:4px 10px;border-radius:999px;}
+.diff-easy{background:rgba(63,185,80,.15);color:var(--green);}
+.diff-med{background:rgba(210,153,34,.15);color:var(--yellow);}
+.diff-hard{background:rgba(248,81,73,.12);color:var(--red);}
+</style>
+</head>
+<body>
+<header class="site-header">
+  <nav class="wrap nav">
+    <a class="brand" href="../index.html"><span class="brand-mark">i4</span><span class="brand-name">inno<em>4</em>te Networking Academy</span></a>
+    <button class="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+    <ul class="nav-links">
+      <li><a href="../index.html">Home</a></li><li><a href="../simulator.html">Simulator</a></li>
+      <li><a href="../exams.html">Exams</a></li><li><a href="../cli.html">CLI</a></li>
+      <li><a href="../subnetting.html">Subnetting</a></li><li><a href="guided-labs.html" class="active">Lab Guide</a></li>
+    </ul>
+  </nav>
+</header>
+
+<section class="section">
+<div class="wrap">
+  <span class="eyebrow">Guided CLI labs</span>
+  <h1 style="font-size:clamp(1.9rem,4vw,2.8rem);margin-bottom:8px">Step-by-step IOS practice.</h1>
+  <p class="lead">Follow each lab in the <a href="../cli.html">CLI Simulator →</a> or on real/emulated hardware. Each lab has objectives, a topology, step-by-step commands, and verification commands to confirm it worked correctly.</p>
+  <div class="tip-box mt-6">
+    <strong>Tip:</strong> Open the <a href="../cli.html">CLI Simulator</a> in a second tab alongside this guide.
+    Type every command yourself — muscle memory matters in the exam lab sections. Use <code>?</code> and Tab completion liberally.
+  </div>
+
+  <!-- ════════════════════ LAB 1 ════════════════════ -->
+  <details class="lab-section" open>
+    <summary><span style="font-size:1.4rem">🔧</span> Lab 1: Basic Router Configuration <span class="difficulty diff-easy">Beginner</span></summary>
+    <div class="lab-body">
+      <h3 style="margin-bottom:8px">Objectives</h3>
+      <ul class="obj-list">
+        <li>Set a hostname on a Cisco router</li>
+        <li>Configure IP addresses on two interfaces</li>
+        <li>Enable interfaces with <code>no shutdown</code></li>
+        <li>Configure a default route to the ISP</li>
+        <li>Save the configuration to NVRAM</li>
+        <li>Verify with <code>show ip interface brief</code> and <code>show ip route</code></li>
+      </ul>
+      <pre class="topology">Topology:
+    [PC-A]─────[Gi0/0: R1 :Gi0/1]──────[ISP/Internet]
+   192.168.1.0/24      203.0.113.0/30
+   PC-A: 192.168.1.10   R1 Gi0/0: 192.168.1.1
+   Gateway: 192.168.1.1  R1 Gi0/1: 203.0.113.2
+                          ISP:      203.0.113.1</pre>
+
+      <div class="step-grid">
+        <div class="step">
+          <span class="step-num">Step 1</span>
+          <h4>Enter privileged EXEC mode and global config</h4>
+          <p>Router interfaces are down by default. We start by setting the hostname.</p>
+          <div class="codeblock"><span class="prompt">Router></span> <span class="cmd">enable</span>
+<span class="prompt">Router#</span> <span class="cmd">configure terminal</span>
+<span class="out">Enter configuration commands, one per line. End with CTRL/Z.</span>
+<span class="prompt">Router(config)#</span> <span class="cmd">hostname R1</span>
+<span class="prompt">R1(config)#</span></div>
+        </div>
+        <div class="step">
+          <span class="step-num">Step 2</span>
+          <h4>Configure the LAN interface (Gi0/0)</h4>
+          <p>This interface connects to the internal LAN. Assign it the gateway IP.</p>
+          <div class="codeblock"><span class="prompt">R1(config)#</span> <span class="cmd">interface GigabitEthernet0/0</span>
+<span class="prompt">R1(config-if)#</span> <span class="cmd">description LAN interface to 192.168.1.0/24</span>
+<span class="prompt">R1(config-if)#</span> <span class="cmd">ip address 192.168.1.1 255.255.255.0</span>
+<span class="prompt">R1(config-if)#</span> <span class="cmd">no shutdown</span>
+<span class="out">R1: GigabitEthernet0/0 is up, line protocol is up</span>
+<span class="prompt">R1(config-if)#</span> <span class="cmd">exit</span></div>
+        </div>
+        <div class="step">
+          <span class="step-num">Step 3</span>
+          <h4>Configure the WAN interface (Gi0/1)</h4>
+          <p>The /30 subnet (4 addresses, 2 usable) is standard for point-to-point WAN links.</p>
+          <div class="codeblock"><span class="prompt">R1(config)#</span> <span class="cmd">interface GigabitEthernet0/1</span>
+<span class="prompt">R1(config-if)#</span> <span class="cmd">description WAN uplink to ISP</span>
+<span class="prompt">R1(config-if)#</span> <span class="cmd">ip address 203.0.113.2 255.255.255.252</span>
+<span class="prompt">R1(config-if)#</span> <span class="cmd">no shutdown</span>
+<span class="prompt">R1(config-if)#</span> <span class="cmd">exit</span></div>
+        </div>
+        <div class="step">
+          <span class="step-num">Step 4</span>
+          <h4>Add a default route pointing to the ISP</h4>
+          <p>The quad-zero route <code>0.0.0.0 0.0.0.0</code> matches any destination not found in the routing table.</p>
+          <div class="codeblock"><span class="prompt">R1(config)#</span> <span class="cmd">ip route 0.0.0.0 0.0.0.0 203.0.113.1</span>
+<span class="comment">! Alternatively use the exit interface: ip route 0.0.0.0 0.0.0.0 GigabitEthernet0/1</span></div>
+        </div>
+        <div class="step">
+          <span class="step-num">Step 5</span>
+          <h4>Save the configuration</h4>
+          <div class="codeblock"><span class="prompt">R1(config)#</span> <span class="cmd">end</span>
+<span class="prompt">R1#</span> <span class="cmd">copy running-config startup-config</span>
+<span class="out">Destination filename [startup-config]? [Enter]</span>
+<span class="out">Building configuration... [OK]</span></div>
+        </div>
+        <div class="step">
+          <span class="step-num">✓ Verify</span>
+          <h4>Verify your configuration</h4>
+          <div class="verify-block"><div class="vhead">Run these commands and check the output:</div>
+<span class="prompt">R1#</span> <span class="cmd">show ip interface brief</span>
+<span class="out">Gi0/0   192.168.1.1   YES  manual  up  up</span>
+<span class="out">Gi0/1   203.0.113.2   YES  manual  up  up</span>
+
+<span class="prompt">R1#</span> <span class="cmd">show ip route</span>
+<span class="out">C    192.168.1.0/24 is directly connected, GigabitEthernet0/0</span>
+<span class="out">C    203.0.113.0/30 is directly connected, GigabitEthernet0/1</span>
+<span class="out">S*   0.0.0.0/0 [1/0] via 203.0.113.1</span></div>
+        </div>
+      </div>
+    </div>
+  </details>
+
+  <!-- ════════════════════ LAB 2 ════════════════════ -->
+  <details class="lab-section">
+    <summary><span style="font-size:1.4rem">🔀</span> Lab 2: VLAN Configuration &amp; Inter-VLAN Routing <span class="difficulty diff-easy">Beginner–Intermediate</span></summary>
+    <div class="lab-body">
+      <h3 style="margin-bottom:8px">Objectives</h3>
+      <ul class="obj-list">
+        <li>Create VLANs 10 (Sales) and 20 (IT) on a switch</li>
+        <li>Assign access ports to each VLAN</li>
+        <li>Configure a trunk port to the router</li>
+        <li>Configure router-on-a-stick (subinterfaces) for inter-VLAN routing</li>
+        <li>Verify hosts in different VLANs can reach each other via the router</li>
+      </ul>
+      <pre class="topology">Topology:
+  [PC-Sales]─Gi0/1─[SW1 :Gi0/0 trunk]──Gi0/0──[R1]
+  VLAN 10                                  Gi0/0.10: 192.168.10.1/24
+  192.168.10.10/24                         Gi0/0.20: 192.168.20.1/24
+
+  [PC-IT]────Gi0/2─[SW1]
+  VLAN 20
+  192.168.20.10/24</pre>
+
+      <div class="step-grid">
+        <div class="step">
+          <span class="step-num">Step 1</span>
+          <h4>Create VLANs on the switch</h4>
+          <div class="codeblock"><span class="prompt">Switch></span> <span class="cmd">enable</span>
+<span class="prompt">Switch#</span> <span class="cmd">configure terminal</span>
+<span class="prompt">Switch(config)#</span> <span class="cmd">hostname SW1</span>
+<span class="prompt">SW1(config)#</span> <span class="cmd">vlan 10</span>
+<span class="prompt">SW1(config-vlan)#</span> <span class="cmd">name Sales</span>
+<span class="prompt">SW1(config-vlan)#</span> <span class="cmd">exit</span>
+<span class="prompt">SW1(config)#</span> <span class="cmd">vlan 20</span>
+<span class="prompt">SW1(config-vlan)#</span> <span class="cmd">name IT</span>
+<span class="prompt">SW1(config-vlan)#</span> <span class="cmd">exit</span></div>
+        </div>
+        <div class="step">
+          <span class="step-num">Step 2</span>
+          <h4>Assign access ports to VLANs</h4>
+          <div class="codeblock"><span class="prompt">SW1(config)#</span> <span class="cmd">interface GigabitEthernet0/1</span>
+<span class="prompt">SW1(config-if)#</span> <span class="cmd">switchport mode access</span>
+<span class="prompt">SW1(config-if)#</span> <span class="cmd">switchport access vlan 10</span>
+<span class="prompt">SW1(config-if)#</span> <span class="cmd">spanning-tree portfast</span>
+<span class="prompt">SW1(config-if)#</span> <span class="cmd">exit</span>
+<span class="prompt">SW1(config)#</span> <span class="cmd">interface GigabitEthernet0/2</span>
+<span class="prompt">SW1(config-if)#</span> <span class="cmd">switchport mode access</span>
+<span class="prompt">SW1(config-if)#</span> <span class="cmd">switchport access vlan 20</span>
+<span class="prompt">SW1(config-if)#</span> <span class="cmd">spanning-tree portfast</span>
+<span class="prompt">SW1(config-if)#</span> <span class="cmd">exit</span></div>
+        </div>
+        <div class="step">
+          <span class="step-num">Step 3</span>
+          <h4>Configure the trunk port to the router</h4>
+          <div class="codeblock"><span class="prompt">SW1(config)#</span> <span class="cmd">interface GigabitEthernet0/0</span>
+<span class="prompt">SW1(config-if)#</span> <span class="cmd">switchport trunk encapsulation dot1q</span>
+<span class="prompt">SW1(config-if)#</span> <span class="cmd">switchport mode trunk</span>
+<span class="prompt">SW1(config-if)#</span> <span class="cmd">switchport trunk native vlan 99</span>
+<span class="comment">! Change native VLAN from default 1 (security best practice)</span>
+<span class="prompt">SW1(config-if)#</span> <span class="cmd">exit</span>
+<span class="prompt">SW1(config)#</span> <span class="cmd">end</span>
+<span class="prompt">SW1#</span> <span class="cmd">show vlan brief</span></div>
+        </div>
+        <div class="step">
+          <span class="step-num">Step 4</span>
+          <h4>Configure router subinterfaces (Router-on-a-stick)</h4>
+          <div class="codeblock"><span class="prompt">R1(config)#</span> <span class="cmd">interface GigabitEthernet0/0</span>
+<span class="prompt">R1(config-if)#</span> <span class="cmd">no shutdown</span>
+<span class="prompt">R1(config-if)#</span> <span class="cmd">exit</span>
+<span class="prompt">R1(config)#</span> <span class="cmd">interface GigabitEthernet0/0.10</span>
+<span class="prompt">R1(config-subif)#</span> <span class="cmd">encapsulation dot1q 10</span>
+<span class="prompt">R1(config-subif)#</span> <span class="cmd">ip address 192.168.10.1 255.255.255.0</span>
+<span class="prompt">R1(config-subif)#</span> <span class="cmd">exit</span>
+<span class="prompt">R1(config)#</span> <span class="cmd">interface GigabitEthernet0/0.20</span>
+<span class="prompt">R1(config-subif)#</span> <span class="cmd">encapsulation dot1q 20</span>
+<span class="prompt">R1(config-subif)#</span> <span class="cmd">ip address 192.168.20.1 255.255.255.0</span>
+<span class="prompt">R1(config-subif)#</span> <span class="cmd">exit</span></div>
+        </div>
+        <div class="step">
+          <span class="step-num">✓ Verify</span>
+          <h4>Verify inter-VLAN routing</h4>
+          <div class="verify-block"><div class="vhead">Expected results:</div>
+<span class="prompt">R1#</span> <span class="cmd">show ip interface brief</span>
+<span class="out">Gi0/0        unassigned  YES  unset   up  up</span>
+<span class="out">Gi0/0.10     192.168.10.1 YES  manual  up  up</span>
+<span class="out">Gi0/0.20     192.168.20.1 YES  manual  up  up</span>
+
+<span class="comment">! From PC-Sales (192.168.10.10), ping PC-IT (192.168.20.10):</span>
+<span class="comment">! Traffic path: PC-Sales → SW1 (VLAN 10) → trunk → R1 → trunk → SW1 (VLAN 20) → PC-IT</span>
+
+<span class="prompt">SW1#</span> <span class="cmd">show vlan brief</span>
+<span class="out">10   Sales   active   Gi0/1</span>
+<span class="out">20   IT      active   Gi0/2</span></div>
+        </div>
+      </div>
+    </div>
+  </details>
+
+  <!-- ════════════════════ LAB 3 ════════════════════ -->
+  <details class="lab-section">
+    <summary><span style="font-size:1.4rem">📡</span> Lab 3: OSPF Single-Area Configuration <span class="difficulty diff-med">Intermediate</span></summary>
+    <div class="lab-body">
+      <h3 style="margin-bottom:8px">Objectives</h3>
+      <ul class="obj-list">
+        <li>Configure OSPF process 1 on two routers in Area 0</li>
+        <li>Advertise connected networks via OSPF network statements</li>
+        <li>Verify OSPF neighbour adjacency forms</li>
+        <li>Confirm routes are learned via OSPF (type O in routing table)</li>
+        <li>Understand OSPF DR/BDR election and router-ID</li>
+      </ul>
+      <pre class="topology">Topology:
+  [LAN-A]                               [LAN-B]
+  10.0.1.0/24                           10.0.2.0/24
+      |                                     |
+  [R1 Gi0/0]──────[Gi0/0:R1:Gi0/1]──────[R2 Gi0/0]──[Gi0/1:R2]
+           10.0.12.0/30           10.0.12.0/30
+           R1 Gi0/1: .1           R2 Gi0/0: .2
+           R1 Gi0/0: 10.0.1.1    R2 Gi0/1: 10.0.2.1
+
+Wait — cleaner:
+  [R1]                [R2]
+  Gi0/0: 10.0.1.1/24  Gi0/1: 10.0.2.1/24
+  Gi0/1: 10.0.12.1/30 Gi0/0: 10.0.12.2/30
+         ────────── link ───────────</pre>
+
+      <div class="step-grid">
+        <div class="step">
+          <span class="step-num">Step 1</span>
+          <h4>Configure R1 interfaces</h4>
+          <div class="codeblock"><span class="prompt">R1(config)#</span> <span class="cmd">interface GigabitEthernet0/0</span>
+<span class="prompt">R1(config-if)#</span> <span class="cmd">ip address 10.0.1.1 255.255.255.0</span>
+<span class="prompt">R1(config-if)#</span> <span class="cmd">no shutdown</span>
+<span class="prompt">R1(config-if)#</span> <span class="cmd">exit</span>
+<span class="prompt">R1(config)#</span> <span class="cmd">interface GigabitEthernet0/1</span>
+<span class="prompt">R1(config-if)#</span> <span class="cmd">ip address 10.0.12.1 255.255.255.252</span>
+<span class="prompt">R1(config-if)#</span> <span class="cmd">no shutdown</span>
+<span class="prompt">R1(config-if)#</span> <span class="cmd">exit</span></div>
+        </div>
+        <div class="step">
+          <span class="step-num">Step 2</span>
+          <h4>Enable OSPF on R1 and advertise networks</h4>
+          <div class="codeblock"><span class="prompt">R1(config)#</span> <span class="cmd">router ospf 1</span>
+<span class="prompt">R1(config-router)#</span> <span class="cmd">router-id 1.1.1.1</span>
+<span class="prompt">R1(config-router)#</span> <span class="cmd">network 10.0.1.0 0.0.0.255 area 0</span>
+<span class="prompt">R1(config-router)#</span> <span class="cmd">network 10.0.12.0 0.0.0.3 area 0</span>
+<span class="prompt">R1(config-router)#</span> <span class="cmd">passive-interface GigabitEthernet0/0</span>
+<span class="comment">! Suppress OSPF Hellos on LAN — no other routers there</span>
+<span class="prompt">R1(config-router)#</span> <span class="cmd">exit</span></div>
+        </div>
+        <div class="step">
+          <span class="step-num">Step 3</span>
+          <h4>Configure R2 (repeat for other router)</h4>
+          <div class="codeblock"><span class="comment">! On R2 — configure interfaces first, then OSPF</span>
+<span class="prompt">R2(config)#</span> <span class="cmd">interface GigabitEthernet0/0</span>
+<span class="prompt">R2(config-if)#</span> <span class="cmd">ip address 10.0.12.2 255.255.255.252</span>
+<span class="prompt">R2(config-if)#</span> <span class="cmd">no shutdown</span>
+<span class="prompt">R2(config-if)#</span> <span class="cmd">exit</span>
+<span class="prompt">R2(config)#</span> <span class="cmd">interface GigabitEthernet0/1</span>
+<span class="prompt">R2(config-if)#</span> <span class="cmd">ip address 10.0.2.1 255.255.255.0</span>
+<span class="prompt">R2(config-if)#</span> <span class="cmd">no shutdown</span>
+<span class="prompt">R2(config-if)#</span> <span class="cmd">exit</span>
+<span class="prompt">R2(config)#</span> <span class="cmd">router ospf 1</span>
+<span class="prompt">R2(config-router)#</span> <span class="cmd">router-id 2.2.2.2</span>
+<span class="prompt">R2(config-router)#</span> <span class="cmd">network 10.0.12.0 0.0.0.3 area 0</span>
+<span class="prompt">R2(config-router)#</span> <span class="cmd">network 10.0.2.0 0.0.0.255 area 0</span>
+<span class="prompt">R2(config-router)#</span> <span class="cmd">passive-interface GigabitEthernet0/1</span></div>
+        </div>
+        <div class="step">
+          <span class="step-num">✓ Verify</span>
+          <h4>Verify OSPF adjacency and routes</h4>
+          <div class="verify-block"><div class="vhead">Key verification commands:</div>
+<span class="prompt">R1#</span> <span class="cmd">show ip ospf neighbor</span>
+<span class="out">Neighbor ID  Pri  State       Dead Time  Address    Interface</span>
+<span class="out">2.2.2.2      1    FULL/DR     00:00:38   10.0.12.2  Gi0/1</span>
+
+<span class="prompt">R1#</span> <span class="cmd">show ip route ospf</span>
+<span class="out">O    10.0.2.0/24 [110/2] via 10.0.12.2, 00:01:14, GigabitEthernet0/1</span>
+
+<span class="comment">! 'FULL' state = neighbours are fully adjacent and LSDBs are synchronised ✓</span>
+<span class="comment">! 'O' in routing table = OSPF-learned route ✓</span>
+<span class="comment">! Cost 110/2: reference 100Mbps ÷ 1Gbps = 1 per link → 2 hops = cost 2</span></div>
+        </div>
+      </div>
+    </div>
+  </details>
+
+  <!-- ════════════════════ LAB 4 ════════════════════ -->
+  <details class="lab-section">
+    <summary><span style="font-size:1.4rem">🔒</span> Lab 4: Extended ACL — Traffic Filtering <span class="difficulty diff-med">Intermediate</span></summary>
+    <div class="lab-body">
+      <h3 style="margin-bottom:8px">Objectives</h3>
+      <ul class="obj-list">
+        <li>Write an extended ACL to permit HTTP/HTTPS but deny Telnet from the LAN to servers</li>
+        <li>Permit ICMP so ping still works for troubleshooting</li>
+        <li>Apply the ACL on the correct interface and direction</li>
+        <li>Verify with <code>show access-lists</code> and test traffic</li>
+        <li>Understand the implicit <code>deny any</code> at the end of every ACL</li>
+      </ul>
+      <pre class="topology">Topology:
+  [LAN: 192.168.1.0/24]──Gi0/0──[R1]──Gi0/1──[Server: 10.0.0.10]
+  Goal: Allow HTTP (80), HTTPS (443), ICMP from LAN to Server.
+        Deny Telnet (23) from LAN to Server.
+        Deny all other traffic.
+  ACL applied: Gi0/0 INBOUND (close to source = best practice for extended ACLs)</pre>
+
+      <div class="step-grid">
+        <div class="step">
+          <span class="step-num">Step 1</span>
+          <h4>Create the extended ACL</h4>
+          <p>Extended ACLs use numbers 100–199 or a name. Named ACLs are easier to edit later.</p>
+          <div class="codeblock"><span class="prompt">R1(config)#</span> <span class="cmd">ip access-list extended LAN-TO-SERVER</span>
+<span class="prompt">R1(config-ext-nacl)#</span> <span class="cmd">permit tcp 192.168.1.0 0.0.0.255 host 10.0.0.10 eq 80</span>
+<span class="prompt">R1(config-ext-nacl)#</span> <span class="cmd">permit tcp 192.168.1.0 0.0.0.255 host 10.0.0.10 eq 443</span>
+<span class="prompt">R1(config-ext-nacl)#</span> <span class="cmd">permit icmp 192.168.1.0 0.0.0.255 host 10.0.0.10</span>
+<span class="prompt">R1(config-ext-nacl)#</span> <span class="cmd">deny tcp 192.168.1.0 0.0.0.255 host 10.0.0.10 eq 23</span>
+<span class="comment">! The line above is redundant because of implicit deny — but explicit is clearer</span>
+<span class="comment">! Implicit: deny ip any any (invisible, always at the end)</span>
+<span class="prompt">R1(config-ext-nacl)#</span> <span class="cmd">exit</span></div>
+        </div>
+        <div class="step">
+          <span class="step-num">Step 2</span>
+          <h4>Apply the ACL to the interface</h4>
+          <p>Extended ACLs go close to the <strong>source</strong>. Apply <strong>inbound</strong> on the LAN-facing interface.</p>
+          <div class="codeblock"><span class="prompt">R1(config)#</span> <span class="cmd">interface GigabitEthernet0/0</span>
+<span class="prompt">R1(config-if)#</span> <span class="cmd">ip access-group LAN-TO-SERVER in</span>
+<span class="prompt">R1(config-if)#</span> <span class="cmd">exit</span></div>
+        </div>
+        <div class="step">
+          <span class="step-num">✓ Verify</span>
+          <h4>Verify the ACL and hit counters</h4>
+          <div class="verify-block"><div class="vhead">Verify ACL contents and match counts:</div>
+<span class="prompt">R1#</span> <span class="cmd">show access-lists</span>
+<span class="out">Extended IP access list LAN-TO-SERVER</span>
+<span class="out">    10 permit tcp 192.168.1.0 0.0.0.255 host 10.0.0.10 eq 80 (5 matches)</span>
+<span class="out">    20 permit tcp 192.168.1.0 0.0.0.255 host 10.0.0.10 eq 443 (2 matches)</span>
+<span class="out">    30 permit icmp 192.168.1.0 0.0.0.255 host 10.0.0.10 (4 matches)</span>
+<span class="out">    40 deny tcp 192.168.1.0 0.0.0.255 host 10.0.0.10 eq 23 (1 match)</span>
+
+<span class="prompt">R1#</span> <span class="cmd">show ip interface GigabitEthernet0/0</span>
+<span class="out">  Inbound  access list is LAN-TO-SERVER</span>
+<span class="out">  Outbound access list is not set</span>
+
+<span class="warn">⚠ Remember: the implicit deny drops ALL traffic not explicitly permitted.</span>
+<span class="comment">! Add 'permit ip any any' at the end if you want other traffic to flow.</span></div>
+        </div>
+      </div>
+    </div>
+  </details>
+
+  <!-- ════════════════════ LAB 5 ════════════════════ -->
+  <details class="lab-section">
+    <summary><span style="font-size:1.4rem">🌐</span> Lab 5: PAT (NAT Overload) — Internet Access for a LAN <span class="difficulty diff-hard">Intermediate–Advanced</span></summary>
+    <div class="lab-body">
+      <h3 style="margin-bottom:8px">Objectives</h3>
+      <ul class="obj-list">
+        <li>Configure PAT (NAT Overload) to allow a private LAN to access the internet</li>
+        <li>Define inside and outside NAT interfaces</li>
+        <li>Create an ACL identifying which traffic should be NATted</li>
+        <li>Verify translations with <code>show ip nat translations</code></li>
+        <li>Understand why PAT is used by billions of home/office routers worldwide</li>
+      </ul>
+      <pre class="topology">Topology:
+  [LAN: 192.168.1.0/24]──Gi0/0──[R1]──Gi0/1──[Internet/ISP]
+  Private addresses                  Public IP: 203.0.113.2
+  192.168.1.x ─────────────────────────────→ 203.0.113.2:PORT#
+  NAT translates MANY private IPs to ONE public IP using unique port numbers</pre>
+
+      <div class="step-grid">
+        <div class="step">
+          <span class="step-num">Step 1</span>
+          <h4>Define inside and outside interfaces</h4>
+          <p>Every NAT config needs <code>ip nat inside</code> on the LAN interface and <code>ip nat outside</code> on the WAN interface.</p>
+          <div class="codeblock"><span class="prompt">R1(config)#</span> <span class="cmd">interface GigabitEthernet0/0</span>
+<span class="prompt">R1(config-if)#</span> <span class="cmd">ip nat inside</span>
+<span class="prompt">R1(config-if)#</span> <span class="cmd">exit</span>
+<span class="prompt">R1(config)#</span> <span class="cmd">interface GigabitEthernet0/1</span>
+<span class="prompt">R1(config-if)#</span> <span class="cmd">ip nat outside</span>
+<span class="prompt">R1(config-if)#</span> <span class="cmd">exit</span></div>
+        </div>
+        <div class="step">
+          <span class="step-num">Step 2</span>
+          <h4>Create an ACL identifying traffic to NAT</h4>
+          <p>Only traffic matching this ACL will be translated. Typically the entire private subnet.</p>
+          <div class="codeblock"><span class="prompt">R1(config)#</span> <span class="cmd">access-list 1 permit 192.168.1.0 0.0.0.255</span>
+<span class="comment">! Standard ACL (1-99) — source IP only is sufficient for NAT selection</span></div>
+        </div>
+        <div class="step">
+          <span class="step-num">Step 3</span>
+          <h4>Configure PAT (NAT Overload)</h4>
+          <p>The <code>overload</code> keyword is what makes this PAT — one public IP, many private IPs.</p>
+          <div class="codeblock"><span class="prompt">R1(config)#</span> <span class="cmd">ip nat inside source list 1 interface GigabitEthernet0/1 overload</span>
+<span class="comment">! This tells IOS: translate source IPs matching ACL 1, using the public IP</span>
+<span class="comment">! of Gi0/1, multiplexed by unique port numbers (PAT = Port Address Translation)</span></div>
+        </div>
+        <div class="step">
+          <span class="step-num">✓ Verify</span>
+          <h4>Verify NAT translations</h4>
+          <div class="verify-block"><div class="vhead">After a host sends traffic, check the NAT table:</div>
+<span class="prompt">R1#</span> <span class="cmd">show ip nat translations</span>
+<span class="out">Pro  Inside global      Inside local       Outside local   Outside global</span>
+<span class="out">tcp  203.0.113.2:1024  192.168.1.10:2801  8.8.8.8:80     8.8.8.8:80</span>
+<span class="out">tcp  203.0.113.2:1025  192.168.1.20:3124  8.8.8.8:80     8.8.8.8:80</span>
+
+<span class="comment">! Both 192.168.1.10 and .20 share ONE public IP (203.0.113.2)</span>
+<span class="comment">! Differentiated by unique port numbers: 1024, 1025, etc.</span>
+
+<span class="prompt">R1#</span> <span class="cmd">show ip nat statistics</span>
+<span class="out">Total translations: 2 (0 static, 2 dynamic, 2 extended)</span>
+<span class="out">Hits: 12   Misses: 0</span></div>
+        </div>
+      </div>
+    </div>
+  </details>
+
+  <!-- study tips -->
+  <div class="panel mt-8" style="margin-top:22px;border-top:3px solid var(--accent)">
+    <h2 style="font-size:1.2rem;margin-bottom:14px">📚 Lab practice strategy for exam success</h2>
+    <div class="grid-2">
+      <div>
+        <h4 style="font-size:.95rem;margin-bottom:8px;color:var(--accent-2)">For CCNA 200-301</h4>
+        <ul class="obj-list">
+          <li>Practice every lab until you can do it from memory — no notes</li>
+          <li>Understand the WHY behind each command, not just the syntax</li>
+          <li>Use <code>show</code> and <code>debug</code> commands constantly to verify</li>
+          <li>Practice subnetting until it's automatic (&lt;30 seconds per problem)</li>
+        </ul>
+      </div>
+      <div>
+        <h4 style="font-size:.95rem;margin-bottom:8px;color:var(--green)">For Network+ / Security+</h4>
+        <ul class="obj-list">
+          <li>Focus on concepts and protocols more than specific CLI syntax</li>
+          <li>Understand what each protocol does and what port it uses</li>
+          <li>For Security+: understand threat types, not just names</li>
+          <li>Read every explanation after each exam question — it's the curriculum</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+</div>
+</section>
+
+<footer class="site-footer">
+  <div class="footer-bottom">© <span data-year></span> inno4te Networking Academy · Innocent Forteh — Paid All Links Foundation. All rights reserved.</div>
+</footer>
+<script src="../js/auth.js"></script>
+<script src="../js/main.js"></script>
+</body>
+</html>

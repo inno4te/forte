@@ -1,0 +1,2198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0f0f1e">
+<title>Forteh Family · Together</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ===================================================================
+   FORTEH FAMILY · LIFE MANAGEMENT TOOL
+   Built with heart, for legacy.
+   =================================================================== */
+
+:root {
+  /* DARK (default) */
+  --bg:        #0b0d1a;
+  --bg-2:      #11142a;
+  --bg-3:      #161a36;
+  --panel:     #1c2143;
+  --panel-2:   #232a52;
+  --border:    #2a3164;
+  --border-2:  #3a4385;
+  --text:      #ecedf7;
+  --text-2:    #a8aed1;
+  --text-3:    #6f76a3;
+
+  /* Accents (per spec) */
+  --gold:      #f6c45a;   /* celebration */
+  --gold-soft: #f6c45a22;
+  --green:     #34d399;   /* prayer / spiritual */
+  --green-soft:#34d39922;
+  --blue:      #5b8def;   /* family / connection */
+  --blue-soft: #5b8def22;
+  --purple:    #a78bfa;   /* vision / goals */
+  --purple-soft:#a78bfa22;
+  --pink:      #f472b6;   /* encouragement */
+  --pink-soft: #f472b622;
+  --orange:    #fb923c;   /* streak fire */
+  --danger:    #ef5e7e;
+
+  --radius:    14px;
+  --radius-sm: 9px;
+  --shadow:    0 12px 40px -8px rgba(0,0,0,.5);
+  --shadow-lg: 0 24px 60px -12px rgba(0,0,0,.55);
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+/* LIGHT mode override */
+body.light {
+  --bg:        #faf8f3;
+  --bg-2:      #f1ede3;
+  --bg-3:      #eae5d6;
+  --panel:     #ffffff;
+  --panel-2:   #fbf9f3;
+  --border:    #e6dfce;
+  --border-2:  #d5cbb1;
+  --text:      #2a2540;
+  --text-2:    #6b6589;
+  --text-3:    #98919d;
+  --gold:      #b8841e;
+  --green:     #0f9b6c;
+  --blue:      #2563eb;
+  --purple:    #7c3aed;
+  --pink:      #db2777;
+  --orange:    #ea580c;
+  --shadow:    0 8px 28px -8px rgba(60,40,15,.18);
+  --shadow-lg: 0 20px 50px -12px rgba(60,40,15,.22);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text);
+  font-size: 15px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  transition: background .3s, color .3s;
+}
+
+/* Decorative aurora background */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background:
+    radial-gradient(900px circle at 12% 8%, var(--purple-soft), transparent 50%),
+    radial-gradient(700px circle at 88% 18%, var(--blue-soft), transparent 50%),
+    radial-gradient(600px circle at 50% 95%, var(--green-soft), transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+  opacity: .9;
+}
+body.light::before { opacity: .5; }
+
+button, input, textarea, select {
+  font-family: inherit; font-size: inherit; color: inherit;
+}
+button { cursor: pointer; border: none; background: none; }
+input, textarea, select { outline: none; }
+
+/* ============= SCROLLBARS ============= */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border-2); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-3); }
+
+/* ============= LOGIN SCREEN ============= */
+#login {
+  position: fixed; inset: 0; z-index: 100;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 32px 20px;
+  background: var(--bg);
+  overflow-y: auto;
+}
+#login::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(800px circle at 30% 30%, var(--purple-soft), transparent 50%),
+    radial-gradient(600px circle at 70% 70%, var(--gold-soft), transparent 50%);
+}
+.login-inner { position: relative; z-index: 1; max-width: 760px; width: 100%; text-align: center; }
+.login-crest {
+  width: 84px; height: 84px; border-radius: 28px; margin: 0 auto 24px;
+  background: linear-gradient(135deg, var(--gold), var(--orange) 50%, var(--pink));
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display); font-size: 38px; font-weight: 700; color: #1a1124;
+  box-shadow: 0 20px 60px -10px rgba(246,196,90,.4);
+  letter-spacing: -2px;
+}
+.login-title {
+  font-family: var(--font-display); font-size: clamp(36px, 6vw, 56px); font-weight: 600;
+  letter-spacing: -1.5px; line-height: 1.05; margin-bottom: 8px;
+}
+.login-title em { color: var(--gold); font-style: italic; }
+.login-sub { color: var(--text-2); font-size: 16px; margin-bottom: 8px; }
+.login-verse {
+  font-family: var(--font-display); font-style: italic; font-size: 14px;
+  color: var(--text-3); margin-bottom: 40px; max-width: 460px; margin-left: auto; margin-right: auto;
+}
+.login-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 12px;
+  margin-bottom: 32px;
+}
+.member-card {
+  background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 18px 12px; cursor: pointer; transition: all .2s;
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+  position: relative; overflow: hidden;
+}
+.member-card::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(135deg, transparent 60%, var(--accent, var(--blue)) 200%);
+  opacity: 0; transition: opacity .25s;
+}
+.member-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--accent, var(--blue));
+  box-shadow: 0 10px 30px -10px var(--accent, var(--blue));
+}
+.member-card:hover::after { opacity: .12; }
+.member-avatar {
+  width: 52px; height: 52px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent, var(--blue)), var(--accent-2, var(--purple)));
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; font-family: var(--font-display); font-weight: 600; font-size: 22px;
+  position: relative; z-index: 1;
+}
+.member-card .member-name { font-weight: 500; font-size: 14px; position: relative; z-index: 1; }
+.member-card .member-role { font-size: 11px; color: var(--text-3); position: relative; z-index: 1; }
+.login-footer { color: var(--text-3); font-size: 12px; }
+.login-footer button {
+  color: var(--text-2); text-decoration: underline; text-underline-offset: 3px; font-size: 12px;
+}
+.login-footer button:hover { color: var(--gold); }
+
+/* ============= APP SHELL ============= */
+#app { display: none; min-height: 100vh; position: relative; z-index: 1; }
+#app.show { display: flex; }
+
+aside {
+  width: 240px; flex-shrink: 0; padding: 24px 14px;
+  background: rgba(11, 13, 26, .7); backdrop-filter: blur(14px);
+  border-right: 1px solid var(--border);
+  display: flex; flex-direction: column; gap: 4px;
+  position: sticky; top: 0; height: 100vh; overflow-y: auto;
+}
+body.light aside { background: rgba(255,255,255,.7); }
+.brand {
+  display: flex; align-items: center; gap: 10px; padding: 4px 8px 18px;
+  border-bottom: 1px solid var(--border); margin-bottom: 14px;
+}
+.brand-mark {
+  width: 36px; height: 36px; border-radius: 11px;
+  background: linear-gradient(135deg, var(--gold), var(--orange));
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display); font-weight: 700; color: #1a1124; font-size: 18px;
+}
+.brand-text { font-family: var(--font-display); font-size: 17px; font-weight: 600; line-height: 1; }
+.brand-text small { display: block; font-size: 10px; color: var(--text-3); font-family: var(--font-body); font-weight: 400; margin-top: 3px; letter-spacing: .3px; }
+
+.nav-item {
+  display: flex; align-items: center; gap: 11px;
+  padding: 10px 12px; border-radius: var(--radius-sm);
+  color: var(--text-2); font-size: 14px; font-weight: 500;
+  transition: all .15s; text-align: left; width: 100%;
+}
+.nav-item:hover { background: var(--bg-3); color: var(--text); }
+.nav-item.active {
+  background: linear-gradient(90deg, var(--gold-soft), transparent);
+  color: var(--text);
+  border-left: 3px solid var(--gold);
+  padding-left: 9px;
+}
+.nav-icon { font-size: 17px; width: 22px; text-align: center; }
+.nav-section {
+  font-size: 10px; text-transform: uppercase; letter-spacing: 1.3px;
+  color: var(--text-3); padding: 14px 12px 6px; font-weight: 600;
+}
+.nav-current-user {
+  margin-top: auto; padding: 12px 10px; border-top: 1px solid var(--border);
+  display: flex; align-items: center; gap: 10px;
+}
+.nav-current-user .member-avatar { width: 36px; height: 36px; font-size: 15px; }
+.nav-current-user .who { font-size: 13px; font-weight: 500; }
+.nav-current-user .who small { display: block; color: var(--text-3); font-size: 11px; font-weight: 400; }
+.theme-toggle {
+  margin-left: auto; width: 30px; height: 30px; border-radius: 8px;
+  background: var(--bg-3); display: flex; align-items: center; justify-content: center;
+  font-size: 14px;
+}
+.theme-toggle:hover { background: var(--panel); }
+
+main {
+  flex: 1; padding: 32px clamp(20px, 4vw, 48px) 60px;
+  max-width: 100%; overflow-x: hidden;
+}
+.view { display: none; animation: fadeUp .35s ease both; }
+.view.active { display: block; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+/* ============= HEADERS ============= */
+.view-header {
+  margin-bottom: 32px;
+}
+.view-eyebrow {
+  font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px;
+  color: var(--text-3); font-weight: 600; margin-bottom: 8px;
+}
+.view-title {
+  font-family: var(--font-display); font-size: clamp(28px, 4.5vw, 42px); font-weight: 600;
+  letter-spacing: -.8px; line-height: 1.1; margin-bottom: 8px;
+}
+.view-title em { color: var(--gold); font-style: italic; }
+.view-sub { color: var(--text-2); font-size: 15px; max-width: 620px; }
+
+/* ============= CARDS & GRID ============= */
+.grid { display: grid; gap: 18px; }
+.grid-2 { grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
+.grid-3 { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+
+.card {
+  background: var(--panel); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 22px;
+  position: relative; transition: border-color .2s;
+}
+.card:hover { border-color: var(--border-2); }
+.card-title {
+  font-family: var(--font-display); font-size: 19px; font-weight: 600;
+  margin-bottom: 14px; display: flex; align-items: center; gap: 10px;
+}
+.card-title .pill {
+  font-family: var(--font-body); font-size: 10px; padding: 3px 8px; border-radius: 99px;
+  background: var(--gold-soft); color: var(--gold); font-weight: 600;
+  text-transform: uppercase; letter-spacing: .5px;
+}
+.card-sub { font-size: 13px; color: var(--text-2); margin-bottom: 16px; }
+
+/* ============= HABIT CHECKLIST ============= */
+.habit-list { display: flex; flex-direction: column; gap: 10px; }
+.habit {
+  display: flex; align-items: center; gap: 14px;
+  padding: 14px 16px; background: var(--bg-3); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); cursor: pointer; transition: all .2s;
+  position: relative; overflow: hidden;
+}
+.habit:hover { border-color: var(--border-2); background: var(--panel-2); }
+.habit.done {
+  background: linear-gradient(90deg, var(--green-soft), transparent 60%);
+  border-color: var(--green);
+}
+.habit.done::before {
+  content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+  background: var(--green);
+}
+.habit-check {
+  width: 26px; height: 26px; border-radius: 50%;
+  border: 2px solid var(--border-2); flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; transition: all .2s;
+}
+.habit.done .habit-check {
+  background: var(--green); border-color: var(--green); color: #fff;
+}
+.habit-icon { font-size: 22px; flex-shrink: 0; }
+.habit-info { flex: 1; min-width: 0; }
+.habit-name { font-weight: 500; font-size: 15px; }
+.habit.done .habit-name { text-decoration: line-through; opacity: .65; }
+.habit-prompt { font-size: 12px; color: var(--text-3); margin-top: 2px; }
+.habit-meta {
+  font-size: 11px; color: var(--text-3); font-weight: 500;
+  padding: 4px 8px; border-radius: 6px; background: var(--bg-2);
+}
+
+/* ============= PROGRESS / STREAK ============= */
+.streak-row {
+  display: flex; align-items: center; gap: 12px; padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+}
+.streak-row:last-child { border-bottom: none; }
+.streak-row .member-avatar { width: 36px; height: 36px; font-size: 15px; }
+.streak-info { flex: 1; min-width: 0; }
+.streak-name { font-weight: 500; font-size: 14px; }
+.streak-fires { font-size: 14px; letter-spacing: 1px; margin-top: 2px; line-height: 1; }
+.streak-count {
+  font-family: var(--font-display); font-weight: 600; font-size: 18px;
+  color: var(--orange); min-width: 36px; text-align: right;
+}
+.streak-badge {
+  font-size: 9px; padding: 2px 7px; border-radius: 99px;
+  background: var(--gold-soft); color: var(--gold);
+  font-weight: 600; letter-spacing: .5px; text-transform: uppercase;
+}
+.leader-crown { color: var(--gold); }
+
+.progress-bar {
+  height: 8px; background: var(--bg-2); border-radius: 99px; overflow: hidden;
+  position: relative;
+}
+.progress-fill {
+  height: 100%; border-radius: 99px;
+  background: linear-gradient(90deg, var(--green), var(--gold));
+  transition: width .6s cubic-bezier(.3,1.2,.4,1);
+}
+
+/* ============= STAT TILES ============= */
+.stat-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-bottom: 22px; }
+.stat-tile {
+  background: var(--panel); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); padding: 16px;
+  position: relative; overflow: hidden;
+}
+.stat-tile .stat-label { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-3); font-weight: 600; }
+.stat-tile .stat-value { font-family: var(--font-display); font-size: 28px; font-weight: 600; margin-top: 6px; line-height: 1; }
+.stat-tile .stat-meta { font-size: 11px; color: var(--text-3); margin-top: 4px; }
+.stat-tile.gold .stat-value { color: var(--gold); }
+.stat-tile.green .stat-value { color: var(--green); }
+.stat-tile.blue .stat-value { color: var(--blue); }
+.stat-tile.purple .stat-value { color: var(--purple); }
+.stat-tile.orange .stat-value { color: var(--orange); }
+
+/* ============= FAMILY GRID (compact member tiles) ============= */
+.family-tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px; }
+.family-tile {
+  background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 16px; transition: all .2s; cursor: pointer;
+}
+.family-tile:hover { transform: translateY(-2px); border-color: var(--border-2); box-shadow: var(--shadow); }
+.family-tile-top { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.family-tile .member-avatar { width: 38px; height: 38px; font-size: 16px; }
+.family-tile-name { font-weight: 600; font-size: 14px; }
+.family-tile-meta { font-size: 11px; color: var(--text-3); }
+.family-tile-streak {
+  display: flex; align-items: center; gap: 4px;
+  font-size: 12px; color: var(--orange); font-weight: 600;
+}
+.family-tile-bar { height: 5px; background: var(--bg-2); border-radius: 99px; overflow: hidden; margin-top: 8px; }
+.family-tile-bar-fill { height: 100%; background: linear-gradient(90deg, var(--green), var(--gold)); border-radius: 99px; }
+.family-tile-stats { display: flex; justify-content: space-between; font-size: 11px; color: var(--text-3); margin-top: 6px; }
+
+/* ============= ENCOURAGEMENT FEED ============= */
+.feed-item {
+  display: flex; gap: 12px; padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+}
+.feed-item:last-child { border-bottom: none; }
+.feed-item .member-avatar { width: 36px; height: 36px; font-size: 14px; flex-shrink: 0; }
+.feed-body { flex: 1; min-width: 0; }
+.feed-meta { font-size: 12px; color: var(--text-3); margin-bottom: 4px; }
+.feed-meta strong { color: var(--text); font-weight: 600; }
+.feed-meta .arrow { margin: 0 4px; color: var(--text-3); }
+.feed-msg { font-size: 14px; color: var(--text); line-height: 1.5; }
+
+/* ============= BUTTONS ============= */
+.btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 9px 16px; border-radius: var(--radius-sm);
+  font-size: 13px; font-weight: 500; transition: all .15s;
+  background: var(--panel-2); color: var(--text); border: 1px solid var(--border);
+}
+.btn:hover { background: var(--bg-3); border-color: var(--border-2); transform: translateY(-1px); }
+.btn-primary {
+  background: linear-gradient(135deg, var(--gold), var(--orange));
+  color: #1a1124; border: none; font-weight: 600;
+}
+.btn-primary:hover { transform: translateY(-1px); box-shadow: 0 8px 20px -8px var(--gold); }
+.btn-ghost { background: transparent; border-color: var(--border); }
+.btn-sm { padding: 5px 11px; font-size: 12px; }
+.btn-block { display: flex; width: 100%; justify-content: center; }
+.btn-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+
+/* ============= FORMS ============= */
+.field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+.field label { font-size: 12px; font-weight: 600; color: var(--text-2); letter-spacing: .3px; }
+.field input, .field textarea, .field select {
+  background: var(--bg-3); border: 1px solid var(--border); border-radius: var(--radius-sm);
+  padding: 10px 14px; color: var(--text); transition: border-color .15s;
+}
+.field input:focus, .field textarea:focus, .field select:focus { border-color: var(--gold); }
+.field textarea { min-height: 80px; resize: vertical; font-family: inherit; }
+
+/* ============= CHALLENGE BANNER ============= */
+.challenge-card {
+  background:
+    linear-gradient(135deg, var(--purple-soft), var(--gold-soft));
+  border: 1px solid var(--border-2);
+  border-radius: var(--radius); padding: 24px;
+  position: relative; overflow: hidden;
+}
+.challenge-card::before {
+  content: '🏆'; position: absolute; top: -10px; right: -10px;
+  font-size: 120px; opacity: .07; transform: rotate(-12deg);
+}
+.challenge-title { font-family: var(--font-display); font-size: 22px; font-weight: 600; margin-bottom: 6px; }
+.challenge-goal { color: var(--text-2); margin-bottom: 14px; }
+.challenge-leaders { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+.challenge-leader-chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 5px 10px; background: var(--bg-3); border-radius: 99px;
+  font-size: 12px; font-weight: 500; border: 1px solid var(--border);
+}
+.challenge-prize {
+  background: var(--bg-2); border-radius: var(--radius-sm); padding: 10px 14px;
+  font-size: 13px; color: var(--text-2); display: flex; align-items: center; gap: 8px;
+}
+
+/* ============= VISION ============= */
+.vision-hero {
+  background:
+    radial-gradient(800px circle at 0% 0%, var(--purple-soft), transparent 60%),
+    linear-gradient(135deg, var(--panel), var(--panel-2));
+  border: 1px solid var(--border-2);
+  border-radius: var(--radius); padding: 32px;
+  margin-bottom: 22px; position: relative; overflow: hidden;
+}
+.vision-statement {
+  font-family: var(--font-display); font-size: clamp(20px, 3vw, 28px);
+  font-weight: 500; font-style: italic; line-height: 1.35;
+  max-width: 700px; margin-bottom: 18px;
+}
+.vision-statement::before { content: '"'; font-size: 60px; color: var(--purple); line-height: 0; vertical-align: -20px; margin-right: 4px; }
+.vision-milestone { font-size: 14px; color: var(--text-2); margin-bottom: 14px; }
+.vision-progress-wrap { display: flex; align-items: center; gap: 14px; }
+.vision-progress-wrap .progress-bar { flex: 1; height: 12px; }
+.vision-progress-wrap .progress-fill { background: linear-gradient(90deg, var(--purple), var(--gold)); }
+.vision-pct { font-family: var(--font-display); font-size: 24px; font-weight: 600; color: var(--gold); min-width: 60px; text-align: right; }
+
+.week-hours { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; margin-top: 10px; }
+.day-block {
+  text-align: center; padding: 10px 4px;
+  background: var(--bg-3); border: 1px solid var(--border); border-radius: var(--radius-sm);
+}
+.day-block .day-label { font-size: 10px; color: var(--text-3); text-transform: uppercase; letter-spacing: .8px; font-weight: 600; }
+.day-block .day-hours { font-family: var(--font-display); font-size: 18px; font-weight: 600; margin-top: 4px; }
+.day-block.done { background: var(--purple-soft); border-color: var(--purple); }
+.day-block.done .day-hours { color: var(--purple); }
+.day-block.future .day-hours { color: var(--text-3); }
+
+/* ============= 1:1 SCHEDULE ============= */
+.oneone-list { display: flex; flex-direction: column; gap: 10px; }
+.oneone-item {
+  display: flex; align-items: center; gap: 14px;
+  padding: 14px 16px; background: var(--bg-3); border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+}
+.oneone-item.done { border-left: 3px solid var(--green); }
+.oneone-item.pending { border-left: 3px solid var(--orange); }
+.oneone-info { flex: 1; }
+.oneone-name { font-weight: 500; font-size: 15px; }
+.oneone-meta { font-size: 12px; color: var(--text-3); margin-top: 2px; }
+.oneone-status {
+  font-size: 11px; padding: 4px 10px; border-radius: 99px;
+  font-weight: 600; text-transform: uppercase; letter-spacing: .5px;
+}
+.oneone-status.done { background: var(--green-soft); color: var(--green); }
+.oneone-status.pending { background: var(--orange); color: #fff; opacity: .9; }
+
+/* ============= MODAL ============= */
+.modal-backdrop {
+  position: fixed; inset: 0; background: rgba(0,0,0,.6); backdrop-filter: blur(6px);
+  display: none; align-items: center; justify-content: center; z-index: 200;
+  padding: 20px; animation: fadeIn .2s;
+}
+.modal-backdrop.show { display: flex; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+.modal {
+  background: var(--panel); border: 1px solid var(--border-2);
+  border-radius: var(--radius); padding: 28px;
+  max-width: 520px; width: 100%;
+  max-height: 90vh; overflow-y: auto;
+  box-shadow: var(--shadow-lg);
+  animation: modalIn .25s cubic-bezier(.3,1.2,.4,1);
+}
+@keyframes modalIn { from { opacity: 0; transform: translateY(20px) scale(.96); } to { opacity: 1; transform: none; } }
+.modal-title { font-family: var(--font-display); font-size: 22px; font-weight: 600; margin-bottom: 8px; }
+.modal-sub { color: var(--text-2); font-size: 14px; margin-bottom: 18px; }
+.modal-close-row { display: flex; gap: 10px; justify-content: flex-end; margin-top: 18px; }
+
+/* ============= CELEBRATION ============= */
+.celebrate-overlay {
+  position: fixed; inset: 0; z-index: 300; pointer-events: none;
+  display: flex; align-items: center; justify-content: center;
+}
+.celebrate-card {
+  background: var(--panel); border: 2px solid var(--gold);
+  border-radius: var(--radius); padding: 32px 40px;
+  text-align: center; box-shadow: 0 0 60px var(--gold);
+  animation: celebrateIn .5s cubic-bezier(.3,1.4,.4,1), celebrateOut .4s 1.8s forwards;
+  max-width: 90vw;
+}
+@keyframes celebrateIn { from { opacity: 0; transform: scale(.6); } to { opacity: 1; transform: none; } }
+@keyframes celebrateOut { to { opacity: 0; transform: scale(.9); } }
+.celebrate-emoji { font-size: 60px; line-height: 1; margin-bottom: 12px; }
+.celebrate-title { font-family: var(--font-display); font-size: 26px; font-weight: 600; color: var(--gold); margin-bottom: 6px; }
+.celebrate-msg { color: var(--text-2); font-size: 14px; max-width: 360px; }
+
+.confetti {
+  position: fixed; pointer-events: none; top: -20px; z-index: 299;
+  width: 10px; height: 14px; border-radius: 2px;
+  animation: fall 2.4s linear forwards;
+}
+@keyframes fall {
+  to { transform: translateY(105vh) rotate(720deg); opacity: 0; }
+}
+
+/* ============= TOAST ============= */
+#toast-container { position: fixed; top: 20px; right: 20px; z-index: 400; display: flex; flex-direction: column; gap: 8px; }
+.toast {
+  background: var(--panel); border: 1px solid var(--border-2);
+  border-left: 3px solid var(--gold);
+  padding: 12px 16px; border-radius: var(--radius-sm);
+  font-size: 13px; max-width: 320px; box-shadow: var(--shadow);
+  animation: slideIn .3s, fadeOut .3s 3.2s forwards;
+  display: flex; align-items: center; gap: 10px;
+}
+.toast.success { border-left-color: var(--green); }
+.toast.info { border-left-color: var(--blue); }
+@keyframes slideIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: none; } }
+@keyframes fadeOut { to { opacity: 0; transform: translateX(20px); } }
+
+/* ============= REFLECTION ============= */
+.reflection-step { padding: 24px; background: var(--bg-3); border-radius: var(--radius); margin-bottom: 18px; border: 1px solid var(--border); }
+.reflection-step.current { border-color: var(--gold); box-shadow: 0 0 20px -10px var(--gold); }
+.reflection-step h4 { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; font-family: var(--font-display); font-size: 18px; }
+.reflection-q { font-weight: 500; margin-bottom: 6px; }
+.reflection-step textarea { width: 100%; }
+.reflection-progress { display: flex; gap: 4px; margin-bottom: 22px; }
+.reflection-dot {
+  flex: 1; height: 6px; background: var(--bg-2); border-radius: 99px;
+}
+.reflection-dot.done { background: var(--green); }
+.reflection-dot.current { background: var(--gold); }
+
+.reflection-summary {
+  background: linear-gradient(135deg, var(--gold-soft), var(--purple-soft));
+  border: 1px solid var(--border-2); border-radius: var(--radius);
+  padding: 28px; margin-top: 22px;
+}
+.reflection-summary h3 { font-family: var(--font-display); font-size: 22px; margin-bottom: 14px; }
+.reflection-summary ul { list-style: none; }
+.reflection-summary li { padding: 8px 0; padding-left: 28px; position: relative; }
+.reflection-summary li::before { content: ''; position: absolute; left: 0; top: 12px; width: 18px; height: 18px; border-radius: 50%; background: var(--gold-soft); display: flex; align-items: center; justify-content: center; font-size: 10px; }
+.reflection-summary li.win::before { content: '🎉'; background: transparent; font-size: 14px; top: 8px; }
+.reflection-summary li.struggle::before { content: '🤝'; background: transparent; font-size: 14px; top: 8px; }
+.reflection-summary li.prayer::before { content: '🙏'; background: transparent; font-size: 14px; top: 8px; }
+
+/* ============= SCRIPTURE CARD ============= */
+.scripture-card {
+  background: linear-gradient(135deg, var(--green-soft), transparent);
+  border: 1px solid var(--green); border-radius: var(--radius);
+  padding: 22px; position: relative;
+}
+.scripture-ref {
+  font-size: 11px; font-weight: 600; letter-spacing: 1.5px;
+  text-transform: uppercase; color: var(--green); margin-bottom: 10px;
+}
+.scripture-text {
+  font-family: var(--font-display); font-size: 18px; font-weight: 500;
+  font-style: italic; line-height: 1.5;
+}
+
+/* ============= BADGES (achievements) ============= */
+.badges { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 12px; background: var(--bg-3); border: 1px solid var(--border);
+  border-radius: 99px; font-size: 12px; font-weight: 500;
+}
+.badge.earned { background: var(--gold-soft); border-color: var(--gold); color: var(--gold); }
+
+/* ============= MOBILE NAV ============= */
+.mobile-nav-toggle {
+  display: none; position: fixed; top: 16px; left: 16px; z-index: 50;
+  width: 44px; height: 44px; background: var(--panel); border: 1px solid var(--border);
+  border-radius: 12px; align-items: center; justify-content: center; font-size: 18px;
+}
+
+@media (max-width: 840px) {
+  #app { display: block; }
+  #app.show { display: block; }
+  aside {
+    position: fixed; left: -260px; top: 0; height: 100vh; z-index: 60;
+    transition: left .3s; box-shadow: var(--shadow-lg);
+  }
+  aside.open { left: 0; }
+  .mobile-nav-toggle { display: flex; }
+  main { padding-top: 70px; }
+  .nav-current-user { margin-top: 24px; }
+}
+
+/* ============= ONBOARDING WIZARD ============= */
+.wizard-step { display: none; }
+.wizard-step.active { display: block; animation: fadeUp .3s; }
+.wizard-progress { display: flex; gap: 6px; margin-bottom: 24px; }
+.wizard-dot { flex: 1; height: 5px; border-radius: 99px; background: var(--bg-2); }
+.wizard-dot.done { background: var(--green); }
+.wizard-dot.current { background: var(--gold); }
+
+/* ============= UTIL ============= */
+.text-center { text-align: center; }
+.text-muted { color: var(--text-2); }
+.text-tiny { font-size: 12px; color: var(--text-3); }
+.mb-0 { margin-bottom: 0; }
+.mb-1 { margin-bottom: 8px; }
+.mb-2 { margin-bottom: 16px; }
+.mb-3 { margin-bottom: 24px; }
+.mt-2 { margin-top: 16px; }
+.flex { display: flex; align-items: center; gap: 10px; }
+.flex-between { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.row-gap { display: flex; gap: 18px; flex-wrap: wrap; }
+.row-gap > * { flex: 1; min-width: 280px; }
+.divider { height: 1px; background: var(--border); margin: 20px 0; }
+.hide { display: none !important; }
+.pill {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 3px 9px; border-radius: 99px; font-size: 11px; font-weight: 600;
+  background: var(--bg-3); color: var(--text-2);
+}
+.pill.green { background: var(--green-soft); color: var(--green); }
+.pill.purple { background: var(--purple-soft); color: var(--purple); }
+.pill.gold { background: var(--gold-soft); color: var(--gold); }
+.pill.blue { background: var(--blue-soft); color: var(--blue); }
+
+</style>
+</head>
+<body>
+
+<!-- ===================== LOGIN ===================== -->
+<div id="login">
+  <div class="login-inner">
+    <div class="login-crest">F</div>
+    <h1 class="login-title">The Forteh <em>Family</em></h1>
+    <div class="login-sub">Together, with intention, for legacy.</div>
+    <div class="login-verse">"As iron sharpens iron, so one person sharpens another." — Proverbs 27:17</div>
+    <div class="login-grid" id="login-members"></div>
+    <div class="login-footer">
+      <button onclick="openOnboarding()">Set up a tool for your family →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== APP SHELL ===================== -->
+<div id="app">
+  <button class="mobile-nav-toggle" onclick="toggleMobileNav()">☰</button>
+
+  <aside id="sidebar">
+    <div class="brand">
+      <div class="brand-mark">F</div>
+      <div class="brand-text">Forteh<small>together · with intention</small></div>
+    </div>
+
+    <div class="nav-section">Personal</div>
+    <button class="nav-item active" data-view="today" onclick="showView('today')">
+      <span class="nav-icon">🌅</span> Today
+    </button>
+    <button class="nav-item" data-view="reflection" onclick="showView('reflection')">
+      <span class="nav-icon">📓</span> Weekly Reflection
+    </button>
+
+    <div class="nav-section">Family</div>
+    <button class="nav-item" data-view="dashboard" onclick="showView('dashboard')">
+      <span class="nav-icon">🏠</span> Family Dashboard
+    </button>
+    <button class="nav-item" data-view="encourage" onclick="showView('encourage')">
+      <span class="nav-icon">💌</span> Encouragement
+    </button>
+    <button class="nav-item" data-view="challenge" onclick="showView('challenge')">
+      <span class="nav-icon">🏆</span> Challenges
+    </button>
+
+    <div class="nav-section">Vision</div>
+    <button class="nav-item" data-view="vision" onclick="showView('vision')">
+      <span class="nav-icon">🎯</span> PAL Vision
+    </button>
+    <button class="nav-item" data-view="oneone" onclick="showView('oneone')">
+      <span class="nav-icon">👨‍👧</span> 1:1 Time
+    </button>
+
+    <div class="nav-current-user">
+      <div class="member-avatar" id="nav-avatar">F</div>
+      <div class="who">
+        <span id="nav-name">—</span>
+        <small id="nav-role">—</small>
+      </div>
+      <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">
+        <span id="theme-icon">🌙</span>
+      </button>
+    </div>
+    <button class="nav-item" style="margin-top:8px;" onclick="logout()">
+      <span class="nav-icon">↪</span> Switch user
+    </button>
+  </aside>
+
+  <main>
+    <!-- ============ TODAY ============ -->
+    <section class="view active" id="view-today">
+      <div class="view-header">
+        <div class="view-eyebrow" id="today-date"></div>
+        <h1 class="view-title">Good <em><span id="greeting-time">morning</span></em>, <span id="greeting-name">friend</span>.</h1>
+        <p class="view-sub" id="today-message">Your family is watching, cheering, and praying with you today.</p>
+      </div>
+
+      <div class="stat-row" id="today-stats"></div>
+
+      <div class="grid grid-2">
+        <div class="card">
+          <h3 class="card-title">Today's rhythm <span class="pill" id="today-progress-pill">0 / 0</span></h3>
+          <p class="card-sub" id="today-rhythm-sub">Take your time. Each one builds the next.</p>
+          <div class="habit-list" id="habit-list"></div>
+        </div>
+
+        <div>
+          <div class="scripture-card mb-2">
+            <div class="scripture-ref" id="scripture-ref">PROVERBS 3:5-6</div>
+            <div class="scripture-text" id="scripture-text">"Trust in the Lord with all your heart, and do not lean on your own understanding."</div>
+          </div>
+
+          <div class="card mb-2">
+            <h3 class="card-title">Your streak <span class="pill gold" id="my-streak-pill">🔥 0</span></h3>
+            <p class="card-sub" id="streak-msg">Build your prayer streak one day at a time.</p>
+            <div class="badges" id="my-badges"></div>
+          </div>
+
+          <div class="card">
+            <h3 class="card-title">A note for you</h3>
+            <p class="card-sub" id="personal-note">Your faithfulness is shaping your family. Keep going.</p>
+            <div id="my-encouragements" style="margin-top:14px;"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ FAMILY DASHBOARD ============ -->
+    <section class="view" id="view-dashboard">
+      <div class="view-header">
+        <div class="view-eyebrow">The Family</div>
+        <h1 class="view-title">All of us, <em>together</em>.</h1>
+        <p class="view-sub">A real-time look at how each of us is showing up this week.</p>
+      </div>
+
+      <div class="stat-row" id="dashboard-stats"></div>
+
+      <div class="card mb-2">
+        <h3 class="card-title">🙏 Prayer streaks</h3>
+        <p class="card-sub">Consecutive days each person has prayed.</p>
+        <div id="prayer-streaks"></div>
+      </div>
+
+      <div class="card mb-2">
+        <h3 class="card-title">Every one of us, this week</h3>
+        <div class="family-tiles" id="family-tiles"></div>
+      </div>
+
+      <div class="row-gap">
+        <div class="card">
+          <h3 class="card-title">👨‍👩‍👧‍👦 Family dinner</h3>
+          <p class="card-sub">No phones. Together. 5 nights this week.</p>
+          <div id="dinner-tracker"></div>
+        </div>
+
+        <div class="card">
+          <h3 class="card-title">📬 Recent encouragement</h3>
+          <p class="card-sub">Notes shared in the last few days.</p>
+          <div id="recent-encouragement"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ ENCOURAGEMENT ============ -->
+    <section class="view" id="view-encourage">
+      <div class="view-header">
+        <div class="view-eyebrow">Speak Life</div>
+        <h1 class="view-title">Leave an <em>encouragement</em>.</h1>
+        <p class="view-sub">Specific words land deepest. Tell someone exactly what you saw.</p>
+      </div>
+
+      <div class="row-gap">
+        <div class="card">
+          <h3 class="card-title">Send a note</h3>
+          <div class="field">
+            <label>To whom?</label>
+            <select id="enc-to"></select>
+          </div>
+          <div class="field">
+            <label>Type</label>
+            <select id="enc-type">
+              <option value="encourage">💌 Encouragement</option>
+              <option value="celebrate">🎉 Celebrate a win</option>
+              <option value="challenge">💪 Issue a challenge</option>
+              <option value="ask">🤝 Ask for accountability</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Message</label>
+            <textarea id="enc-msg" placeholder="Be specific. What did you see? What does it mean to you?"></textarea>
+          </div>
+          <button class="btn btn-primary btn-block" onclick="sendEncouragement()">Send with love →</button>
+        </div>
+
+        <div class="card">
+          <h3 class="card-title">All notes</h3>
+          <p class="card-sub">Every word shared in this family.</p>
+          <div id="all-encouragements"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CHALLENGES ============ -->
+    <section class="view" id="view-challenge">
+      <div class="view-header">
+        <div class="view-eyebrow">This Week</div>
+        <h1 class="view-title">Together, we <em>rise</em>.</h1>
+        <p class="view-sub">One shared goal. Nine of us, pulling for each other.</p>
+      </div>
+
+      <div class="challenge-card mb-3" id="active-challenge"></div>
+
+      <div class="card mb-2">
+        <h3 class="card-title">🏆 Champion of the week</h3>
+        <p class="card-sub">Based on consistency + encouragement given.</p>
+        <div id="champion-display"></div>
+      </div>
+
+      <div class="card">
+        <h3 class="card-title">Consistency rankings</h3>
+        <p class="card-sub">Celebrate the leaders — and cheer the climbers.</p>
+        <div id="rankings"></div>
+      </div>
+    </section>
+
+    <!-- ============ VISION ============ -->
+    <section class="view" id="view-vision">
+      <div class="view-header">
+        <div class="view-eyebrow">PAL Curriculum</div>
+        <h1 class="view-title">A vision <em>worth</em> the cost.</h1>
+        <p class="view-sub">Dad's work to build a Christian education system for Africa.</p>
+      </div>
+
+      <div class="vision-hero">
+        <div class="vision-statement">Build a world-class Christian education system that develops servant leaders for Africa.</div>
+        <div class="vision-milestone"><strong>This year's milestone:</strong> Complete & pilot PAL curriculum by September 30, 2026.</div>
+        <div class="vision-progress-wrap">
+          <div class="progress-bar"><div class="progress-fill" id="vision-bar" style="width:0%"></div></div>
+          <div class="vision-pct" id="vision-pct">0%</div>
+        </div>
+        <div class="text-tiny mt-2"><span id="vision-hours-text">0 hours invested · 120 hours total</span></div>
+      </div>
+
+      <div class="card mb-2">
+        <h3 class="card-title">This week's progress <span class="pill purple" id="week-hours-pill">0h / 15h</span></h3>
+        <div class="week-hours" id="vision-week"></div>
+        <div id="vision-log-section" style="margin-top:20px;display:none;">
+          <div class="field">
+            <label>Log hours for today (PAL work)</label>
+            <input type="number" id="vision-hours-input" min="0" max="24" step="0.5" placeholder="e.g. 3.5">
+          </div>
+          <button class="btn btn-primary" onclick="logVisionHours()">Log hours</button>
+        </div>
+      </div>
+
+      <div class="row-gap">
+        <div class="card">
+          <h3 class="card-title">🙏 Why this matters</h3>
+          <p style="font-family:var(--font-display);font-style:italic;font-size:16px;line-height:1.6;color:var(--text-2);">When this curriculum is done, 50+ church leaders will use it to train thousands of young people. That's multiplication. That's legacy. That's God's work.</p>
+        </div>
+        <div class="card">
+          <h3 class="card-title">💬 Family support</h3>
+          <div id="vision-support"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 1:1 ============ -->
+    <section class="view" id="view-oneone">
+      <div class="view-header">
+        <div class="view-eyebrow">Presence over Productivity</div>
+        <h1 class="view-title">One child, <em>at a time</em>.</h1>
+        <p class="view-sub" id="oneone-sub">Schedule, show up, remember what they said.</p>
+      </div>
+
+      <div class="card mb-2">
+        <h3 class="card-title">This week's 1:1 schedule</h3>
+        <div class="oneone-list" id="oneone-list"></div>
+      </div>
+
+      <div class="card">
+        <h3 class="card-title">💡 Conversation starters</h3>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:10px;">
+          <li class="flex" style="padding:10px 14px;background:var(--bg-3);border-radius:var(--radius-sm);">
+            <span>💭</span><span>"What's God teaching you this week?"</span>
+          </li>
+          <li class="flex" style="padding:10px 14px;background:var(--bg-3);border-radius:var(--radius-sm);">
+            <span>🔭</span><span>"Where do you see yourself in 5 years?"</span>
+          </li>
+          <li class="flex" style="padding:10px 14px;background:var(--bg-3);border-radius:var(--radius-sm);">
+            <span>⚖️</span><span>"What's one win this week? One struggle?"</span>
+          </li>
+          <li class="flex" style="padding:10px 14px;background:var(--bg-3);border-radius:var(--radius-sm);">
+            <span>❤️</span><span>"How can I support you better as your dad?"</span>
+          </li>
+          <li class="flex" style="padding:10px 14px;background:var(--bg-3);border-radius:var(--radius-sm);">
+            <span>📖</span><span>"What scripture has been speaking to you lately?"</span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============ REFLECTION ============ -->
+    <section class="view" id="view-reflection">
+      <div class="view-header">
+        <div class="view-eyebrow">Sunday Evening</div>
+        <h1 class="view-title">A week worth <em>remembering</em>.</h1>
+        <p class="view-sub">Take 5 minutes. Three honest answers. Your family will see and love you for it.</p>
+      </div>
+
+      <div class="reflection-progress">
+        <div class="reflection-dot current" id="rdot-1"></div>
+        <div class="reflection-dot" id="rdot-2"></div>
+        <div class="reflection-dot" id="rdot-3"></div>
+      </div>
+
+      <div class="reflection-step current" id="rstep-1">
+        <h4>🎉 <span>One win from this week?</span></h4>
+        <p class="reflection-q text-muted">What worked? What are you grateful for?</p>
+        <textarea id="reflect-win" placeholder="One specific thing that went well..." class="field" style="width:100%;background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px;color:var(--text);"></textarea>
+      </div>
+
+      <div class="reflection-step" id="rstep-2">
+        <h4>🤝 <span>One struggle?</span></h4>
+        <p class="reflection-q text-muted">Where do you need help? Be honest — your family wants to know.</p>
+        <textarea id="reflect-struggle" placeholder="One thing that was hard..." class="field" style="width:100%;background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px;color:var(--text);"></textarea>
+      </div>
+
+      <div class="reflection-step" id="rstep-3">
+        <h4>🙏 <span>One prayer request for next week?</span></h4>
+        <p class="reflection-q text-muted">What do you want God — and your family — to pray over?</p>
+        <textarea id="reflect-prayer" placeholder="My prayer for the week ahead..." class="field" style="width:100%;background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px;color:var(--text);"></textarea>
+      </div>
+
+      <button class="btn btn-primary btn-block" onclick="submitReflection()" style="margin-top:14px;">Save my reflection →</button>
+
+      <div id="reflection-summary-wrap"></div>
+    </section>
+  </main>
+</div>
+
+<!-- ===================== MODALS ===================== -->
+<div class="modal-backdrop" id="modal-backdrop" onclick="if(event.target===this)closeModal()">
+  <div class="modal" id="modal-content"></div>
+</div>
+
+<!-- ===================== CELEBRATION ===================== -->
+<div class="celebrate-overlay hide" id="celebrate"></div>
+
+<!-- ===================== TOAST ===================== -->
+<div id="toast-container"></div>
+
+<script>
+/* ===================================================================
+   DATA — Family Configuration
+   =================================================================== */
+
+const DEFAULT_FAMILY = {
+  familyId: 'forteh-family-2026',
+  familyName: 'Forteh Household',
+  established: '2025-04-01',
+  vision: 'Build a Christian education system for Africa',
+  visionMilestone: 'Complete & pilot PAL curriculum by September 30, 2026',
+  visionTotalHours: 120,
+  weeklyVisionTarget: 15
+};
+
+const DEFAULT_MEMBERS = [
+  { id:'innocent', name:'Innocent', role:'Family Leader & Visionary', emoji:'F', color:'gold',
+    accent:'var(--gold)', accent2:'var(--orange)',
+    habits:[
+      { id:'prayer',   name:'Prayer (1hr)',          icon:'🙏', prompt:'Pray for PAL vision & each family member', color:'green' },
+      { id:'bible',    name:'Bible reading',          icon:'📖', prompt:'Today\'s suggested passage', color:'green' },
+      { id:'plan',     name:'Plan my day',            icon:'📋', prompt:'Top 3 priorities for today', color:'blue' },
+      { id:'vision',   name:'Strategic vision review',icon:'🎯', prompt:'Did today move PAL forward? Log hours.', color:'purple' },
+      { id:'family',   name:'Family 1:1 time',        icon:'👨‍👧', prompt:'Who am I meeting with today?', color:'blue' },
+      { id:'sports',   name:'Sports / exercise',      icon:'⚽', prompt:'Move your body', color:'orange' },
+      { id:'rest',     name:'Rest & reflection',      icon:'😴', prompt:'End the day well', color:'purple' }
+    ]
+  },
+  { id:'linda', name:'Linda', role:'Co-Leader & Partner', emoji:'L', color:'pink',
+    accent:'var(--pink)', accent2:'var(--purple)',
+    habits:[
+      { id:'prayer',  name:'Prayer',              icon:'🙏', prompt:'Pray for the family and your goals', color:'green' },
+      { id:'bible',   name:'Bible reading',       icon:'📖', prompt:'Daily passage', color:'green' },
+      { id:'work',    name:'Customer outreach',   icon:'📞', prompt:'Goal: 20 stable customers', color:'blue' },
+      { id:'family',  name:'Family support',      icon:'👨‍👩‍👧‍👦', prompt:'Be present at dinner', color:'blue' },
+      { id:'rest',    name:'Rest',                icon:'😴', prompt:'Your wellness matters', color:'purple' }
+    ]
+  },
+  { id:'deron', name:'Deron', role:'Young Adult', emoji:'D', color:'blue',
+    accent:'var(--blue)', accent2:'var(--purple)',
+    habits:[
+      { id:'prayer',  name:'Morning prayer',     icon:'🙏', prompt:'Start with God', color:'green' },
+      { id:'school',  name:'School / study',     icon:'📚', prompt:'Academic excellence today', color:'blue' },
+      { id:'family',  name:'Family time',        icon:'👨‍👩‍👧‍👦', prompt:'Dinner, no phones', color:'blue' },
+      { id:'growth',  name:'Growth challenge',   icon:'🎯', prompt:'Scripture memory or skill practice', color:'purple' }
+    ]
+  },
+  { id:'ariel', name:'Ariel', role:'Young Adult', emoji:'A', color:'purple',
+    accent:'var(--purple)', accent2:'var(--blue)',
+    habits:[
+      { id:'prayer',  name:'Morning prayer',     icon:'🙏', prompt:'Start with God', color:'green' },
+      { id:'school',  name:'School / study',     icon:'📚', prompt:'Character through work', color:'blue' },
+      { id:'sports',  name:'Sports',             icon:'⚽', prompt:'Move and play', color:'orange' },
+      { id:'family',  name:'Family time',        icon:'👨‍👩‍👧‍👦', prompt:'Be present', color:'blue' },
+      { id:'growth',  name:'Growth challenge',   icon:'🎯', prompt:'Faith and character', color:'purple' }
+    ]
+  },
+  { id:'jude', name:'Jude', role:'Young Adult', emoji:'J', color:'green',
+    accent:'var(--green)', accent2:'var(--gold)',
+    habits:[
+      { id:'prayer',  name:'Prayer',             icon:'🙏', prompt:'Lead in faith today', color:'green' },
+      { id:'bible',   name:'Bible reading',      icon:'📖', prompt:'Scripture study', color:'green' },
+      { id:'family',  name:'Family time',        icon:'👨‍👩‍👧‍👦', prompt:'Be the elder brother today', color:'blue' },
+      { id:'growth',  name:'Growth challenge',   icon:'🎯', prompt:'Personal growth area', color:'purple' }
+    ]
+  },
+  { id:'mirabel', name:'Mirabel', role:'Sister', emoji:'M', color:'pink',
+    accent:'var(--pink)', accent2:'var(--gold)',
+    habits:[
+      { id:'prayer',  name:'Prayer',             icon:'🙏', prompt:'Lead in prayer', color:'green' },
+      { id:'bible',   name:'Bible reading',      icon:'📖', prompt:'Daily passage', color:'green' },
+      { id:'study',   name:'Study',              icon:'📚', prompt:'Keep learning', color:'blue' },
+      { id:'family',  name:'Family time',        icon:'👨‍👩‍👧‍👦', prompt:'Faith leader at home', color:'blue' },
+      { id:'growth',  name:'Growth challenge',   icon:'🎯', prompt:'Character growth', color:'purple' }
+    ]
+  },
+  { id:'joy', name:'Joy', role:'Sister', emoji:'J', color:'gold',
+    accent:'var(--gold)', accent2:'var(--pink)',
+    habits:[
+      { id:'prayer',  name:'Prayer',             icon:'🙏', prompt:'Talk to God', color:'green' },
+      { id:'bible',   name:'Bible reading',      icon:'📖', prompt:'A passage a day', color:'green' },
+      { id:'family',  name:'Family time',        icon:'👨‍👩‍👧‍👦', prompt:'Lead the younger ones', color:'blue' },
+      { id:'growth',  name:'Growth challenge',   icon:'🎯', prompt:'Build your faith', color:'purple' }
+    ]
+  },
+  { id:'samuel', name:'Samuel', role:'Young Man', emoji:'S', color:'blue',
+    accent:'var(--blue)', accent2:'var(--green)',
+    habits:[
+      { id:'prayer',  name:'Prayer',             icon:'🙏', prompt:'Pray bold prayers', color:'green' },
+      { id:'school',  name:'School / study',     icon:'📚', prompt:'Academic focus', color:'blue' },
+      { id:'bible',   name:'Bible study',        icon:'📖', prompt:'Deep in the Word', color:'green' },
+      { id:'family',  name:'Family time',        icon:'👨‍👩‍👧‍👦', prompt:'Lead at dinner', color:'blue' },
+      { id:'growth',  name:'Growth challenge',   icon:'🎯', prompt:'Character development', color:'purple' }
+    ]
+  },
+  { id:'rawlins', name:'Rawlins', role:'Young Man', emoji:'R', color:'orange',
+    accent:'var(--orange)', accent2:'var(--gold)',
+    habits:[
+      { id:'prayer',  name:'Prayer',             icon:'🙏', prompt:'Build consistency, one day at a time', color:'green' },
+      { id:'bible',   name:'Bible reading',      icon:'📖', prompt:'Daily passage', color:'green' },
+      { id:'sports',  name:'Sports',             icon:'⚽', prompt:'Move and grow', color:'orange' },
+      { id:'family',  name:'Family time',        icon:'👨‍👩‍👧‍👦', prompt:'Show up for family', color:'blue' },
+      { id:'growth',  name:'Growth challenge',   icon:'🎯', prompt:'Character growth', color:'purple' }
+    ]
+  }
+];
+
+const SCRIPTURES = [
+  { ref:'Proverbs 3:5-6', text:'"Trust in the Lord with all your heart, and do not lean on your own understanding. In all your ways acknowledge him, and he will make straight your paths."' },
+  { ref:'Philippians 4:13', text:'"I can do all things through him who strengthens me."' },
+  { ref:'Joshua 1:9', text:'"Be strong and courageous. Do not be frightened, for the Lord your God is with you wherever you go."' },
+  { ref:'Psalm 46:10', text:'"Be still, and know that I am God."' },
+  { ref:'Romans 12:12', text:'"Rejoice in hope, be patient in tribulation, be constant in prayer."' },
+  { ref:'1 Thessalonians 5:16-18', text:'"Rejoice always, pray without ceasing, give thanks in all circumstances."' },
+  { ref:'Proverbs 27:17', text:'"As iron sharpens iron, so one person sharpens another."' },
+  { ref:'Matthew 6:33', text:'"But seek first the kingdom of God and his righteousness, and all these things will be added to you."' },
+  { ref:'Jeremiah 29:11', text:'"For I know the plans I have for you, declares the Lord, plans for welfare and not for evil, to give you a future and a hope."' },
+  { ref:'Galatians 6:9', text:'"Let us not grow weary of doing good, for in due season we will reap, if we do not give up."' },
+  { ref:'Psalm 127:1', text:'"Unless the Lord builds the house, those who build it labor in vain."' },
+  { ref:'Colossians 3:23', text:'"Whatever you do, work heartily, as for the Lord and not for men."' }
+];
+
+const BADGE_DEFS = [
+  { id:'pray-fire',    label:'Pray-Fire',    icon:'🔥', req:s => s.prayerStreak >= 7 },
+  { id:'consistency',  label:'Consistency Champion', icon:'💪', req:s => s.perfectDays >= 14 },
+  { id:'leader',       label:'Spiritual Leader', icon:'🙏', req:s => s.encouragementsGiven >= 3 },
+  { id:'hero',         label:'Family Hero',  icon:'👨‍👩‍👧‍👦', req:s => s.familyTimeStreak >= 5 },
+  { id:'vision',       label:'Vision Builder', icon:'🎯', req:s => s.visionHoursWeek >= 3 }
+];
+
+/* ===================================================================
+   STATE & STORAGE
+   =================================================================== */
+const STORAGE_KEY = 'forteh-family-v1';
+let state = null;
+let currentUser = null;
+let reflectionStep = 1;
+
+function defaultState() {
+  return {
+    family: { ...DEFAULT_FAMILY },
+    members: DEFAULT_MEMBERS.map(m => ({ ...m })),
+    dailyProgress: {},
+    weeklyReview: {},
+    encouragement: [
+      { from:'deron', to:'innocent', message:'Your prayer life is changing our family. Keep going.', date: Date.now() - 86400000 * 1, type:'encourage' },
+      { from:'linda', to:'innocent', message:'I watched you grind on PAL yesterday. That\'s discipline. So inspired.', date: Date.now() - 86400000 * 2, type:'celebrate' },
+      { from:'mirabel', to:'samuel', message:'Your prayer at dinner moved me. Keep leading.', date: Date.now() - 86400000 * 1, type:'encourage' },
+      { from:'rawlins', to:'linda', message:'Mom, 16/20 customers? You\'re amazing! 🚀', date: Date.now() - 86400000 * 3, type:'celebrate' }
+    ],
+    challenges: [{
+      weekOf: weekStart(),
+      title: 'Prayer Consistency Challenge',
+      goal: 'All 9 of us hit 7/7 days of prayer by Sunday night',
+      prize: 'Dad takes the winners to their favorite place',
+      progress: {}
+    }],
+    visionLog: {},                  // { YYYY-MM-DD: hours }
+    oneOnOnes: {},                   // { 'YYYY-MM-DD-childId': { done, notes, scheduledFor } }
+    familyDinner: {},                // { YYYY-MM-DD: true/false }
+    settings: { theme: 'dark', firstRun: true }
+  };
+}
+
+function load() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) {
+      state = JSON.parse(raw);
+      // Migrate / ensure shape
+      const def = defaultState();
+      for (const k of Object.keys(def)) if (state[k] === undefined) state[k] = def[k];
+      // Ensure members updated structure (in case habits changed)
+      const memMap = new Map(state.members.map(m => [m.id, m]));
+      state.members = DEFAULT_MEMBERS.map(m => {
+        const ex = memMap.get(m.id);
+        return ex ? { ...m, ...ex, habits: m.habits } : m;
+      });
+    } else {
+      state = defaultState();
+      // Seed some realistic daily progress for the last 6 days so the dashboard isn't empty
+      seedHistory();
+      save();
+    }
+  } catch(e) {
+    console.error('Load failed', e);
+    state = defaultState();
+  }
+}
+
+function save() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+  catch(e) { console.error('Save failed', e); }
+}
+
+function seedHistory() {
+  // Realistic seed: most members pray most days, vision hours, etc.
+  const patterns = {
+    innocent: { prayer: [1,1,1,1,1,1], bible:[1,1,1,0,1,1], plan:[1,1,1,1,0,1], vision:[1,1,0,1,1,0], family:[1,0,1,1,0,1], sports:[0,1,1,0,1,0], rest:[1,1,1,0,1,1] },
+    linda:    { prayer: [1,1,1,0,1,1], bible:[1,1,1,1,0,1], work:[1,1,1,1,1,0], family:[1,1,1,1,1,1], rest:[1,0,1,1,1,1] },
+    deron:    { prayer: [1,1,1,1,1,1], school:[1,1,1,1,0,1], family:[1,1,1,1,1,1], growth:[1,0,1,1,1,0] },
+    ariel:    { prayer: [1,0,1,1,1,1], school:[1,1,1,1,1,1], sports:[1,1,0,1,1,0], family:[1,1,1,1,1,1], growth:[0,1,1,1,0,1] },
+    jude:     { prayer: [1,1,1,1,1,1], bible:[1,1,1,1,1,0], family:[1,1,1,1,1,1], growth:[1,1,0,1,1,1] },
+    mirabel:  { prayer: [1,1,1,1,1,1], bible:[1,1,1,1,1,1], study:[1,1,1,0,1,1], family:[1,1,1,1,1,1], growth:[1,1,1,0,1,1] },
+    joy:      { prayer: [1,1,1,0,1,1], bible:[1,0,1,1,1,1], family:[1,1,1,1,1,1], growth:[1,1,0,1,1,0] },
+    samuel:   { prayer: [1,1,1,1,1,0], school:[1,1,1,1,0,1], bible:[1,1,0,1,1,1], family:[1,1,1,1,1,1], growth:[1,0,1,1,1,1] },
+    rawlins:  { prayer: [0,1,1,1,0,1], bible:[1,0,1,1,1,0], sports:[1,1,1,0,1,1], family:[1,1,1,1,1,1], growth:[0,1,1,0,1,1] }
+  };
+  for (let i = 6; i >= 1; i--) {
+    const date = dateKey(daysAgo(i));
+    state.dailyProgress[date] = {};
+    for (const m of state.members) {
+      const p = patterns[m.id] || {};
+      const today = {};
+      for (const h of m.habits) today[h.id] = !!(p[h.id] && p[h.id][6-i]);
+      state.dailyProgress[date][m.id] = today;
+    }
+    state.familyDinner[date] = i <= 3 || i === 5;
+    state.visionLog[date] = [8,7,6,5,4][6-i] || 0;
+  }
+}
+
+/* ===================================================================
+   UTILS
+   =================================================================== */
+function dateKey(d) { d = d || new Date(); return d.toISOString().slice(0,10); }
+function daysAgo(n) { const d = new Date(); d.setDate(d.getDate() - n); return d; }
+function weekStart(d) {
+  d = d || new Date();
+  const day = d.getDay(); // Sunday = 0
+  const diff = (day === 0 ? -6 : 1 - day);
+  const m = new Date(d); m.setDate(d.getDate() + diff); m.setHours(0,0,0,0);
+  return dateKey(m);
+}
+function thisWeekDates() {
+  const start = new Date(weekStart());
+  const out = [];
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(start); d.setDate(start.getDate() + i);
+    out.push(dateKey(d));
+  }
+  return out;
+}
+function memberById(id) { return state.members.find(m => m.id === id); }
+function todayKey() { return dateKey(); }
+function ensureDay(date) {
+  if (!state.dailyProgress[date]) state.dailyProgress[date] = {};
+  for (const m of state.members) if (!state.dailyProgress[date][m.id]) state.dailyProgress[date][m.id] = {};
+}
+
+function prayerStreak(memberId) {
+  let count = 0;
+  for (let i = 0; i < 60; i++) {
+    const date = dateKey(daysAgo(i));
+    const day = state.dailyProgress[date];
+    // Today doesn't break streak if not yet done
+    if (i === 0 && (!day || !day[memberId] || !day[memberId].prayer)) continue;
+    if (day && day[memberId] && day[memberId].prayer) count++;
+    else if (i > 0) break;
+  }
+  return count;
+}
+
+function completionRate(memberId, date) {
+  const m = memberById(memberId); if (!m) return 0;
+  const day = state.dailyProgress[date]?.[memberId] || {};
+  const done = m.habits.filter(h => day[h.id]).length;
+  return m.habits.length ? done / m.habits.length : 0;
+}
+
+function weekCompletionPct(memberId) {
+  const dates = thisWeekDates().filter(d => d <= todayKey());
+  if (dates.length === 0) return 0;
+  let total = 0;
+  for (const d of dates) total += completionRate(memberId, d);
+  return Math.round((total / dates.length) * 100);
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+function relTime(ts) {
+  const diff = Date.now() - ts;
+  if (diff < 60000) return 'just now';
+  if (diff < 3600000) return Math.floor(diff/60000) + 'm ago';
+  if (diff < 86400000) return Math.floor(diff/3600000) + 'h ago';
+  if (diff < 86400000 * 7) return Math.floor(diff/86400000) + 'd ago';
+  return new Date(ts).toLocaleDateString(undefined, { month:'short', day:'numeric' });
+}
+
+function colorVar(colorName) {
+  return ({ gold:'var(--gold)', green:'var(--green)', blue:'var(--blue)', purple:'var(--purple)',
+            pink:'var(--pink)', orange:'var(--orange)' })[colorName] || 'var(--blue)';
+}
+
+/* ===================================================================
+   TOAST / CELEBRATE
+   =================================================================== */
+function toast(msg, type='info') {
+  const c = document.getElementById('toast-container');
+  const t = document.createElement('div');
+  t.className = 'toast ' + type;
+  t.innerHTML = `<span>${type==='success'?'✨':type==='info'?'💬':'ℹ'}</span><span>${msg}</span>`;
+  c.appendChild(t);
+  setTimeout(() => t.remove(), 3700);
+}
+
+function celebrate(emoji, title, msg) {
+  const el = document.getElementById('celebrate');
+  el.classList.remove('hide');
+  el.innerHTML = `<div class="celebrate-card">
+    <div class="celebrate-emoji">${emoji}</div>
+    <div class="celebrate-title">${title}</div>
+    <div class="celebrate-msg">${msg||''}</div>
+  </div>`;
+  burstConfetti();
+  setTimeout(() => el.classList.add('hide'), 2200);
+}
+
+function burstConfetti() {
+  const colors = ['#f6c45a','#34d399','#5b8def','#a78bfa','#f472b6','#fb923c'];
+  for (let i = 0; i < 50; i++) {
+    const c = document.createElement('div');
+    c.className = 'confetti';
+    c.style.background = colors[i % colors.length];
+    c.style.left = Math.random() * 100 + '%';
+    c.style.animationDelay = (Math.random() * 0.4) + 's';
+    c.style.animationDuration = (1.8 + Math.random() * 1.5) + 's';
+    c.style.transform = `rotate(${Math.random()*360}deg)`;
+    document.body.appendChild(c);
+    setTimeout(() => c.remove(), 3500);
+  }
+}
+
+/* ===================================================================
+   LOGIN
+   =================================================================== */
+function renderLogin() {
+  const grid = document.getElementById('login-members');
+  grid.innerHTML = state.members.map(m => `
+    <button class="member-card" style="--accent:${colorVar(m.color)};--accent-2:${m.accent2 || colorVar(m.color)}" onclick="login('${m.id}')">
+      <div class="member-avatar" style="background:linear-gradient(135deg, ${colorVar(m.color)}, ${m.accent2 || colorVar(m.color)})">${m.emoji}</div>
+      <div class="member-name">${m.name}</div>
+      <div class="member-role">${m.role}</div>
+    </button>
+  `).join('');
+}
+
+function login(memberId) {
+  const m = memberById(memberId);
+  if (!m) return;
+  currentUser = memberId;
+  localStorage.setItem('forteh-current-user', memberId);
+  document.getElementById('login').style.display = 'none';
+  document.getElementById('app').classList.add('show');
+  initApp();
+  toast(`Welcome back, ${m.name}.`, 'success');
+}
+
+function logout() {
+  localStorage.removeItem('forteh-current-user');
+  currentUser = null;
+  document.getElementById('app').classList.remove('show');
+  document.getElementById('login').style.display = 'flex';
+  document.getElementById('sidebar').classList.remove('open');
+}
+
+/* ===================================================================
+   NAVIGATION
+   =================================================================== */
+function showView(name) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('view-' + name)?.classList.add('active');
+  document.querySelector(`.nav-item[data-view="${name}"]`)?.classList.add('active');
+  document.getElementById('sidebar').classList.remove('open');
+  // Refresh view content
+  if (name === 'today') renderToday();
+  if (name === 'dashboard') renderDashboard();
+  if (name === 'encourage') renderEncouragement();
+  if (name === 'challenge') renderChallenge();
+  if (name === 'vision') renderVision();
+  if (name === 'oneone') renderOneOnOne();
+  if (name === 'reflection') renderReflection();
+  window.scrollTo(0, 0);
+}
+
+function toggleMobileNav() {
+  document.getElementById('sidebar').classList.toggle('open');
+}
+
+/* ===================================================================
+   THEME
+   =================================================================== */
+function toggleTheme() {
+  document.body.classList.toggle('light');
+  state.settings.theme = document.body.classList.contains('light') ? 'light' : 'dark';
+  document.getElementById('theme-icon').textContent = state.settings.theme === 'light' ? '☀️' : '🌙';
+  save();
+}
+
+/* ===================================================================
+   TODAY VIEW
+   =================================================================== */
+function renderToday() {
+  const m = memberById(currentUser);
+  if (!m) return;
+
+  // Header
+  const hour = new Date().getHours();
+  document.getElementById('greeting-time').textContent =
+    hour < 12 ? 'morning' : hour < 17 ? 'afternoon' : 'evening';
+  document.getElementById('greeting-name').textContent = m.name;
+  document.getElementById('today-date').textContent = new Date().toLocaleDateString(undefined, {
+    weekday:'long', year:'numeric', month:'long', day:'numeric'
+  });
+
+  // Personal note
+  const streak = prayerStreak(m.id);
+  let msg;
+  if (streak === 0) msg = 'A new day, a new chance. Start with prayer — small steps build mountains.';
+  else if (streak < 3) msg = `Day ${streak} of prayer. Building momentum — keep going.`;
+  else if (streak < 7) msg = `${streak} days straight. That\'s not luck — that\'s discipline meeting grace. 🔥`;
+  else msg = `${streak} days. You\'re inspiring this whole family. 🙏`;
+  document.getElementById('today-message').textContent = msg;
+  document.getElementById('streak-msg').textContent =
+    streak > 0 ? `Prayer streak: ${streak} day${streak===1?'':'s'}. Don\'t break the chain.` : 'Start your prayer streak today.';
+  document.getElementById('my-streak-pill').textContent = '🔥 ' + streak;
+
+  // Scripture (deterministic by day)
+  const idx = (new Date().getDate() + new Date().getMonth()) % SCRIPTURES.length;
+  document.getElementById('scripture-ref').textContent = SCRIPTURES[idx].ref.toUpperCase();
+  document.getElementById('scripture-text').textContent = SCRIPTURES[idx].text;
+
+  // Stats
+  ensureDay(todayKey());
+  const today = state.dailyProgress[todayKey()][m.id];
+  const doneCount = m.habits.filter(h => today[h.id]).length;
+  const totalCount = m.habits.length;
+  const weekPct = weekCompletionPct(m.id);
+
+  document.getElementById('today-stats').innerHTML = `
+    <div class="stat-tile gold">
+      <div class="stat-label">Today</div>
+      <div class="stat-value">${doneCount}/${totalCount}</div>
+      <div class="stat-meta">habits complete</div>
+    </div>
+    <div class="stat-tile orange">
+      <div class="stat-label">Prayer streak</div>
+      <div class="stat-value">${streak}</div>
+      <div class="stat-meta">${streak >= 7 ? '🔥 on fire' : streak >= 3 ? 'building' : 'fresh start'}</div>
+    </div>
+    <div class="stat-tile green">
+      <div class="stat-label">This week</div>
+      <div class="stat-value">${weekPct}%</div>
+      <div class="stat-meta">consistency</div>
+    </div>
+    <div class="stat-tile blue">
+      <div class="stat-label">Family</div>
+      <div class="stat-value">${state.members.length}</div>
+      <div class="stat-meta">cheering for you</div>
+    </div>
+  `;
+
+  document.getElementById('today-progress-pill').textContent = `${doneCount} / ${totalCount}`;
+  document.getElementById('today-rhythm-sub').textContent =
+    doneCount === totalCount ? '✨ Every habit, done. You showed up fully today.' :
+    doneCount === 0 ? 'Take your time. Each one builds the next.' :
+    `${totalCount - doneCount} to go. You\'re ${Math.round(doneCount/totalCount*100)}% there.`;
+
+  // Habits
+  const list = document.getElementById('habit-list');
+  list.innerHTML = m.habits.map(h => {
+    const done = today[h.id];
+    return `<div class="habit ${done?'done':''}" onclick="toggleHabit('${h.id}')">
+      <div class="habit-check">${done?'✓':''}</div>
+      <div class="habit-icon">${h.icon}</div>
+      <div class="habit-info">
+        <div class="habit-name">${h.name}</div>
+        <div class="habit-prompt">${escapeHtml(h.prompt)}</div>
+      </div>
+      ${h.id === 'vision' && m.id === 'innocent' ? '<button class="btn btn-sm" onclick="event.stopPropagation();showVisionLog()">Log hrs</button>' : ''}
+    </div>`;
+  }).join('');
+
+  // Badges
+  const badgesEl = document.getElementById('my-badges');
+  const stats = {
+    prayerStreak: streak,
+    perfectDays: countPerfectDays(m.id),
+    encouragementsGiven: state.encouragement.filter(e => e.from === m.id).length,
+    familyTimeStreak: countFamilyTimeStreak(m.id),
+    visionHoursWeek: thisWeekDates().reduce((s,d) => s + (state.visionLog[d]||0), 0)
+  };
+  badgesEl.innerHTML = BADGE_DEFS.map(b => {
+    const earned = b.req(stats);
+    return `<span class="badge ${earned?'earned':''}" title="${earned?'Earned':'Locked'}">${b.icon} ${b.label}</span>`;
+  }).join('');
+
+  // Encouragements received
+  const mine = state.encouragement
+    .filter(e => e.to === m.id)
+    .sort((a,b) => b.date - a.date)
+    .slice(0, 3);
+  const encEl = document.getElementById('my-encouragements');
+  if (mine.length === 0) {
+    encEl.innerHTML = '<div class="text-tiny">No notes yet — but your family loves you.</div>';
+  } else {
+    encEl.innerHTML = mine.map(e => {
+      const from = memberById(e.from);
+      return `<div class="feed-item" style="border-bottom:1px solid var(--border);padding:10px 0;">
+        <div class="member-avatar" style="background:linear-gradient(135deg, ${colorVar(from.color)}, ${from.accent2||colorVar(from.color)});width:32px;height:32px;font-size:13px;">${from.emoji}</div>
+        <div class="feed-body">
+          <div class="feed-meta"><strong>${from.name}</strong> · ${relTime(e.date)}</div>
+          <div class="feed-msg">${escapeHtml(e.message)}</div>
+        </div>
+      </div>`;
+    }).join('');
+  }
+}
+
+function countPerfectDays(memberId) {
+  let c = 0;
+  for (let i = 0; i < 30; i++) {
+    const d = dateKey(daysAgo(i));
+    if (completionRate(memberId, d) === 1) c++;
+    else if (i > 0) break;
+  }
+  return c;
+}
+function countFamilyTimeStreak(memberId) {
+  let c = 0;
+  for (let i = 0; i < 14; i++) {
+    const d = dateKey(daysAgo(i));
+    const day = state.dailyProgress[d]?.[memberId];
+    if (day?.family) c++;
+    else if (i > 0) break;
+  }
+  return c;
+}
+
+function toggleHabit(habitId) {
+  ensureDay(todayKey());
+  const day = state.dailyProgress[todayKey()][currentUser];
+  const wasDone = !!day[habitId];
+  day[habitId] = !wasDone;
+  save();
+
+  if (!wasDone) {
+    // Celebrations
+    const m = memberById(currentUser);
+    const habit = m.habits.find(h => h.id === habitId);
+    const doneCount = m.habits.filter(h => day[h.id]).length;
+    if (habitId === 'prayer') {
+      const streak = prayerStreak(currentUser);
+      if (streak === 7) celebrate('🔥', 'Pray-Fire badge!', 'Seven days straight. Your faith is on fire.');
+      else if (streak >= 3) celebrate('🙏', 'Prayer logged', `${streak} days in a row. Building beautifully.`);
+      else toast(`🙏 ${habit.name} done — your family sees you.`, 'success');
+    } else if (doneCount === m.habits.length) {
+      celebrate('✨', 'Perfect day!', `You completed every habit today, ${m.name}. That\'s discipline.`);
+    } else {
+      toast(`${habit.icon} ${habit.name} done — ${doneCount}/${m.habits.length} today.`, 'success');
+    }
+  }
+  renderToday();
+}
+
+/* ===================================================================
+   VISION VIEW
+   =================================================================== */
+function renderVision() {
+  // Only Innocent can log; others can view & encourage
+  const isInnocent = currentUser === 'innocent';
+  const totalHours = Object.values(state.visionLog).reduce((s,v) => s + (v||0), 0);
+  const target = state.family.visionTotalHours;
+  const pct = Math.min(100, Math.round((totalHours / target) * 100));
+  document.getElementById('vision-bar').style.width = pct + '%';
+  document.getElementById('vision-pct').textContent = pct + '%';
+  document.getElementById('vision-hours-text').textContent =
+    `${totalHours.toFixed(1)} hours invested · ${(target - totalHours).toFixed(1)} hours remaining · target ${target}h`;
+
+  // This week's daily breakdown
+  const weekDates = thisWeekDates();
+  const dayLabels = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+  const today = todayKey();
+  const weekEl = document.getElementById('vision-week');
+  weekEl.innerHTML = weekDates.map((d, i) => {
+    const hrs = state.visionLog[d] || 0;
+    const isToday = d === today;
+    const isFuture = d > today;
+    const isPast = hrs > 0;
+    return `<div class="day-block ${isPast?'done':''} ${isFuture?'future':''}" ${isToday?'style="border-color:var(--gold)"':''}>
+      <div class="day-label">${dayLabels[i]}</div>
+      <div class="day-hours">${isFuture?'—':hrs.toFixed(1)+'h'}</div>
+    </div>`;
+  }).join('');
+
+  const weekTotal = weekDates.reduce((s,d) => s + (state.visionLog[d]||0), 0);
+  document.getElementById('week-hours-pill').textContent = `${weekTotal.toFixed(1)}h / ${state.family.weeklyVisionTarget}h`;
+  if (weekTotal >= state.family.weeklyVisionTarget) {
+    document.getElementById('week-hours-pill').classList.add('green');
+  }
+
+  // Vision log section visibility
+  document.getElementById('vision-log-section').style.display = isInnocent ? 'block' : 'none';
+
+  // Family support — last few encouragements about vision
+  const visionEncs = state.encouragement
+    .filter(e => e.to === 'innocent')
+    .sort((a,b) => b.date - a.date)
+    .slice(0, 4);
+  document.getElementById('vision-support').innerHTML = visionEncs.length ? visionEncs.map(e => {
+    const from = memberById(e.from);
+    return `<div style="padding:8px 0;border-bottom:1px solid var(--border);">
+      <div class="text-tiny"><strong>${from.name}</strong>: "${escapeHtml(e.message)}"</div>
+    </div>`;
+  }).join('') : '<div class="text-tiny">Send Dad some encouragement on his journey.</div>';
+}
+
+function showVisionLog() {
+  if (currentUser !== 'innocent') {
+    toast('Only Dad logs vision hours — but your prayers fuel them.', 'info');
+    return;
+  }
+  showView('vision');
+  setTimeout(() => document.getElementById('vision-hours-input').focus(), 300);
+}
+
+function logVisionHours() {
+  const v = parseFloat(document.getElementById('vision-hours-input').value);
+  if (!v || v <= 0) { toast('Enter a positive number.', 'info'); return; }
+  state.visionLog[todayKey()] = (state.visionLog[todayKey()] || 0) + v;
+  ensureDay(todayKey());
+  state.dailyProgress[todayKey()][currentUser].vision = true;
+  save();
+  celebrate('🎯', `+${v} hours on the vision`, `Total this week: ${thisWeekDates().reduce((s,d) => s + (state.visionLog[d]||0), 0).toFixed(1)}h`);
+  document.getElementById('vision-hours-input').value = '';
+  renderVision();
+}
+
+/* ===================================================================
+   FAMILY DASHBOARD
+   =================================================================== */
+function renderDashboard() {
+  // Stats
+  const todayK = todayKey();
+  ensureDay(todayK);
+  let totalPrayers = 0;
+  let totalHabits = 0, totalDone = 0;
+  for (const m of state.members) {
+    const day = state.dailyProgress[todayK][m.id] || {};
+    if (day.prayer) totalPrayers++;
+    totalHabits += m.habits.length;
+    totalDone += m.habits.filter(h => day[h.id]).length;
+  }
+  const dinnerDays = thisWeekDates().filter(d => state.familyDinner[d]).length;
+  const weekEncs = state.encouragement.filter(e => Date.now() - e.date < 7*86400000).length;
+
+  document.getElementById('dashboard-stats').innerHTML = `
+    <div class="stat-tile green">
+      <div class="stat-label">Praying today</div>
+      <div class="stat-value">${totalPrayers}/9</div>
+      <div class="stat-meta">family members</div>
+    </div>
+    <div class="stat-tile gold">
+      <div class="stat-label">Today's habits</div>
+      <div class="stat-value">${totalDone}/${totalHabits}</div>
+      <div class="stat-meta">completed</div>
+    </div>
+    <div class="stat-tile blue">
+      <div class="stat-label">Family dinners</div>
+      <div class="stat-value">${dinnerDays}/5</div>
+      <div class="stat-meta">this week</div>
+    </div>
+    <div class="stat-tile pink" style="--accent:var(--pink)">
+      <div class="stat-label">Encouragements</div>
+      <div class="stat-value" style="color:var(--pink)">${weekEncs}</div>
+      <div class="stat-meta">this week</div>
+    </div>
+  `;
+
+  // Prayer streaks
+  const streaks = state.members.map(m => ({ m, streak: prayerStreak(m.id) }))
+    .sort((a,b) => b.streak - a.streak);
+  const topStreak = streaks[0]?.streak || 0;
+  document.getElementById('prayer-streaks').innerHTML = streaks.map(({m,streak}) => {
+    const fires = '🔥'.repeat(Math.min(streak, 10));
+    const isLeader = streak === topStreak && streak > 0;
+    return `<div class="streak-row">
+      <div class="member-avatar" style="background:linear-gradient(135deg, ${colorVar(m.color)}, ${m.accent2||colorVar(m.color)})">${m.emoji}</div>
+      <div class="streak-info">
+        <div class="streak-name">${m.name} ${isLeader?'<span class="leader-crown">👑</span>':''}</div>
+        <div class="streak-fires">${fires || '<span style="color:var(--text-3);font-size:11px">— starting fresh —</span>'}</div>
+      </div>
+      ${isLeader && streak >= 5 ? '<span class="streak-badge">leading</span>' : ''}
+      <div class="streak-count">${streak}d</div>
+    </div>`;
+  }).join('');
+
+  // Family tiles
+  document.getElementById('family-tiles').innerHTML = state.members.map(m => {
+    const pct = weekCompletionPct(m.id);
+    const streak = prayerStreak(m.id);
+    const todayDone = m.habits.filter(h => state.dailyProgress[todayK][m.id]?.[h.id]).length;
+    return `<div class="family-tile" onclick="showMemberDetail('${m.id}')">
+      <div class="family-tile-top">
+        <div class="member-avatar" style="background:linear-gradient(135deg, ${colorVar(m.color)}, ${m.accent2||colorVar(m.color)})">${m.emoji}</div>
+        <div>
+          <div class="family-tile-name">${m.name}</div>
+          <div class="family-tile-streak">🔥 ${streak} day${streak===1?'':'s'}</div>
+        </div>
+      </div>
+      <div class="family-tile-bar"><div class="family-tile-bar-fill" style="width:${pct}%"></div></div>
+      <div class="family-tile-stats">
+        <span>Today ${todayDone}/${m.habits.length}</span>
+        <span>${pct}% week</span>
+      </div>
+    </div>`;
+  }).join('');
+
+  // Dinner tracker
+  const dayLabels = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+  document.getElementById('dinner-tracker').innerHTML = thisWeekDates().map((d,i) => {
+    const isDone = state.familyDinner[d];
+    const isToday = d === todayK;
+    const isFuture = d > todayK;
+    return `<div onclick="toggleDinner('${d}')" style="display:flex;align-items:center;gap:10px;padding:8px 12px;background:${isDone?'var(--green-soft)':'var(--bg-3)'};border:1px solid ${isDone?'var(--green)':'var(--border)'};border-radius:var(--radius-sm);margin-bottom:6px;cursor:pointer;${isFuture?'opacity:.5':''}">
+      <div style="width:22px;height:22px;border-radius:50%;border:2px solid ${isDone?'var(--green)':'var(--border-2)'};background:${isDone?'var(--green)':'transparent'};display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff;">${isDone?'✓':''}</div>
+      <span style="flex:1;font-size:13px;font-weight:500;">${dayLabels[i]}${isToday?' · today':''}</span>
+      ${isDone?'<span class="pill green">together</span>':''}
+    </div>`;
+  }).join('');
+
+  // Recent encouragement preview
+  const recent = state.encouragement.sort((a,b) => b.date - a.date).slice(0, 4);
+  document.getElementById('recent-encouragement').innerHTML = recent.length ? recent.map(e => {
+    const from = memberById(e.from), to = memberById(e.to);
+    return `<div class="feed-item">
+      <div class="member-avatar" style="background:linear-gradient(135deg, ${colorVar(from.color)}, ${from.accent2||colorVar(from.color)})">${from.emoji}</div>
+      <div class="feed-body">
+        <div class="feed-meta"><strong>${from.name}</strong> <span class="arrow">→</span> <strong>${to.name}</strong> · ${relTime(e.date)}</div>
+        <div class="feed-msg">${escapeHtml(e.message)}</div>
+      </div>
+    </div>`;
+  }).join('') : '<div class="text-tiny">No notes yet — be the first to encourage someone.</div>';
+}
+
+function toggleDinner(date) {
+  if (date > todayKey()) { toast('That day hasn\'t happened yet.', 'info'); return; }
+  state.familyDinner[date] = !state.familyDinner[date];
+  save();
+  if (state.familyDinner[date]) {
+    const count = thisWeekDates().filter(d => state.familyDinner[d]).length;
+    if (count >= 5) celebrate('👨‍👩‍👧‍👦', 'Family dinner goal hit!', '5 nights together this week. That\'s family.');
+    else toast(`Family dinner logged · ${count}/5 this week.`, 'success');
+  }
+  renderDashboard();
+}
+
+function showMemberDetail(id) {
+  const m = memberById(id);
+  const streak = prayerStreak(id);
+  const pct = weekCompletionPct(id);
+  const today = state.dailyProgress[todayKey()]?.[id] || {};
+  const todayList = m.habits.map(h => `<div style="display:flex;align-items:center;gap:8px;padding:4px 0;font-size:13px;">
+    <span style="color:${today[h.id]?'var(--green)':'var(--text-3)'};">${today[h.id]?'✓':'○'}</span>
+    <span>${h.icon}</span>
+    <span style="color:${today[h.id]?'var(--text)':'var(--text-3)'};">${h.name}</span>
+  </div>`).join('');
+
+  showModal(`
+    <div class="flex" style="margin-bottom:18px;">
+      <div class="member-avatar" style="width:56px;height:56px;font-size:22px;background:linear-gradient(135deg, ${colorVar(m.color)}, ${m.accent2||colorVar(m.color)})">${m.emoji}</div>
+      <div>
+        <div class="modal-title mb-0">${m.name}</div>
+        <div class="modal-sub mb-0">${m.role}</div>
+      </div>
+    </div>
+    <div class="stat-row" style="margin-bottom:18px;">
+      <div class="stat-tile orange"><div class="stat-label">Streak</div><div class="stat-value">${streak}d</div></div>
+      <div class="stat-tile green"><div class="stat-label">Week</div><div class="stat-value">${pct}%</div></div>
+    </div>
+    <h4 style="font-family:var(--font-display);font-size:15px;margin-bottom:8px;">Today's rhythm</h4>
+    ${todayList}
+    <div class="modal-close-row">
+      ${id !== currentUser ? `<button class="btn" onclick="closeModal();showView('encourage');setTimeout(()=>document.getElementById('enc-to').value='${id}',100)">Encourage ${m.name}</button>` : ''}
+      <button class="btn btn-primary" onclick="closeModal()">Close</button>
+    </div>
+  `);
+}
+
+/* ===================================================================
+   ENCOURAGEMENT
+   =================================================================== */
+function renderEncouragement() {
+  // Populate "to" select
+  const sel = document.getElementById('enc-to');
+  sel.innerHTML = state.members.filter(m => m.id !== currentUser).map(m =>
+    `<option value="${m.id}">${m.emoji} &nbsp; ${m.name}</option>`
+  ).join('');
+
+  // All encouragements (paginated to recent 30)
+  const all = state.encouragement.sort((a,b) => b.date - a.date).slice(0, 30);
+  document.getElementById('all-encouragements').innerHTML = all.length ? all.map(e => {
+    const from = memberById(e.from), to = memberById(e.to);
+    const icons = { encourage:'💌', celebrate:'🎉', challenge:'💪', ask:'🤝' };
+    return `<div class="feed-item">
+      <div class="member-avatar" style="background:linear-gradient(135deg, ${colorVar(from.color)}, ${from.accent2||colorVar(from.color)})">${from.emoji}</div>
+      <div class="feed-body">
+        <div class="feed-meta">
+          ${icons[e.type]||'💌'} <strong>${from.name}</strong> <span class="arrow">→</span> <strong>${to.name}</strong> · ${relTime(e.date)}
+        </div>
+        <div class="feed-msg">${escapeHtml(e.message)}</div>
+      </div>
+    </div>`;
+  }).join('') : '<div class="text-tiny">Be the first to write a note.</div>';
+}
+
+function sendEncouragement() {
+  const to = document.getElementById('enc-to').value;
+  const type = document.getElementById('enc-type').value;
+  const msg = document.getElementById('enc-msg').value.trim();
+  if (!msg) { toast('Write a few words first — be specific.', 'info'); return; }
+  if (msg.length < 10) { toast('A little more love — try at least a sentence.', 'info'); return; }
+  state.encouragement.push({ from: currentUser, to, message: msg, date: Date.now(), type });
+  save();
+  document.getElementById('enc-msg').value = '';
+  const toName = memberById(to).name;
+  celebrate('💌', 'Sent with love', `Your words to ${toName} are now part of the family.`);
+  renderEncouragement();
+}
+
+/* ===================================================================
+   CHALLENGES
+   =================================================================== */
+function renderChallenge() {
+  // Active challenge — count prayer days this week per member
+  const ch = state.challenges[state.challenges.length - 1];
+  const weekDates = thisWeekDates().filter(d => d <= todayKey());
+  const progress = state.members.map(m => {
+    const days = weekDates.filter(d => state.dailyProgress[d]?.[m.id]?.prayer).length;
+    return { m, days };
+  }).sort((a,b) => b.days - a.days);
+  const max = progress[0]?.days || 0;
+  const leaders = progress.filter(p => p.days === max && max > 0);
+
+  document.getElementById('active-challenge').innerHTML = `
+    <div style="font-size:11px;text-transform:uppercase;letter-spacing:1.5px;color:var(--gold);font-weight:600;margin-bottom:6px;">This week's family challenge</div>
+    <div class="challenge-title">${escapeHtml(ch.title)}</div>
+    <div class="challenge-goal">${escapeHtml(ch.goal)}</div>
+    <div class="challenge-leaders">
+      ${leaders.map(({m,days}) => `<span class="challenge-leader-chip">
+        <span class="member-avatar" style="width:22px;height:22px;font-size:10px;background:linear-gradient(135deg, ${colorVar(m.color)}, ${m.accent2||colorVar(m.color)})">${m.emoji}</span>
+        ${m.name} · ${days}/7
+      </span>`).join('')}
+    </div>
+    <div class="challenge-prize">🎁 <span>${escapeHtml(ch.prize)}</span></div>
+  `;
+
+  // Champion of the week — highest combined consistency + encouragement
+  const championScores = state.members.map(m => {
+    const pct = weekCompletionPct(m.id);
+    const enc = state.encouragement.filter(e => e.from === m.id && Date.now() - e.date < 7*86400000).length;
+    return { m, score: pct + (enc * 5), pct, enc };
+  }).sort((a,b) => b.score - a.score);
+  const champ = championScores[0];
+  document.getElementById('champion-display').innerHTML = champ ? `
+    <div class="flex" style="gap:18px;padding:16px;background:linear-gradient(135deg, var(--gold-soft), transparent);border-radius:var(--radius-sm);border:1px solid var(--gold);">
+      <div class="member-avatar" style="width:62px;height:62px;font-size:24px;background:linear-gradient(135deg, ${colorVar(champ.m.color)}, ${champ.m.accent2||colorVar(champ.m.color)})">${champ.m.emoji}</div>
+      <div style="flex:1;">
+        <div style="font-family:var(--font-display);font-size:22px;font-weight:600;">${champ.m.name} 👑</div>
+        <div class="text-muted">${champ.pct}% consistency · ${champ.enc} encouragement${champ.enc===1?'':'s'} given</div>
+      </div>
+      <div style="font-size:42px;">🏆</div>
+    </div>
+  ` : '';
+
+  // Rankings
+  document.getElementById('rankings').innerHTML = championScores.map((c,i) => `
+    <div style="display:flex;align-items:center;gap:14px;padding:12px 0;border-bottom:1px solid var(--border);">
+      <div style="font-family:var(--font-display);font-size:18px;font-weight:600;color:var(--text-3);width:24px;">${i+1}</div>
+      <div class="member-avatar" style="width:36px;height:36px;font-size:15px;background:linear-gradient(135deg, ${colorVar(c.m.color)}, ${c.m.accent2||colorVar(c.m.color)})">${c.m.emoji}</div>
+      <div style="flex:1;">
+        <div style="font-weight:500;">${c.m.name}</div>
+        <div class="progress-bar" style="margin-top:6px;height:5px;"><div class="progress-fill" style="width:${c.pct}%"></div></div>
+      </div>
+      <div style="text-align:right;">
+        <div style="font-family:var(--font-display);font-weight:600;color:var(--gold);">${c.pct}%</div>
+        <div class="text-tiny">${c.enc} note${c.enc===1?'':'s'}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+/* ===================================================================
+   1:1 TIME
+   =================================================================== */
+function renderOneOnOne() {
+  const isInnocent = currentUser === 'innocent';
+  document.getElementById('oneone-sub').textContent = isInnocent
+    ? 'Schedule, show up, remember what they said.'
+    : 'Dad\'s 1:1 schedule with each of us this week.';
+
+  const children = state.members.filter(m => !['innocent','linda'].includes(m.id));
+  const weekKey = weekStart();
+  document.getElementById('oneone-list').innerHTML = children.map((c,i) => {
+    const k = `${weekKey}-${c.id}`;
+    const entry = state.oneOnOnes[k] || {};
+    const done = !!entry.done;
+    const dayIdx = i % 7;
+    const suggestedDay = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'][dayIdx];
+    return `<div class="oneone-item ${done?'done':'pending'}">
+      <div class="member-avatar" style="width:42px;height:42px;font-size:17px;background:linear-gradient(135deg, ${colorVar(c.color)}, ${c.accent2||colorVar(c.color)})">${c.emoji}</div>
+      <div class="oneone-info">
+        <div class="oneone-name">${c.name}</div>
+        <div class="oneone-meta">
+          ${done ? `✓ ${entry.notes || 'Completed this week'}` : `Suggested: ${suggestedDay}`}
+        </div>
+      </div>
+      <span class="oneone-status ${done?'done':'pending'}">${done?'Done':'To do'}</span>
+      ${isInnocent ? `<button class="btn btn-sm" onclick="logOneOne('${c.id}')">${done?'Edit':'Mark done'}</button>` : ''}
+    </div>`;
+  }).join('');
+}
+
+function logOneOne(childId) {
+  const k = `${weekStart()}-${childId}`;
+  const entry = state.oneOnOnes[k] || {};
+  const child = memberById(childId);
+  showModal(`
+    <div class="modal-title">1:1 with ${child.name}</div>
+    <div class="modal-sub">Mark this 1:1 as complete and jot down what you learned.</div>
+    <div class="field">
+      <label>What did you learn about ${child.name}?</label>
+      <textarea id="oneone-notes" placeholder="A moment, a story, something they shared...">${escapeHtml(entry.notes || '')}</textarea>
+    </div>
+    <div class="modal-close-row">
+      <button class="btn" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveOneOne('${childId}')">Save · Mark done</button>
+    </div>
+  `);
+}
+
+function saveOneOne(childId) {
+  const notes = document.getElementById('oneone-notes').value.trim();
+  const k = `${weekStart()}-${childId}`;
+  state.oneOnOnes[k] = { done: true, notes, completedAt: Date.now() };
+  save();
+  closeModal();
+  const child = memberById(childId);
+  celebrate('👨‍👧', `1:1 with ${child.name}`, 'Presence over productivity. Well done, Dad.');
+  renderOneOnOne();
+}
+
+/* ===================================================================
+   WEEKLY REFLECTION
+   =================================================================== */
+function renderReflection() {
+  // Reset state
+  reflectionStep = 1;
+  document.getElementById('rstep-1').classList.add('current');
+  document.getElementById('rstep-2').classList.remove('current');
+  document.getElementById('rstep-3').classList.remove('current');
+  document.getElementById('rdot-1').classList.add('current');
+  document.getElementById('rdot-2').classList.remove('current','done');
+  document.getElementById('rdot-3').classList.remove('current','done');
+
+  // Pre-fill if already submitted this week
+  const wk = weekStart();
+  const ex = state.weeklyReview[wk]?.[currentUser];
+  document.getElementById('reflect-win').value = ex?.win || '';
+  document.getElementById('reflect-struggle').value = ex?.struggle || '';
+  document.getElementById('reflect-prayer').value = ex?.prayer || '';
+
+  // If already submitted, show family summary
+  if (state.weeklyReview[wk] && Object.keys(state.weeklyReview[wk]).length > 0) {
+    renderReflectionSummary();
+  } else {
+    document.getElementById('reflection-summary-wrap').innerHTML = '';
+  }
+}
+
+function submitReflection() {
+  const win = document.getElementById('reflect-win').value.trim();
+  const struggle = document.getElementById('reflect-struggle').value.trim();
+  const prayer = document.getElementById('reflect-prayer').value.trim();
+  if (!win && !struggle && !prayer) {
+    toast('Share at least one thought.', 'info');
+    return;
+  }
+  const wk = weekStart();
+  if (!state.weeklyReview[wk]) state.weeklyReview[wk] = {};
+  state.weeklyReview[wk][currentUser] = { win, struggle, prayer, date: Date.now() };
+  save();
+  // Mark all dots done
+  document.getElementById('rdot-1').classList.add('done');
+  document.getElementById('rdot-2').classList.add('done');
+  document.getElementById('rdot-3').classList.add('done');
+  celebrate('📓', 'Reflection saved', 'Your honesty is a gift to this family.');
+  renderReflectionSummary();
+}
+
+function renderReflectionSummary() {
+  const wk = weekStart();
+  const all = state.weeklyReview[wk] || {};
+  const wins = [], struggles = [], prayers = [];
+  for (const [memberId, r] of Object.entries(all)) {
+    const m = memberById(memberId);
+    if (!m) continue;
+    if (r.win) wins.push(`<li class="win"><strong>${m.name}:</strong> ${escapeHtml(r.win)}</li>`);
+    if (r.struggle) struggles.push(`<li class="struggle"><strong>${m.name}:</strong> ${escapeHtml(r.struggle)}</li>`);
+    if (r.prayer) prayers.push(`<li class="prayer"><strong>${m.name}:</strong> ${escapeHtml(r.prayer)}</li>`);
+  }
+  document.getElementById('reflection-summary-wrap').innerHTML = `
+    <div class="reflection-summary">
+      <h3>This week, our family said…</h3>
+      <p class="text-muted" style="margin-bottom:14px;">${Object.keys(all).length} of 9 family members have reflected.</p>
+      ${wins.length ? `<h4 style="margin-top:14px;margin-bottom:6px;font-family:var(--font-display);">🎉 Wins to celebrate</h4><ul>${wins.join('')}</ul>` : ''}
+      ${struggles.length ? `<h4 style="margin-top:18px;margin-bottom:6px;font-family:var(--font-display);">🤝 Where we can help each other</h4><ul>${struggles.join('')}</ul>` : ''}
+      ${prayers.length ? `<h4 style="margin-top:18px;margin-bottom:6px;font-family:var(--font-display);">🙏 Prayers for next week</h4><ul>${prayers.join('')}</ul>` : ''}
+      <div class="divider"></div>
+      <p style="font-family:var(--font-display);font-size:16px;font-style:italic;color:var(--text-2);">
+        Family intention next week: <strong style="color:var(--gold);">Presence and Prayer</strong>.
+        Show up for each other. Aim for 7/7 prayer days. Complete all 1:1 times.
+      </p>
+    </div>
+  `;
+}
+
+// Auto-advance reflection steps as user types
+function setupReflectionAdvance() {
+  ['reflect-win','reflect-struggle','reflect-prayer'].forEach((id, i) => {
+    document.getElementById(id)?.addEventListener('focus', () => {
+      reflectionStep = i + 1;
+      document.querySelectorAll('.reflection-step').forEach((s,j) => s.classList.toggle('current', j === i));
+      document.querySelectorAll('.reflection-dot').forEach((d,j) => {
+        d.classList.remove('current');
+        if (j === i) d.classList.add('current');
+        else if (j < i) d.classList.add('done');
+      });
+    });
+  });
+}
+
+/* ===================================================================
+   MODAL HELPERS
+   =================================================================== */
+function showModal(html) {
+  document.getElementById('modal-content').innerHTML = html;
+  document.getElementById('modal-backdrop').classList.add('show');
+}
+function closeModal() {
+  document.getElementById('modal-backdrop').classList.remove('show');
+}
+
+/* ===================================================================
+   ONBOARDING (other families)
+   =================================================================== */
+function openOnboarding() {
+  showModal(`
+    <div class="modal-title">Set up for your family</div>
+    <div class="modal-sub">A few quick questions and we\'ll build your family\'s version.</div>
+    <div id="onb-step-1" class="wizard-step active">
+      <div class="wizard-progress">
+        <div class="wizard-dot current"></div><div class="wizard-dot"></div><div class="wizard-dot"></div>
+      </div>
+      <div class="field"><label>Your family name</label><input id="onb-name" placeholder="The Smith Household"></div>
+      <div class="field"><label>Your family's 1-sentence vision</label><textarea id="onb-vision" placeholder="What is your family becoming?"></textarea></div>
+      <div class="modal-close-row">
+        <button class="btn" onclick="closeModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="onbNext(2)">Next →</button>
+      </div>
+    </div>
+    <div id="onb-step-2" class="wizard-step">
+      <div class="wizard-progress">
+        <div class="wizard-dot done"></div><div class="wizard-dot current"></div><div class="wizard-dot"></div>
+      </div>
+      <div class="field"><label>Family members (one per line: Name, Role)</label>
+        <textarea id="onb-members" placeholder="John, Dad\nMary, Mom\nLuke, Teen"></textarea>
+      </div>
+      <div class="modal-close-row">
+        <button class="btn" onclick="onbNext(1)">← Back</button>
+        <button class="btn btn-primary" onclick="onbNext(3)">Next →</button>
+      </div>
+    </div>
+    <div id="onb-step-3" class="wizard-step">
+      <div class="wizard-progress">
+        <div class="wizard-dot done"></div><div class="wizard-dot done"></div><div class="wizard-dot current"></div>
+      </div>
+      <p class="text-muted" style="margin-bottom:14px;">
+        Your custom family tool will replace the Forteh sample data.
+        We\'ll seed default daily habits (prayer, study, family time, growth) — you can adjust per person later.
+      </p>
+      <div class="field">
+        <label>Family review day & time</label>
+        <input id="onb-review" placeholder="Sunday 6pm" value="Sunday 6pm">
+      </div>
+      <div class="modal-close-row">
+        <button class="btn" onclick="onbNext(2)">← Back</button>
+        <button class="btn btn-primary" onclick="onbFinish()">Build my family tool →</button>
+      </div>
+    </div>
+  `);
+}
+
+function onbNext(n) {
+  for (let i = 1; i <= 3; i++) {
+    document.getElementById('onb-step-' + i)?.classList.toggle('active', i === n);
+  }
+}
+
+function onbFinish() {
+  const name = document.getElementById('onb-name').value.trim() || 'Our Family';
+  const vision = document.getElementById('onb-vision').value.trim() || 'Grow together in faith and love';
+  const membersText = document.getElementById('onb-members').value.trim();
+  if (!membersText) { toast('Add at least one family member.', 'info'); return; }
+  const palette = ['gold','green','blue','purple','pink','orange'];
+  const accentPairs = [['var(--gold)','var(--orange)'],['var(--blue)','var(--purple)'],['var(--green)','var(--gold)'],['var(--pink)','var(--purple)'],['var(--purple)','var(--blue)'],['var(--orange)','var(--gold)']];
+  const newMembers = membersText.split(/\n+/).filter(l => l.trim()).map((line, i) => {
+    const [n, r] = line.split(',').map(s => (s||'').trim());
+    const id = (n||'member').toLowerCase().replace(/[^a-z0-9]/g,'') + (i ? i : '');
+    return {
+      id, name: n || 'Member ' + (i+1), role: r || 'Family Member',
+      emoji: (n||'M')[0].toUpperCase(),
+      color: palette[i % palette.length],
+      accent: accentPairs[i % accentPairs.length][0],
+      accent2: accentPairs[i % accentPairs.length][1],
+      habits: [
+        { id:'prayer', name:'Prayer',         icon:'🙏', prompt:'Talk to God', color:'green' },
+        { id:'bible',  name:'Bible reading',  icon:'📖', prompt:'Daily passage', color:'green' },
+        { id:'family', name:'Family time',    icon:'👨‍👩‍👧‍👦', prompt:'Be present', color:'blue' },
+        { id:'growth', name:'Growth area',    icon:'🎯', prompt:'Your personal growth focus', color:'purple' }
+      ]
+    };
+  });
+  // Reset state
+  state = defaultState();
+  state.family.familyName = name;
+  state.family.vision = vision;
+  state.members = newMembers;
+  state.encouragement = [];
+  state.dailyProgress = {};
+  state.visionLog = {};
+  state.familyDinner = {};
+  state.weeklyReview = {};
+  state.oneOnOnes = {};
+  state.challenges = [{ weekOf: weekStart(), title: 'Showing Up', goal: 'Every person prays 5+ days this week', prize: 'Family decides together!', progress: {} }];
+  state.settings.firstRun = false;
+  save();
+  closeModal();
+  localStorage.removeItem('forteh-current-user');
+  currentUser = null;
+  renderLogin();
+  document.getElementById('app').classList.remove('show');
+  document.getElementById('login').style.display = 'flex';
+  toast(`Welcome, ${name}! Pick someone to begin.`, 'success');
+}
+
+/* ===================================================================
+   APP INITIALIZATION
+   =================================================================== */
+function initApp() {
+  const m = memberById(currentUser);
+  document.getElementById('nav-avatar').textContent = m.emoji;
+  document.getElementById('nav-avatar').style.background = `linear-gradient(135deg, ${colorVar(m.color)}, ${m.accent2||colorVar(m.color)})`;
+  document.getElementById('nav-name').textContent = m.name;
+  document.getElementById('nav-role').textContent = m.role;
+
+  // Hide 1:1 nav for non-Innocent? Show, but it's mostly read-only for others.
+  setupReflectionAdvance();
+  renderToday();
+}
+
+function boot() {
+  load();
+  // Theme
+  if (state.settings.theme === 'light') document.body.classList.add('light');
+  document.getElementById('theme-icon').textContent = state.settings.theme === 'light' ? '☀️' : '🌙';
+
+  renderLogin();
+  const lastUser = localStorage.getItem('forteh-current-user');
+  if (lastUser && memberById(lastUser)) {
+    login(lastUser);
+  }
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') { closeModal(); }
+});
+
+boot();
+</script>
+</body>
+</html>

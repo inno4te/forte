@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Subnetting Lab · inno4te Networking Academy</title>
+<link rel="stylesheet" href="css/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%231F6FEB'/><text x='50' y='68' font-size='44' text-anchor='middle' fill='white' font-weight='bold'>i4</text></svg>">
+</head>
+<body>
+<header class="site-header">
+  <nav class="wrap nav">
+    <a class="brand" href="index.html"><span class="brand-mark">i4</span><span class="brand-name">inno<em>4</em>te Networking Academy</span></a>
+    <button class="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li><li><a href="simulator.html">Simulator</a></li>
+      <li><a href="exams.html">Exams</a></li><li><a href="cli.html">CLI</a></li>
+      <li><a href="subnetting.html" class="active">Subnetting</a></li>
+    </ul>
+  </nav>
+</header>
+
+<section class="section">
+  <div class="wrap">
+    <span class="eyebrow">Subnetting lab</span>
+    <h1 style="font-size:clamp(1.9rem,4vw,2.6rem);margin-bottom:10px">Master subnetting.</h1>
+    <p class="lead">Calculate subnets, visualize binary, plan VLSM networks, and practise with timed random questions until it's automatic.</p>
+
+    <div class="tab-row mt-6">
+      <button class="tab active" id="tabCalc">🧮 Calculator</button>
+      <button class="tab" id="tabVlsm">🗂 VLSM Planner</button>
+      <button class="tab" id="tabPractice">📝 Practice Quiz</button>
+      <button class="tab" id="tabCheatsheet">📋 Cheat Sheet</button>
+    </div>
+
+    <!-- CALCULATOR -->
+    <div id="panelCalc">
+      <div class="subnet-grid">
+        <div class="panel">
+          <h3 style="margin-bottom:16px">Subnet Calculator</h3>
+          <label class="lbl">IP Address</label>
+          <input id="subIp" class="inp inp-mono" value="192.168.1.0" placeholder="192.168.1.0" style="margin-bottom:12px">
+          <label class="lbl">CIDR Prefix Length</label>
+          <div style="display:flex;gap:10px;align-items:center;margin-bottom:16px">
+            <input id="subCidr" type="range" min="0" max="32" value="24" style="flex:1">
+            <span id="cidrDisplay" style="font-family:var(--mono);font-weight:800;color:var(--accent-2);min-width:32px">/24</span>
+          </div>
+          <button id="btnCalc" class="btn btn-primary" style="width:100%;justify-content:center">Calculate →</button>
+
+          <div id="subnetResults" style="display:none;margin-top:20px">
+            <h4 style="font-size:.82rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text-3);margin-bottom:10px">Results</h4>
+            <div class="subnet-result-row"><span class="key">Network address</span><span class="val" id="resNetwork">—</span></div>
+            <div class="subnet-result-row"><span class="key">Subnet mask</span><span class="val" id="resMask">—</span></div>
+            <div class="subnet-result-row"><span class="key">Broadcast address</span><span class="val" id="resBroadcast">—</span></div>
+            <div class="subnet-result-row"><span class="key">First usable host</span><span class="val" id="resFirst">—</span></div>
+            <div class="subnet-result-row"><span class="key">Last usable host</span><span class="val" id="resLast">—</span></div>
+            <div class="subnet-result-row"><span class="key">Usable hosts</span><span class="val" id="resHosts">—</span></div>
+            <div class="subnet-result-row"><span class="key">Total subnets (/24 base)</span><span class="val" id="resSubnets">—</span></div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h3 style="margin-bottom:16px">Binary Breakdown</h3>
+          <p style="font-size:.86rem;color:var(--text-2);margin-bottom:12px">Each bit of the IP address shown as network bits (blue) and host bits (green). Click Calculate to see the breakdown for your IP.</p>
+          <div id="binaryRow" class="binary-row"></div>
+          <div id="binaryLegend" style="font-size:.8rem;margin-top:10px;color:var(--text-3)"></div>
+          <hr style="border:none;border-top:1px solid var(--border);margin:16px 0">
+          <h4 style="font-size:.88rem;font-weight:700;margin-bottom:10px">Understanding CIDR</h4>
+          <div style="font-size:.84rem;color:var(--text-2);line-height:1.7">
+            <p><strong style="color:var(--text)">/24</strong> = 255.255.255.0 = 254 hosts</p>
+            <p><strong style="color:var(--text)">/25</strong> = 255.255.255.128 = 126 hosts (split /24 in half)</p>
+            <p><strong style="color:var(--text)">/26</strong> = 255.255.255.192 = 62 hosts</p>
+            <p><strong style="color:var(--text)">/27</strong> = 255.255.255.224 = 30 hosts</p>
+            <p><strong style="color:var(--text)">/28</strong> = 255.255.255.240 = 14 hosts</p>
+            <p><strong style="color:var(--text)">/30</strong> = 255.255.255.252 = 2 hosts (point-to-point links)</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- VLSM -->
+    <div id="panelVlsm" style="display:none">
+      <div class="subnet-grid">
+        <div class="panel">
+          <h3 style="margin-bottom:14px">VLSM Network Planner</h3>
+          <p style="font-size:.86rem;color:var(--text-2);margin-bottom:16px">Enter a base network and the number of hosts needed per subnet. The planner assigns the smallest possible subnet to each requirement (largest first).</p>
+          <label class="lbl">Base network (e.g. 10.0.0.0/16)</label>
+          <input id="vlsmBase" class="inp inp-mono" value="10.0.0.0/16" style="margin-bottom:12px">
+          <label class="lbl">Host requirements (one per line, or comma-separated)</label>
+          <textarea id="vlsmReqs" class="inp inp-mono" rows="6" style="resize:vertical" placeholder="100&#10;50&#10;25&#10;10&#10;2"></textarea>
+          <button id="btnVlsm" class="btn btn-primary mt-4" style="width:100%;justify-content:center">Plan subnets →</button>
+        </div>
+        <div class="panel">
+          <h3 style="margin-bottom:14px">VLSM Results</h3>
+          <div id="vlsmResults" style="display:none">
+            <div id="vlsmTable"></div>
+          </div>
+          <div id="vlsmEmpty" style="color:var(--text-3);font-size:.88rem">
+            <p>Enter your requirements and click <strong>Plan subnets</strong>.</p>
+            <hr style="border:none;border-top:1px solid var(--border);margin:14px 0">
+            <h4 style="font-size:.88rem;font-weight:700;color:var(--text-2);margin-bottom:8px">How VLSM works</h4>
+            <p style="line-height:1.7">Variable Length Subnet Masking lets you assign different-sized subnets from one address block, avoiding waste. Sort requirements largest-to-smallest, then assign the minimum subnet that fits each.</p>
+            <p style="margin-top:8px;line-height:1.7">Example: 100 hosts needs /25 (126 usable). 10 hosts needs /28 (14 usable). Assigning a /25 to a 10-host requirement wastes 116 addresses.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRACTICE QUIZ -->
+    <div id="panelPractice" style="display:none">
+      <div class="subnet-grid">
+        <div class="panel">
+          <h3 style="margin-bottom:6px">Subnetting Practice Quiz</h3>
+          <p style="font-size:.86rem;color:var(--text-2);margin-bottom:16px">A new question is generated randomly. Type your answer and press Enter or click Check.</p>
+          <div style="background:var(--surface-2);border:1px solid var(--border);border-radius:9px;padding:16px;margin-bottom:16px">
+            <p id="quizQuestion" style="font-size:1rem;font-weight:700;line-height:1.5">Loading question…</p>
+          </div>
+          <label class="lbl" for="quizAnswer">Your answer</label>
+          <input id="quizAnswer" class="quiz-input" placeholder="e.g. 192.168.1.0 or 254" autocomplete="off">
+          <div id="quizFeedback" style="font-size:.94rem;font-weight:700;margin:10px 0;min-height:22px"></div>
+          <div style="display:flex;gap:10px">
+            <button id="btnCheckQuiz" class="btn btn-primary">Check answer</button>
+            <button id="btnGenQuiz" class="btn btn-ghost">New question →</button>
+          </div>
+        </div>
+        <div class="panel">
+          <h3 style="margin-bottom:14px">Subnetting cheat method</h3>
+          <div style="font-size:.86rem;line-height:1.75;color:var(--text-2)">
+            <p><strong style="color:var(--accent-2)">Step 1 — Block size:</strong> 256 − last non-255 octet of mask = block size</p>
+            <p><strong style="color:var(--accent-2)">Step 2 — Network:</strong> Round down the host octet to nearest multiple of block size</p>
+            <p><strong style="color:var(--accent-2)">Step 3 — Broadcast:</strong> Network + block size − 1</p>
+            <p><strong style="color:var(--accent-2)">Step 4 — Hosts:</strong> First = Network+1, Last = Broadcast−1</p>
+            <hr style="border:none;border-top:1px solid var(--border);margin:12px 0">
+            <p><strong style="color:var(--cyan)">Example:</strong> 172.16.45.10 /26</p>
+            <p>Mask = 255.255.255.192 → block = 256−192 = <strong>64</strong></p>
+            <p>45.10 → host octet = 10 → 10÷64 = 0 remainder → Net = .0</p>
+            <p>Network: 172.16.45.<strong>0</strong>/26</p>
+            <p>Broadcast: 172.16.45.<strong>63</strong></p>
+            <p>Hosts: 172.16.45.<strong>1</strong> – 172.16.45.<strong>62</strong> (62 hosts)</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CHEAT SHEET -->
+    <div id="panelCheatsheet" style="display:none">
+      <div class="panel">
+        <h3 style="margin-bottom:16px">Subnet Mask Quick Reference</h3>
+        <div style="overflow-x:auto">
+          <table class="tbl">
+            <thead><tr><th>CIDR</th><th>Subnet Mask</th><th>Usable Hosts</th><th>Block Size</th><th>Wildcard</th><th>Class</th></tr></thead>
+            <tbody>
+              <tr><td>/8</td><td><code>255.0.0.0</code></td><td>16,777,214</td><td>16,777,216</td><td>0.255.255.255</td><td>A</td></tr>
+              <tr><td>/16</td><td><code>255.255.0.0</code></td><td>65,534</td><td>65,536</td><td>0.0.255.255</td><td>B</td></tr>
+              <tr><td>/24</td><td><code>255.255.255.0</code></td><td>254</td><td>256</td><td>0.0.0.255</td><td>C</td></tr>
+              <tr><td>/25</td><td><code>255.255.255.128</code></td><td>126</td><td>128</td><td>0.0.0.127</td><td>—</td></tr>
+              <tr><td>/26</td><td><code>255.255.255.192</code></td><td>62</td><td>64</td><td>0.0.0.63</td><td>—</td></tr>
+              <tr><td>/27</td><td><code>255.255.255.224</code></td><td>30</td><td>32</td><td>0.0.0.31</td><td>—</td></tr>
+              <tr><td>/28</td><td><code>255.255.255.240</code></td><td>14</td><td>16</td><td>0.0.0.15</td><td>—</td></tr>
+              <tr><td>/29</td><td><code>255.255.255.248</code></td><td>6</td><td>8</td><td>0.0.0.7</td><td>—</td></tr>
+              <tr><td>/30</td><td><code>255.255.255.252</code></td><td>2</td><td>4</td><td>0.0.0.3</td><td>P2P</td></tr>
+              <tr><td>/31</td><td><code>255.255.255.254</code></td><td>2 (RFC 3021)</td><td>2</td><td>0.0.0.1</td><td>P2P</td></tr>
+              <tr><td>/32</td><td><code>255.255.255.255</code></td><td>1 (host route)</td><td>1</td><td>0.0.0.0</td><td>Host</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <hr style="border:none;border-top:1px solid var(--border);margin:20px 0">
+        <h3 style="margin-bottom:12px">Private IP ranges (RFC 1918)</h3>
+        <table class="tbl">
+          <thead><tr><th>Range</th><th>CIDR</th><th>Hosts</th><th>Class</th><th>Common use</th></tr></thead>
+          <tbody>
+            <tr><td><code>10.0.0.0 – 10.255.255.255</code></td><td>/8</td><td>16.7 million</td><td>A</td><td>Large enterprise, data centres</td></tr>
+            <tr><td><code>172.16.0.0 – 172.31.255.255</code></td><td>/12</td><td>1.05 million</td><td>B</td><td>Medium enterprise</td></tr>
+            <tr><td><code>192.168.0.0 – 192.168.255.255</code></td><td>/16</td><td>65,534</td><td>C</td><td>Home & small office</td></tr>
+          </tbody>
+        </table>
+        <hr style="border:none;border-top:1px solid var(--border);margin:20px 0">
+        <h3 style="margin-bottom:12px">Special addresses</h3>
+        <table class="tbl">
+          <thead><tr><th>Address</th><th>Purpose</th></tr></thead>
+          <tbody>
+            <tr><td><code>127.0.0.1</code></td><td>Loopback (localhost) — tests the local IP stack</td></tr>
+            <tr><td><code>0.0.0.0</code></td><td>Default route / any address (used in routing tables and DHCP)</td></tr>
+            <tr><td><code>255.255.255.255</code></td><td>Limited broadcast (never routed)</td></tr>
+            <tr><td><code>169.254.x.x</code></td><td>APIPA — assigned when DHCP fails (Automatic Private IP Addressing)</td></tr>
+            <tr><td><code>224.0.0.0/4</code></td><td>Multicast range (Class D)</td></tr>
+            <tr><td><code>::1</code></td><td>IPv6 loopback</td></tr>
+            <tr><td><code>fe80::/10</code></td><td>IPv6 link-local</td></tr>
+            <tr><td><code>fc00::/7</code></td><td>IPv6 unique local (≈ private IPv4)</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="footer-bottom">© <span data-year></span> inno4te Networking Academy · Innocent Forteh — Paid All Links Foundation. All rights reserved.</div>
+</footer>
+
+<script>
+// Tab switching
+var tabs = {
+  tabCalc: "panelCalc", tabVlsm: "panelVlsm",
+  tabPractice: "panelPractice", tabCheatsheet: "panelCheatsheet"
+};
+Object.keys(tabs).forEach(function(tid){
+  document.getElementById(tid).addEventListener("click", function(){
+    Object.keys(tabs).forEach(function(t){ document.getElementById(t).classList.remove("active"); document.getElementById(tabs[t]).style.display="none"; });
+    document.getElementById(tid).classList.add("active");
+    document.getElementById(tabs[tid]).style.display="";
+  });
+});
+// CIDR slider live display
+var slider = document.getElementById("subCidr"), display = document.getElementById("cidrDisplay");
+if(slider && display){ slider.addEventListener("input", function(){ display.textContent="/"+slider.value; }); }
+</script>
+<script src="js/auth.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

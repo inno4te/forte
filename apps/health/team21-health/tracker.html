@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Daily Habit Tracker — Team21 Health Platform</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700;9..144,800&family=Inter+Tight:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<style>
+  .tracker-shell{background:var(--paper-2);border:1px solid var(--rule);padding:0;position:relative}
+  .tracker-head{padding:24px 28px;border-bottom:1px solid var(--rule);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;background:var(--paper)}
+  .tracker-head h3{font-family:"Fraunces",serif;font-size:28px;margin:0;font-weight:500;letter-spacing:-.01em}
+  .tracker-head .today{font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--mute)}
+  .tracker-body{padding:28px;display:grid;grid-template-columns:1fr 320px;gap:36px}
+  .tracker-list{display:flex;flex-direction:column;gap:2px}
+  .habit{display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:center;padding:12px 14px;background:var(--paper);border:1px solid transparent;transition:all .15s}
+  .habit:hover{border-color:var(--rule)}
+  .habit.checked{background:#eef4f0;border-color:#cfe0d6}
+  .habit input[type=checkbox]{appearance:none;width:22px;height:22px;border:1.5px solid var(--ink);background:var(--paper);cursor:pointer;display:grid;place-items:center;position:relative;flex-shrink:0}
+  .habit input[type=checkbox]:checked{background:var(--good);border-color:var(--good)}
+  .habit input[type=checkbox]:checked::after{content:"✓";color:var(--paper);font-size:14px;font-weight:bold}
+  .habit-text{font-size:14px;color:var(--ink)}
+  .habit-text small{display:block;font-size:11.5px;color:var(--mute);margin-top:2px}
+  .habit.checked .habit-text{text-decoration:line-through;text-decoration-color:var(--mute);color:var(--mute)}
+  .habit-tag{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--mute);font-weight:500}
+  .tracker-stats{background:var(--paper);border:1px solid var(--rule);padding:22px}
+  .ts-row{display:flex;justify-content:space-between;align-items:baseline;padding:10px 0;border-bottom:1px dashed var(--rule)}
+  .ts-row:last-child{border-bottom:none}
+  .ts-row .l{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
+  .ts-row .v{font-family:"Fraunces",serif;font-size:22px;font-weight:500}
+  .progress-ring{width:140px;height:140px;margin:6px auto 16px;position:relative}
+  .progress-ring svg{transform:rotate(-90deg)}
+  .progress-ring .pct{position:absolute;inset:0;display:grid;place-items:center;font-family:"Fraunces",serif;font-size:34px;font-weight:500}
+  .note-area{margin-top:30px;background:var(--paper);border:1px solid var(--rule);padding:24px}
+  .note-area h4{font-family:"Fraunces",serif;font-size:20px;margin:0 0 10px;font-weight:500}
+  .note-area textarea{width:100%;border:1px solid var(--rule);padding:12px;font-family:inherit;font-size:14px;background:var(--paper);min-height:90px;resize:vertical}
+  .note-area textarea:focus{outline:none;border-color:var(--accent)}
+  @media (max-width:960px){.tracker-body{grid-template-columns:1fr}}
+</style>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#2d2823">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Team21">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="brand">
+      <div class="brand-mark">T21</div>
+      <div>
+        <div class="brand-name">Team21 Health Platform</div>
+        <div class="brand-sub">Preventive Intelligence</div>
+      </div>
+    </a>
+    <div class="nav-cta" id="navCta"></div>
+  </div>
+</nav>
+
+<main class="page">
+  <header class="page-head">
+    <div>
+      <div class="eyebrow">Part Five · Daily Tracker</div>
+      <h1>Track the <em>habits</em> that matter.</h1>
+      <p class="intro">Sixteen evidence-based daily habits across diet, lifestyle and environment. Sign in to save your check-ins, watch your streak, and print a clinical-grade weekly summary for your records or your physician.</p>
+    </div>
+    <div class="meta">
+      16 HABITS · DAILY<br>
+      AUTO-SAVED<br>
+      PRINTABLE SUMMARY
+    </div>
+  </header>
+
+  <div id="loginNeeded" class="login-prompt" style="display:none">
+    <h3>Sign in to start tracking</h3>
+    <p>Your daily check-ins, streaks and printable summaries are saved to your free Team21 account.</p>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+      <button class="btn btn-primary" onclick="T21.openAuth('login')">Sign in</button>
+      <button class="btn" onclick="T21.openAuth('register')">Create account</button>
+    </div>
+  </div>
+
+  <div class="tracker-shell" id="trackerShell">
+    <div class="tracker-head">
+      <div>
+        <h3 id="trackerGreeting">Your daily check-in</h3>
+        <div class="today" id="trackerDate"></div>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn btn-sm" id="resetDay">Reset day</button>
+        <button class="btn btn-sm" id="printSummary">Print weekly summary</button>
+        <button class="btn btn-sm btn-accent" id="saveProgress">Save progress</button>
+      </div>
+    </div>
+    <div class="tracker-body">
+      <div class="tracker-list" id="habitList"></div>
+      <div class="tracker-stats">
+        <div class="progress-ring">
+          <svg width="140" height="140">
+            <circle cx="70" cy="70" r="60" fill="none" stroke="var(--paper-3)" stroke-width="12"/>
+            <circle id="ringProgress" cx="70" cy="70" r="60" fill="none" stroke="var(--good)" stroke-width="12" stroke-linecap="round" stroke-dasharray="377" stroke-dashoffset="377"/>
+          </svg>
+          <div class="pct" id="pctText">0%</div>
+        </div>
+        <div class="ts-row"><span class="l">Today's score</span><span class="v" id="todayScore">0 / 0</span></div>
+        <div class="ts-row"><span class="l">Current streak</span><span class="v" id="streakVal">0 d</span></div>
+        <div class="ts-row"><span class="l">7-day average</span><span class="v" id="weekAvg">—</span></div>
+        <div class="ts-row"><span class="l">Account</span><span class="v" id="accountState" style="font-size:14px;font-family:inherit;font-weight:500">Guest</span></div>
+      </div>
+    </div>
+  </div>
+
+  <section class="note-area" id="dailyNoteArea" style="display:none">
+    <h4>Today's note <span style="font-size:12px;color:var(--mute);font-weight:400;font-family:inherit">(optional, saved with the day)</span></h4>
+    <textarea id="dailyNote" placeholder="How are you feeling? Anything notable today — symptoms, exposures, wins, challenges?"></textarea>
+    <div style="margin-top:10px;text-align:right"><button class="btn btn-sm" id="saveDailyNote">Save note</button></div>
+  </section>
+</main>
+
+<script src="data.js"></script>
+<script src="lang-data.js"></script>
+<script src="lang.js"></script>
+<script src="shared.js"></script>
+<script src="components.js"></script>
+<script>
+T21.boot('tracker.html');
+
+const habitList = document.getElementById('habitList');
+const _tFR = window.T21Lang && T21Lang.current==='fr';
+HABITS.forEach(h=>{
+  const trH = _tFR ? T21Lang.Td('habit', h.id) : null;
+  const lbl = (trH && trH.label) || h.label;
+  const sub = (trH && trH.sub) || h.sub;
+  const tag = (trH && trH.tag) || h.tag;
+  const row = document.createElement('label');
+  row.className = 'habit';
+  row.dataset.id = h.id;
+  row.innerHTML = `
+    <input type="checkbox" data-id="${h.id}">
+    <div class="habit-text">${lbl}<small>${sub}</small></div>
+    <span class="habit-tag">${tag}</span>`;
+  habitList.appendChild(row);
+});
+
+function setDateLabel(){
+  const d = new Date();
+  const locale = _tFR ? 'fr-FR' : 'en-US';
+  document.getElementById('trackerDate').textContent =
+    d.toLocaleDateString(locale,{weekday:'long',year:'numeric',month:'long',day:'numeric'}).toUpperCase() + ' · ' + T21.todayKey();
+}
+setDateLabel();
+
+function updateStats(){
+  const boxes = habitList.querySelectorAll('input[type=checkbox]');
+  const done = [...boxes].filter(b=>b.checked).length;
+  const total = boxes.length;
+  document.getElementById('todayScore').textContent = `${done} / ${total}`;
+  const pct = total ? Math.round(done/total*100) : 0;
+  document.getElementById('pctText').textContent = pct + '%';
+  const dash = 2*Math.PI*60;
+  document.getElementById('ringProgress').setAttribute('stroke-dashoffset', dash - (dash*pct/100));
+  boxes.forEach(b => b.closest('.habit').classList.toggle('checked', b.checked));
+}
+
+habitList.addEventListener('change', e=>{
+  if(e.target.type === 'checkbox'){
+    updateStats();
+    persistToday();
+  }
+});
+
+document.getElementById('resetDay').addEventListener('click',()=>{
+  habitList.querySelectorAll('input[type=checkbox]').forEach(b=>b.checked=false);
+  updateStats();
+  persistToday();
+});
+
+async function persistToday(){
+  if(!T21.user || !T21.storage) return;
+  const boxes = habitList.querySelectorAll('input[type=checkbox]');
+  const state = {};
+  boxes.forEach(b=> state[b.dataset.id] = b.checked);
+  const note = document.getElementById('dailyNote').value;
+  const key = `t21:${T21.user.email}:day:${T21.todayKey()}`;
+  try{ await T21.storage.set(key, JSON.stringify({habits:state, note, ts:Date.now()})); }catch(_){}
+  await refreshStreakAndAvg();
+}
+
+async function loadToday(){
+  if(!T21.user || !T21.storage) return;
+  const key = `t21:${T21.user.email}:day:${T21.todayKey()}`;
+  try{
+    const r = await T21.storage.get(key);
+    if(r && r.value){
+      const data = JSON.parse(r.value);
+      habitList.querySelectorAll('input[type=checkbox]').forEach(b=>{
+        b.checked = !!(data.habits && data.habits[b.dataset.id]);
+      });
+      document.getElementById('dailyNote').value = data.note || '';
+    }
+  }catch(_){}
+  updateStats();
+}
+
+async function refreshStreakAndAvg(){
+  if(!T21.user || !T21.storage){
+    document.getElementById('streakVal').textContent = '0 d';
+    document.getElementById('weekAvg').textContent = '—';
+    return;
+  }
+  const days = [];
+  for(let i=0;i<14;i++){
+    const d = new Date(); d.setDate(d.getDate()-i);
+    days.push(d.toISOString().slice(0,10));
+  }
+  let streak = 0, weekDone = 0, weekTotal = 0;
+  for(let i=0;i<days.length;i++){
+    const key = `t21:${T21.user.email}:day:${days[i]}`;
+    let entry = null;
+    try{ const r = await T21.storage.get(key); if(r && r.value) entry = JSON.parse(r.value); }catch(_){}
+    const done = entry ? Object.values(entry.habits||{}).filter(v=>v).length : 0;
+    const total = HABITS.length;
+    if(i<7){ weekDone += done; weekTotal += total; }
+    if(i===0){
+      streak = (done >= Math.ceil(total*0.6)) ? 1 : 0;
+    } else if(streak === i){
+      if(done >= Math.ceil(total*0.6)) streak++;
+    }
+  }
+  document.getElementById('streakVal').textContent = streak + ' d';
+  document.getElementById('weekAvg').textContent = weekTotal ? Math.round(weekDone/weekTotal*100)+'%' : '—';
+}
+
+document.getElementById('saveProgress').addEventListener('click', async ()=>{
+  if(!T21.user){ T21.openAuth('login'); return; }
+  await persistToday();
+  T21.toast('Saved','success');
+});
+
+document.getElementById('saveDailyNote').addEventListener('click', async ()=>{
+  if(!T21.user){ T21.openAuth('login'); return; }
+  await persistToday();
+  T21.toast('Note saved with today','success');
+});
+
+async function printSummary(){
+  if(!T21.user){ T21.openAuth('login'); return; }
+  const days = [];
+  for(let i=6;i>=0;i--){
+    const d = new Date(); d.setDate(d.getDate()-i);
+    days.push(d.toISOString().slice(0,10));
+  }
+  const rows = [];
+  for(const day of days){
+    const key = `t21:${T21.user.email}:day:${day}`;
+    let entry=null;
+    try{ const r = await T21.storage.get(key); if(r && r.value) entry = JSON.parse(r.value); }catch(_){}
+    rows.push({day, habits: entry ? entry.habits : {}, note: entry ? entry.note : ''});
+  }
+  const w = window.open('','_blank','width=900,height=1100');
+  const habitHeaders = HABITS.map(h=>`<th style="font-size:9px;writing-mode:vertical-rl;transform:rotate(180deg);padding:6px 2px;border-bottom:1px solid #999;white-space:nowrap">${h.label}</th>`).join('');
+  const bodyRows = rows.map(r=>{
+    const total = HABITS.filter(h=>r.habits && r.habits[h.id]).length;
+    const cells = HABITS.map(h=>`<td style="text-align:center;border-bottom:1px solid #ddd;padding:6px">${r.habits && r.habits[h.id] ? '✓' : '·'}</td>`).join('');
+    return `<tr><td style="padding:6px 8px;border-bottom:1px solid #ddd;font-size:12px;white-space:nowrap"><strong>${r.day}</strong></td>${cells}<td style="padding:6px 8px;border-bottom:1px solid #ddd;font-size:12px;text-align:center;font-weight:600">${total}/${HABITS.length}</td></tr>`;
+  }).join('');
+  const notesBlock = rows.filter(r=>r.note && r.note.trim()).map(r=>`<div style="margin:8px 0"><strong>${r.day}:</strong> ${r.note.replace(/</g,'&lt;')}</div>`).join('');
+  w.document.write(`<!doctype html><html><head><title>Team21 Weekly Summary — ${T21.user.email}</title>
+  <style>body{font-family:Georgia,serif;color:#111;padding:30px;max-width:900px;margin:0 auto}
+  h1{font-size:24px;margin:0 0 4px;letter-spacing:-.01em} .sub{color:#666;font-size:13px;margin-bottom:18px}
+  table{border-collapse:collapse;width:100%} th{background:#f4efe6;font-weight:600;font-size:11px;text-align:left;padding:6px 8px;border-bottom:1px solid #999}
+  h2{font-size:16px;margin:24px 0 10px}
+  .footer{margin-top:24px;font-size:11px;color:#666;border-top:1px solid #ccc;padding-top:12px}
+  </style></head><body>
+  <h1>Team21 Health Platform — Weekly Habit Summary</h1>
+  <div class="sub">Account: <strong>${T21.user.name||T21.user.email}</strong> · Email: ${T21.user.email} · Generated ${new Date().toLocaleString()}</div>
+  <table><thead><tr><th style="padding:6px 8px">Date</th>${habitHeaders}<th style="padding:6px 8px;text-align:center">Score</th></tr></thead><tbody>${bodyRows}</tbody></table>
+  ${notesBlock ? `<h2>Daily notes</h2><div style="font-size:13px;line-height:1.6">${notesBlock}</div>` : ''}
+  <div class="footer"><strong>Disclaimer:</strong> This summary is for informational use only and not a substitute for professional medical advice. © Innocent Forteh · Team21 Health Platform.</div>
+  <script>window.onload=()=>window.print()<\/script>
+  <script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('service-worker.js')
+      .then(reg => console.log('[Team21] Service Worker registered:', reg.scope))
+      .catch(err => console.warn('[Team21] SW registration failed:', err));
+  });
+}
+</script>
+</body></html>`);
+  w.document.close();
+}
+document.getElementById('printSummary').addEventListener('click', printSummary);
+
+function reflectUser(){
+  const u = T21.user;
+  if(!u){
+    document.getElementById('trackerGreeting').textContent = 'Your daily check-in';
+    document.getElementById('accountState').textContent = 'Guest';
+    document.getElementById('loginNeeded').style.display = 'block';
+    document.getElementById('trackerShell').style.opacity = 0.5;
+    document.getElementById('trackerShell').style.pointerEvents = 'none';
+    document.getElementById('dailyNoteArea').style.display = 'none';
+  } else {
+    document.getElementById('trackerGreeting').textContent = `Welcome, ${u.name || u.email.split('@')[0]}`;
+    document.getElementById('accountState').textContent = u.email;
+    document.getElementById('loginNeeded').style.display = 'none';
+    document.getElementById('trackerShell').style.opacity = 1;
+    document.getElementById('trackerShell').style.pointerEvents = 'auto';
+    document.getElementById('dailyNoteArea').style.display = 'block';
+    loadToday();
+    refreshStreakAndAvg();
+  }
+}
+
+window.onUserAuthChange = reflectUser;
+updateStats();
+setTimeout(reflectUser, 200);
+</script>
+</body>
+</html>

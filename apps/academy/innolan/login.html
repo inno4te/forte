@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Login · inno4te Networking Academy</title>
+<meta name="description" content="Sign in to the inno4te Networking Academy — CCNA, Network+ and Security+ labs and exams.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%231F6FEB'/><text x='50' y='68' font-size='44' text-anchor='middle' fill='white' font-weight='bold'>i4</text></svg>">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; }
+  html, body { height: 100%; font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+
+  body {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #0A1628 0%, #0D2461 40%, #1F6FEB 100%);
+    display: flex; align-items: center; justify-content: center;
+    padding: 20px; position: relative; overflow: hidden;
+  }
+
+  /* background decorative circles */
+  body::before, body::after { content: ""; position: absolute; border-radius: 50%; pointer-events: none; }
+  body::before { width: 600px; height: 600px; background: radial-gradient(circle, rgba(31,111,235,.25), transparent 70%); top: -200px; right: -100px; }
+  body::after  { width: 400px; height: 400px; background: radial-gradient(circle, rgba(57,208,216,.15), transparent 70%); bottom: -150px; left: -50px; }
+
+  /* animated dots grid */
+  .bg-grid {
+    position: fixed; inset: 0; pointer-events: none; overflow: hidden;
+    background-image: radial-gradient(circle, rgba(255,255,255,.08) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+
+  .login-wrap {
+    width: 100%; max-width: 440px; position: relative; z-index: 1;
+  }
+
+  /* logo block */
+  .brand-block {
+    text-align: center; margin-bottom: 28px;
+  }
+  .brand-mark {
+    width: 70px; height: 70px; border-radius: 18px; margin: 0 auto 14px;
+    background: linear-gradient(135deg, #1F6FEB, #39D0D8);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.7rem; font-weight: 900; color: #fff;
+    box-shadow: 0 12px 32px rgba(31,111,235,.5);
+    letter-spacing: -.03em;
+  }
+  .brand-name { font-size: 1.5rem; font-weight: 800; color: #fff; letter-spacing: -.02em; }
+  .brand-name em { color: #39D0D8; font-style: normal; }
+  .brand-sub { font-size: .82rem; color: rgba(255,255,255,.65); font-weight: 600; margin-top: 4px; letter-spacing: .06em; text-transform: uppercase; }
+
+  /* card */
+  .card {
+    background: #fff; border-radius: 22px; padding: 38px 36px 32px;
+    box-shadow: 0 28px 60px rgba(0,0,0,.35), 0 0 0 1px rgba(255,255,255,.06);
+  }
+  .card h2 { font-size: 1.35rem; font-weight: 800; color: #0A1628; margin-bottom: 6px; }
+  .card p.sub { font-size: .88rem; color: #5A6A7A; margin-bottom: 26px; }
+
+  .form-group { margin-bottom: 18px; }
+  label { display: block; font-size: .82rem; font-weight: 700; color: #374151; margin-bottom: 7px; }
+  input {
+    width: 100%; padding: 13px 15px; font-size: .96rem; font-family: inherit;
+    background: #F8FAFC; border: 1.5px solid #DDE1E9; border-radius: 10px;
+    color: #0A1628; transition: border-color .15s, box-shadow .15s; outline: none;
+  }
+  input:focus { border-color: #1F6FEB; box-shadow: 0 0 0 3px rgba(31,111,235,.15); background: #fff; }
+  input::placeholder { color: #A0AABF; }
+
+  .btn-login {
+    width: 100%; padding: 14px; font-size: 1rem; font-weight: 800; font-family: inherit;
+    background: linear-gradient(135deg, #1F6FEB, #1258C7); color: #fff;
+    border: none; border-radius: 11px; cursor: pointer; margin-top: 6px;
+    box-shadow: 0 6px 20px rgba(31,111,235,.45);
+    transition: transform .12s, box-shadow .12s, background .12s;
+    letter-spacing: .01em;
+  }
+  .btn-login:hover { background: linear-gradient(135deg, #1258C7, #0D47A5); transform: translateY(-1px); box-shadow: 0 10px 28px rgba(31,111,235,.5); }
+  .btn-login:active { transform: scale(.98); }
+
+  .error {
+    background: #FEF2F2; border: 1px solid #FECACA; color: #991B1B;
+    border-radius: 9px; padding: 11px 14px; font-size: .88rem; font-weight: 600;
+    margin-bottom: 16px; display: none;
+  }
+  .error.show { display: block; }
+
+  .hint {
+    text-align: center; margin-top: 20px; padding-top: 18px; border-top: 1px solid #EEF0F4;
+    font-size: .82rem; color: #8A9AB0;
+  }
+  .hint a { color: #1F6FEB; text-decoration: none; font-weight: 600; }
+
+  /* cert badges at bottom */
+  .certs {
+    display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;
+    margin-top: 26px;
+  }
+  .cert-badge {
+    padding: 5px 12px; border-radius: 999px; font-size: .72rem; font-weight: 800;
+    letter-spacing: .06em; text-transform: uppercase; border: 1px solid rgba(255,255,255,.22);
+    color: rgba(255,255,255,.82);
+  }
+  .cb-ccna  { background: rgba(255,123,0,.18); }
+  .cb-np    { background: rgba(63,185,80,.18); }
+  .cb-sp    { background: rgba(248,81,73,.15); }
+  .cb-free  { background: rgba(57,208,216,.18); color: #7ff5ff; }
+
+  /* loading spinner */
+  .spinner { display: none; width: 20px; height: 20px; border: 2.5px solid rgba(255,255,255,.35); border-top-color: #fff; border-radius: 50%; animation: spin .7s linear infinite; margin: 0 auto; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  @media (max-width: 480px) { .card { padding: 28px 22px; } }
+</style>
+</head>
+<body>
+<div class="bg-grid"></div>
+
+<div class="login-wrap">
+  <!-- Brand -->
+  <div class="brand-block">
+    <div class="brand-mark">i4</div>
+    <div class="brand-name">inno<em>4</em>te Networking Academy</div>
+    <div class="brand-sub">CCNA · Network+ · Security+ · Free virtual labs</div>
+  </div>
+
+  <!-- Login card -->
+  <div class="card">
+    <h2>Welcome back 👋</h2>
+    <p class="sub">Sign in with your student credentials to access the labs and practice exams.</p>
+
+    <div class="error" id="errMsg">Incorrect username or password. Please try again.</div>
+
+    <form id="loginForm" novalidate>
+      <div class="form-group">
+        <label for="uname">Username</label>
+        <input type="text" id="uname" autocomplete="username" placeholder="e.g. ndezo5" autocorrect="off" autocapitalize="off" spellcheck="false" required>
+      </div>
+      <div class="form-group">
+        <label for="pw">Password</label>
+        <input type="password" id="pw" autocomplete="current-password" placeholder="Your password" required>
+      </div>
+      <button type="submit" class="btn-login" id="loginBtn">
+        <span id="btnText">Sign in →</span>
+        <span class="spinner" id="btnSpinner"></span>
+      </button>
+    </form>
+
+    <div class="hint">
+      Forgotten your password? <strong>Contact your instructor.</strong><br>
+      <span style="color:#A0AABF;margin-top:4px;display:inline-block">All lab work is automatically saved to your account.</span>
+    </div>
+  </div>
+
+  <!-- Cert badges -->
+  <div class="certs">
+    <span class="cert-badge cb-free">🎓 100% Free</span>
+    <span class="cert-badge cb-ccna">Cisco CCNA</span>
+    <span class="cert-badge cb-np">Network+</span>
+    <span class="cert-badge cb-sp">Security+</span>
+  </div>
+</div>
+
+<script src="js/auth.js"></script>
+<script>
+(function () {
+  // If already logged in, redirect away
+  var s = sessionStorage.getItem("i4n_session");
+  if (s) {
+    try {
+      var u = JSON.parse(s).username;
+      window.location.replace(u === "forteh" ? "admin-progress.html" : "index.html");
+    } catch(e) {}
+  }
+
+  document.getElementById("loginForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+    var u = document.getElementById("uname").value.trim().toLowerCase();
+    var p = document.getElementById("pw").value;
+    var err = document.getElementById("errMsg");
+    err.classList.remove("show");
+    document.getElementById("btnText").style.display = "none";
+    document.getElementById("btnSpinner").style.display = "block";
+
+    setTimeout(function () {
+      if (Auth.login(u, p)) {
+        window.location.replace(u === "forteh" ? "admin-progress.html" : "index.html");
+      } else {
+        err.classList.add("show");
+        document.getElementById("btnText").style.display = "";
+        document.getElementById("btnSpinner").style.display = "none";
+        document.getElementById("pw").value = "";
+        document.getElementById("pw").focus();
+      }
+    }, 350);
+  });
+
+  document.getElementById("uname").focus();
+})();
+</script>
+<div style="text-align:center;font-size:.75rem;color:rgba(255,255,255,.4);padding:14px 0">© <script>document.write(new Date().getFullYear())</script> inno4te Networking Academy · Innocent Forteh — Paid All Links Foundation</div>
+</body>
+</html>

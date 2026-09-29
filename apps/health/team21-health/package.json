@@ -1,0 +1,22 @@
+{
+  "name": "team21-health-platform",
+  "version": "1.0.0",
+  "description": "Team21 Health Platform — A comprehensive evidence-based preventive-health platform. Edited by Innocent Forteh.",
+  "author": "Innocent Forteh",
+  "license": "All rights reserved",
+  "scripts": {
+    "serve": "npx http-server . -p 8080 -o",
+    "cap:init": "npx cap init Team21 health.team21.app --web-dir=.",
+    "cap:add-android": "npx cap add android",
+    "cap:sync": "npx cap sync android",
+    "cap:open": "npx cap open android",
+    "android:build-debug": "cd android && ./gradlew assembleDebug",
+    "android:build-release": "cd android && ./gradlew assembleRelease"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^6.1.2",
+    "@capacitor/core": "^6.1.2",
+    "@capacitor/android": "^6.1.2",
+    "http-server": "^14.1.1"
+  }
+}

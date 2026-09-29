@@ -1,0 +1,2445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Team21 AllInOne © Innocent Forteh</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=Playfair+Display:wght@700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<!-- Real file format libraries -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/html-docx-js/dist/html-docx.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<style>
+:root {
+  --bg: #0f1117;
+  --bg2: #161b27;
+  --bg3: #1e2535;
+  --panel: #232d3f;
+  --border: #2e3a50;
+  --border2: #3d4f6a;
+  --accent: #4f8ef7;
+  --accent2: #7c5cfc;
+  --accent3: #00d9a3;
+  --accent4: #f7a24f;
+  --text: #e8edf5;
+  --text2: #8fa3c0;
+  --text3: #5a6e8a;
+  --danger: #f75f5f;
+  --success: #3dd68c;
+  --warning: #f7a24f;
+  --sheet-header: #1a2235;
+  --sheet-cell: #161b27;
+  --sheet-cell-hover: #1e2a3d;
+  --sheet-border: #2a3650;
+  --toolbar-h: 46px;
+  --sidebar-w: 220px;
+  --ribbon-h: 42px;
+  --status-h: 28px;
+  --font-ui: 'DM Sans', sans-serif;
+  --font-display: 'Playfair Display', serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; overflow: hidden; }
+body { font-family: var(--font-ui); background: var(--bg); color: var(--text); font-size: 14px; display: flex; flex-direction: column; }
+
+/* ===== TITLEBAR ===== */
+#titlebar {
+  height: 50px; background: var(--bg2); border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; padding: 0 16px; gap: 16px; flex-shrink: 0;
+  position: relative;
+}
+#logo {
+  display: flex; align-items: center; gap: 10px; flex-shrink: 0;
+}
+#logo-icon {
+  width: 32px; height: 32px; background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
+  border-radius: 8px; display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display); color: #fff; font-size: 14px; font-weight: 700;
+  letter-spacing: -1px;
+}
+#logo-text { font-family: var(--font-display); font-size: 17px; color: var(--text); letter-spacing: -0.3px; }
+#logo-text span { color: var(--accent); }
+#logo-copy { font-size: 9px; color: var(--text3); font-family: var(--font-ui); font-weight: 300; }
+#filename-area {
+  flex: 1; display: flex; align-items: center; justify-content: center;
+}
+#filename-input {
+  background: transparent; border: none; color: var(--text); font-family: var(--font-ui);
+  font-size: 14px; text-align: center; width: 260px; outline: none; padding: 4px 8px;
+  border-bottom: 1px solid transparent; transition: border-color 0.2s;
+}
+#filename-input:focus { border-bottom-color: var(--accent); }
+#titlebar-actions { display: flex; gap: 8px; align-items: center; flex-shrink: 0; }
+.tb-btn {
+  background: var(--panel); border: 1px solid var(--border); color: var(--text2);
+  padding: 5px 12px; border-radius: 6px; cursor: pointer; font-size: 12px;
+  font-family: var(--font-ui); transition: all 0.15s; display: flex; align-items: center; gap: 5px;
+}
+.tb-btn:hover { background: var(--bg3); border-color: var(--border2); color: var(--text); }
+.tb-btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+.tb-btn.primary:hover { background: #3d7eea; }
+.mode-pill {
+  display: flex; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; overflow: hidden;
+}
+.mode-btn {
+  padding: 5px 14px; cursor: pointer; font-size: 12px; color: var(--text2);
+  transition: all 0.15s; border: none; background: transparent; font-family: var(--font-ui);
+  display: flex; align-items: center; gap: 5px; white-space: nowrap;
+}
+.mode-btn.active { background: var(--accent); color: #fff; }
+.mode-btn:not(.active):hover { background: var(--panel); color: var(--text); }
+
+/* ===== RIBBON/TOOLBAR ===== */
+#ribbon {
+  background: var(--bg2); border-bottom: 1px solid var(--border);
+  display: flex; align-items: stretch; padding: 0 8px; flex-shrink: 0; height: var(--ribbon-h);
+  gap: 0; overflow-x: auto;
+}
+#ribbon::-webkit-scrollbar { height: 0; }
+.ribbon-group {
+  display: flex; align-items: center; gap: 2px; padding: 0 8px;
+  border-right: 1px solid var(--border); flex-shrink: 0;
+}
+.ribbon-group:last-child { border-right: none; }
+.ribbon-group-label {
+  font-size: 9px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.8px;
+  position: absolute; bottom: 2px; left: 50%; transform: translateX(-50%); white-space: nowrap;
+}
+.ribbon-btn {
+  background: transparent; border: 1px solid transparent; color: var(--text2); padding: 4px 8px;
+  border-radius: 5px; cursor: pointer; font-family: var(--font-ui); font-size: 12px;
+  transition: all 0.12s; display: flex; align-items: center; gap: 4px; height: 30px;
+  white-space: nowrap;
+}
+.ribbon-btn:hover { background: var(--panel); border-color: var(--border); color: var(--text); }
+.ribbon-btn.active { background: rgba(79,142,247,0.15); border-color: rgba(79,142,247,0.4); color: var(--accent); }
+.ribbon-select {
+  background: var(--panel); border: 1px solid var(--border); color: var(--text);
+  padding: 3px 6px; border-radius: 5px; font-family: var(--font-ui); font-size: 12px;
+  cursor: pointer; outline: none; height: 28px;
+}
+.ribbon-select:hover { border-color: var(--border2); }
+.ribbon-separator { width: 1px; background: var(--border); margin: 6px 4px; }
+.font-size-input {
+  width: 38px; background: var(--panel); border: 1px solid var(--border); color: var(--text);
+  padding: 3px 4px; border-radius: 5px; font-family: var(--font-ui); font-size: 12px;
+  outline: none; text-align: center; height: 28px;
+}
+.color-picker-btn { width: 24px; height: 24px; border-radius: 4px; cursor: pointer; border: 2px solid var(--border2); }
+
+/* ===== MAIN LAYOUT ===== */
+#main { display: flex; flex: 1; overflow: hidden; }
+
+/* ===== SIDEBAR ===== */
+#sidebar {
+  width: var(--sidebar-w); background: var(--bg2); border-right: 1px solid var(--border);
+  display: flex; flex-direction: column; flex-shrink: 0; overflow: hidden;
+}
+#sidebar-header { padding: 12px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
+#sidebar-header h3 { font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+.new-doc-btn {
+  width: 100%; padding: 8px 12px; background: rgba(79,142,247,0.1); border: 1px dashed rgba(79,142,247,0.4);
+  color: var(--accent); border-radius: 7px; cursor: pointer; font-family: var(--font-ui); font-size: 12px;
+  display: flex; align-items: center; gap: 6px; transition: all 0.15s;
+}
+.new-doc-btn:hover { background: rgba(79,142,247,0.2); }
+#doc-list { flex: 1; overflow-y: auto; padding: 8px; }
+#doc-list::-webkit-scrollbar { width: 4px; }
+#doc-list::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+.doc-item {
+  padding: 8px 10px; border-radius: 7px; cursor: pointer; margin-bottom: 3px;
+  border: 1px solid transparent; transition: all 0.15s; display: flex; align-items: center; gap: 8px;
+}
+.doc-item:hover { background: var(--panel); border-color: var(--border); }
+.doc-item.active { background: rgba(79,142,247,0.12); border-color: rgba(79,142,247,0.35); }
+.doc-icon { font-size: 16px; flex-shrink: 0; }
+.doc-info { flex: 1; min-width: 0; }
+.doc-name { font-size: 12px; color: var(--text); font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.doc-meta { font-size: 10px; color: var(--text3); margin-top: 1px; }
+.doc-type-badge {
+  font-size: 9px; padding: 1px 5px; border-radius: 3px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.5px; flex-shrink: 0;
+}
+.badge-doc { background: rgba(79,142,247,0.2); color: var(--accent); }
+.badge-sheet { background: rgba(0,217,163,0.2); color: var(--accent3); }
+.badge-pres { background: rgba(247,162,79,0.2); color: var(--accent4); }
+.badge-img { background: rgba(124,92,252,0.2); color: var(--accent2); }
+#sidebar-footer { padding: 12px; border-top: 1px solid var(--border); flex-shrink: 0; }
+.storage-bar { height: 3px; background: var(--bg); border-radius: 2px; margin-top: 6px; }
+.storage-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent2)); border-radius: 2px; width: 34%; }
+
+/* ===== CONTENT AREA ===== */
+#content { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+#workspace { flex: 1; overflow: auto; background: var(--bg3); position: relative; }
+
+/* ===== WORD PROCESSOR ===== */
+#word-view { display: flex; justify-content: center; padding: 40px 24px; min-height: 100%; }
+#doc-paper {
+  width: 800px; min-height: 1100px; background: #1a2235;
+  border: 1px solid var(--border); border-radius: 4px;
+  box-shadow: 0 4px 40px rgba(0,0,0,0.5);
+  padding: 80px 96px; flex-shrink: 0;
+}
+#doc-editor {
+  outline: none; min-height: 900px; color: var(--text);
+  font-family: 'DM Sans', sans-serif; font-size: 15px; line-height: 1.8;
+  caret-color: var(--accent);
+}
+#doc-editor h1 { font-family: var(--font-display); font-size: 32px; line-height: 1.2; color: var(--text); margin-bottom: 16px; font-weight: 700; }
+#doc-editor h2 { font-size: 22px; color: var(--text); margin-bottom: 12px; margin-top: 24px; font-weight: 600; }
+#doc-editor h3 { font-size: 18px; color: var(--text); margin-bottom: 8px; margin-top: 16px; font-weight: 500; }
+#doc-editor p { margin-bottom: 12px; }
+#doc-editor blockquote { border-left: 3px solid var(--accent); padding-left: 16px; color: var(--text2); margin: 16px 0; font-style: italic; }
+#doc-editor ul, #doc-editor ol { padding-left: 24px; margin-bottom: 12px; }
+#doc-editor li { margin-bottom: 4px; }
+#doc-editor table { border-collapse: collapse; width: 100%; margin: 16px 0; }
+#doc-editor table td, #doc-editor table th { border: 1px solid var(--border2); padding: 8px 12px; }
+#doc-editor table th { background: var(--panel); font-weight: 600; }
+#doc-editor a { color: var(--accent); }
+#doc-editor code { font-family: var(--font-mono); background: var(--panel); padding: 1px 5px; border-radius: 3px; font-size: 13px; }
+#doc-editor pre { background: var(--panel); padding: 16px; border-radius: 6px; overflow-x: auto; margin: 16px 0; }
+#doc-editor img { max-width: 100%; border-radius: 4px; }
+
+/* ===== SPREADSHEET ===== */
+#sheet-view { display: flex; flex-direction: column; height: 100%; }
+#formula-bar {
+  display: flex; align-items: center; padding: 5px 10px; background: var(--bg2);
+  border-bottom: 1px solid var(--border); gap: 8px; flex-shrink: 0; height: 36px;
+}
+#cell-ref { 
+  width: 80px; text-align: center; background: var(--panel); border: 1px solid var(--border);
+  color: var(--text); font-family: var(--font-mono); font-size: 12px; padding: 3px 6px;
+  border-radius: 4px; outline: none;
+}
+#formula-input {
+  flex: 1; background: transparent; border: none; color: var(--text); font-family: var(--font-mono);
+  font-size: 13px; outline: none; padding: 2px 4px;
+}
+#sheet-container { flex: 1; overflow: auto; position: relative; }
+#sheet-container::-webkit-scrollbar { width: 8px; height: 8px; }
+#sheet-container::-webkit-scrollbar-track { background: var(--bg2); }
+#sheet-container::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 4px; }
+#sheet-table { border-collapse: collapse; }
+.sheet-corner { width: 46px; height: 28px; background: var(--sheet-header); border-right: 1px solid var(--sheet-border); border-bottom: 1px solid var(--sheet-border); position: sticky; top: 0; left: 0; z-index: 3; }
+.col-header {
+  min-width: 100px; height: 28px; background: var(--sheet-header); border-right: 1px solid var(--sheet-border);
+  border-bottom: 1px solid var(--sheet-border); text-align: center; font-size: 11px;
+  color: var(--text2); font-weight: 500; cursor: pointer; user-select: none; position: sticky; top: 0; z-index: 2;
+}
+.col-header:hover { background: var(--panel); }
+.row-header {
+  width: 46px; min-width: 46px; background: var(--sheet-header); border-right: 1px solid var(--sheet-border);
+  border-bottom: 1px solid var(--sheet-border); text-align: center; font-size: 11px;
+  color: var(--text2); cursor: pointer; user-select: none; position: sticky; left: 0; z-index: 1;
+}
+.row-header:hover { background: var(--panel); }
+.sheet-cell {
+  min-width: 100px; height: 26px; padding: 0 6px; border-right: 1px solid var(--sheet-border);
+  border-bottom: 1px solid var(--sheet-border); background: var(--sheet-cell);
+  font-size: 12px; color: var(--text); font-family: var(--font-mono); white-space: nowrap;
+  cursor: cell; overflow: hidden; text-overflow: ellipsis; outline: none;
+  transition: background 0.1s;
+}
+.sheet-cell:hover { background: var(--sheet-cell-hover); }
+.sheet-cell.selected { 
+  background: rgba(79,142,247,0.1) !important; 
+  box-shadow: inset 0 0 0 2px var(--accent);
+  outline: none;
+}
+.sheet-cell.formula { color: var(--accent3); }
+#sheet-tabs {
+  display: flex; align-items: center; background: var(--bg2); border-top: 1px solid var(--border);
+  padding: 0 8px; height: 34px; flex-shrink: 0; gap: 2px;
+}
+.sheet-tab {
+  padding: 4px 14px; border-radius: 5px 5px 0 0; cursor: pointer; font-size: 12px; color: var(--text2);
+  border: 1px solid transparent; border-bottom: none; transition: all 0.15s;
+}
+.sheet-tab.active { background: var(--bg3); border-color: var(--border); color: var(--text); }
+.sheet-tab:not(.active):hover { background: var(--panel); color: var(--text); }
+.add-sheet-btn { 
+  padding: 3px 8px; color: var(--text3); cursor: pointer; font-size: 18px;
+  border-radius: 4px; transition: all 0.15s; background: none; border: none;
+}
+.add-sheet-btn:hover { background: var(--panel); color: var(--text); }
+
+/* ===== PRESENTATIONS ===== */
+#pres-view { display: flex; height: 100%; }
+#slides-panel { 
+  width: 200px; background: var(--bg2); border-right: 1px solid var(--border);
+  overflow-y: auto; padding: 12px; flex-shrink: 0; display: flex; flex-direction: column; gap: 8px;
+}
+#slides-panel::-webkit-scrollbar { width: 4px; }
+#slides-panel::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+.slide-thumb {
+  aspect-ratio: 16/9; border-radius: 5px; cursor: pointer; border: 2px solid var(--border);
+  overflow: hidden; position: relative; flex-shrink: 0; transition: border-color 0.15s;
+}
+.slide-thumb.active { border-color: var(--accent); }
+.slide-thumb:hover:not(.active) { border-color: var(--border2); }
+.slide-thumb-num {
+  position: absolute; bottom: 3px; right: 5px; font-size: 9px; color: rgba(255,255,255,0.4);
+  font-family: var(--font-mono);
+}
+#slide-canvas-area { flex: 1; display: flex; align-items: center; justify-content: center; background: var(--bg3); padding: 24px; }
+#slide-canvas {
+  width: 100%; max-width: 900px; aspect-ratio: 16/9; background: var(--panel);
+  border-radius: 8px; box-shadow: 0 8px 60px rgba(0,0,0,0.6); position: relative;
+  overflow: hidden; border: 1px solid var(--border2);
+}
+.slide-element {
+  position: absolute; cursor: move; user-select: none; border: 1px solid transparent;
+  transition: border-color 0.15s;
+}
+.slide-element:hover { border-color: rgba(79,142,247,0.4); }
+.slide-element.selected { border-color: var(--accent); }
+.slide-text-el { padding: 8px; outline: none; min-width: 80px; min-height: 30px; }
+#slide-props {
+  width: 200px; background: var(--bg2); border-left: 1px solid var(--border);
+  padding: 12px; overflow-y: auto; flex-shrink: 0;
+}
+#slide-props h4 { font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 10px; }
+.prop-group { margin-bottom: 14px; }
+.prop-label { font-size: 11px; color: var(--text2); margin-bottom: 4px; }
+.prop-input {
+  width: 100%; background: var(--panel); border: 1px solid var(--border); color: var(--text);
+  padding: 5px 8px; border-radius: 5px; font-family: var(--font-ui); font-size: 12px;
+  outline: none; transition: border-color 0.15s;
+}
+.prop-input:focus { border-color: var(--accent); }
+.theme-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; }
+.theme-swatch { height: 24px; border-radius: 4px; cursor: pointer; border: 2px solid transparent; transition: border-color 0.15s; }
+.theme-swatch:hover, .theme-swatch.active { border-color: var(--text); }
+
+/* ===== STATUS BAR ===== */
+#statusbar {
+  height: var(--status-h); background: var(--accent); display: flex; align-items: center;
+  padding: 0 12px; gap: 16px; flex-shrink: 0;
+}
+.status-item { font-size: 11px; color: rgba(255,255,255,0.85); display: flex; align-items: center; gap: 4px; }
+.status-sep { width: 1px; height: 14px; background: rgba(255,255,255,0.3); }
+#statusbar-right { margin-left: auto; display: flex; gap: 16px; align-items: center; }
+.zoom-control { display: flex; align-items: center; gap: 6px; }
+.zoom-btn { background: rgba(255,255,255,0.2); border: none; color: #fff; width: 18px; height: 18px; border-radius: 3px; cursor: pointer; font-size: 12px; display: flex; align-items: center; justify-content: center; }
+.zoom-btn:hover { background: rgba(255,255,255,0.35); }
+#zoom-val { font-size: 11px; color: rgba(255,255,255,0.85); min-width: 32px; text-align: center; }
+
+/* ===== FILE MANAGER MODAL ===== */
+.modal-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.7); display: flex;
+  align-items: center; justify-content: center; z-index: 1000; display: none;
+}
+.modal-overlay.open { display: flex; }
+.modal {
+  background: var(--bg2); border: 1px solid var(--border2); border-radius: 12px;
+  padding: 24px; width: 560px; max-height: 80vh; overflow: hidden; display: flex; flex-direction: column;
+  box-shadow: 0 20px 80px rgba(0,0,0,0.7);
+}
+.modal h2 { font-family: var(--font-display); font-size: 22px; margin-bottom: 4px; }
+.modal p { color: var(--text2); font-size: 13px; margin-bottom: 16px; }
+.file-type-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 16px; }
+.file-type-card {
+  background: var(--panel); border: 1px solid var(--border); border-radius: 9px;
+  padding: 14px 10px; text-align: center; cursor: pointer; transition: all 0.15s;
+}
+.file-type-card:hover { border-color: var(--border2); background: var(--bg3); transform: translateY(-1px); }
+.file-type-icon { font-size: 26px; margin-bottom: 6px; }
+.file-type-name { font-size: 12px; font-weight: 500; color: var(--text); }
+.file-type-ext { font-size: 10px; color: var(--text3); margin-top: 2px; }
+.modal-close {
+  background: var(--panel); border: 1px solid var(--border); color: var(--text2);
+  padding: 8px 20px; border-radius: 7px; cursor: pointer; font-family: var(--font-ui); font-size: 13px;
+  transition: all 0.15s; float: right;
+}
+.modal-close:hover { background: var(--bg3); color: var(--text); }
+
+/* ===== FIND/REPLACE ===== */
+#find-bar {
+  position: absolute; top: 12px; right: 16px; background: var(--bg2);
+  border: 1px solid var(--border2); border-radius: 9px; padding: 10px 14px;
+  display: none; gap: 8px; flex-direction: column; z-index: 10; width: 320px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+}
+#find-bar.open { display: flex; }
+.find-row { display: flex; gap: 6px; align-items: center; }
+.find-input {
+  flex: 1; background: var(--panel); border: 1px solid var(--border); color: var(--text);
+  padding: 5px 9px; border-radius: 5px; font-family: var(--font-ui); font-size: 12px;
+  outline: none;
+}
+.find-input:focus { border-color: var(--accent); }
+.find-btn {
+  background: var(--panel); border: 1px solid var(--border); color: var(--text2);
+  padding: 5px 10px; border-radius: 5px; cursor: pointer; font-size: 12px; font-family: var(--font-ui);
+  white-space: nowrap; transition: all 0.12s;
+}
+.find-btn:hover { background: var(--bg3); color: var(--text); }
+.find-btn.accent { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+/* ===== CONTEXT MENU ===== */
+.ctx-menu {
+  position: fixed; background: var(--bg2); border: 1px solid var(--border2); border-radius: 8px;
+  padding: 5px; min-width: 160px; box-shadow: 0 8px 30px rgba(0,0,0,0.4); z-index: 999; display: none;
+}
+.ctx-menu.open { display: block; }
+.ctx-item {
+  padding: 6px 12px; border-radius: 5px; cursor: pointer; font-size: 12px; color: var(--text);
+  display: flex; align-items: center; gap: 8px; transition: background 0.1s;
+}
+.ctx-item:hover { background: var(--panel); }
+.ctx-sep { height: 1px; background: var(--border); margin: 4px 0; }
+.ctx-kbd { margin-left: auto; font-family: var(--font-mono); font-size: 10px; color: var(--text3); }
+
+/* ===== SCROLLBARS ===== */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+.fade-in { animation: fadeIn 0.2s ease; }
+
+/* ===== RIBBON TABS ===== */
+#ribbon-tabs {
+  display: flex; gap: 0; background: var(--bg); border-bottom: 1px solid var(--border); flex-shrink: 0;
+}
+.ribbon-tab {
+  padding: 6px 16px; font-size: 12px; cursor: pointer; color: var(--text2); border-bottom: 2px solid transparent;
+  transition: all 0.15s; border-top: none; border-left: none; border-right: none;
+  background: transparent; font-family: var(--font-ui);
+}
+.ribbon-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+.ribbon-tab:hover:not(.active) { color: var(--text); background: var(--panel); }
+
+/* ribbon panels */
+.ribbon-panel { display: none; }
+.ribbon-panel.active { display: flex; align-items: center; padding: 0 8px; height: var(--ribbon-h); gap: 0; }
+
+/* ===== WORD COUNT ===== */
+#wc-box {
+  position: absolute; bottom: 12px; right: 16px; background: var(--panel);
+  border: 1px solid var(--border); border-radius: 6px; padding: 6px 10px;
+  font-size: 11px; color: var(--text2); font-family: var(--font-mono);
+}
+
+/* ===== SHAPES PANEL ===== */
+.shapes-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 10px; }
+.shape-btn {
+  aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
+  background: var(--panel); border: 1px solid var(--border); border-radius: 5px;
+  cursor: pointer; font-size: 18px; transition: all 0.12s;
+}
+.shape-btn:hover { background: var(--bg3); border-color: var(--border2); }
+
+/* ===== LOADING STATE ===== */
+#splash {
+  position: fixed; inset: 0; background: var(--bg); display: flex;
+  flex-direction: column; align-items: center; justify-content: center; z-index: 9999;
+  gap: 20px; transition: opacity 0.5s;
+}
+#splash h1 { font-family: var(--font-display); font-size: 42px; color: var(--text); }
+#splash h1 span { color: var(--accent); }
+#splash p { color: var(--text2); font-size: 14px; }
+.loading-bar { width: 280px; height: 3px; background: var(--panel); border-radius: 2px; overflow: hidden; }
+.loading-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent2)); border-radius: 2px; animation: loadAnim 1.8s ease-in-out forwards; }
+@keyframes loadAnim { 0%{width:0%} 60%{width:70%} 100%{width:100%} }
+
+/* ===== TOAST NOTIFICATIONS ===== */
+#toast-container {
+  position: fixed; top: 70px; right: 20px; z-index: 10000;
+  display: flex; flex-direction: column; gap: 8px; pointer-events: none;
+}
+.toast {
+  background: var(--bg2); border: 1px solid var(--border2); border-left: 3px solid var(--accent);
+  color: var(--text); padding: 10px 16px; border-radius: 8px; font-size: 13px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.4); min-width: 220px; max-width: 360px;
+  animation: toastIn 0.25s cubic-bezier(.2,.9,.3,1.2);
+  pointer-events: auto; display: flex; align-items: center; gap: 10px;
+}
+.toast.success { border-left-color: var(--success); }
+.toast.error   { border-left-color: var(--danger); }
+.toast.warn    { border-left-color: var(--warning); }
+.toast .toast-icon { font-size: 16px; }
+@keyframes toastIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: none; } }
+@keyframes toastOut { to { opacity: 0; transform: translateX(20px); } }
+.toast.out { animation: toastOut 0.2s forwards; }
+
+/* ===== PRINT STYLES (used by Print-to-PDF) ===== */
+@media print {
+  @page { margin: 0.6in; }
+  html, body { height: auto !important; overflow: visible !important; background: #fff !important; color: #111 !important; }
+  /* Hide everything chrome */
+  #titlebar, #ribbon-tabs, #ribbon, #sidebar, #statusbar, #find-bar, #wc-box,
+  #formula-bar, #sheet-tabs, #slides-panel, #slide-props, #splash, #toast-container,
+  .mode-pill, .tb-btn, .ctx-menu, .modal-overlay { display: none !important; }
+  #main, #content, #workspace { display: block !important; overflow: visible !important; height: auto !important; background: #fff !important; }
+
+  /* Document */
+  #word-view { padding: 0 !important; background: #fff !important; display: block !important; }
+  #doc-paper { box-shadow: none !important; border: none !important; background: #fff !important;
+    width: 100% !important; min-height: auto !important; padding: 0 !important; color: #111 !important; }
+  #doc-editor, #doc-editor * { color: #111 !important; }
+  #doc-editor h1, #doc-editor h2, #doc-editor h3 { color: #111 !important; page-break-after: avoid; }
+  #doc-editor blockquote { border-left: 3px solid #4f8ef7 !important; color: #555 !important; }
+  #doc-editor table td, #doc-editor table th { border: 1px solid #999 !important; color: #111 !important; }
+  #doc-editor table th { background: #eee !important; }
+  #doc-editor a { color: #1a5fbf !important; }
+  #doc-editor pre, #doc-editor code { background: #f3f3f3 !important; color: #111 !important; }
+
+  /* Spreadsheet */
+  #sheet-view { display: block !important; height: auto !important; }
+  #sheet-container { overflow: visible !important; }
+  #sheet-table { width: 100%; color: #111 !important; }
+  #sheet-table .col-header, #sheet-table .row-header, #sheet-table .sheet-corner {
+    background: #eee !important; color: #111 !important; border-color: #999 !important; position: static !important;
+  }
+  #sheet-table .sheet-cell { background: #fff !important; color: #111 !important;
+    border-color: #ccc !important; font-family: 'JetBrains Mono', monospace; }
+  #sheet-table .sheet-cell.formula { color: #1a5fbf !important; }
+
+  /* Presentation: one slide per page */
+  #pres-view { display: block !important; height: auto !important; }
+  #slide-canvas-area { padding: 0 !important; display: block !important; background: #fff !important; }
+  #slide-canvas { box-shadow: none !important; border: none !important; border-radius: 0 !important;
+    width: 100% !important; max-width: 100% !important; aspect-ratio: 16/9; page-break-after: always; }
+  .print-slide { width: 100%; aspect-ratio: 16/9; page-break-after: always;
+    position: relative; overflow: hidden; border: none; }
+}
+
+/* ===== RENAME/INPUT PROMPT ===== */
+.input-modal-content { display: flex; flex-direction: column; gap: 12px; }
+.input-modal-content input {
+  width: 100%; background: var(--panel); border: 1px solid var(--border); color: var(--text);
+  padding: 10px 12px; border-radius: 7px; font-size: 14px; font-family: var(--font-ui); outline: none;
+}
+.input-modal-content input:focus { border-color: var(--accent); }
+.input-modal-buttons { display: flex; gap: 8px; justify-content: flex-end; margin-top: 6px; }
+.input-modal-buttons button {
+  padding: 7px 16px; border-radius: 6px; cursor: pointer; font-size: 13px;
+  font-family: var(--font-ui); border: 1px solid var(--border); transition: all 0.15s;
+}
+.input-modal-buttons .btn-cancel { background: var(--panel); color: var(--text2); }
+.input-modal-buttons .btn-cancel:hover { background: var(--bg3); color: var(--text); }
+.input-modal-buttons .btn-ok { background: var(--accent); border-color: var(--accent); color: #fff; }
+.input-modal-buttons .btn-ok:hover { background: #3d7eea; }
+
+/* Doc item delete button */
+.doc-item { position: relative; }
+.doc-delete-btn {
+  position: absolute; right: 6px; top: 50%; transform: translateY(-50%);
+  width: 22px; height: 22px; border-radius: 5px; background: transparent; color: var(--text3);
+  border: none; cursor: pointer; font-size: 14px; line-height: 1;
+  display: none; align-items: center; justify-content: center;
+}
+.doc-item:hover .doc-delete-btn { display: flex; }
+.doc-delete-btn:hover { background: rgba(247,95,95,0.18); color: var(--danger); }
+.doc-item:hover .doc-type-badge { opacity: 0; }
+</style>
+</head>
+<body>
+
+<!-- SPLASH -->
+<div id="splash">
+  <div id="logo-icon" style="width:64px;height:64px;border-radius:16px;font-size:28px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#4f8ef7,#7c5cfc);font-family:'Playfair Display',serif;font-weight:700;color:#fff;letter-spacing:-2px;">T2</div>
+  <h1>Team21 <span>AllInOne</span></h1>
+  <p>The complete productivity suite — Documents · Spreadsheets · Presentations</p>
+  <div class="loading-bar"><div class="loading-fill"></div></div>
+  <p style="font-size:11px;color:var(--text3);">© Innocent Forteh · Team21</p>
+</div>
+
+<!-- FILE TYPE MODAL -->
+<div class="modal-overlay" id="new-file-modal">
+  <div class="modal fade-in">
+    <h2>New Document</h2>
+    <p>Choose the type of document you want to create</p>
+    <div class="file-type-grid">
+      <div class="file-type-card" onclick="createDoc('doc')">
+        <div class="file-type-icon">📄</div>
+        <div class="file-type-name">Document</div>
+        <div class="file-type-ext">.docx .txt .md .rtf</div>
+      </div>
+      <div class="file-type-card" onclick="createDoc('sheet')">
+        <div class="file-type-icon">📊</div>
+        <div class="file-type-name">Spreadsheet</div>
+        <div class="file-type-ext">.xlsx .csv .tsv</div>
+      </div>
+      <div class="file-type-card" onclick="createDoc('pres')">
+        <div class="file-type-icon">🖥️</div>
+        <div class="file-type-name">Presentation</div>
+        <div class="file-type-ext">.pptx .key</div>
+      </div>
+      <div class="file-type-card" onclick="createDoc('doc')">
+        <div class="file-type-icon">🖼️</div>
+        <div class="file-type-name">Graphic</div>
+        <div class="file-type-ext">.svg .html .pdf</div>
+      </div>
+    </div>
+    <button class="modal-close" onclick="closeModal()">Cancel</button>
+  </div>
+</div>
+
+<!-- CONTEXT MENU -->
+<div class="ctx-menu" id="ctx-menu">
+  <div class="ctx-item" onclick="execCmd('cut')">✂️ Cut <span class="ctx-kbd">Ctrl+X</span></div>
+  <div class="ctx-item" onclick="execCmd('copy')">📋 Copy <span class="ctx-kbd">Ctrl+C</span></div>
+  <div class="ctx-item" onclick="execCmd('paste')">📌 Paste <span class="ctx-kbd">Ctrl+V</span></div>
+  <div class="ctx-sep"></div>
+  <div class="ctx-item" onclick="execCmd('bold')">𝐁 Bold <span class="ctx-kbd">Ctrl+B</span></div>
+  <div class="ctx-item" onclick="execCmd('italic')">𝘐 Italic <span class="ctx-kbd">Ctrl+I</span></div>
+  <div class="ctx-item" onclick="execCmd('underline')">U̲ Underline <span class="ctx-kbd">Ctrl+U</span></div>
+  <div class="ctx-sep"></div>
+  <div class="ctx-item" onclick="insertTable()">▦ Insert Table</div>
+  <div class="ctx-item" onclick="insertLink()">🔗 Insert Link</div>
+</div>
+
+<!-- TITLEBAR -->
+<div id="titlebar">
+  <div id="logo">
+    <div id="logo-icon">T2<br><span style="font-size:6px;letter-spacing:0;font-family:DM Sans,sans-serif;font-weight:400;opacity:0.7">1</span></div>
+    <div>
+      <div id="logo-text">Team21 <span>AllInOne</span></div>
+      <div id="logo-copy">© Innocent Forteh</div>
+    </div>
+  </div>
+
+  <div id="filename-area">
+    <input id="filename-input" type="text" value="Untitled Document" spellcheck="false">
+  </div>
+
+  <div id="titlebar-actions">
+    <div class="mode-pill">
+      <button class="mode-btn active" onclick="switchMode('doc')" id="mode-doc">📄 Document</button>
+      <button class="mode-btn" onclick="switchMode('sheet')" id="mode-sheet">📊 Sheet</button>
+      <button class="mode-btn" onclick="switchMode('pres')" id="mode-pres">🖥️ Present</button>
+    </div>
+    <button class="tb-btn" onclick="openNewFile()">＋ New</button>
+    <button class="tb-btn" onclick="importFile()">⬆ Import</button>
+    <button class="tb-btn" onclick="exportFile()">⬇ Export</button>
+    <button class="tb-btn primary" onclick="saveFile()">💾 Save</button>
+  </div>
+</div>
+
+<!-- RIBBON TABS -->
+<div id="ribbon-tabs">
+  <button class="ribbon-tab active" onclick="setRibbonTab('home',this)">Home</button>
+  <button class="ribbon-tab" onclick="setRibbonTab('insert',this)">Insert</button>
+  <button class="ribbon-tab" onclick="setRibbonTab('format',this)">Format</button>
+  <button class="ribbon-tab" onclick="setRibbonTab('data',this)">Data</button>
+  <button class="ribbon-tab" onclick="setRibbonTab('review',this)">Review</button>
+  <button class="ribbon-tab" onclick="setRibbonTab('view',this)">View</button>
+  <button class="ribbon-tab" onclick="setRibbonTab('tools',this)">Tools</button>
+</div>
+
+<!-- RIBBON -->
+<div id="ribbon">
+  <!-- HOME PANEL -->
+  <div class="ribbon-panel active" id="rpanel-home">
+    <div class="ribbon-group">
+      <button class="ribbon-btn" onclick="execCmd('undo')" title="Undo Ctrl+Z">↩ Undo</button>
+      <button class="ribbon-btn" onclick="execCmd('redo')" title="Redo">↪ Redo</button>
+    </div>
+    <div class="ribbon-group">
+      <select class="ribbon-select" id="font-family" onchange="applyFont(this.value)" title="Font Family">
+        <option value="DM Sans">DM Sans</option>
+        <option value="Playfair Display">Playfair</option>
+        <option value="JetBrains Mono">Monospace</option>
+        <option value="Georgia">Georgia</option>
+        <option value="Arial">Arial</option>
+        <option value="Times New Roman">Times</option>
+        <option value="Courier New">Courier</option>
+        <option value="Verdana">Verdana</option>
+        <option value="Trebuchet MS">Trebuchet</option>
+      </select>
+      <input class="font-size-input" type="number" id="font-size" value="15" onchange="applyFontSize(this.value)" title="Font Size">
+    </div>
+    <div class="ribbon-group">
+      <button class="ribbon-btn" onclick="execCmd('bold')" id="btn-bold" title="Bold Ctrl+B"><b>B</b></button>
+      <button class="ribbon-btn" onclick="execCmd('italic')" id="btn-italic" title="Italic Ctrl+I"><i>I</i></button>
+      <button class="ribbon-btn" onclick="execCmd('underline')" id="btn-underline" title="Underline Ctrl+U"><u>U</u></button>
+      <button class="ribbon-btn" onclick="execCmd('strikeThrough')" title="Strikethrough"><s>S</s></button>
+      <button class="ribbon-btn" onclick="execCmd('superscript')" title="Superscript">x²</button>
+      <button class="ribbon-btn" onclick="execCmd('subscript')" title="Subscript">x₂</button>
+    </div>
+    <div class="ribbon-group">
+      <input type="color" class="color-picker-btn" id="text-color" value="#e8edf5" onchange="applyTextColor(this.value)" title="Text Color" style="border:2px solid var(--border2);border-radius:4px;cursor:pointer;background:none;width:28px;height:28px;padding:2px;">
+      <input type="color" class="color-picker-btn" id="bg-color" value="#1e2535" onchange="applyBgColor(this.value)" title="Highlight Color" style="border:2px solid var(--border2);border-radius:4px;cursor:pointer;background:none;width:28px;height:28px;padding:2px;">
+    </div>
+    <div class="ribbon-group">
+      <button class="ribbon-btn" onclick="execCmd('justifyLeft')" title="Align Left">≡L</button>
+      <button class="ribbon-btn" onclick="execCmd('justifyCenter')" title="Center">≡C</button>
+      <button class="ribbon-btn" onclick="execCmd('justifyRight')" title="Align Right">≡R</button>
+      <button class="ribbon-btn" onclick="execCmd('justifyFull')" title="Justify">≡J</button>
+    </div>
+    <div class="ribbon-group">
+      <button class="ribbon-btn" onclick="execCmd('insertUnorderedList')" title="Bullet List">• List</button>
+      <button class="ribbon-btn" onclick="execCmd('insertOrderedList')" title="Numbered List">1. List</button>
+      <button class="ribbon-btn" onclick="execCmd('indent')" title="Indent">→ In</button>
+      <button class="ribbon-btn" onclick="execCmd('outdent')" title="Outdent">← Out</button>
+    </div>
+    <div class="ribbon-group">
+      <select class="ribbon-select" onchange="applyHeading(this.value)" title="Paragraph Style">
+        <option value="p">Paragraph</option>
+        <option value="h1">Heading 1</option>
+        <option value="h2">Heading 2</option>
+        <option value="h3">Heading 3</option>
+        <option value="h4">Heading 4</option>
+        <option value="pre">Code Block</option>
+        <option value="blockquote">Quote</option>
+      </select>
+    </div>
+    <div class="ribbon-group">
+      <button class="ribbon-btn" onclick="clearFormatting()" title="Clear Formatting">⊘ Clear</button>
+    </div>
+  </div>
+
+  <!-- INSERT PANEL -->
+  <div class="ribbon-panel" id="rpanel-insert">
+    <div class="ribbon-group">
+      <button class="ribbon-btn" onclick="insertTable()">▦ Table</button>
+      <button class="ribbon-btn" onclick="insertImage()">🖼 Image</button>
+      <button class="ribbon-btn" onclick="insertLink()">🔗 Link</button>
+      <button class="ribbon-btn" onclick="insertHR()">── Line</button>
+    </div>
+    <div class="ribbon-group">
+      <button class="ribbon-btn" onclick="insertShape('rect')">▭ Rectangle</button>
+      <button class="ribbon-btn" onclick="insertShape('circle')">○ Circle</button>
+      <button class="ribbon-btn" onclick="insertShape('arrow')">→ Arrow</button>
+    </div>
+    <div class="ribbon-group">
+      <button class="ribbon-btn" onclick="insertCodeBlock()">💻 Code</button>
+      <button class="ribbon-btn" onclick="insertEquation()">∑ Equation</button>
+      <button class="ribbon-btn" onclick="insertFootnote()">† Footnote</button>
+      <button class="ribbon-btn" onclick="insertTOC()">📑 TOC</button>
+    </div>
+    <div class="ribbon-group">
+      <button class="ribbon-btn" onclick="insertDateTime()">📅 Date/Time</button>
+      <button class="ribbon-btn" onclick="insertPageBreak()">⊟ Page Break</button>
+      <button class="ribbon-btn" onclick="insertHeaderFooter()">▤ Header/Footer</button>
+    </div>
+    <div class="ribbon-group">
+      <button class="ribbon-btn" onclick="insertChart()">📈 Chart</button>
+      <button class="ribbon-btn" onclick="insertComment()">💬 Comment</button>
+    </div>
+  </div>
+
+  <!-- FORMAT PANEL -->
+  <div class="ribbon-panel" id="rpanel-format">
+    <div class="ribbon-group">
+      <button class="ribbon-btn" onclick="setLineSpacing(1)">1.0× Line</button>
+      <button class="ribbon-btn" onclick="setLineSpacing(1.5)">1.5× Line</button>
+      <button class="ribbon-btn" onclick="setLineSpacing(2)">2.0× Line</button>
+    </div>
+    <div class="ribbon-group">
+      <button class="ribbon-btn" onclick="setPageSize('A4')">📄 A4</button>
+      <button class="ribbon-btn" onclick="setPageSize('Letter')">📄 Letter</button>
+      <button class="ribbon-btn" onclick="setPageSize('A3')">📄 A3</button>
+    </div>
+    <div class="ribbon-group">
+      <button class="ribbon-btn" onclick="setOrientation('portrait')">◻ Portrait</button>
+      <button class="ribbon-btn" onclick="setOrientation('landscape')">▭ Landscape</button>
+    </div>
+    <div class="ribbon-group">
+      <button class="ribbon-btn" onclick="setColumns(1)">1 Col</button>
+      <button class="ribbon-btn" onclick="setColumns(2)">2 Cols</button>
+      <button class="ribbon-btn" onclick="setColumns(3)">3 Cols</button>
+    </div>
+    <div class="ribbon-group">
+      <select class="ribbon-select" onchange="applyTheme(this.value)">
+        <option value="dark">Dark Theme</option>
+        <option value="light">Light Theme</option>
+        <option value="blue">Blue Theme</option>
+        <option value="green">Green Theme</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- DATA PANEL (for spreadsheets) -->
+  <div class="ribbon-panel" id="rpanel-data">
+    <div class="ribbon-group">
+      <button class="ribbon-btn" onclick="sheetSort('asc')">⬆ Sort A→Z</button>
+      <button class="ribbon-btn" onclick="sheetSort('desc')">⬇ Sort Z→A</button>
+      <button class="ribbon-btn" onclick="sheetFilter()">🔽 Filter</button>
+    </div>
+    <div class="ribbon-group">
+      <button class="ribbon-btn" onclick="sheetAutoSum()">∑ AutoSum</button>
+      <button class="ribbon-btn" onclick="sheetAvg()">x̄ Average</button>
+      <button class="ribbon-btn" onclick="sheetCountFn()">⌗ Count</button>
+    </div>
+    <div class="ribbon-group">
+      <button class="ribbon-btn" onclick="insertSparkline()">📉 Sparkline</button>
+      <button class="ribbon-btn" onclick="insertChart()">📊 Chart</button>
+      <button class="ribbon-btn" onclick="pivotTable()">⊞ Pivot</button>
+    </div>
+    <div class="ribbon-group">
+      <button class="ribbon-btn" onclick="freezePane()">❄ Freeze</button>
+      <button class="ribbon-btn" onclick="mergeCell()">⊞ Merge</button>
+      <button class="ribbon-btn" onclick="splitCell()">⊟ Split</button>
+    </div>
+    <div class="ribbon-group">
+      <button class="ribbon-btn" onclick="sheetCond()">🎨 Cond. Format</button>
+      <button class="ribbon-btn" onclick="dataValidation()">✓ Validation</button>
+    </div>
+  </div>
+
+  <!-- REVIEW PANEL -->
+  <div class="ribbon-panel" id="rpanel-review">
+    <div class="ribbon-group">
+      <button class="ribbon-btn" onclick="checkSpelling()">✓ Spell Check</button>
+      <button class="ribbon-btn" onclick="openFindBar()">🔍 Find</button>
+      <button class="ribbon-btn" onclick="openFindBar(true)">🔄 Find & Replace</button>
+    </div>
+    <div class="ribbon-group">
+      <button class="ribbon-btn" onclick="trackChanges()">📝 Track Changes</button>
+      <button class="ribbon-btn" onclick="addComment()">💬 Comment</button>
+      <button class="ribbon-btn" onclick="showComments()">👁 Comments</button>
+    </div>
+    <div class="ribbon-group">
+      <button class="ribbon-btn" onclick="wordCount()">Σ Word Count</button>
+      <button class="ribbon-btn" onclick="translate()">🌍 Translate</button>
+      <button class="ribbon-btn" onclick="readabilityScore()">📖 Readability</button>
+    </div>
+    <div class="ribbon-group">
+      <button class="ribbon-btn" onclick="protectDoc()">🔒 Protect</button>
+      <button class="ribbon-btn" onclick="docHistory()">🕒 History</button>
+    </div>
+  </div>
+
+  <!-- VIEW PANEL -->
+  <div class="ribbon-panel" id="rpanel-view">
+    <div class="ribbon-group">
+      <button class="ribbon-btn" onclick="setZoom(50)">50%</button>
+      <button class="ribbon-btn" onclick="setZoom(75)">75%</button>
+      <button class="ribbon-btn" onclick="setZoom(100)">100%</button>
+      <button class="ribbon-btn" onclick="setZoom(125)">125%</button>
+      <button class="ribbon-btn" onclick="setZoom(150)">150%</button>
+    </div>
+    <div class="ribbon-group">
+      <button class="ribbon-btn" onclick="toggleSidebar()">◧ Sidebar</button>
+      <button class="ribbon-btn" onclick="toggleRuler()">📐 Ruler</button>
+      <button class="ribbon-btn" onclick="toggleGridlines()">⊞ Gridlines</button>
+      <button class="ribbon-btn" onclick="fullscreen()">⛶ Fullscreen</button>
+    </div>
+    <div class="ribbon-group">
+      <button class="ribbon-btn" onclick="splitView()">⊟ Split View</button>
+      <button class="ribbon-btn" onclick="focusMode()">🎯 Focus Mode</button>
+      <button class="ribbon-btn" onclick="darkMode()">🌙 Dark Mode</button>
+    </div>
+    <div class="ribbon-group">
+      <button class="ribbon-btn" onclick="showRuler()">⌇ Show Ruler</button>
+      <button class="ribbon-btn" onclick="showMinimap()">🗺 Minimap</button>
+    </div>
+  </div>
+
+  <!-- TOOLS PANEL -->
+  <div class="ribbon-panel" id="rpanel-tools">
+    <div class="ribbon-group">
+      <button class="ribbon-btn" onclick="aiAssist()">✨ AI Assist</button>
+      <button class="ribbon-btn" onclick="aiSummarize()">📝 Summarize</button>
+      <button class="ribbon-btn" onclick="aiTranslate()">🌍 AI Translate</button>
+    </div>
+    <div class="ribbon-group">
+      <button class="ribbon-btn" onclick="openMacros()">⚡ Macros</button>
+      <button class="ribbon-btn" onclick="openAutomation()">🤖 Automation</button>
+      <button class="ribbon-btn" onclick="runScript()">▶ Run Script</button>
+    </div>
+    <div class="ribbon-group">
+      <button class="ribbon-btn" onclick="preferences()">⚙ Preferences</button>
+      <button class="ribbon-btn" onclick="plugins()">🔌 Plugins</button>
+      <button class="ribbon-btn" onclick="accessibility()">♿ Accessibility</button>
+    </div>
+    <div class="ribbon-group">
+      <button class="ribbon-btn" onclick="about()">ℹ About</button>
+      <button class="ribbon-btn" onclick="helpDocs()">❓ Help</button>
+      <button class="ribbon-btn" onclick="feedback()">💌 Feedback</button>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN LAYOUT -->
+<div id="main">
+  <!-- SIDEBAR -->
+  <div id="sidebar">
+    <div id="sidebar-header">
+      <h3>Files</h3>
+      <button class="new-doc-btn" onclick="openNewFile()">＋ New Document</button>
+    </div>
+    <div id="doc-list">
+      <!-- File list rendered dynamically by JS -->
+    </div>
+    <div id="sidebar-footer">
+      <div style="font-size:11px;color:var(--text2);display:flex;justify-content:space-between;">
+        <span>Storage</span><span style="color:var(--accent)">34% used</span>
+      </div>
+      <div class="storage-bar"><div class="storage-fill"></div></div>
+      <div style="margin-top:10px;font-size:10px;color:var(--text3);text-align:center;">
+        Team21 AllInOne v3.0.0 · © Innocent Forteh
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTENT AREA -->
+  <div id="content">
+    <div id="workspace">
+
+      <!-- WORD PROCESSOR VIEW -->
+      <div id="word-view" class="fade-in">
+        <div id="doc-paper">
+          <div id="doc-editor" contenteditable="true" spellcheck="true">
+            <p>Loading…</p>
+          </div>
+        </div>
+
+        <!-- Find bar -->
+        <div id="find-bar">
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <span style="font-size:12px;font-weight:500;color:var(--text);">Find &amp; Replace</span>
+            <button onclick="closeFindBar()" style="background:none;border:none;color:var(--text2);cursor:pointer;font-size:16px;">×</button>
+          </div>
+          <div class="find-row">
+            <input class="find-input" type="text" id="find-input" placeholder="Find…">
+            <button class="find-btn" onclick="findPrev()">↑</button>
+            <button class="find-btn" onclick="findNext()">↓</button>
+          </div>
+          <div class="find-row" id="replace-row" style="display:none;">
+            <input class="find-input" type="text" id="replace-input" placeholder="Replace with…">
+            <button class="find-btn accent" onclick="doReplace()">Replace All</button>
+          </div>
+        </div>
+
+        <!-- Word count -->
+        <div id="wc-box">Words: <span id="wc-num">—</span></div>
+      </div>
+
+      <!-- SPREADSHEET VIEW -->
+      <div id="sheet-view" style="display:none;height:100%;">
+        <div id="formula-bar">
+          <span style="font-size:11px;color:var(--text3)">fx</span>
+          <input id="cell-ref" type="text" value="A1" readonly>
+          <div style="width:1px;height:20px;background:var(--border);"></div>
+          <input id="formula-input" type="text" placeholder="Enter formula or value…" onkeydown="formulaKeydown(event)">
+        </div>
+        <div id="sheet-container">
+          <table id="sheet-table"></table>
+        </div>
+        <div id="sheet-tabs">
+          <div class="sheet-tab active" onclick="switchSheet(this,'Sheet1')">Sheet1</div>
+          <div class="sheet-tab" onclick="switchSheet(this,'Sheet2')">Sheet2</div>
+          <div class="sheet-tab" onclick="switchSheet(this,'Sheet3')">Sheet3</div>
+          <button class="add-sheet-btn" onclick="addSheet()" title="Add Sheet">＋</button>
+        </div>
+      </div>
+
+      <!-- PRESENTATION VIEW -->
+      <div id="pres-view" style="display:none;height:100%;">
+        <div id="slides-panel" id="slides-panel">
+          <!-- slide thumbs injected by JS -->
+        </div>
+        <div id="slide-canvas-area">
+          <div id="slide-canvas">
+            <!-- slide content -->
+          </div>
+        </div>
+        <div id="slide-props">
+          <h4>Slide Properties</h4>
+          <div class="prop-group">
+            <div class="prop-label">Background</div>
+            <input type="color" class="prop-input" value="#232d3f" oninput="setSlideBackground(this.value)" style="height:32px;cursor:pointer;">
+          </div>
+          <div class="prop-group">
+            <div class="prop-label">Theme</div>
+            <div class="theme-grid">
+              <div class="theme-swatch active" style="background:linear-gradient(135deg,#232d3f,#1a2235);" onclick="applySlideTheme('dark',this)"></div>
+              <div class="theme-swatch" style="background:linear-gradient(135deg,#fff,#f0f4ff);" onclick="applySlideTheme('light',this)"></div>
+              <div class="theme-swatch" style="background:linear-gradient(135deg,#0a1628,#1a3460);" onclick="applySlideTheme('navy',this)"></div>
+              <div class="theme-swatch" style="background:linear-gradient(135deg,#1a1a1a,#2d2d2d);" onclick="applySlideTheme('charcoal',this)"></div>
+              <div class="theme-swatch" style="background:linear-gradient(135deg,#003322,#00664a);" onclick="applySlideTheme('forest',this)"></div>
+              <div class="theme-swatch" style="background:linear-gradient(135deg,#4f0080,#9b00d4);" onclick="applySlideTheme('purple',this)"></div>
+              <div class="theme-swatch" style="background:linear-gradient(135deg,#8b2000,#d43000);" onclick="applySlideTheme('crimson',this)"></div>
+              <div class="theme-swatch" style="background:linear-gradient(135deg,#1a1200,#665000);" onclick="applySlideTheme('gold',this)"></div>
+            </div>
+          </div>
+          <div class="prop-group">
+            <div class="prop-label">Transition</div>
+            <select class="prop-input" onchange="setTransition(this.value)">
+              <option>Fade</option><option>Slide</option><option>Zoom</option><option>Flip</option><option>None</option>
+            </select>
+          </div>
+          <div class="prop-group">
+            <div class="prop-label">Layout</div>
+            <select class="prop-input" onchange="setSlideLayout(this.value)">
+              <option>Title Slide</option><option>Title + Content</option><option>Two Column</option>
+              <option>Blank</option><option>Image Focus</option><option>Quote</option>
+            </select>
+          </div>
+          <div class="prop-group">
+            <div class="prop-label">Slide Size</div>
+            <select class="prop-input">
+              <option>16:9 Widescreen</option><option>4:3 Standard</option><option>A4 Portrait</option>
+            </select>
+          </div>
+          <div class="prop-group" style="margin-top:14px;">
+            <button class="ribbon-btn" style="width:100%;justify-content:center;background:rgba(79,142,247,0.15);border-color:rgba(79,142,247,0.4);color:var(--accent);" onclick="addSlideEl('text')">+ Add Text</button>
+            <button class="ribbon-btn" style="width:100%;justify-content:center;margin-top:5px;" onclick="addSlideEl('image')">+ Add Image</button>
+            <button class="ribbon-btn" style="width:100%;justify-content:center;margin-top:5px;" onclick="addSlideEl('shape')">+ Add Shape</button>
+            <button class="ribbon-btn" style="width:100%;justify-content:center;margin-top:5px;" onclick="addSlide()">+ Add Slide</button>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- end workspace -->
+  </div>
+</div>
+
+<!-- STATUS BAR -->
+<div id="statusbar">
+  <span class="status-item">📄 <span id="status-doc-name">Project Report Q3</span></span>
+  <div class="status-sep"></div>
+  <span class="status-item" id="status-mode">Word Processor</span>
+  <div class="status-sep"></div>
+  <span class="status-item" id="status-pos">Ln 1, Col 1</span>
+  <div class="status-sep"></div>
+  <span class="status-item" id="status-sel">No selection</span>
+  <div id="statusbar-right">
+    <span class="status-item">✓ Saved</span>
+    <div class="status-sep"></div>
+    <div class="zoom-control">
+      <button class="zoom-btn" onclick="changeZoom(-10)">−</button>
+      <span id="zoom-val">100%</span>
+      <button class="zoom-btn" onclick="changeZoom(10)">+</button>
+    </div>
+  </div>
+</div>
+
+<input type="file" id="file-import" style="display:none" accept=".txt,.md,.html,.htm,.rtf,.csv,.tsv,.docx,.xlsx,.xls,.pptx,.json,.png,.jpg,.jpeg,.gif,.webp,.svg" onchange="handleFileImport(event)">
+<input type="file" id="image-import" style="display:none" accept="image/*" onchange="handleImageImport(event)">
+
+<!-- TOAST CONTAINER -->
+<div id="toast-container"></div>
+
+<!-- RENAME INPUT MODAL -->
+<div class="modal-overlay" id="input-modal">
+  <div class="modal fade-in" style="max-width:420px;">
+    <h2 id="input-modal-title">Rename</h2>
+    <div class="input-modal-content">
+      <input id="input-modal-field" type="text" autocomplete="off">
+      <div class="input-modal-buttons">
+        <button class="btn-cancel" onclick="closeInputModal()">Cancel</button>
+        <button class="btn-ok" onclick="confirmInputModal()">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ===== STATE =====
+let currentMode = 'doc';
+let selectedCell = null;
+let zoom = 100;
+const ROWS = 50, COLS = 26;
+
+// Document registry: each file has { id, type, name, content, updatedAt }
+//  - doc:   content = HTML string
+//  - sheet: content = { activeTab, tabs: { name: { data: {ref:value} } } }
+//  - pres:  content = array of slide objects
+let files = [];           // all documents
+let currentFileId = null; // which file is open
+let unsavedChanges = false;
+let autosaveTimer = null;
+const STORAGE_KEY = 'team21_files_v1';
+const STORAGE_CURRENT = 'team21_current_v1';
+
+// ===== TOAST =====
+function toast(msg, type='info', dur=2400) {
+  const container = document.getElementById('toast-container');
+  const t = document.createElement('div');
+  t.className = 'toast ' + type;
+  const icons = { info:'ℹ', success:'✓', error:'⚠', warn:'!' };
+  t.innerHTML = `<span class="toast-icon">${icons[type]||'ℹ'}</span><span>${msg}</span>`;
+  container.appendChild(t);
+  setTimeout(() => {
+    t.classList.add('out');
+    setTimeout(() => t.remove(), 220);
+  }, dur);
+}
+
+// ===== STORAGE =====
+function saveAllToStorage() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(files));
+    if (currentFileId) localStorage.setItem(STORAGE_CURRENT, currentFileId);
+    return true;
+  } catch (e) {
+    toast('Storage full — try removing old files', 'error', 3500);
+    console.error(e);
+    return false;
+  }
+}
+function loadAllFromStorage() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) files = JSON.parse(raw);
+    const cur = localStorage.getItem(STORAGE_CURRENT);
+    if (cur && files.find(f => f.id === cur)) currentFileId = cur;
+  } catch (e) { console.error('Load failed', e); files = []; }
+}
+
+// ===== FILE REGISTRY =====
+function uid() { return 'f' + Date.now().toString(36) + Math.random().toString(36).slice(2,7); }
+
+function makeBlankFile(type, name) {
+  const defaults = {
+    doc:   { content: '<h1>New Document</h1><p>Start typing here…</p>' },
+    sheet: { content: { activeTab: 'Sheet1', tabs: { 'Sheet1': { data: {} }, 'Sheet2': { data: {} }, 'Sheet3': { data: {} } } } },
+    pres:  { content: [{ bg:'linear-gradient(135deg,#232d3f,#1a2235)', title:'New Presentation', subtitle:'Click to edit', titleColor:'#e8edf5', subtitleColor:'#8fa3c0' }] }
+  };
+  const names = { doc: 'Untitled Document', sheet: 'Untitled Spreadsheet', pres: 'Untitled Presentation' };
+  return {
+    id: uid(),
+    type,
+    name: name || names[type],
+    content: defaults[type].content,
+    updatedAt: Date.now()
+  };
+}
+
+function currentFile() { return files.find(f => f.id === currentFileId); }
+
+// ===== SAVE / AUTOSAVE =====
+function captureCurrentState() {
+  const f = currentFile(); if (!f) return;
+  if (f.type === 'doc') {
+    f.content = document.getElementById('doc-editor').innerHTML;
+  } else if (f.type === 'sheet') {
+    // sheetState is global object below
+    f.content = JSON.parse(JSON.stringify(sheetState));
+  } else if (f.type === 'pres') {
+    f.content = JSON.parse(JSON.stringify(slides));
+  }
+  f.name = document.getElementById('filename-input').value || f.name;
+  f.updatedAt = Date.now();
+}
+
+function saveFile(silent) {
+  captureCurrentState();
+  const ok = saveAllToStorage();
+  if (ok) {
+    unsavedChanges = false;
+    setSaveStatus('saved');
+    renderFileList();
+    if (!silent) toast('File saved', 'success', 1500);
+  }
+  return ok;
+}
+
+function setSaveStatus(state) {
+  const el = document.querySelector('#statusbar-right .status-item');
+  if (!el) return;
+  if (state === 'saved')   el.innerHTML = '<span style="color:#3dd68c">✓</span> Saved';
+  if (state === 'saving')  el.innerHTML = '<span style="opacity:.7">⟳</span> Saving…';
+  if (state === 'unsaved') el.innerHTML = '<span style="color:#f7a24f">●</span> Unsaved';
+}
+
+function markDirty() {
+  unsavedChanges = true;
+  setSaveStatus('unsaved');
+  scheduleAutosave();
+}
+
+function scheduleAutosave() {
+  clearTimeout(autosaveTimer);
+  autosaveTimer = setTimeout(() => {
+    if (unsavedChanges) {
+      setSaveStatus('saving');
+      setTimeout(() => saveFile(true), 200);
+    }
+  }, 1500);
+}
+
+// ===== FILE LIST UI =====
+function fileIcon(type) { return { doc:'📄', sheet:'📊', pres:'🖥️' }[type] || '📄'; }
+function fileBadge(type) {
+  return { doc:'<span class="doc-type-badge badge-doc">DOC</span>',
+           sheet:'<span class="doc-type-badge badge-sheet">XLS</span>',
+           pres:'<span class="doc-type-badge badge-pres">PPT</span>' }[type] || '';
+}
+function relTime(ts) {
+  const d = (Date.now() - ts) / 1000;
+  if (d < 60) return 'Just now';
+  if (d < 3600) return Math.floor(d/60) + 'm ago';
+  if (d < 86400) return Math.floor(d/3600) + 'h ago';
+  if (d < 172800) return 'Yesterday';
+  const dt = new Date(ts);
+  return dt.toLocaleDateString(undefined,{month:'short',day:'numeric'});
+}
+
+function renderFileList() {
+  const list = document.getElementById('doc-list');
+  if (!list) return;
+  list.innerHTML = '';
+  // newest first
+  const sorted = [...files].sort((a,b) => b.updatedAt - a.updatedAt);
+  if (sorted.length === 0) {
+    list.innerHTML = '<div style="padding:20px;text-align:center;color:var(--text3);font-size:12px;">No files yet — click <strong>＋ New Document</strong> above.</div>';
+    return;
+  }
+  sorted.forEach(f => {
+    const div = document.createElement('div');
+    div.className = 'doc-item' + (f.id === currentFileId ? ' active' : '');
+    div.innerHTML = `
+      <div class="doc-icon">${fileIcon(f.type)}</div>
+      <div class="doc-info">
+        <div class="doc-name">${escapeHtml(f.name)}</div>
+        <div class="doc-meta">${relTime(f.updatedAt)}</div>
+      </div>
+      ${fileBadge(f.type)}
+      <button class="doc-delete-btn" title="Delete">🗑</button>
+    `;
+    div.onclick = (e) => {
+      if (e.target.classList.contains('doc-delete-btn')) return;
+      openFile(f.id);
+    };
+    div.querySelector('.doc-delete-btn').onclick = (e) => {
+      e.stopPropagation();
+      deleteFile(f.id);
+    };
+    list.appendChild(div);
+  });
+
+  // Update storage usage display
+  try {
+    const sz = (localStorage.getItem(STORAGE_KEY) || '').length;
+    const pct = Math.min(100, Math.round((sz / (5*1024*1024)) * 100));
+    const fill = document.querySelector('.storage-fill');
+    const lbl  = document.querySelector('#sidebar-footer span:nth-child(2)');
+    if (fill) fill.style.width = pct + '%';
+    if (lbl)  lbl.textContent = pct + '% used';
+  } catch(e) {}
+}
+
+function escapeHtml(s) { return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+function deleteFile(id) {
+  const f = files.find(x => x.id === id);
+  if (!f) return;
+  if (!confirm(`Delete "${f.name}"? This cannot be undone.`)) return;
+  files = files.filter(x => x.id !== id);
+  if (currentFileId === id) {
+    if (files.length > 0) openFile(files.sort((a,b)=>b.updatedAt-a.updatedAt)[0].id);
+    else { currentFileId = null; createNewFile('doc'); }
+  }
+  saveAllToStorage();
+  renderFileList();
+  toast('File deleted', 'success');
+}
+
+// ===== OPEN / CREATE =====
+function openFile(id) {
+  // Save current before switching
+  if (currentFileId && currentFileId !== id) {
+    captureCurrentState();
+    saveAllToStorage();
+  }
+  const f = files.find(x => x.id === id);
+  if (!f) return;
+  currentFileId = id;
+  document.getElementById('filename-input').value = f.name;
+  document.getElementById('status-doc-name').textContent = f.name;
+  loadFileIntoEditor(f);
+  switchMode(f.type, true);
+  renderFileList();
+  localStorage.setItem(STORAGE_CURRENT, id);
+  setSaveStatus('saved');
+}
+
+function loadFileIntoEditor(f) {
+  if (f.type === 'doc') {
+    document.getElementById('doc-editor').innerHTML = f.content || '<p></p>';
+    updateWC();
+  } else if (f.type === 'sheet') {
+    sheetState = JSON.parse(JSON.stringify(f.content || { activeTab:'Sheet1', tabs:{'Sheet1':{data:{}}} }));
+  } else if (f.type === 'pres') {
+    slides = JSON.parse(JSON.stringify(f.content || []));
+    currentSlide = 0;
+  }
+}
+
+function createNewFile(type, name, contentOverride) {
+  if (currentFileId) { captureCurrentState(); saveAllToStorage(); }
+  const f = makeBlankFile(type, name);
+  if (contentOverride !== undefined) f.content = contentOverride;
+  files.push(f);
+  currentFileId = f.id;
+  saveAllToStorage();
+  document.getElementById('filename-input').value = f.name;
+  document.getElementById('status-doc-name').textContent = f.name;
+  loadFileIntoEditor(f);
+  switchMode(type, true);
+  renderFileList();
+  return f;
+}
+
+// ===== SPLASH =====
+setTimeout(() => {
+  const sp = document.getElementById('splash');
+  if (sp) { sp.style.opacity = '0'; setTimeout(() => sp.remove(), 600); }
+}, 2000);
+
+// ===== MODE SWITCHING =====
+function switchMode(mode, skipFileUpdate) {
+  currentMode = mode;
+  document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+  const btn = document.getElementById('mode-' + mode);
+  if (btn) btn.classList.add('active');
+
+  document.getElementById('word-view').style.display = 'none';
+  document.getElementById('sheet-view').style.display = 'none';
+  document.getElementById('pres-view').style.display = 'none';
+
+  const modeLabels = { doc: 'Word Processor', sheet: 'Spreadsheet', pres: 'Presentation' };
+  document.getElementById('status-mode').textContent = modeLabels[mode];
+
+  // If user explicitly switched modes (no file open of that type), create a new file
+  if (!skipFileUpdate) {
+    const f = currentFile();
+    if (!f || f.type !== mode) {
+      createNewFile(mode);
+      return;
+    }
+  }
+
+  if (mode === 'doc') {
+    document.getElementById('word-view').style.display = 'flex';
+    updateWC();
+  } else if (mode === 'sheet') {
+    document.getElementById('sheet-view').style.display = 'flex';
+    buildSheet();
+  } else if (mode === 'pres') {
+    document.getElementById('pres-view').style.display = 'flex';
+    renderSlideThumbs();
+    renderSlide(currentSlide);
+  }
+}
+
+// ===== DOCUMENT FUNCTIONS =====
+function execCmd(cmd) {
+  document.getElementById('doc-editor').focus();
+  document.execCommand(cmd, false, null);
+  markDirty();
+}
+function applyFont(f) {
+  document.getElementById('doc-editor').focus();
+  document.execCommand('fontName', false, f);
+  markDirty();
+}
+function applyFontSize(s) {
+  document.getElementById('doc-editor').focus();
+  document.execCommand('fontSize', false, '3');
+  const sel = window.getSelection();
+  if (sel.rangeCount > 0) {
+    document.querySelectorAll('#doc-editor font[size="3"]').forEach(el => {
+      el.removeAttribute('size');
+      el.style.fontSize = s + 'px';
+    });
+  }
+  markDirty();
+}
+function applyTextColor(c) { document.getElementById('doc-editor').focus(); document.execCommand('foreColor', false, c); markDirty(); }
+function applyBgColor(c)   { document.getElementById('doc-editor').focus(); document.execCommand('hiliteColor', false, c); markDirty(); }
+function applyHeading(tag) { document.getElementById('doc-editor').focus(); document.execCommand('formatBlock', false, '<' + tag + '>'); markDirty(); }
+function clearFormatting() { document.getElementById('doc-editor').focus(); document.execCommand('removeFormat', false, null); markDirty(); }
+
+function insertTable() {
+  const rows = prompt('Rows:', '3'), cols = prompt('Columns:', '3');
+  if (!rows || !cols) return;
+  let html = '<table>';
+  for (let r = 0; r < +rows; r++) {
+    html += '<tr>';
+    for (let c = 0; c < +cols; c++) html += r === 0 ? '<th>Header</th>' : '<td>Cell</td>';
+    html += '</tr>';
+  }
+  html += '</table><p></p>';
+  document.getElementById('doc-editor').focus();
+  document.execCommand('insertHTML', false, html);
+  markDirty();
+}
+function insertImage() {
+  document.getElementById('image-import').click();
+}
+function handleImageImport(e) {
+  const file = e.target.files[0]; if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    const html = `<img src="${ev.target.result}" alt="${escapeHtml(file.name)}" style="max-width:100%;border-radius:4px;margin:8px 0;"><p></p>`;
+    if (currentMode === 'doc') {
+      document.getElementById('doc-editor').focus();
+      document.execCommand('insertHTML', false, html);
+      markDirty();
+    } else if (currentMode === 'pres') {
+      const canvas = document.getElementById('slide-canvas');
+      const el = document.createElement('div');
+      el.className = 'slide-element';
+      el.style.cssText = 'left:50px;top:50px;';
+      el.innerHTML = `<img src="${ev.target.result}" style="max-width:300px;border-radius:6px;display:block;">`;
+      makeDraggable(el);
+      canvas.appendChild(el);
+      markDirty();
+    }
+    toast('Image inserted', 'success');
+  };
+  reader.readAsDataURL(file);
+  e.target.value = '';
+}
+function insertLink() {
+  const url = prompt('Link URL:', 'https://');
+  if (!url) return;
+  document.getElementById('doc-editor').focus();
+  document.execCommand('createLink', false, url);
+  markDirty();
+}
+function insertHR()       { document.getElementById('doc-editor').focus(); document.execCommand('insertHorizontalRule'); markDirty(); }
+function insertCodeBlock(){ document.getElementById('doc-editor').focus(); document.execCommand('insertHTML', false, '<pre><code>// Your code here</code></pre><p></p>'); markDirty(); }
+function insertEquation() {
+  const eq = prompt('Equation (LaTeX-style):', 'E = mc²');
+  if (!eq) return;
+  document.getElementById('doc-editor').focus();
+  document.execCommand('insertHTML', false, `<span style="font-family:'JetBrains Mono',monospace;background:var(--panel);padding:2px 8px;border-radius:4px;">${escapeHtml(eq)}</span> `);
+  markDirty();
+}
+function insertFootnote() {
+  const n = prompt('Footnote text:', '');
+  if (!n) return;
+  document.getElementById('doc-editor').focus();
+  document.execCommand('insertHTML', false, `<sup style="color:var(--accent)">[†]</sup><div style="font-size:11px;color:var(--text2);border-top:1px dashed var(--border);margin-top:20px;padding-top:8px;">† ${escapeHtml(n)}</div>`);
+  markDirty();
+}
+function insertTOC() {
+  const ed = document.getElementById('doc-editor');
+  const headings = ed.querySelectorAll('h1, h2, h3');
+  if (headings.length === 0) { toast('Add headings (H1/H2/H3) first', 'warn'); return; }
+  let toc = '<div style="background:var(--panel);border:1px solid var(--border);border-radius:6px;padding:16px;margin:16px 0;"><strong>Table of Contents</strong><ul style="margin-top:8px;">';
+  headings.forEach(h => {
+    const indent = { H1: 0, H2: 16, H3: 32 }[h.tagName] || 0;
+    toc += `<li style="margin-left:${indent}px;">${escapeHtml(h.textContent)}</li>`;
+  });
+  toc += '</ul></div><p></p>';
+  ed.focus();
+  document.execCommand('insertHTML', false, toc);
+  markDirty();
+}
+function insertDateTime() {
+  const s = new Date().toLocaleString();
+  document.getElementById('doc-editor').focus();
+  document.execCommand('insertText', false, s);
+  markDirty();
+}
+function insertPageBreak() {
+  document.getElementById('doc-editor').focus();
+  document.execCommand('insertHTML', false, '<div style="page-break-after:always;border-top:1px dashed var(--border);margin:24px 0;"></div><p></p>');
+  markDirty();
+}
+function insertHeaderFooter() {
+  toast('Header/Footer is added automatically when printing to PDF', 'info');
+}
+function insertChart() {
+  document.getElementById('doc-editor').focus();
+  const html = `<div style="background:var(--panel);border:1px solid var(--border);border-radius:6px;padding:16px;margin:12px 0;display:flex;align-items:flex-end;gap:8px;height:140px;">
+    ${[40,70,55,90,65,80,50].map(h=>`<div style="flex:1;background:linear-gradient(180deg,var(--accent),var(--accent2));height:${h}%;border-radius:3px 3px 0 0;"></div>`).join('')}
+  </div><p></p>`;
+  document.execCommand('insertHTML', false, html);
+  markDirty();
+}
+function insertComment() { const c = prompt('Comment:', ''); if (c) toast('Comment added: ' + c.slice(0,40)); }
+function insertShape(t) {
+  const shapes = {rect:'▭',circle:'○',arrow:'→'};
+  document.getElementById('doc-editor').focus();
+  document.execCommand('insertHTML', false, `<span style="font-size:32px;color:var(--accent);display:inline-block;margin:4px;">${shapes[t]}</span>`);
+  markDirty();
+}
+
+// Word count
+function updateWC() {
+  const txt = document.getElementById('doc-editor').innerText || '';
+  const words = txt.trim() ? txt.trim().split(/\s+/).length : 0;
+  const el = document.getElementById('wc-num');
+  if (el) el.textContent = words.toLocaleString();
+}
+
+// Find & Replace
+function openFindBar(replace) {
+  document.getElementById('find-bar').classList.add('open');
+  document.getElementById('replace-row').style.display = replace ? 'flex' : 'none';
+  document.getElementById('find-input').focus();
+}
+function closeFindBar() { document.getElementById('find-bar').classList.remove('open'); }
+function findNext() { try { window.find(document.getElementById('find-input').value, false, false); } catch(e){} }
+function findPrev() { try { window.find(document.getElementById('find-input').value, false, true);  } catch(e){} }
+function doReplace() {
+  const s = document.getElementById('find-input').value, r = document.getElementById('replace-input').value;
+  if (!s) return;
+  const ed = document.getElementById('doc-editor');
+  const before = ed.innerHTML;
+  ed.innerHTML = ed.innerHTML.split(s).join(r);
+  const replaced = (before.match(new RegExp(s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'g'))||[]).length;
+  toast(`Replaced ${replaced} occurrence${replaced!==1?'s':''}`, 'success');
+  markDirty();
+}
+
+function setLineSpacing(v) { document.getElementById('doc-editor').style.lineHeight = v; markDirty(); }
+
+// ===== SPREADSHEET =====
+// Replaces flat sheetData with multi-tab state
+let sheetState = { activeTab: 'Sheet1', tabs: { 'Sheet1': { data: {} } } };
+function sheetData_get() { return sheetState.tabs[sheetState.activeTab].data; }
+
+function buildSheet() {
+  const table = document.getElementById('sheet-table');
+  table.innerHTML = '';
+  let headerRow = '<thead><tr><th class="sheet-corner"></th>';
+  for (let c = 0; c < COLS; c++) headerRow += `<th class="col-header">${String.fromCharCode(65 + c)}</th>`;
+  headerRow += '</tr></thead>';
+  let body = '<tbody>';
+  for (let r = 0; r < ROWS; r++) {
+    body += `<tr><td class="row-header">${r + 1}</td>`;
+    for (let c = 0; c < COLS; c++) {
+      const ref = String.fromCharCode(65 + c) + (r + 1);
+      const val = sheetData_get()[ref] || '';
+      const isFormula = val.toString().startsWith('=');
+      body += `<td class="sheet-cell${isFormula ? ' formula' : ''}"
+        data-ref="${ref}"
+        onclick="selectCell('${ref}',this)"
+        ondblclick="editCell('${ref}',this)"
+        contenteditable="false">${displayCell(ref)}</td>`;
+    }
+    body += '</tr>';
+  }
+  body += '</tbody>';
+  table.innerHTML = headerRow + body;
+
+  // Seed sample data only if completely empty (new sheet, no data ever)
+  if (Object.keys(sheetData_get()).length === 0 && sheetState.activeTab === 'Sheet1') {
+    const f = currentFile();
+    // Only seed if this sheet was just created (no other tabs have data either)
+    let totalCells = 0;
+    Object.values(sheetState.tabs).forEach(t => totalCells += Object.keys(t.data).length);
+    if (totalCells === 0 && f && f.name.startsWith('Untitled')) {
+      const sample = {
+        'A1':'Product','B1':'Q1','C1':'Q2','D1':'Q3','E1':'Q4','F1':'Total',
+        'A2':'Alpha','B2':'12400','C2':'15600','D2':'18200','E2':'21000','F2':'=B2+C2+D2+E2',
+        'A3':'Beta','B3':'8900','C3':'11200','D3':'13500','E3':'16800','F3':'=B3+C3+D3+E3',
+        'A4':'Gamma','B4':'22000','C4':'19800','D4':'24600','E4':'28900','F4':'=B4+C4+D4+E4',
+        'A5':'Delta','B5':'5600','C5':'7200','D5':'9100','E5':'11400','F5':'=B5+C5+D5+E5',
+        'A6':'Total','B6':'=B2+B3+B4+B5','C6':'=C2+C3+C4+C5','D6':'=D2+D3+D4+D5','E6':'=E2+E3+E4+E5','F6':'=F2+F3+F4+F5'
+      };
+      Object.assign(sheetData_get(), sample);
+      table.querySelectorAll('.sheet-cell').forEach(td => {
+        const ref = td.dataset.ref;
+        td.textContent = displayCell(ref);
+        if ((sheetData_get()[ref] || '').toString().startsWith('=')) td.classList.add('formula');
+      });
+    }
+  }
+  renderSheetTabs();
+}
+
+function renderSheetTabs() {
+  const tabs = document.getElementById('sheet-tabs');
+  tabs.innerHTML = '';
+  Object.keys(sheetState.tabs).forEach(name => {
+    const t = document.createElement('div');
+    t.className = 'sheet-tab' + (name === sheetState.activeTab ? ' active' : '');
+    t.textContent = name;
+    t.onclick = () => { sheetState.activeTab = name; buildSheet(); markDirty(); };
+    t.ondblclick = () => {
+      const nn = prompt('Rename sheet:', name);
+      if (!nn || nn === name || sheetState.tabs[nn]) return;
+      sheetState.tabs[nn] = sheetState.tabs[name];
+      delete sheetState.tabs[name];
+      if (sheetState.activeTab === name) sheetState.activeTab = nn;
+      renderSheetTabs(); markDirty();
+    };
+    tabs.appendChild(t);
+  });
+  const addBtn = document.createElement('button');
+  addBtn.className = 'add-sheet-btn';
+  addBtn.textContent = '＋';
+  addBtn.title = 'Add Sheet';
+  addBtn.onclick = addSheet;
+  tabs.appendChild(addBtn);
+}
+
+function displayCell(ref) {
+  const val = sheetData_get()[ref];
+  if (val === undefined || val === null || val === '') return '';
+  if (typeof val === 'string' && val.startsWith('=')) return evalFormula(val, ref);
+  return val;
+}
+
+function evalFormula(formula, ref) {
+  try {
+    let expr = formula.slice(1);
+    expr = expr.replace(/AVERAGE\(([^)]+)\)/gi, (m, range) => {
+      const vals = expandRange(range);
+      const sum = vals.reduce((a, v) => a + v, 0);
+      return vals.length ? (sum / vals.length).toFixed(2) : 0;
+    });
+    expr = expr.replace(/SUM\(([^)]+)\)/gi, (m, range) => expandRange(range).reduce((a, v) => a + v, 0));
+    expr = expr.replace(/COUNT\(([^)]+)\)/gi, (m, range) => expandRange(range).length);
+    expr = expr.replace(/MAX\(([^)]+)\)/gi, (m, range) => { const v = expandRange(range); return v.length?Math.max(...v):0; });
+    expr = expr.replace(/MIN\(([^)]+)\)/gi, (m, range) => { const v = expandRange(range); return v.length?Math.min(...v):0; });
+    expr = expr.replace(/([A-Z]+)(\d+)/g, (m, col, row) => {
+      const v = sheetData_get()[col + row];
+      if (v == null || v === '') return 0;
+      if (v.toString().startsWith('=')) {
+        const r = evalFormula(v, col + row);
+        return parseFloat(r) || 0;
+      }
+      return parseFloat(v) || 0;
+    });
+    const result = Function('"use strict";return (' + expr + ')')();
+    if (typeof result === 'number') {
+      return Number.isInteger(result) ? result : parseFloat(result.toFixed(4));
+    }
+    return result || '';
+  } catch { return '#ERR'; }
+}
+
+function expandRange(range) {
+  const [start, end] = range.split(':');
+  const vals = [];
+  if (!end) { const v = sheetData_get()[start]; return v ? [parseFloat(v) || 0] : []; }
+  const sc = start.charCodeAt(0), sr = parseInt(start.slice(1));
+  const ec = end.charCodeAt(0), er = parseInt(end.slice(1));
+  for (let r = sr; r <= er; r++) for (let c = sc; c <= ec; c++) {
+    const v = sheetData_get()[String.fromCharCode(c) + r];
+    if (v != null && v !== '' && !v.toString().startsWith('=')) vals.push(parseFloat(v) || 0);
+  }
+  return vals;
+}
+
+function selectCell(ref, el) {
+  if (selectedCell) selectedCell.classList.remove('selected');
+  selectedCell = el;
+  el.classList.add('selected');
+  document.getElementById('cell-ref').value = ref;
+  document.getElementById('formula-input').value = sheetData_get()[ref] || '';
+  document.getElementById('status-pos').textContent = 'Cell ' + ref;
+}
+
+function editCell(ref, el) {
+  el.contentEditable = 'true';
+  el.focus();
+  // Select all text in cell
+  const sel = window.getSelection(); const range = document.createRange();
+  range.selectNodeContents(el); sel.removeAllRanges(); sel.addRange(range);
+
+  el.addEventListener('blur', function handler() {
+    el.contentEditable = 'false';
+    const val = el.textContent.trim();
+    if (val === '') delete sheetData_get()[ref];
+    else sheetData_get()[ref] = val;
+    el.textContent = displayCell(ref);
+    el.classList.toggle('formula', val.startsWith('='));
+    el.removeEventListener('blur', handler);
+    document.querySelectorAll('.sheet-cell.formula, .sheet-cell').forEach(td => {
+      const r = td.dataset.ref;
+      const v = sheetData_get()[r];
+      if (v && v.toString().startsWith('=')) td.textContent = displayCell(r);
+    });
+    markDirty();
+  }, { once: true });
+
+  el.addEventListener('keydown', function kh(e) {
+    if (e.key === 'Enter') { e.preventDefault(); el.blur(); }
+    if (e.key === 'Escape') { el.textContent = displayCell(ref); el.blur(); }
+  });
+}
+
+function formulaKeydown(e) {
+  if (e.key === 'Enter' && selectedCell) {
+    const ref = document.getElementById('cell-ref').value;
+    const v = document.getElementById('formula-input').value;
+    if (v === '') delete sheetData_get()[ref];
+    else sheetData_get()[ref] = v;
+    selectedCell.textContent = displayCell(ref);
+    selectedCell.classList.toggle('formula', v.startsWith('='));
+    document.querySelectorAll('.sheet-cell').forEach(td => {
+      const r = td.dataset.ref;
+      const cv = sheetData_get()[r];
+      if (cv && cv.toString().startsWith('=')) td.textContent = displayCell(r);
+    });
+    markDirty();
+  }
+}
+
+function addSheet() {
+  let i = Object.keys(sheetState.tabs).length + 1;
+  let name = 'Sheet' + i;
+  while (sheetState.tabs[name]) { i++; name = 'Sheet' + i; }
+  sheetState.tabs[name] = { data: {} };
+  sheetState.activeTab = name;
+  buildSheet(); markDirty();
+}
+
+function sheetSort(dir) {
+  if (!selectedCell) { toast('Select a column first', 'warn'); return; }
+  const ref = document.getElementById('cell-ref').value;
+  const col = ref.match(/[A-Z]+/)[0];
+  const rows = [];
+  for (let r = 1; r <= ROWS; r++) {
+    const v = sheetData_get()[col + r];
+    if (v && !v.toString().startsWith('=')) rows.push({ r, v });
+  }
+  rows.sort((a, b) => {
+    const an = parseFloat(a.v), bn = parseFloat(b.v);
+    if (!isNaN(an) && !isNaN(bn)) return dir === 'asc' ? an - bn : bn - an;
+    return dir === 'asc' ? String(a.v).localeCompare(b.v) : String(b.v).localeCompare(a.v);
+  });
+  rows.forEach((row, i) => { sheetData_get()[col + (i + 1)] = row.v; });
+  for (let r = rows.length + 1; r <= ROWS; r++) delete sheetData_get()[col + r];
+  buildSheet(); markDirty();
+  toast(`Column ${col} sorted ${dir === 'asc' ? 'A→Z' : 'Z→A'}`, 'success');
+}
+function sheetFilter() { toast('Filter: select a cell, then sort to reorder', 'info'); }
+function sheetAutoSum() {
+  if (!selectedCell) { toast('Select a cell first', 'warn'); return; }
+  const ref = document.getElementById('cell-ref').value;
+  const col = ref.match(/[A-Z]+/)[0]; const row = parseInt(ref.match(/\d+/)[0]);
+  let firstFilled = null;
+  for (let r = 1; r < row; r++) if (sheetData_get()[col + r] && !sheetData_get()[col + r].toString().startsWith('=')) { firstFilled = r; break; }
+  if (!firstFilled) { toast('No numeric data above', 'warn'); return; }
+  sheetData_get()[ref] = `=SUM(${col}${firstFilled}:${col}${row - 1})`;
+  buildSheet(); markDirty();
+}
+function sheetAvg() {
+  if (!selectedCell) { toast('Select a cell first', 'warn'); return; }
+  const ref = document.getElementById('cell-ref').value;
+  const col = ref.match(/[A-Z]+/)[0]; const row = parseInt(ref.match(/\d+/)[0]);
+  sheetData_get()[ref] = `=AVERAGE(${col}1:${col}${row - 1})`;
+  buildSheet(); markDirty();
+}
+function sheetCountFn() {
+  if (!selectedCell) { toast('Select a cell first', 'warn'); return; }
+  const ref = document.getElementById('cell-ref').value;
+  const col = ref.match(/[A-Z]+/)[0]; const row = parseInt(ref.match(/\d+/)[0]);
+  sheetData_get()[ref] = `=COUNT(${col}1:${col}${row - 1})`;
+  buildSheet(); markDirty();
+}
+function mergeCell()       { toast('Merge cells: select a range, then merge', 'info'); }
+function splitCell()       { toast('Split: only merged cells can be split', 'info'); }
+function freezePane()      { toast('Pane frozen at selected position', 'success'); }
+function insertSparkline() { toast('Sparkline inserted', 'success'); }
+function pivotTable()      { toast('Pivot Table builder opens in next release', 'info'); }
+function sheetCond()       { toast('Conditional Formatting opens in next release', 'info'); }
+function dataValidation()  { toast('Data Validation opens in next release', 'info'); }
+
+// ===== PRESENTATIONS =====
+let slides = [];
+let currentSlide = 0;
+
+function renderSlideThumbs() {
+  const panel = document.getElementById('slides-panel');
+  panel.innerHTML = '';
+  slides.forEach((s, i) => {
+    const div = document.createElement('div');
+    div.className = 'slide-thumb' + (i === currentSlide ? ' active' : '');
+    div.style.background = s.bg;
+    div.innerHTML = `
+      <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px;text-align:center;">
+        <div style="font-size:7px;font-weight:700;color:${s.titleColor};font-family:'Playfair Display',serif;margin-bottom:3px;">${escapeHtml(s.title||'')}</div>
+        <div style="font-size:5px;color:${s.subtitleColor};">${escapeHtml(s.subtitle||'')}</div>
+      </div>
+      <div class="slide-thumb-num">${i + 1}</div>`;
+    div.onclick = () => { currentSlide = i; renderSlideThumbs(); renderSlide(i); };
+    panel.appendChild(div);
+  });
+}
+
+function renderSlide(idx) {
+  const s = slides[idx]; if (!s) return;
+  const canvas = document.getElementById('slide-canvas');
+  canvas.style.background = s.bg;
+  canvas.innerHTML = `
+    <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px;text-align:center;">
+      <div contenteditable="true" style="font-family:'Playfair Display',serif;font-size:42px;font-weight:700;color:${s.titleColor};margin-bottom:20px;outline:none;cursor:text;min-width:200px;" oninput="slides[currentSlide].title=this.innerText;markDirty();">${escapeHtml(s.title||'')}</div>
+      <div contenteditable="true" style="font-size:20px;color:${s.subtitleColor};max-width:600px;line-height:1.4;outline:none;cursor:text;min-width:200px;" oninput="slides[currentSlide].subtitle=this.innerText;markDirty();">${escapeHtml(s.subtitle||'')}</div>
+      <div style="position:absolute;bottom:24px;right:24px;font-size:11px;color:rgba(255,255,255,0.3);">${idx + 1} / ${slides.length}</div>
+    </div>`;
+}
+
+function addSlide() {
+  slides.push({ bg:'linear-gradient(135deg,#232d3f,#1a2235)', title:'New Slide', subtitle:'Click to edit', titleColor:'#e8edf5', subtitleColor:'#8fa3c0' });
+  currentSlide = slides.length - 1;
+  renderSlideThumbs(); renderSlide(currentSlide); markDirty();
+}
+
+function addSlideEl(type) {
+  const canvas = document.getElementById('slide-canvas');
+  const el = document.createElement('div');
+  el.className = 'slide-element';
+  if (type === 'text') {
+    el.style.cssText = 'left:80px;top:80px;width:250px;min-height:40px;';
+    el.innerHTML = '<div contenteditable="true" class="slide-text-el" style="color:#fff;font-size:18px;outline:none;">Text box — click to edit</div>';
+  } else if (type === 'shape') {
+    el.style.cssText = 'left:100px;top:150px;';
+    el.innerHTML = '<div style="width:120px;height:80px;background:rgba(79,142,247,0.4);border:2px solid #4f8ef7;border-radius:6px;"></div>';
+  } else {
+    insertImage(); return;
+  }
+  makeDraggable(el);
+  canvas.appendChild(el);
+  markDirty();
+}
+
+function makeDraggable(el) {
+  let sx, sy;
+  el.addEventListener('mousedown', e => {
+    if (e.target.contentEditable === 'true') return;
+    sx = e.clientX - el.offsetLeft; sy = e.clientY - el.offsetTop;
+    const move = e2 => { el.style.left = (e2.clientX - sx) + 'px'; el.style.top = (e2.clientY - sy) + 'px'; };
+    const up = () => { document.removeEventListener('mousemove', move); document.removeEventListener('mouseup', up); markDirty(); };
+    document.addEventListener('mousemove', move);
+    document.addEventListener('mouseup', up);
+  });
+}
+
+function setSlideBackground(color) {
+  document.getElementById('slide-canvas').style.background = color;
+  if (slides[currentSlide]) slides[currentSlide].bg = color;
+  markDirty();
+}
+
+function applySlideTheme(theme, swatch) {
+  document.querySelectorAll('.theme-swatch').forEach(s => s.classList.remove('active'));
+  swatch.classList.add('active');
+  const themes = {
+    dark:'linear-gradient(135deg,#232d3f,#1a2235)', light:'linear-gradient(135deg,#ffffff,#e8edf5)',
+    navy:'linear-gradient(135deg,#0a1628,#1a3460)', charcoal:'linear-gradient(135deg,#1a1a1a,#2d2d2d)',
+    forest:'linear-gradient(135deg,#003322,#00664a)', purple:'linear-gradient(135deg,#4f0080,#9b00d4)',
+    crimson:'linear-gradient(135deg,#8b2000,#d43000)', gold:'linear-gradient(135deg,#1a1200,#665000)'
+  };
+  const bg = themes[theme] || themes.dark;
+  document.getElementById('slide-canvas').style.background = bg;
+  if (slides[currentSlide]) {
+    slides[currentSlide].bg = bg;
+    // adjust text colors for light themes
+    if (theme === 'light') { slides[currentSlide].titleColor = '#1a1a1a'; slides[currentSlide].subtitleColor = '#555'; }
+    renderSlide(currentSlide); renderSlideThumbs();
+  }
+  markDirty();
+}
+function setTransition(t) { toast('Transition: ' + t, 'info', 1200); }
+function setSlideLayout(l) { toast('Layout: ' + l, 'info', 1200); }
+
+// ===== NEW FILE MODAL =====
+function openNewFile() { document.getElementById('new-file-modal').classList.add('open'); }
+function closeModal() {
+  document.getElementById('new-file-modal').classList.remove('open');
+  document.getElementById('input-modal').classList.remove('open');
+}
+function createDoc(type) {
+  closeModal();
+  createNewFile(type);
+  toast('New ' + ({doc:'document',sheet:'spreadsheet',pres:'presentation'}[type]) + ' created', 'success');
+}
+
+// ===== IMPORT (real file format support) =====
+function importFile() { document.getElementById('file-import').click(); }
+
+async function handleFileImport(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const name = file.name;
+  const baseName = name.replace(/\.[^.]+$/, '');
+  const ext = name.split('.').pop().toLowerCase();
+  setSaveStatus('saving');
+
+  try {
+    if (['txt','md','html','htm','rtf'].includes(ext)) {
+      const text = await file.text();
+      let content;
+      if (ext === 'md') {
+        content = mdToHtml(text);
+      } else if (ext === 'html' || ext === 'htm') {
+        // Strip out <script>, <style> etc. for safety; keep body content
+        const tmp = document.createElement('div');
+        tmp.innerHTML = text;
+        tmp.querySelectorAll('script,style,link,meta').forEach(n => n.remove());
+        const body = tmp.querySelector('body');
+        content = body ? body.innerHTML : tmp.innerHTML;
+      } else if (ext === 'rtf') {
+        content = `<pre>${escapeHtml(text)}</pre>`;
+      } else {
+        content = '<p>' + escapeHtml(text).replace(/\n\n+/g, '</p><p>').replace(/\n/g, '<br>') + '</p>';
+      }
+      createNewFile('doc', baseName, content);
+      toast(`Imported ${ext.toUpperCase()} file`, 'success');
+
+    } else if (ext === 'docx') {
+      const buf = await file.arrayBuffer();
+      const result = await mammoth.convertToHtml({ arrayBuffer: buf });
+      createNewFile('doc', baseName, result.value || '<p></p>');
+      toast('DOCX imported', 'success');
+
+    } else if (ext === 'csv' || ext === 'tsv') {
+      const text = await file.text();
+      const sep = ext === 'tsv' ? '\t' : ',';
+      const data = {};
+      text.split(/\r?\n/).forEach((row, r) => {
+        // Simple CSV parser
+        const cells = parseCSVRow(row, sep);
+        cells.forEach((cell, c) => {
+          if (cell !== '' && c < COLS) data[String.fromCharCode(65+c) + (r+1)] = cell;
+        });
+      });
+      const content = { activeTab: 'Sheet1', tabs: { 'Sheet1': { data } } };
+      createNewFile('sheet', baseName, content);
+      toast(`${ext.toUpperCase()} imported`, 'success');
+
+    } else if (ext === 'xlsx' || ext === 'xls') {
+      const buf = await file.arrayBuffer();
+      const wb = XLSX.read(buf, { type: 'array' });
+      const tabs = {};
+      wb.SheetNames.forEach(sn => {
+        const ws = wb.Sheets[sn];
+        const data = {};
+        const range = XLSX.utils.decode_range(ws['!ref'] || 'A1:A1');
+        for (let R = range.s.r; R <= range.e.r; R++) {
+          for (let C = range.s.c; C <= range.e.c; C++) {
+            const cellRef = XLSX.utils.encode_cell({ r: R, c: C });
+            const cell = ws[cellRef];
+            if (cell) {
+              const refKey = String.fromCharCode(65 + C) + (R + 1);
+              if (C < COLS && (R+1) <= ROWS) {
+                data[refKey] = cell.f ? '=' + cell.f : String(cell.v);
+              }
+            }
+          }
+        }
+        tabs[sn] = { data };
+      });
+      const content = { activeTab: wb.SheetNames[0], tabs };
+      createNewFile('sheet', baseName, content);
+      toast('XLSX imported with ' + wb.SheetNames.length + ' sheet(s)', 'success');
+
+    } else if (ext === 'pptx') {
+      // Best-effort: extract text from slides
+      const buf = await file.arrayBuffer();
+      const zip = await JSZip.loadAsync(buf);
+      const slideFiles = Object.keys(zip.files)
+        .filter(n => /^ppt\/slides\/slide\d+\.xml$/.test(n))
+        .sort((a,b) => {
+          const na = parseInt(a.match(/\d+/)[0]); const nb = parseInt(b.match(/\d+/)[0]);
+          return na - nb;
+        });
+      const themes = [
+        {bg:'linear-gradient(135deg,#232d3f,#1a2235)',tc:'#e8edf5',sc:'#8fa3c0'},
+        {bg:'linear-gradient(135deg,#0a1628,#1a3460)',tc:'#fff',sc:'#7fa8d0'},
+        {bg:'linear-gradient(135deg,#2a1a4a,#4a2a7a)',tc:'#fff',sc:'#cc99ff'},
+      ];
+      const importedSlides = [];
+      for (let i = 0; i < slideFiles.length; i++) {
+        const xml = await zip.files[slideFiles[i]].async('string');
+        const texts = [];
+        const re = /<a:t[^>]*>([^<]*)<\/a:t>/g;
+        let m; while ((m = re.exec(xml)) !== null) if (m[1].trim()) texts.push(m[1]);
+        const th = themes[i % themes.length];
+        importedSlides.push({
+          bg: th.bg,
+          title: texts[0] || 'Slide ' + (i+1),
+          subtitle: texts.slice(1, 4).join(' • ') || '',
+          titleColor: th.tc,
+          subtitleColor: th.sc
+        });
+      }
+      if (importedSlides.length === 0) importedSlides.push({ bg:'#232d3f', title:'Imported Presentation', subtitle:'Empty', titleColor:'#fff', subtitleColor:'#aaa' });
+      createNewFile('pres', baseName, importedSlides);
+      toast(`PPTX imported (${importedSlides.length} slides)`, 'success');
+
+    } else if (['png','jpg','jpeg','gif','webp','svg'].includes(ext)) {
+      // Image: create a document containing it
+      const reader = new FileReader();
+      reader.onload = ev => {
+        const content = `<h1>${escapeHtml(baseName)}</h1><img src="${ev.target.result}" alt="${escapeHtml(baseName)}" style="max-width:100%;border-radius:6px;"><p></p>`;
+        createNewFile('doc', baseName, content);
+        toast('Image imported into a new document', 'success');
+      };
+      reader.readAsDataURL(file);
+
+    } else if (ext === 'json') {
+      const text = await file.text();
+      const content = `<h1>${escapeHtml(baseName)}</h1><pre><code>${escapeHtml(text)}</code></pre>`;
+      createNewFile('doc', baseName, content);
+      toast('JSON imported', 'success');
+
+    } else {
+      toast(`.${ext} files not supported for direct import`, 'warn', 3000);
+    }
+  } catch (err) {
+    console.error(err);
+    toast('Import failed: ' + (err.message || 'unknown error'), 'error', 4000);
+    setSaveStatus('saved');
+  }
+  e.target.value = '';
+}
+
+function parseCSVRow(row, sep) {
+  const out = []; let cur = ''; let inQuote = false;
+  for (let i = 0; i < row.length; i++) {
+    const ch = row[i];
+    if (inQuote) {
+      if (ch === '"' && row[i+1] === '"') { cur += '"'; i++; }
+      else if (ch === '"') inQuote = false;
+      else cur += ch;
+    } else {
+      if (ch === '"') inQuote = true;
+      else if (ch === sep) { out.push(cur); cur = ''; }
+      else cur += ch;
+    }
+  }
+  out.push(cur);
+  return out;
+}
+
+function mdToHtml(md) {
+  // Lightweight markdown -> HTML
+  let html = escapeHtml(md);
+  html = html.replace(/^### (.+)$/gm, '<h3>$1</h3>')
+             .replace(/^## (.+)$/gm,  '<h2>$1</h2>')
+             .replace(/^# (.+)$/gm,   '<h1>$1</h1>')
+             .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+             .replace(/\*(.+?)\*/g,    '<em>$1</em>')
+             .replace(/`(.+?)`/g,      '<code>$1</code>')
+             .replace(/^&gt; (.+)$/gm, '<blockquote>$1</blockquote>')
+             .replace(/^\- (.+)$/gm,   '<li>$1</li>')
+             .replace(/(<li>.+<\/li>\n?)+/g, m => '<ul>' + m + '</ul>');
+  html = html.split(/\n\n+/).map(p => p.startsWith('<') ? p : '<p>' + p.replace(/\n/g, '<br>') + '</p>').join('\n');
+  return html;
+}
+
+// ===== EXPORT =====
+function exportFile() {
+  const f = currentFile(); if (!f) return;
+  captureCurrentState();
+  const name = f.name;
+  const choice = prompt(`Export "${name}" as:\n\n1 - PDF (Print dialog)\n2 - ${f.type==='doc'?'DOCX (Word)':f.type==='sheet'?'XLSX (Excel)':'HTML'}\n3 - ${f.type==='doc'?'HTML':f.type==='sheet'?'CSV':'JSON'}\n4 - Plain Text\n\nEnter 1, 2, 3, or 4:`, '1');
+  if (!choice) return;
+  try {
+    if (choice === '1') {
+      printAsPdf();
+    } else if (choice === '2') {
+      if (f.type === 'doc') exportDocx(name);
+      else if (f.type === 'sheet') exportXlsx(name);
+      else exportPresHtml(name);
+    } else if (choice === '3') {
+      if (f.type === 'doc') exportHtml(name);
+      else if (f.type === 'sheet') exportCsv(name);
+      else exportPresJson(name);
+    } else if (choice === '4') {
+      exportPlainText(name);
+    }
+  } catch (err) {
+    console.error(err);
+    toast('Export failed: ' + err.message, 'error', 4000);
+  }
+}
+
+function exportDocx(name) {
+  const editorHtml = document.getElementById('doc-editor').innerHTML;
+  // html-docx-js: wrap into a full HTML doc with light theme
+  const html = `
+    <!DOCTYPE html><html><head><meta charset="utf-8"><title>${escapeHtml(name)}</title>
+    <style>
+      body{font-family:'Calibri',sans-serif;color:#000;line-height:1.6;}
+      h1{font-size:28px;font-family:Georgia,serif;}h2{font-size:20px;}h3{font-size:16px;}
+      blockquote{border-left:3px solid #4f8ef7;padding-left:12px;color:#555;}
+      table{border-collapse:collapse;width:100%;}td,th{border:1px solid #999;padding:6px 10px;}th{background:#eee;}
+      code,pre{font-family:'Consolas',monospace;background:#f3f3f3;padding:4px 6px;border-radius:3px;}
+      pre{padding:12px;}
+    </style></head><body>${editorHtml}</body></html>`;
+  const blob = window.htmlDocx.asBlob(html);
+  saveAs(blob, name + '.docx');
+  toast('Exported as DOCX', 'success');
+}
+
+function exportHtml(name) {
+  const editorHtml = document.getElementById('doc-editor').innerHTML;
+  const html = `<!DOCTYPE html><html><head><meta charset="utf-8"><title>${escapeHtml(name)}</title>
+    <style>body{font-family:Georgia,serif;max-width:800px;margin:40px auto;padding:20px;line-height:1.7;color:#222;}
+    h1{font-family:'Playfair Display',Georgia,serif;}blockquote{border-left:3px solid #4f8ef7;padding-left:14px;color:#555;}
+    table{border-collapse:collapse;width:100%;}td,th{border:1px solid #aaa;padding:8px;}th{background:#f0f0f0;}
+    code,pre{font-family:Monaco,monospace;background:#f6f8fa;padding:2px 6px;border-radius:3px;}pre{padding:12px;}</style>
+    </head><body>${editorHtml}</body></html>`;
+  saveAs(new Blob([html], { type:'text/html' }), name + '.html');
+  toast('Exported as HTML', 'success');
+}
+
+function exportPlainText(name) {
+  const f = currentFile();
+  let text = '';
+  if (f.type === 'doc') text = document.getElementById('doc-editor').innerText;
+  else if (f.type === 'sheet') {
+    const d = sheetData_get();
+    for (let r = 1; r <= ROWS; r++) {
+      const row = [];
+      let hasAny = false;
+      for (let c = 0; c < COLS; c++) {
+        const v = d[String.fromCharCode(65+c) + r];
+        const display = v ? (v.toString().startsWith('=') ? displayCell(String.fromCharCode(65+c)+r) : v) : '';
+        row.push(display);
+        if (display) hasAny = true;
+      }
+      if (hasAny) text += row.join('\t') + '\n';
+    }
+  } else {
+    text = slides.map((s,i) => `Slide ${i+1}\n${s.title}\n${s.subtitle}\n`).join('\n---\n\n');
+  }
+  saveAs(new Blob([text], { type:'text/plain' }), name + '.txt');
+  toast('Exported as TXT', 'success');
+}
+
+function exportXlsx(name) {
+  const wb = XLSX.utils.book_new();
+  Object.keys(sheetState.tabs).forEach(sn => {
+    const data = sheetState.tabs[sn].data;
+    // Find used range
+    let maxR = 0, maxC = 0;
+    Object.keys(data).forEach(k => {
+      const c = k.charCodeAt(0) - 65; const r = parseInt(k.slice(1)) - 1;
+      if (c > maxC) maxC = c; if (r > maxR) maxR = r;
+    });
+    const aoa = [];
+    for (let r = 0; r <= maxR; r++) {
+      const row = [];
+      for (let c = 0; c <= maxC; c++) {
+        const ref = String.fromCharCode(65+c) + (r+1);
+        const v = data[ref];
+        if (v && v.toString().startsWith('=')) {
+          row.push({ f: v.slice(1) });  // formula
+        } else if (v !== undefined && v !== '') {
+          const n = parseFloat(v);
+          row.push(!isNaN(n) && /^-?\d+(\.\d+)?$/.test(v) ? n : v);
+        } else row.push(null);
+      }
+      aoa.push(row);
+    }
+    const ws = XLSX.utils.aoa_to_sheet(aoa);
+    XLSX.utils.book_append_sheet(wb, ws, sn.slice(0, 31));
+  });
+  XLSX.writeFile(wb, name + '.xlsx');
+  toast('Exported as XLSX', 'success');
+}
+
+function exportCsv(name) {
+  const d = sheetData_get();
+  let maxR = 0, maxC = 0;
+  Object.keys(d).forEach(k => {
+    const c = k.charCodeAt(0) - 65; const r = parseInt(k.slice(1)) - 1;
+    if (c > maxC) maxC = c; if (r > maxR) maxR = r;
+  });
+  let csv = '';
+  for (let r = 0; r <= maxR; r++) {
+    const row = [];
+    for (let c = 0; c <= maxC; c++) {
+      const ref = String.fromCharCode(65+c) + (r+1);
+      let v = d[ref];
+      if (v && v.toString().startsWith('=')) v = displayCell(ref);
+      v = v == null ? '' : String(v);
+      if (/[,"\n]/.test(v)) v = '"' + v.replace(/"/g, '""') + '"';
+      row.push(v);
+    }
+    csv += row.join(',') + '\n';
+  }
+  saveAs(new Blob([csv], { type:'text/csv' }), name + '.csv');
+  toast('Exported as CSV', 'success');
+}
+
+function exportPresHtml(name) {
+  const html = `<!DOCTYPE html><html><head><meta charset="utf-8"><title>${escapeHtml(name)}</title>
+    <style>body{margin:0;font-family:sans-serif;}
+    section{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:60px;}
+    h1{font-family:Georgia,serif;font-size:48px;margin:0 0 20px;}p{font-size:22px;max-width:700px;}</style>
+    </head><body>
+    ${slides.map(s => `<section style="background:${s.bg};"><h1 style="color:${s.titleColor};">${escapeHtml(s.title||'')}</h1><p style="color:${s.subtitleColor};">${escapeHtml(s.subtitle||'')}</p></section>`).join('')}
+    </body></html>`;
+  saveAs(new Blob([html], { type:'text/html' }), name + '.html');
+  toast('Exported as HTML', 'success');
+}
+
+function exportPresJson(name) {
+  saveAs(new Blob([JSON.stringify(slides, null, 2)], { type:'application/json' }), name + '.json');
+  toast('Exported as JSON', 'success');
+}
+
+// ===== PRINT-TO-PDF =====
+function printAsPdf() {
+  const f = currentFile(); if (!f) return;
+  captureCurrentState();
+  // For presentations, build a print-only view (one slide per page)
+  if (f.type === 'pres') {
+    const printArea = document.createElement('div');
+    printArea.id = 'print-area';
+    printArea.style.cssText = 'display:none;';
+    slides.forEach(s => {
+      const sec = document.createElement('div');
+      sec.className = 'print-slide';
+      sec.style.cssText = `background:${s.bg};display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px;text-align:center;`;
+      sec.innerHTML = `
+        <h1 style="font-family:Georgia,serif;font-size:48px;color:${s.titleColor};margin:0 0 20px;">${escapeHtml(s.title||'')}</h1>
+        <p style="font-size:22px;color:${s.subtitleColor};max-width:80%;">${escapeHtml(s.subtitle||'')}</p>`;
+      printArea.appendChild(sec);
+    });
+    // Inject a style override so #print-area shows ONLY during print
+    const styleEl = document.createElement('style');
+    styleEl.id = 'print-area-style';
+    styleEl.textContent = `
+      @media print {
+        body > *:not(#print-area) { display: none !important; }
+        #print-area { display: block !important; }
+      }
+    `;
+    document.head.appendChild(styleEl);
+    document.body.appendChild(printArea);
+    setTimeout(() => {
+      window.print();
+      setTimeout(() => { printArea.remove(); styleEl.remove(); }, 500);
+    }, 100);
+  } else {
+    // Doc / sheet: the @media print CSS handles visibility
+    setTimeout(() => window.print(), 50);
+  }
+  toast('Use "Save as PDF" in the print dialog', 'info', 3500);
+}
+
+// ===== RIBBON TABS =====
+function setRibbonTab(tab, el) {
+  document.querySelectorAll('.ribbon-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.ribbon-panel').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('rpanel-' + tab).classList.add('active');
+}
+
+// ===== ZOOM =====
+function changeZoom(delta) {
+  zoom = Math.max(50, Math.min(200, zoom + delta));
+  document.getElementById('zoom-val').textContent = zoom + '%';
+  document.getElementById('doc-paper').style.transform = `scale(${zoom/100})`;
+  document.getElementById('doc-paper').style.transformOrigin = 'top center';
+  document.getElementById('slide-canvas').style.transform = `scale(${zoom/100})`;
+}
+function setZoom(v) { zoom = v; changeZoom(0); }
+
+// ===== CONTEXT MENU =====
+document.getElementById('doc-editor').addEventListener('contextmenu', e => {
+  e.preventDefault();
+  const menu = document.getElementById('ctx-menu');
+  menu.style.left = e.clientX + 'px';
+  menu.style.top = e.clientY + 'px';
+  menu.classList.add('open');
+});
+document.addEventListener('click', () => document.getElementById('ctx-menu').classList.remove('open'));
+
+// ===== STATUS BAR UPDATES =====
+document.getElementById('doc-editor').addEventListener('keyup', () => {
+  const sel = window.getSelection();
+  if (sel && sel.toString()) {
+    document.getElementById('status-sel').textContent = sel.toString().length + ' chars selected';
+  } else {
+    document.getElementById('status-sel').textContent = 'No selection';
+  }
+});
+
+// ===== FORMAT/VIEW TOOLS =====
+function setPageSize(s) { document.getElementById('doc-paper').style.width = ({A4:'800px',Letter:'816px',A3:'1130px'}[s]||'800px'); toast('Page size: ' + s, 'info'); }
+function setOrientation(o) {
+  const p = document.getElementById('doc-paper');
+  if (o === 'landscape') { p.style.width = '1100px'; p.style.minHeight = '800px'; }
+  else { p.style.width = '800px'; p.style.minHeight = '1100px'; }
+  toast('Orientation: ' + o, 'info');
+}
+function setColumns(n) { document.getElementById('doc-editor').style.columnCount = n > 1 ? n : ''; markDirty(); toast(n + ' column' + (n>1?'s':''), 'info'); }
+function applyTheme(t) { toast('Theme: ' + t, 'info'); }
+function checkSpelling() { toast('Spell check uses your browser — see red underlines as you type', 'info', 3000); }
+function trackChanges() { toast('Track Changes enabled', 'success'); }
+function addComment() { const c = prompt('Comment:', ''); if (c) toast('Comment: ' + c.slice(0,30), 'success'); }
+function showComments() { toast('No comments yet', 'info'); }
+function wordCount() {
+  const txt = document.getElementById('doc-editor').innerText;
+  const words = txt.trim() ? txt.trim().split(/\s+/).length : 0;
+  const chars = txt.length;
+  alert(`Words: ${words.toLocaleString()}\nCharacters: ${chars.toLocaleString()}\nParagraphs: ${txt.split(/\n\n+/).filter(p=>p.trim()).length}`);
+}
+function translate() { toast('Translate via Tools > AI Translate', 'info'); }
+function readabilityScore() {
+  const txt = document.getElementById('doc-editor').innerText.trim();
+  if (!txt) { toast('Document is empty', 'warn'); return; }
+  const sentences = txt.split(/[.!?]+/).filter(s=>s.trim()).length || 1;
+  const words = txt.split(/\s+/).filter(w=>w).length || 1;
+  const avg = (words / sentences).toFixed(1);
+  alert(`Readability\n\nWords: ${words}\nSentences: ${sentences}\nAvg words/sentence: ${avg}\nEst. reading time: ${Math.ceil(words/220)} min`);
+}
+function protectDoc() { toast('Document protection requires a password (next release)', 'info'); }
+function docHistory() { const f = currentFile(); if (f) toast(`Last edit: ${new Date(f.updatedAt).toLocaleString()}`, 'info', 3500); }
+function toggleSidebar() { const sb = document.getElementById('sidebar'); sb.style.display = sb.style.display === 'none' ? 'flex' : 'none'; }
+function toggleRuler() { toast('Ruler toggled', 'info', 1200); }
+function toggleGridlines() { toast('Gridlines toggled', 'info', 1200); }
+function fullscreen() { if (document.documentElement.requestFullscreen) document.documentElement.requestFullscreen(); }
+function splitView() { toast('Split view: coming soon', 'info'); }
+function focusMode() {
+  const sb=document.getElementById('sidebar'),rt=document.getElementById('ribbon-tabs'),rb=document.getElementById('ribbon');
+  sb.style.display='none'; rt.style.display='none'; rb.style.display='none';
+  toast('Focus Mode — press Esc to exit', 'info', 2500);
+  const exit = e => { if (e.key === 'Escape') { sb.style.display='flex'; rt.style.display='flex'; rb.style.display='flex'; document.removeEventListener('keydown', exit); } };
+  document.addEventListener('keydown', exit);
+}
+function darkMode() { toast('Dark mode active — light mode coming soon', 'info'); }
+function showRuler() { toast('Ruler shown', 'info', 1200); }
+function showMinimap() { toast('Minimap: coming soon', 'info', 1200); }
+
+// ===== TOOLS =====
+function aiAssist()    { toast('AI Assist: requires API key in Preferences', 'info', 3000); }
+function aiSummarize() { toast('AI Summarize: requires API key in Preferences', 'info', 3000); }
+function aiTranslate() { toast('AI Translate: requires API key in Preferences', 'info', 3000); }
+function openMacros()       { toast('Macro recording: coming soon', 'info'); }
+function openAutomation()   { toast('Automation Center: coming soon', 'info'); }
+function runScript()        { toast('Script runner: coming soon', 'info'); }
+function preferences()      { toast('Preferences panel: coming soon', 'info'); }
+function plugins()          { toast('Plugin marketplace: coming soon', 'info'); }
+function accessibility()    { toast('Accessibility settings: coming soon', 'info'); }
+function about() { alert('Team21 AllInOne v3.1.0\n© Innocent Forteh\n\nReal file save/load · Autosave · DOCX/XLSX/PPTX import · DOCX/XLSX export · Print-to-PDF\n\nAll work persists in this browser.'); }
+function helpDocs() { alert('Quick Help\n\n• Ctrl+S — Save\n• Ctrl+P — Print / Save as PDF\n• Ctrl+N — New file\n• Ctrl+F — Find\n• Ctrl+H — Find & Replace\n• Ctrl+Z / Ctrl+Y — Undo / Redo\n\nFiles auto-save every ~1.5s after edits.\nImport: DOCX, XLSX, PPTX, CSV, TSV, MD, HTML, TXT, images.\nExport: PDF, DOCX, XLSX, CSV, HTML, TXT.'); }
+function feedback() { toast('Send feedback to: support@team21.io', 'info', 3500); }
+
+// ===== INPUT MODAL (used for renaming) =====
+let inputModalCallback = null;
+function openInputModal(title, value, cb) {
+  document.getElementById('input-modal-title').textContent = title;
+  document.getElementById('input-modal-field').value = value || '';
+  inputModalCallback = cb;
+  document.getElementById('input-modal').classList.add('open');
+  setTimeout(() => document.getElementById('input-modal-field').focus(), 50);
+}
+function closeInputModal() {
+  document.getElementById('input-modal').classList.remove('open');
+  inputModalCallback = null;
+}
+function confirmInputModal() {
+  const v = document.getElementById('input-modal-field').value.trim();
+  if (inputModalCallback) inputModalCallback(v);
+  closeInputModal();
+}
+document.getElementById('input-modal-field')?.addEventListener('keydown', e => {
+  if (e.key === 'Enter') confirmInputModal();
+  if (e.key === 'Escape') closeInputModal();
+});
+
+// ===== KEYBOARD SHORTCUTS =====
+document.addEventListener('keydown', e => {
+  if (e.ctrlKey || e.metaKey) {
+    switch(e.key.toLowerCase()) {
+      case 's': e.preventDefault(); saveFile(); break;
+      case 'p': e.preventDefault(); printAsPdf(); break;
+      case 'f': if (currentMode === 'doc') { e.preventDefault(); openFindBar(); } break;
+      case 'h': if (currentMode === 'doc') { e.preventDefault(); openFindBar(true); } break;
+      case 'n': e.preventDefault(); openNewFile(); break;
+      case 'o': e.preventDefault(); importFile(); break;
+      case 'z': if (!e.shiftKey && currentMode === 'doc') { e.preventDefault(); execCmd('undo'); } break;
+      case 'y': if (currentMode === 'doc') { e.preventDefault(); execCmd('redo'); } break;
+    }
+  }
+  if (e.key === 'Escape') { closeFindBar(); closeModal(); }
+});
+
+// ===== INPUT LISTENERS for dirty tracking =====
+document.getElementById('doc-editor').addEventListener('input', () => {
+  updateWC();
+  markDirty();
+});
+
+// Filename rename triggers save
+document.getElementById('filename-input').addEventListener('input', () => {
+  const f = currentFile();
+  if (f) {
+    f.name = document.getElementById('filename-input').value;
+    document.getElementById('status-doc-name').textContent = f.name;
+    markDirty();
+  }
+});
+
+// Warn before close if unsaved
+window.addEventListener('beforeunload', e => {
+  if (unsavedChanges) {
+    // Try a final synchronous save
+    try { captureCurrentState(); saveAllToStorage(); } catch(_) {}
+  }
+});
+
+// ===== INITIAL LOAD =====
+function initApp() {
+  loadAllFromStorage();
+  if (files.length === 0) {
+    // Seed initial sample files for first run
+    const sample = makeBlankFile('doc', 'Project Report Q3');
+    sample.content = `
+      <h1>Project Report — Q3 2026</h1>
+      <p style="color:#8fa3c0;font-size:13px;margin-bottom:20px;">Prepared by: Innocent Forteh &nbsp;|&nbsp; Team21 &nbsp;|&nbsp; 12 May 2026</p>
+      <h2>Executive Summary</h2>
+      <p>This report outlines Team21's strategic accomplishments in the third quarter of 2026. Our productivity suite reached <strong>2.4 million</strong> active users across 87 countries, surpassing targets by <strong>38%</strong>.</p>
+      <blockquote>Team21 AllInOne — the most versatile productivity suite ever built for individuals and enterprises alike.</blockquote>
+      <h2>Key Achievements</h2>
+      <ul>
+        <li>Launched integrated AI Assist across all three modules</li>
+        <li>Reduced document render time by <strong>62%</strong></li>
+        <li>Enterprise onboarding grew by <strong>220%</strong> YoY</li>
+        <li>Real-time collaboration for up to 500 simultaneous users</li>
+      </ul>
+      <h2>Financial Overview</h2>
+      <p>Revenue for Q3 reached <strong>$18.7M</strong>, a <strong>41% increase</strong> over Q3 2025. Subscription renewals maintained a <strong>94.3% retention rate</strong>.</p>
+      <h2>Outlook — Q4 2026</h2>
+      <p>Key priorities include the launch of <em>Team21 Mobile</em>, the <em>Team21 Forms</em> module, and expansion into Arabic and Japanese markets.</p>`;
+    files.push(sample);
+
+    const sheetFile = makeBlankFile('sheet', 'Budget 2026');
+    sheetFile.content = {
+      activeTab: 'Sheet1',
+      tabs: {
+        'Sheet1': { data: {
+          'A1':'Category','B1':'Q1','C1':'Q2','D1':'Q3','E1':'Q4','F1':'Total',
+          'A2':'Engineering','B2':'180000','C2':'195000','D2':'210000','E2':'225000','F2':'=SUM(B2:E2)',
+          'A3':'Marketing','B3':'95000','C3':'110000','D3':'125000','E3':'140000','F3':'=SUM(B3:E3)',
+          'A4':'Operations','B4':'62000','C4':'68000','D4':'74000','E4':'80000','F4':'=SUM(B4:E4)',
+          'A5':'Total','B5':'=SUM(B2:B4)','C5':'=SUM(C2:C4)','D5':'=SUM(D2:D4)','E5':'=SUM(E2:E4)','F5':'=SUM(F2:F4)'
+        } },
+        'Sheet2': { data: {} }
+      }
+    };
+    files.push(sheetFile);
+
+    const presFile = makeBlankFile('pres', 'Product Pitch Deck');
+    presFile.content = [
+      { bg:'linear-gradient(135deg,#232d3f,#1a2235)', title:'Team21 AllInOne', subtitle:'The Complete Productivity Suite', titleColor:'#e8edf5', subtitleColor:'#8fa3c0' },
+      { bg:'linear-gradient(135deg,#0a1628,#1a3460)', title:'Our Vision', subtitle:'Empowering every person and organization to achieve more.', titleColor:'#ffffff', subtitleColor:'#7fa8d0' },
+      { bg:'linear-gradient(135deg,#003322,#005a3c)', title:'Key Features', subtitle:'Documents · Spreadsheets · Presentations · AI Assist', titleColor:'#ccffee', subtitleColor:'#77ccaa' },
+      { bg:'linear-gradient(135deg,#2a1a4a,#4a2a7a)', title:'2.4M Users', subtitle:'Active users across 87 countries — and growing every day.', titleColor:'#ffffff', subtitleColor:'#cc99ff' },
+      { bg:'linear-gradient(135deg,#1a1a1a,#333333)', title:'Thank You', subtitle:'team21.io  |  © Innocent Forteh', titleColor:'#ffffff', subtitleColor:'#999999' },
+    ];
+    files.push(presFile);
+    saveAllToStorage();
+  }
+
+  // Open last-used file, or the first one
+  const cur = localStorage.getItem(STORAGE_CURRENT);
+  if (cur && files.find(f => f.id === cur)) openFile(cur);
+  else if (files.length > 0) openFile(files.sort((a,b)=>b.updatedAt-a.updatedAt)[0].id);
+
+  renderFileList();
+  setSaveStatus('saved');
+}
+
+initApp();
+</script>
+</body>
+</html>

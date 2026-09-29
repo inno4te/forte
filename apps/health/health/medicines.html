@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Common Medicines &amp; Natural Alternatives — Team21 Health Platform</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700;9..144,800&family=Inter+Tight:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<style>
+  .med-filters{display:flex;flex-wrap:wrap;gap:8px;margin:24px 0 28px}
+  .med-filter{padding:8px 16px;border:1px solid var(--bg-3);background:var(--bg-2);color:var(--ink);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;border-radius:2px;transition:all .15s}
+  .med-filter:hover{border-color:var(--accent);color:var(--accent)}
+  .med-filter.active{background:var(--accent);color:var(--bg);border-color:var(--accent)}
+  .med-grid{display:grid;grid-template-columns:1fr;gap:20px;margin:24px 0}
+  .medicine{background:var(--bg-2);border:1px solid var(--bg-3);padding:28px;border-radius:4px;transition:border-color .2s}
+  .medicine:hover{border-color:var(--accent)}
+  .med-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:8px;flex-wrap:wrap}
+  .medicine h3{font-family:'Fraunces',serif;font-size:24px;font-weight:600;color:var(--ink);margin:0;line-height:1.2}
+  .med-cat{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);padding:4px 10px;border:1px solid var(--accent);border-radius:2px;white-space:nowrap}
+  .med-brands{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--mute);margin:4px 0 12px;letter-spacing:.04em}
+  .med-use{color:var(--ink);margin:8px 0 16px;line-height:1.55}
+  .med-dose{background:var(--bg-3);border-left:3px solid var(--accent);padding:12px 16px;margin:12px 0;font-size:13.5px;line-height:1.5}
+  .med-dose strong{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);display:block;margin-bottom:4px}
+  .med-section{margin:18px 0 8px}
+  .med-section h5{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--mute);margin:0 0 10px}
+  .med-section.warn-section h5{color:#c84a4a}
+  .med-section.alt-section h5{color:#3a8a4a}
+  .med-section ul{margin:0;padding-left:22px;line-height:1.6}
+  .med-section li{margin-bottom:6px;font-size:14px}
+  .med-note{margin-top:18px;padding:12px 16px;background:rgba(232,168,124,0.08);border-left:3px solid var(--accent);font-style:italic;font-size:13.5px;line-height:1.55;color:var(--ink)}
+  .med-note::before{content:'NOTE — ';font-family:'JetBrains Mono',monospace;font-style:normal;font-size:10px;letter-spacing:.12em;color:var(--accent);font-weight:600}
+  @media(min-width:900px){
+    .med-grid{grid-template-columns:1fr;gap:24px}
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="brand">
+      <div class="brand-mark">T21</div>
+      <div>
+        <div class="brand-name">Team21 Health Platform</div>
+        <div class="brand-sub">Preventive Intelligence</div>
+      </div>
+    </a>
+    <div class="nav-cta" id="navCta"></div>
+  </div>
+</nav>
+
+<main class="page">
+  <header class="page-head">
+    <div>
+      <div class="eyebrow">Pharmacy · Evidence-Based</div>
+      <h1>Common medicines &amp; their <em>natural alternatives</em>.</h1>
+      <p class="intro">A practical guide to the medications most frequently used across Africa, Europe and the United States — what they're for, how they work, their meaningful side effects, and the evidence-based natural alternatives where they exist. Every entry includes brand names you'll recognise on a pharmacy shelf from Yaoundé to Paris to New York. Information for understanding, not for self-treatment: never start, stop, or change a prescribed medicine without consulting your clinician.</p>
+    </div>
+    <div class="meta">
+      20+ MEDICINES<br>
+      BRANDS · DOSES · ALTERNATIVES<br>
+      SOURCES: WHO · BNF · FDA
+    </div>
+  </header>
+
+  <div class="warn">
+    <strong>Important framing</strong>
+    Natural alternatives listed below are evidence-based options for <em>mild or preventable</em> conditions, or as adjuncts to conventional treatment. They are not substitutes for life-saving medication. Antibiotics for confirmed bacterial infection, antimalarials for confirmed malaria, asthma rescue inhalers, insulin for type 1 diabetes — none of these have safe natural replacements. The aim of this page is informed partnership with your doctor, not avoidance of medicine.
+  </div>
+
+  <div class="search-bar">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+    <input type="text" id="medSearch" placeholder="Search medicines — Efferalgan, Artefan, paracetamol, malaria, headache…" />
+  </div>
+
+  <div class="med-filters" id="medFilters"></div>
+
+  <section class="band">
+    <h2>The <em>medicines</em></h2>
+    <div class="med-grid" id="medGrid"></div>
+  </section>
+
+  <section class="band">
+    <h2>Reading <em>medicine labels</em> responsibly</h2>
+    <div class="info-grid">
+      <div class="info-card">
+        <h4 style="color:var(--accent)">Always check</h4>
+        <ul>
+          <li>The active ingredient — not just the brand name</li>
+          <li>The dose per tablet/spoonful</li>
+          <li>The maximum daily dose</li>
+          <li>The expiry date and storage conditions</li>
+          <li>Whether to take with food or on empty stomach</li>
+          <li>Interactions with alcohol or other medicines you take</li>
+        </ul>
+      </div>
+      <div class="info-card">
+        <h4 style="color:#c84a4a">Warning signs</h4>
+        <ul>
+          <li>A medicine sold loose (not in original packaging)</li>
+          <li>Different colour, smell or taste than usual</li>
+          <li>No batch number or expiry date</li>
+          <li>Spelling errors on the package — common in counterfeits</li>
+          <li>Significantly cheaper than other pharmacies</li>
+          <li>Any "miracle cure" claims</li>
+        </ul>
+      </div>
+      <div class="info-card">
+        <h4 style="color:#3a8a4a">Before taking any medicine</h4>
+        <ul>
+          <li>Know what condition you are treating</li>
+          <li>Have you actually been diagnosed, or are you self-treating?</li>
+          <li>Pregnant or breastfeeding? Many medicines are contraindicated</li>
+          <li>List all other medicines and supplements you take</li>
+          <li>Tell your pharmacist about allergies</li>
+          <li>Ask: "What should I do if I miss a dose?"</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="band">
+    <h2>When to <em>see a doctor</em>, not just take a pill</h2>
+    <div class="info-grid">
+      <div class="info-card">
+        <h4>Fever &gt; 39°C lasting &gt; 3 days</h4>
+        <p>Especially with stiff neck, severe headache, breathlessness, or confusion — and in any child under 3 months. Could indicate serious infection requiring specific treatment.</p>
+      </div>
+      <div class="info-card">
+        <h4>Pain that wakes you at night</h4>
+        <p>Or that progressively worsens over weeks. Not the kind to manage with regular paracetamol — needs investigation.</p>
+      </div>
+      <div class="info-card">
+        <h4>Blood in stool, urine, or vomit</h4>
+        <p>Always abnormal. Loperamide and antacids will mask the problem. See a clinician.</p>
+      </div>
+      <div class="info-card">
+        <h4>Persistent cough &gt; 3 weeks</h4>
+        <p>In a region where TB is endemic, this is especially important. Cough suppressants are not the answer.</p>
+      </div>
+      <div class="info-card">
+        <h4>Severe abdominal pain</h4>
+        <p>Especially with vomiting, fever, or no bowel movement — could be appendicitis, obstruction, or worse. Not a paracetamol situation.</p>
+      </div>
+      <div class="info-card">
+        <h4>Mental health crisis</h4>
+        <p>Suicidal thoughts, panic attacks, or sustained depression deserve real care. Diazepam is a temporary tool — therapy, support, and proper treatment change lives.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="band">
+    <h2>The bigger <em>picture</em></h2>
+    <p style="font-size:17px;line-height:1.7;max-width:80ch;color:var(--ink)">Across much of Africa, Europe and the world, the <strong>most over-used medicines</strong> are antibiotics (driving resistance that already kills 1.27 million people per year), proton pump inhibitors (taken for decades when 8 weeks were intended), benzodiazepines (addictive after 2–4 weeks), and painkillers used to mask problems that need investigation. The <strong>most under-used</strong> tools are oral rehydration salts, vaccines, properly-timed antimalarials, and the simple acts of sleep, movement, nutrition, and human connection. A wise relationship with medicine starts with knowing both.</p>
+  </section>
+
+  <section class="band band-cta">
+    <h2>See <em>related sections</em></h2>
+    <div class="ctas">
+      <a class="btn btn-primary" href="natural-remedies.html">Natural remedies in depth →</a>
+      <a class="btn" href="evidence.html">Sources & disclaimer →</a>
+      <a class="btn" href="community.html">Ask a question →</a>
+    </div>
+  </section>
+</main>
+
+<script src="data.js"></script>
+<script src="data-ext.js"></script>
+<script src="lang-data.js"></script>
+<script src="lang.js"></script>
+<script src="shared.js"></script>
+<script src="components.js"></script>
+<script>
+T21.boot('medicines.html');
+
+const catLabels = {
+  pain: 'Pain & Fever',
+  antimalarial: 'Antimalarials',
+  antibiotic: 'Antibiotics',
+  allergy: 'Allergy',
+  respiratory: 'Respiratory',
+  gi: 'Digestion',
+  metabolic: 'Metabolic',
+  cardio: 'Cardiovascular',
+  mental: 'Mental Health'
+};
+
+const cats = [...new Set(MEDICINES.map(m=>m.cat))];
+const filters = document.getElementById('medFilters');
+filters.innerHTML =
+  `<button class="med-filter active" data-cat="all">All categories</button>` +
+  cats.map(c=>`<button class="med-filter" data-cat="${c}">${catLabels[c]||c}</button>`).join('');
+
+const grid = document.getElementById('medGrid');
+function render(filter='all'){
+  const list = filter==='all' ? MEDICINES : MEDICINES.filter(m=>m.cat===filter);
+  grid.innerHTML = list.map(m=>{
+    const hay = (m.name+' '+m.brands+' '+m.use+' '+m.sideEffects.join(' ')+' '+m.alternatives.join(' ')).toLowerCase();
+    return `<article class="medicine" data-search="${hay.replace(/"/g,'&quot;')}" data-cat="${m.cat}">
+      <div class="med-head">
+        <div>
+          <h3>${m.name}</h3>
+          <div class="med-brands">Brands: ${m.brands}</div>
+        </div>
+        <span class="med-cat">${catLabels[m.cat]||m.cat}</span>
+      </div>
+      <p class="med-use">${m.use}</p>
+      <div class="med-dose"><strong>Typical dose</strong>${m.dose}</div>
+      <div class="med-section warn-section">
+        <h5>Side effects to know</h5>
+        <ul>${m.sideEffects.map(s=>`<li>${s}</li>`).join('')}</ul>
+      </div>
+      <div class="med-section alt-section">
+        <h5>Natural alternatives &amp; adjuncts</h5>
+        <ul>${m.alternatives.map(a=>`<li>${a}</li>`).join('')}</ul>
+      </div>
+      <p class="med-note">${m.note}</p>
+    </article>`;
+  }).join('');
+}
+render();
+
+filters.addEventListener('click', e=>{
+  const b = e.target.closest('.med-filter');
+  if(!b) return;
+  filters.querySelectorAll('.med-filter').forEach(x=>x.classList.remove('active'));
+  b.classList.add('active');
+  render(b.dataset.cat);
+});
+
+document.getElementById('medSearch').addEventListener('input', e=>{
+  const q = e.target.value.toLowerCase().trim();
+  grid.querySelectorAll('.medicine').forEach(m=>{
+    m.style.display = (!q || (m.dataset.search||'').includes(q)) ? '' : 'none';
+  });
+});
+</script>
+</body>
+</html>

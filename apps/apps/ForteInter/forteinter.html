@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ForTeInter — Live Session</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+  :root{
+    --bg:#E7E8EF;
+    --text:#33354A;
+    --muted:#8385A0;
+    --gold:#9C7A3C;
+    --red:#7A1F2B;
+    --sh-light:#FFFFFF;
+    --sh-dark:#B7B9C8;
+    --status-green:#3C8F5E;
+    --status-yellow:#D9A63C;
+    --status-red:#B23A3A;
+  }
+  *{ box-sizing:border-box; }
+  html,body{ height:100%; }
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Inter',sans-serif;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{ animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important; }
+  }
+
+  .raised{ background:var(--bg); box-shadow: 8px 8px 16px var(--sh-dark), -8px -8px 16px var(--sh-light); }
+  .raised-sm{ background:var(--bg); box-shadow: 4px 4px 8px var(--sh-dark), -4px -4px 8px var(--sh-light); }
+  .pressed{ background:var(--bg); box-shadow: inset 5px 5px 10px var(--sh-dark), inset -5px -5px 10px var(--sh-light); }
+
+  #boardCapture{ display:flex; flex-direction:column; flex:1; }
+
+  header{
+    padding:32px 28px 12px;
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:16px;
+    flex-wrap:wrap;
+  }
+  .brand h1{
+    font-family:'Poppins',sans-serif;
+    font-weight:600;
+    font-size:clamp(26px,4vw,34px);
+    margin:0;
+    letter-spacing:-0.01em;
+  }
+  .brand .sub{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    color:var(--muted);
+    font-size:13px;
+    margin-top:6px;
+  }
+  .live-dot{
+    width:8px; height:8px; border-radius:50%;
+    background:var(--status-yellow);
+    transition: background 0.3s ease;
+    flex-shrink:0;
+  }
+  .live-dot.status-live{ animation: pulse-green 1.8s infinite; }
+  .live-dot.status-connecting{ animation: pulse-yellow 1.1s infinite; }
+  .live-dot.status-offline{ animation:none; }
+  @keyframes pulse-green{
+    0%{ box-shadow:0 0 0 0 rgba(60,143,94,0.5); }
+    70%{ box-shadow:0 0 0 8px rgba(60,143,94,0); }
+    100%{ box-shadow:0 0 0 0 rgba(60,143,94,0); }
+  }
+  @keyframes pulse-yellow{
+    0%,100%{ opacity:1; } 50%{ opacity:0.35; }
+  }
+
+  .stats{ display:flex; gap:10px; align-items:center; }
+  .pill{
+    display:flex; align-items:center; gap:6px;
+    padding:9px 16px; border-radius:999px;
+    font-size:13px; font-weight:600; white-space:nowrap;
+    color:var(--text);
+  }
+  .admin-btn{
+    border:none; cursor:pointer;
+    padding:9px 16px; border-radius:999px;
+    font-size:12px; font-family:'Inter',sans-serif; font-weight:600;
+    color:var(--muted); background:var(--bg);
+  }
+  .admin-btn:active{ box-shadow: inset 3px 3px 6px var(--sh-dark), inset -3px -3px 6px var(--sh-light); }
+
+  main{
+    flex:1; display:flex; align-items:center; justify-content:center;
+    padding:20px 16px 260px; min-height:340px;
+  }
+  .cloud{
+    max-width:1000px; width:100%;
+    display:flex; flex-wrap:wrap; align-items:center; justify-content:center;
+    gap:16px 18px; padding:20px;
+  }
+  .tag{
+    display:inline-flex; align-items:center; gap:8px;
+    padding:0.4em 0.95em; border-radius:999px; line-height:1.3;
+    font-weight:600; white-space:nowrap; color:var(--text);
+    animation: bob 5s ease-in-out infinite;
+    transition: box-shadow 0.15s ease, transform 0.15s ease;
+  }
+  .tag:hover{ box-shadow: inset 4px 4px 8px var(--sh-dark), inset -4px -4px 8px var(--sh-light); }
+  .tag .count{ font-size:0.7em; color:var(--muted); font-weight:700; }
+  @keyframes bob{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-5px); } }
+
+  .empty{ text-align:center; color:var(--muted); max-width:360px; }
+  .empty .big{ font-family:'Poppins',sans-serif; font-weight:500; font-size:20px; color:var(--text); margin-bottom:8px; }
+
+  .dock-wrap{
+    position:fixed; left:0; right:0; bottom:0;
+    display:flex; justify-content:center;
+    padding:20px 16px 26px; pointer-events:none;
+  }
+  .dock{ pointer-events:auto; width:100%; max-width:560px; border-radius:28px; padding:22px; }
+
+  .dial-row{ display:flex; align-items:center; justify-content:center; gap:14px; margin-bottom:18px; user-select:none; }
+  .dial-label{ font-size:13px; font-weight:600; color:var(--muted); cursor:pointer; transition: color 0.2s ease; text-align:center; width:76px; }
+  .dial-label.left.active{ color:var(--gold); }
+  .dial-label.right.active{ color:var(--red); }
+
+  .dial-track{ position:relative; width:88px; height:40px; border-radius:999px; cursor:pointer; flex-shrink:0; }
+  .dial-knob{
+    position:absolute; top:4px; left:4px; width:32px; height:32px; border-radius:50%;
+    background:var(--bg);
+    box-shadow: 4px 4px 8px var(--sh-dark), -4px -4px 8px var(--sh-light);
+    transition: left 0.25s cubic-bezier(.4,1.4,.6,1), box-shadow 0.25s ease;
+  }
+  .dial-knob::after{ content:''; position:absolute; inset:0; border-radius:50%; transition: box-shadow 0.25s ease; }
+  .dial-track.state-highfive .dial-knob{ left:52px; }
+  .dial-track.state-highfive .dial-knob::after{ box-shadow: inset 0 0 0 2px var(--gold); }
+  .dial-track.state-question .dial-knob{ left:4px; }
+  .dial-track.state-question .dial-knob::after{ box-shadow: inset 0 0 0 2px var(--red); }
+
+  .input-row{ display:flex; gap:10px; align-items:center; }
+  .input-row input{
+    flex:1; background:var(--bg);
+    box-shadow: inset 5px 5px 10px var(--sh-dark), inset -5px -5px 10px var(--sh-light);
+    border:none; border-radius:16px; padding:14px 16px; color:var(--text);
+    font-family:'Inter',sans-serif; font-size:15px; outline:none;
+  }
+  .input-row input::placeholder{ color:var(--muted); }
+  .input-row input:disabled{ opacity:0.6; }
+
+  .send-btn{
+    width:48px; height:48px; flex-shrink:0; border-radius:50%; border:none;
+    background:var(--bg);
+    box-shadow: 6px 6px 12px var(--sh-dark), -6px -6px 12px var(--sh-light);
+    color:var(--muted); font-size:18px; cursor:not-allowed;
+    display:flex; align-items:center; justify-content:center;
+    transition: all 0.15s ease;
+  }
+  .send-btn.ready{ cursor:pointer; color:var(--text); }
+  .send-btn.ready.highfive{ color:var(--gold); box-shadow: 6px 6px 12px var(--sh-dark), -6px -6px 12px var(--sh-light), inset 0 0 0 2px rgba(156,122,60,0.35); }
+  .send-btn.ready.question{ color:var(--red); box-shadow: 6px 6px 12px var(--sh-dark), -6px -6px 12px var(--sh-light), inset 0 0 0 2px rgba(122,31,43,0.35); }
+  .send-btn:active.ready{ box-shadow: inset 4px 4px 8px var(--sh-dark), inset -4px -4px 8px var(--sh-light); }
+
+  .hint{ text-align:center; font-size:11px; color:var(--muted); margin-top:14px; }
+  .status{ text-align:center; font-size:11px; color:var(--muted); height:14px; margin-top:4px; }
+  .copyright{ text-align:center; font-size:10px; color:var(--muted); opacity:0.7; margin-top:12px; }
+
+  /* --- modals --- */
+  .modal-overlay{
+    position:fixed; inset:0; background:rgba(51,53,74,0.35);
+    display:flex; align-items:center; justify-content:center;
+    z-index:80; padding:20px;
+  }
+  .modal-panel{ width:100%; max-width:340px; border-radius:24px; padding:28px; text-align:center; }
+  .modal-panel h2{ font-family:'Poppins',sans-serif; font-weight:600; font-size:19px; margin:0 0 6px; }
+  .modal-panel p.desc{ color:var(--muted); font-size:13px; margin:0 0 20px; }
+  .pin-input{
+    width:150px; margin:0 auto 8px; display:block; text-align:center;
+    font-size:24px; letter-spacing:10px; padding:12px 10px; border:none;
+    border-radius:14px; background:var(--bg);
+    box-shadow: inset 5px 5px 10px var(--sh-dark), inset -5px -5px 10px var(--sh-light);
+    color:var(--text); outline:none;
+  }
+  .pin-error{ color:var(--red); font-size:12px; height:16px; margin-bottom:10px; }
+  .modal-btn-row{ display:flex; gap:10px; justify-content:center; margin-top:6px; }
+  .modal-btn{
+    border:none; cursor:pointer; padding:11px 20px; border-radius:14px;
+    font-family:'Inter',sans-serif; font-weight:600; font-size:13px;
+    background:var(--bg); color:var(--text);
+    box-shadow: 5px 5px 10px var(--sh-dark), -5px -5px 10px var(--sh-light);
+  }
+  .modal-btn:active{ box-shadow: inset 4px 4px 8px var(--sh-dark), inset -4px -4px 8px var(--sh-light); }
+  .modal-btn.ghost{ color:var(--muted); }
+  .shake{ animation: shake 0.4s; }
+  @keyframes shake{ 0%,100%{ transform:translateX(0); } 25%{ transform:translateX(-6px); } 75%{ transform:translateX(6px); } }
+
+  .dash-grid{ display:flex; flex-direction:column; gap:10px; margin-top:8px; }
+  .dash-btn{
+    display:flex; align-items:center; justify-content:center; gap:8px;
+    padding:13px; border-radius:14px; border:none; cursor:pointer;
+    background:var(--bg); color:var(--text);
+    font-family:'Inter',sans-serif; font-weight:600; font-size:14px;
+    box-shadow: 5px 5px 10px var(--sh-dark), -5px -5px 10px var(--sh-light);
+  }
+  .dash-btn:active{ box-shadow: inset 4px 4px 8px var(--sh-dark), inset -4px -4px 8px var(--sh-light); }
+  .dash-btn.danger{ color:var(--red); }
+  .dash-close{ margin-top:14px; }
+</style>
+</head>
+<body>
+
+<div id="boardCapture">
+<header>
+  <div class="brand">
+    <h1>ForTeInter</h1>
+    <div class="sub"><span class="live-dot" id="liveDot" title="Connecting…"></span> Live from the room</div>
+  </div>
+  <div class="stats">
+    <div class="pill raised">🙌 <span id="hfCount">0</span></div>
+    <div class="pill raised">❓ <span id="qCount">0</span></div>
+    <button class="admin-btn raised-sm" id="adminBtn">Admin</button>
+  </div>
+</header>
+
+<main>
+  <div class="cloud" id="cloud"></div>
+  <div class="empty" id="emptyState" style="display:none;">
+    <div class="big">Nothing here yet</div>
+    <div>Be the first to send a high five or ask a question below.</div>
+  </div>
+</main>
+</div>
+
+<div class="dock-wrap">
+  <div class="dock raised">
+    <div class="dial-row">
+      <div class="dial-label left" id="labelHighfive">🙌 High five</div>
+      <div class="dial-track pressed" id="dialTrack">
+        <div class="dial-knob" id="dialKnob"></div>
+      </div>
+      <div class="dial-label right" id="labelQuestion">❓ Question</div>
+    </div>
+    <div class="input-row">
+      <input id="commentInput" type="text" maxlength="100" placeholder="Choose an option above first…" disabled>
+      <button class="send-btn" id="sendBtn" aria-label="Send">➤</button>
+    </div>
+    <div class="hint">Everyone on this link sees the board update live.</div>
+    <div class="status" id="statusLine"></div>
+    <div class="copyright">© Innocent Forteh</div>
+  </div>
+</div>
+
+<!-- PIN modal -->
+<div class="modal-overlay" id="pinOverlay" style="display:none;">
+  <div class="modal-panel raised" id="pinPanel">
+    <h2>Admin access</h2>
+    <p class="desc">Enter the admin code to open the dashboard.</p>
+    <input class="pin-input pressed" id="pinInput" type="password" inputmode="numeric" maxlength="4" placeholder="••••">
+    <div class="pin-error" id="pinError"></div>
+    <div class="modal-btn-row">
+      <button class="modal-btn ghost" id="pinCancel">Cancel</button>
+      <button class="modal-btn" id="pinSubmit">Unlock</button>
+    </div>
+  </div>
+</div>
+
+<!-- Admin dashboard modal -->
+<div class="modal-overlay" id="dashOverlay" style="display:none;">
+  <div class="modal-panel raised" style="max-width:320px;">
+    <h2>Admin dashboard</h2>
+    <p class="desc">Export the board or reset it for everyone.</p>
+    <div class="dash-grid">
+      <button class="dash-btn" id="exportPng">⬇ Download PNG</button>
+      <button class="dash-btn" id="exportJpg">⬇ Download JPEG</button>
+      <button class="dash-btn" id="exportPdf">⬇ Download PDF</button>
+      <button class="dash-btn danger" id="clearBoardBtn">✕ Clear board</button>
+    </div>
+    <button class="modal-btn ghost dash-close" id="dashClose">Close</button>
+  </div>
+</div>
+
+<script>
+/* ======================================================
+   CONFIG — paste your deployed Google Apps Script URL here
+   (see the accompanying forteinter-google-script.gs file
+   for the code to deploy, and the setup notes below it)
+   ====================================================== */
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbxmry1DJYIys6QX0fqmIv1BbYm9RmW2HEypt3Xia_gxdw93LXA8Jz7oJ6p1MRFHGbZCoA/exec';
+const ADMIN_CODE = '6791'; // must match ADMIN_KEY in the Apps Script
+
+let selectedType = null;
+let entries = [];
+let lastRenderSignature = '';
+let firstLoad = true;
+
+const cloudEl = document.getElementById('cloud');
+const emptyEl = document.getElementById('emptyState');
+const hfCountEl = document.getElementById('hfCount');
+const qCountEl = document.getElementById('qCount');
+const dialTrack = document.getElementById('dialTrack');
+const labelHighfive = document.getElementById('labelHighfive');
+const labelQuestion = document.getElementById('labelQuestion');
+const input = document.getElementById('commentInput');
+const sendBtn = document.getElementById('sendBtn');
+const statusLine = document.getElementById('statusLine');
+const liveDot = document.getElementById('liveDot');
+const adminBtn = document.getElementById('adminBtn');
+const pinOverlay = document.getElementById('pinOverlay');
+const pinPanel = document.getElementById('pinPanel');
+const pinInput = document.getElementById('pinInput');
+const pinError = document.getElementById('pinError');
+const pinCancel = document.getElementById('pinCancel');
+const pinSubmit = document.getElementById('pinSubmit');
+const dashOverlay = document.getElementById('dashOverlay');
+const dashClose = document.getElementById('dashClose');
+const clearBoardBtn = document.getElementById('clearBoardBtn');
+const exportPng = document.getElementById('exportPng');
+const exportJpg = document.getElementById('exportJpg');
+const exportPdf = document.getElementById('exportPdf');
+
+function hashStr(s){
+  let h = 0;
+  for(let i=0;i<s.length;i++){ h = (h*31 + s.charCodeAt(i)) | 0; }
+  return Math.abs(h);
+}
+
+function setStatus(state){ // 'live' | 'connecting' | 'offline'
+  liveDot.classList.remove('status-live','status-connecting','status-offline');
+  liveDot.classList.add('status-' + state);
+  liveDot.title = state === 'live' ? 'Live' : state === 'connecting' ? 'Connecting…' : 'Not connected';
+}
+
+/* ---------- selection dial ---------- */
+function selectType(type){
+  selectedType = type;
+  dialTrack.classList.remove('state-highfive','state-question');
+  dialTrack.classList.add(type === 'highfive' ? 'state-highfive' : 'state-question');
+  labelHighfive.classList.toggle('active', type==='highfive');
+  labelQuestion.classList.toggle('active', type==='question');
+  input.disabled = false;
+  input.placeholder = type === 'highfive' ? 'Say what you loved…' : 'Type your question…';
+  input.focus();
+  updateSendState();
+}
+function updateSendState(){
+  const ready = selectedType && input.value.trim().length > 0;
+  sendBtn.classList.toggle('ready', ready);
+  sendBtn.classList.remove('highfive','question');
+  if(ready) sendBtn.classList.add(selectedType);
+  sendBtn.disabled = !ready;
+}
+labelHighfive.addEventListener('click', () => selectType('highfive'));
+labelQuestion.addEventListener('click', () => selectType('question'));
+dialTrack.addEventListener('click', () => selectType(selectedType === 'highfive' ? 'question' : 'highfive'));
+input.addEventListener('input', updateSendState);
+input.addEventListener('keydown', (e) => { if(e.key === 'Enter') submitEntry(); });
+sendBtn.addEventListener('click', submitEntry);
+
+/* ---------- Google Apps Script backend ---------- */
+async function fetchEntries(){
+  try{
+    const res = await fetch(GAS_URL + '?action=list');
+    const data = await res.json();
+    entries = Array.isArray(data) ? data : [];
+    setStatus('live');
+    return true;
+  }catch(e){
+    setStatus('offline');
+    return false;
+  }
+}
+
+async function postEntry(type, text){
+  await fetch(GAS_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify({ type, text })
+  });
+}
+
+async function clearRemote(){
+  const res = await fetch(GAS_URL + '?action=clear&key=' + encodeURIComponent(ADMIN_CODE));
+  return res.json();
+}
+
+async function submitEntry(){
+  const text = input.value.trim();
+  if(!selectedType || !text) return;
+  sendBtn.disabled = true;
+  statusLine.textContent = 'Sending…';
+  try{
+    await postEntry(selectedType, text);
+    input.value = '';
+    statusLine.textContent = 'Sent!';
+    setTimeout(() => { statusLine.textContent = ''; }, 1500);
+    await fetchEntries();
+    render();
+  }catch(e){
+    statusLine.textContent = "Couldn't send — check your connection and try again.";
+    setStatus('offline');
+  }
+  updateSendState();
+}
+
+/* ---------- rendering ---------- */
+function render(){
+  const groups = {};
+  let hfTotal = 0, qTotal = 0;
+
+  for(const e of entries){
+    if(e.type === 'highfive') hfTotal++;
+    if(e.type === 'question') qTotal++;
+    const key = (e.text || '').trim().toLowerCase();
+    if(!key) continue;
+    if(!groups[key]){
+      groups[key] = { display: e.text.trim(), count: 0, highfive: 0, question: 0 };
+    }
+    groups[key].count++;
+    groups[key][e.type] = (groups[key][e.type] || 0) + 1;
+  }
+
+  hfCountEl.textContent = hfTotal;
+  qCountEl.textContent = qTotal;
+
+  const items = Object.values(groups);
+  const signature = JSON.stringify(items);
+  if(signature === lastRenderSignature) return;
+  lastRenderSignature = signature;
+
+  if(items.length === 0){
+    cloudEl.style.display = 'none';
+    emptyEl.style.display = 'block';
+    return;
+  }
+  cloudEl.style.display = 'flex';
+  emptyEl.style.display = 'none';
+
+  const maxCount = Math.max(...items.map(i => i.count));
+  cloudEl.innerHTML = '';
+  items
+    .sort((a,b) => b.count - a.count)
+    .forEach(item => {
+      const type = item.highfive >= item.question ? 'highfive' : 'question';
+      const icon = type === 'highfive' ? '🙌' : '❓';
+      const scale = maxCount > 1 ? (item.count - 1) / (maxCount - 1) : 0;
+      const fontSize = 14 + scale * 20;
+      const el = document.createElement('span');
+      el.className = 'tag raised';
+      el.style.fontSize = fontSize + 'px';
+      const h = hashStr(item.display);
+      el.style.animationDelay = (h % 50) / 10 + 's';
+      el.style.animationDuration = (4 + (h % 30) / 10) + 's';
+      el.innerHTML = icon + ' ' + escapeHtml(item.display) +
+        (item.count > 1 ? '<span class="count">×' + item.count + '</span>' : '');
+      cloudEl.appendChild(el);
+    });
+}
+
+function escapeHtml(s){
+  const d = document.createElement('div');
+  d.textContent = s;
+  return d.innerHTML;
+}
+
+async function poll(){
+  if(firstLoad) setStatus('connecting');
+  await fetchEntries();
+  render();
+  firstLoad = false;
+}
+poll();
+setInterval(poll, 3000);
+
+/* ---------- admin: PIN gate ---------- */
+function openPin(){
+  pinInput.value = '';
+  pinError.textContent = '';
+  pinOverlay.style.display = 'flex';
+  setTimeout(() => pinInput.focus(), 50);
+}
+function closePin(){ pinOverlay.style.display = 'none'; }
+
+adminBtn.addEventListener('click', openPin);
+pinCancel.addEventListener('click', closePin);
+pinOverlay.addEventListener('click', (e) => { if(e.target === pinOverlay) closePin(); });
+pinInput.addEventListener('keydown', (e) => { if(e.key === 'Enter') checkPin(); });
+pinSubmit.addEventListener('click', checkPin);
+
+function checkPin(){
+  if(pinInput.value === ADMIN_CODE){
+    closePin();
+    dashOverlay.style.display = 'flex';
+  }else{
+    pinError.textContent = 'Incorrect code — try again.';
+    pinPanel.classList.remove('shake');
+    requestAnimationFrame(() => pinPanel.classList.add('shake'));
+    pinInput.value = '';
+    pinInput.focus();
+  }
+}
+
+dashClose.addEventListener('click', () => { dashOverlay.style.display = 'none'; });
+dashOverlay.addEventListener('click', (e) => { if(e.target === dashOverlay) dashOverlay.style.display = 'none'; });
+
+/* ---------- admin: clear board ---------- */
+clearBoardBtn.addEventListener('click', async () => {
+  if(!confirm("Clear the whole board for everyone? This can't be undone.")) return;
+  try{
+    await clearRemote();
+    entries = [];
+    lastRenderSignature = '';
+    render();
+    dashOverlay.style.display = 'none';
+  }catch(e){
+    alert("Couldn't clear the board — check the connection and try again.");
+  }
+});
+
+/* ---------- admin: export board ---------- */
+async function captureCanvas(){
+  const target = document.getElementById('boardCapture');
+  return await html2canvas(target, { backgroundColor: '#E7E8EF', scale: 2 });
+}
+function triggerDownload(dataUrl, filename){
+  const a = document.createElement('a');
+  a.href = dataUrl;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+}
+exportPng.addEventListener('click', async () => {
+  const canvas = await captureCanvas();
+  triggerDownload(canvas.toDataURL('image/png'), 'forteinter-board.png');
+});
+exportJpg.addEventListener('click', async () => {
+  const canvas = await captureCanvas();
+  triggerDownload(canvas.toDataURL('image/jpeg', 0.95), 'forteinter-board.jpg');
+});
+exportPdf.addEventListener('click', async () => {
+  const canvas = await captureCanvas();
+  const { jsPDF } = window.jspdf;
+  const pdf = new jsPDF({
+    orientation: canvas.width > canvas.height ? 'landscape' : 'portrait',
+    unit: 'px',
+    format: [canvas.width, canvas.height]
+  });
+  pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, canvas.width, canvas.height);
+  pdf.save('forteinter-board.pdf');
+});
+</script>
+
+</body>
+</html>

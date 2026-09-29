@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>T21 LAT — Team21 Leadership Assessment Tool</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --g50:#EAF3DE;--g100:#C8E09B;--g200:#97C459;--g400:#5A8F1E;--g600:#3B6D11;--g800:#27500A;--g900:#173404;
+  --gold50:#FFFBF0;--gold100:#FCDFA0;--gold200:#EF9F27;--gold400:#BA7517;--gold600:#7A4D0A;
+  --bg:#F5F9F0;--surface:#FFFFFF;--text:#1C1C18;--muted:#5A604A;--border:#C5DFA0;
+  --shadow:0 2px 16px rgba(39,80,10,.10);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+
+/* ── HEADER ── */
+.hdr{background:linear-gradient(120deg,var(--g900) 0%,var(--g800) 40%,var(--g600) 75%,var(--g400) 100%);
+  padding:16px 32px;display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;z-index:300;box-shadow:0 3px 24px rgba(23,52,4,.30);}
+.hdr-logo{display:flex;align-items:center;gap:14px;}
+.hdr-badge{width:48px;height:48px;border-radius:50%;background:var(--gold200);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:var(--g900);flex-shrink:0;}
+.hdr-text h1{font-family:'Playfair Display',serif;font-size:17px;color:#fff;font-weight:700;line-height:1.2;}
+.hdr-text p{font-size:10.5px;color:rgba(255,255,255,.65);letter-spacing:.4px;margin-top:1px;}
+.hdr-right{display:flex;align-items:center;gap:10px;}
+.lang-btn{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.28);color:#fff;
+  padding:7px 16px;border-radius:20px;cursor:pointer;font-size:12px;font-weight:600;transition:.2s;font-family:'DM Sans',sans-serif;}
+.lang-btn:hover{background:rgba(255,255,255,.26);}
+
+/* ── NAV ── */
+.nav{background:var(--surface);border-bottom:2px solid var(--border);
+  display:flex;overflow-x:auto;padding:0 20px;gap:0;scrollbar-width:none;}
+.nav::-webkit-scrollbar{display:none;}
+.ntab{padding:13px 15px;font-size:12px;font-weight:600;color:var(--muted);
+  border-bottom:3px solid transparent;cursor:pointer;white-space:nowrap;
+  background:none;border-top:none;border-left:none;border-right:none;
+  transition:.2s;display:flex;align-items:center;gap:6px;font-family:'DM Sans',sans-serif;}
+.ntab.active{color:var(--g600);border-bottom-color:var(--g400);}
+.ntab:hover:not(.active){color:var(--g800);}
+.ntab .pip{width:7px;height:7px;border-radius:50%;background:var(--border);flex-shrink:0;transition:.3s;}
+.ntab.done .pip{background:var(--g400);}
+
+/* ── MAIN ── */
+.main{max-width:880px;margin:0 auto;padding:30px 20px 90px;}
+
+/* ── HOME ── */
+.hero{text-align:center;padding:48px 16px 36px;}
+.hero-chip{display:inline-flex;align-items:center;gap:6px;background:var(--g50);
+  color:var(--g600);border:1px solid var(--border);border-radius:20px;
+  padding:5px 16px;font-size:11px;font-weight:700;letter-spacing:.8px;
+  margin-bottom:20px;text-transform:uppercase;}
+.hero h2{font-family:'Playfair Display',serif;font-size:40px;color:var(--g900);
+  line-height:1.16;margin-bottom:14px;}
+.hero-sub{font-size:15px;color:var(--muted);max-width:520px;margin:0 auto 32px;line-height:1.8;}
+/* name input */
+.name-box{display:flex;gap:10px;max-width:420px;margin:0 auto 32px;flex-wrap:wrap;justify-content:center;}
+.name-input{flex:1;min-width:200px;padding:12px 16px;border:1.5px solid var(--border);
+  border-radius:10px;font-size:14px;font-family:'DM Sans',sans-serif;color:var(--text);
+  background:var(--surface);outline:none;transition:.2s;}
+.name-input:focus{border-color:var(--g400);box-shadow:0 0 0 3px rgba(90,143,30,.12);}
+.name-save-btn{padding:12px 20px;background:var(--g600);color:#fff;border:none;
+  border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:.2s;}
+.name-save-btn:hover{background:var(--g800);}
+/* test grid */
+.tgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(195px,1fr));gap:14px;}
+.tc{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;
+  padding:20px 16px;cursor:pointer;transition:.22s;text-align:left;position:relative;overflow:hidden;}
+.tc::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--g100);}
+.tc:hover{border-color:var(--g400);transform:translateY(-4px);box-shadow:0 10px 28px rgba(90,143,30,.14);}
+.tc.primary{background:linear-gradient(145deg,var(--g800),var(--g600));border-color:transparent;}
+.tc.primary::before{background:var(--gold200);}
+.tc.primary h3,.tc.primary .tc-desc,.tc.primary .tc-time{color:#fff;}
+.tc.primary .tc-desc{opacity:.82;}.tc.primary .tc-time{opacity:.65;}
+.tc.done-card{border-color:var(--g200);}
+.tc.done-card::before{background:var(--g400);}
+.tc-done-stamp{position:absolute;top:12px;right:12px;background:var(--g400);color:#fff;
+  font-size:10px;font-weight:700;padding:3px 9px;border-radius:10px;letter-spacing:.3px;}
+.tc-ico{font-size:28px;margin-bottom:12px;}
+.tc h3{font-size:13px;font-weight:700;color:var(--g900);margin-bottom:5px;line-height:1.3;}
+.tc-desc{font-size:12px;color:var(--muted);line-height:1.55;}
+.tc-time{margin-top:12px;font-size:11px;color:var(--g400);font-weight:700;}
+
+/* ── PROGRESS ── */
+.prog-wrap{margin-bottom:22px;}
+.prog-meta{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:8px;font-weight:500;}
+.prog-track{height:6px;background:var(--g50);border-radius:3px;overflow:hidden;}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--g800),var(--g400),var(--g200));border-radius:3px;transition:width .45s ease;}
+.step-dots{display:flex;gap:5px;margin-bottom:20px;flex-wrap:wrap;}
+.sdot{width:26px;height:5px;border-radius:3px;background:var(--border);transition:.3s;}
+.sdot.done{background:var(--g400);}
+.sdot.cur{background:var(--g200);}
+
+/* ── QUESTION CARD ── */
+.qcard{background:var(--surface);border:1px solid var(--border);border-radius:18px;
+  padding:30px;margin-bottom:20px;box-shadow:var(--shadow);}
+.qcat{font-size:10px;font-weight:700;color:var(--g400);letter-spacing:1.4px;
+  text-transform:uppercase;margin-bottom:9px;}
+.qtext{font-size:19px;font-weight:600;color:var(--g900);margin-bottom:8px;line-height:1.38;}
+.qex{font-size:13px;color:var(--muted);font-style:italic;line-height:1.6;
+  background:var(--g50);padding:10px 14px;border-radius:9px;border-left:3px solid var(--g200);
+  margin-bottom:24px;}
+.opts{display:grid;gap:10px;}
+.opt{background:var(--bg);border:1.5px solid var(--border);border-radius:12px;
+  padding:14px 18px;text-align:left;cursor:pointer;font-size:14px;color:var(--text);
+  transition:.16s;display:flex;align-items:flex-start;gap:13px;
+  font-family:'DM Sans',sans-serif;line-height:1.55;}
+.opt:hover{border-color:var(--g200);background:var(--g50);}
+.opt.sel{border-color:var(--g400);background:var(--g50);color:var(--g800);font-weight:500;}
+.opt .od{width:19px;height:19px;border-radius:50%;border:2px solid var(--border);
+  flex-shrink:0;margin-top:1px;transition:.16s;}
+.opt.sel .od{background:var(--g400);border-color:var(--g400);}
+/* NAV BTNS */
+.nav-btns{display:flex;gap:10px;margin-top:22px;}
+.btn{padding:12px 28px;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;
+  border:none;transition:.2s;font-family:'DM Sans',sans-serif;}
+.btn-p{background:var(--g600);color:#fff;}.btn-p:hover{background:var(--g900);}
+.btn-s{background:var(--surface);color:var(--muted);border:1.5px solid var(--border);}
+.btn-s:hover{background:var(--g50);}
+.btn:disabled{opacity:.35;cursor:not-allowed;}
+
+/* ── RESULTS ── */
+.r-header{background:linear-gradient(130deg,var(--g900) 0%,var(--g800) 45%,var(--g600) 80%,var(--g400) 100%);
+  border-radius:18px;padding:32px 28px 26px;margin-bottom:22px;color:#fff;text-align:center;
+  position:relative;overflow:hidden;}
+.r-header::after{content:'';position:absolute;inset:0;
+  background:url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='30' cy='30' r='28' fill='none' stroke='rgba(255,255,255,.04)' stroke-width='2'/%3E%3C/svg%3E") center/60px;
+  pointer-events:none;}
+.r-header .rh-date{font-size:11px;opacity:.5;margin-bottom:8px;letter-spacing:.6px;text-transform:uppercase;}
+.r-header .rh-name{font-family:'Playfair Display',serif;font-size:14px;font-weight:400;
+  font-style:italic;opacity:.7;margin-bottom:6px;}
+.r-header h2{font-family:'Playfair Display',serif;font-size:28px;margin-bottom:6px;line-height:1.2;}
+.r-header .rh-sub{font-size:13px;opacity:.72;margin-bottom:18px;}
+.r-badges{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;}
+.r-badge{background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.22);
+  border-radius:20px;padding:5px 14px;font-size:12px;font-weight:600;}
+.r-badge.gold{background:var(--gold200);border-color:var(--gold200);color:var(--g900);}
+
+/* ── SCORE GRID ── */
+.sc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(128px,1fr));gap:12px;margin-bottom:20px;}
+.scard{background:var(--surface);border:1px solid var(--border);border-radius:13px;
+  padding:16px;text-align:center;box-shadow:var(--shadow);}
+.scard .sl{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;
+  letter-spacing:.5px;margin-bottom:7px;}
+.scard .sv{font-size:22px;font-weight:700;color:var(--g600);}
+.scard .sbar{height:4px;background:var(--g50);border-radius:2px;margin-top:8px;overflow:hidden;}
+.scard .sfill{height:100%;background:var(--g400);border-radius:2px;}
+.scard .sm{font-size:11px;color:var(--muted);margin-top:4px;line-height:1.3;}
+
+/* ── SECTIONS ── */
+.sec{background:var(--surface);border:1px solid var(--border);border-radius:16px;
+  padding:24px;margin-bottom:18px;box-shadow:var(--shadow);}
+.sec h3{font-size:15px;font-weight:700;color:var(--g800);margin-bottom:16px;
+  display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.sec-desc{font-size:14px;color:var(--g800);line-height:1.75;background:var(--g50);
+  border-radius:10px;padding:14px 16px;margin-bottom:16px;}
+/* TRAIT BARS */
+.trow{display:flex;align-items:center;gap:12px;margin-bottom:10px;}
+.tlbl{width:145px;font-size:12px;color:var(--muted);flex-shrink:0;font-weight:500;}
+.tbw{flex:1;height:8px;background:var(--g50);border-radius:4px;overflow:hidden;}
+.tb{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--g600),var(--g200));}
+.tb.gold{background:linear-gradient(90deg,var(--gold400),var(--gold100));}
+.tpct{width:36px;font-size:11px;font-weight:700;color:var(--g600);text-align:right;}
+/* TAGS */
+.tags{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px;}
+.tag{background:var(--g50);border:1px solid var(--border);border-radius:20px;
+  padding:4px 13px;font-size:12px;color:var(--g600);font-weight:600;}
+.tag.gold-tag{background:var(--gold50);border-color:var(--gold100);color:var(--gold600);}
+/* INFO BOXES */
+.infobox{background:var(--g50);border:1px solid var(--border);border-radius:10px;
+  padding:12px 16px;margin-bottom:16px;font-size:13px;color:var(--g800);line-height:1.65;}
+.warnbox{background:#FFF8EC;border:1px solid var(--gold100);border-radius:10px;
+  padding:12px 16px;font-size:13px;color:var(--gold600);line-height:1.65;}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px;}
+@media(max-width:500px){.two-col{grid-template-columns:1fr;}}
+
+/* ── RADAR CHART ── */
+.radar-wrap{display:flex;justify-content:center;margin:10px 0 20px;}
+.radar-wrap svg{max-width:100%;}
+
+/* ── SPIRITUAL ── */
+.spirit{background:linear-gradient(145deg,#FFFEF8,var(--gold50));
+  border:1.5px solid var(--gold100);border-radius:16px;padding:26px;margin-bottom:20px;}
+.spirit h3{font-family:'Playfair Display',serif;font-size:19px;color:var(--gold600);margin-bottom:14px;}
+.spirit blockquote{font-style:italic;color:var(--gold400);font-size:14px;line-height:1.8;
+  margin-bottom:14px;border-left:3px solid var(--gold200);padding-left:15px;}
+.spirit p{font-size:13.5px;color:var(--muted);line-height:1.78;}
+.spirit .italicline{margin-top:16px;font-style:italic;font-weight:700;color:var(--gold400);font-size:14px;}
+.sig{margin-top:20px;padding-top:18px;border-top:1px solid var(--gold100);}
+.sig p{font-size:13px;color:var(--gold600);margin-bottom:4px;}
+.sig strong{font-family:'Playfair Display',serif;font-size:17px;color:var(--gold400);display:block;}
+.sig small{font-size:11.5px;color:var(--muted);}
+
+/* ── PRINT BUTTON ── */
+.action-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:8px;}
+.pbtn{display:inline-flex;align-items:center;gap:8px;background:var(--g600);color:#fff;
+  padding:14px 28px;border-radius:11px;font-size:14px;font-weight:700;cursor:pointer;
+  border:none;font-family:'DM Sans',sans-serif;transition:.2s;box-shadow:0 4px 14px rgba(59,109,17,.25);}
+.pbtn:hover{background:var(--g900);transform:translateY(-1px);}
+.rbtn{display:inline-flex;align-items:center;gap:8px;background:var(--surface);
+  color:var(--g600);padding:14px 24px;border-radius:11px;font-size:14px;font-weight:700;
+  cursor:pointer;border:1.5px solid var(--border);font-family:'DM Sans',sans-serif;transition:.2s;}
+.rbtn:hover{background:var(--g50);}
+.empty{text-align:center;padding:56px 24px;}
+.empty .eico{font-size:52px;margin-bottom:18px;}
+.empty h3{font-size:19px;color:var(--g800);margin-bottom:8px;}
+.empty p{font-size:13px;color:var(--muted);line-height:1.7;}
+
+/* ── PRINT STYLES ── */
+@media print{
+  *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;}
+  .hdr,.nav,.nav-btns,.pbtn,.rbtn,#section-home,#section-personality,
+  #section-leadership,#section-emotional,#section-values,
+  #section-communication,#section-stress{display:none!important;}
+  #section-results{display:block!important;}
+  body{background:#fff;font-size:13px;}
+  .main{padding:0;max-width:100%;}
+  .r-header{page-break-after:avoid;}
+  .sec,.spirit,.scard{page-break-inside:avoid;}
+  .r-header{background:linear-gradient(130deg,#27500A,#3B6D11,#5A8F1E)!important;}
+  .spirit{background:#FFFEF8!important;}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="hdr">
+  <div class="hdr-logo">
+    <div class="hdr-badge">T21</div>
+    <div class="hdr-text">
+      <h1>Team21 Leadership Academy</h1>
+      <p id="hdr-tag">Leadership Assessment Tool (LAT) · © Innocent Forteh</p>
+    </div>
+  </div>
+  <div class="hdr-right">
+    <button class="lang-btn" id="lang-btn" onclick="toggleLang()">🇫🇷 Français</button>
+  </div>
+</div>
+
+<!-- NAV -->
+<div class="nav" id="main-nav">
+  <button class="ntab active" id="tab-home" onclick="showSec('home')"><span class="pip"></span><span id="tn-home">Home</span></button>
+  <button class="ntab" id="tab-personality" onclick="showSec('personality')"><span class="pip" id="pip-personality"></span><span id="tn-personality">Personality</span></button>
+  <button class="ntab" id="tab-leadership" onclick="showSec('leadership')"><span class="pip" id="pip-leadership"></span><span id="tn-leadership">Leadership Style</span></button>
+  <button class="ntab" id="tab-emotional" onclick="showSec('emotional')"><span class="pip" id="pip-emotional"></span><span id="tn-emotional">Emotional IQ</span></button>
+  <button class="ntab" id="tab-values" onclick="showSec('values')"><span class="pip" id="pip-values"></span><span id="tn-values">Core Values</span></button>
+  <button class="ntab" id="tab-communication" onclick="showSec('communication')"><span class="pip" id="pip-communication"></span><span id="tn-communication">Communication</span></button>
+  <button class="ntab" id="tab-stress" onclick="showSec('stress')"><span class="pip" id="pip-stress"></span><span id="tn-stress">Stress Response</span></button>
+  <button class="ntab" id="tab-results" onclick="showSec('results')"><span class="pip" id="pip-results"></span><span id="tn-results">My Profile</span></button>
+</div>
+
+<div class="main">
+  <div id="section-home"></div>
+  <div id="section-personality" style="display:none;"></div>
+  <div id="section-leadership" style="display:none;"></div>
+  <div id="section-emotional" style="display:none;"></div>
+  <div id="section-values" style="display:none;"></div>
+  <div id="section-communication" style="display:none;"></div>
+  <div id="section-stress" style="display:none;"></div>
+  <div id="section-results" style="display:none;"></div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════════════════
+let lang='en';
+let userName='';
+let currentTest=null;
+let currentQ=0;
+let currentAnswers=[];
+let scores={personality:{},leadership:{},emotional:{},values:{},communication:{},stress:{}};
+let completed={personality:false,leadership:false,emotional:false,values:false,communication:false,stress:false};
+
+// ═══════════════════════════════════════════════════════════════════
+// UI STRINGS
+// ═══════════════════════════════════════════════════════════════════
+const UI={
+en:{
+  prev:'← Previous', next:'Next →', finish:'Finish & See My Profile 🎉',
+  q:'Question',of:'of',
+  save:'Save Name',namePh:'Enter your name (optional)',
+  print:'🖨️  Print Full PDF Profile',retake:'🔄 Start Over',viewProfile:'View My Full Profile →',
+  navLabels:['Home','Personality','Leadership Style','Emotional IQ','Core Values','Communication','Stress Response','My Profile'],
+  tag:'Leadership Assessment Tool (LAT) · © Innocent Forteh',
+  heroBadge:'T21 LAT · Team21 Leadership Academy',
+  heroTitle:'Discover the leader\ninside you',
+  heroSub:'Six simple, fun assessments — no complicated language — that reveal your complete leadership personality. Takes about 25 minutes. Print a personalised PDF profile at the end.',
+  doneCount:(n,t)=>`🎉 ${n}/${t} assessments complete — <strong>View My Profile</strong> to see your leadership portrait.`,
+  cards:[
+    {ico:'🧠',title:'Personality Assessment',desc:'Introvert or extrovert? Thinker or feeler? Discover the core of who you are — your thinking, feeling, and engagement style.',time:'~8 min · 8 questions',key:'personality'},
+    {ico:'🌿',title:'Leadership Style',desc:'Designer, Motivator, Team Player or Executor? Find out how you naturally lead when it counts most.',time:'~6 min · 6 questions',key:'leadership'},
+    {ico:'💚',title:'Emotional Intelligence',desc:'EQ is the #1 predictor of leadership success. Measure your self-awareness, empathy, and inner drive.',time:'~5 min · 5 questions',key:'emotional'},
+    {ico:'⭐',title:'Core Values Compass',desc:'Integrity, Impact, Community or Innovation — discover the values that shape every leadership decision you make.',time:'~4 min · 4 questions',key:'values'},
+    {ico:'🗣️',title:'Communication Style',desc:'Director, Inspirer, Analyst or Connector — understand how you naturally communicate and how to be even more effective.',time:'~5 min · 5 questions',key:'communication'},
+    {ico:'🌊',title:'Stress Response Profile',desc:'How do you lead under pressure? Discover your stress triggers, warning signs, and best recovery strategies.',time:'~5 min · 5 questions',key:'stress'},
+    {ico:'📋',title:'View Full Profile',desc:'See your complete leadership portrait with all dimensions mapped, plus your personalised spiritual encouragement.',time:'Print-ready PDF',key:'results'}
+  ],
+  spirit:{
+    title:'🌿 Spiritual Encouragement — Colossians 3',
+    verse:'"Therefore, as God\'s chosen people, holy and dearly loved, clothe yourselves with compassion, kindness, humility, gentleness and patience. Bear with each other and forgive one another if any of you has a grievance against someone. Forgive as the Lord forgave you. And over all these virtues put on love, which binds them all together in perfect unity." — Colossians 3:12–14',
+    p1:'Great leaders are not simply skilled — they are people of deep, enduring character. Anyone can manage a project; it takes a person of intentional virtue to truly lead people.',
+    p2:'Your assessment reveals your style — how you think, how you communicate, how you respond under pressure. But character is what sustains all of it. The compassion, kindness, humility, and patience that Colossians 3 calls us to are not soft qualities — they are the very foundations of transformational leadership.',
+    p3:'You were not given your personality, your strengths, your leadership gifts by accident. They are a calling. The world around you — your team, your community, your organisation — needs the specific, irreplaceable leader that only YOU can be.',
+    p4:'So go. Lead with grace. Lead with courage. Lead with love.',
+    italic:'"You are equipped. You are called. You are more than enough."',
+    sign:'With deep belief in your leadership journey,',
+    name:'Innocent Forteh',
+    role:'Founder, Team21 Academy',
+    copy:'© Team21 LAT — All rights reserved. Unauthorised reproduction prohibited.'
+  }
+},
+fr:{
+  prev:'← Précédent', next:'Suivant →', finish:'Terminer & Voir Mon Profil 🎉',
+  q:'Question',of:'sur',
+  save:'Enregistrer',namePh:'Entrez votre nom (optionnel)',
+  print:'🖨️  Imprimer le Profil PDF Complet',retake:'🔄 Recommencer',viewProfile:'Voir Mon Profil Complet →',
+  navLabels:['Accueil','Personnalité','Style Leadership','Intelligence Émot.','Valeurs','Communication','Réponse Stress','Mon Profil'],
+  tag:'Outil d\'Évaluation du Leadership (LAT) · © Innocent Forteh',
+  heroBadge:'T21 LAT · Team21 Leadership Academy',
+  heroTitle:'Découvrez le leader\nen vous',
+  heroSub:'Six évaluations simples et amusantes — sans langage compliqué — qui révèlent votre personnalité de leadership complète. Comptez environ 25 minutes. Imprimez un profil PDF personnalisé à la fin.',
+  doneCount:(n,t)=>`🎉 ${n}/${t} évaluations complètes — <strong>Voir Mon Profil</strong> pour votre portrait de leadership.`,
+  cards:[
+    {ico:'🧠',title:'Évaluation de la Personnalité',desc:'Introverti ou extraverti ? Penseur ou sensible ? Découvrez le cœur de qui vous êtes.',time:'~8 min · 8 questions',key:'personality'},
+    {ico:'🌿',title:'Style de Leadership',desc:'Concepteur, Motivateur, Joueur d\'Équipe ou Exécuteur ? Découvrez comment vous dirigez naturellement.',time:'~6 min · 6 questions',key:'leadership'},
+    {ico:'💚',title:'Intelligence Émotionnelle',desc:'Le QE est le meilleur prédicteur du succès. Mesurez votre conscience de soi, empathie et motivation.',time:'~5 min · 5 questions',key:'emotional'},
+    {ico:'⭐',title:'Boussole des Valeurs',desc:'Intégrité, Impact, Communauté ou Innovation — découvrez les valeurs qui guident chaque décision.',time:'~4 min · 4 questions',key:'values'},
+    {ico:'🗣️',title:'Style de Communication',desc:'Directeur, Inspirateur, Analyste ou Connecteur — comprenez comment vous communiquez naturellement.',time:'~5 min · 5 questions',key:'communication'},
+    {ico:'🌊',title:'Profil de Réponse au Stress',desc:'Comment dirigez-vous sous pression ? Découvrez vos déclencheurs et stratégies de récupération.',time:'~5 min · 5 questions',key:'stress'},
+    {ico:'📋',title:'Voir Mon Profil Complet',desc:'Votre portrait de leadership complet avec toutes les dimensions et un encouragement spirituel personnalisé.',time:'PDF prêt à imprimer',key:'results'}
+  ],
+  spirit:{
+    title:'🌿 Encouragement Spirituel — Colossiens 3',
+    verse:'"Ainsi donc, comme des élus de Dieu, saints et bien-aimés, revêtez-vous de compassion, de bonté, d\'humilité, de douceur, de patience. Supportez-vous les uns les autres et pardonnez-vous mutuellement. Pardonnez-vous comme le Seigneur vous a pardonné. Et par-dessus tout cela, revêtez-vous de l\'amour, qui est le lien de la perfection." — Colossiens 3:12–14',
+    p1:'Les grands leaders ne sont pas simplement compétents — ce sont des personnes de caractère profond et durable. N\'importe qui peut gérer un projet ; il faut une personne de vertu intentionnelle pour vraiment diriger des personnes.',
+    p2:'Votre évaluation révèle votre style — comment vous pensez, communiquez, réagissez sous pression. Mais le caractère est ce qui soutient tout cela. La compassion, la bonté, l\'humilité et la patience que Colossiens 3 nous appelle à porter ne sont pas des qualités douces — ce sont les fondements du leadership transformationnel.',
+    p3:'Votre personnalité, vos forces, vos dons de leadership ne vous ont pas été donnés par accident. C\'est un appel. Le monde autour de vous — votre équipe, votre communauté, votre organisation — a besoin du leader spécifique et irremplaçable que VOUS seul pouvez être.',
+    p4:'Alors allez. Dirigez avec grâce. Dirigez avec courage. Dirigez avec amour.',
+    italic:'"Vous êtes équipé(e). Vous êtes appelé(e). Vous êtes plus que suffisant(e)."',
+    sign:'Avec une profonde foi en votre parcours de leadership,',
+    name:'Innocent Forteh',
+    role:'Fondateur, Team21 Academy',
+    copy:'© Team21 LAT — Tous droits réservés. Reproduction non autorisée interdite.'
+  }
+}
+};
+
+// ═══════════════════════════════════════════════════════════════════
+// TEST DATA — Full 8 / 6 / 5 / 4 / 5 / 5 question banks
+// ═══════════════════════════════════════════════════════════════════
+const TESTS={
+personality:{
+en:{title:'Personality Assessment',sub:'No right or wrong answers — just pick what feels most true for you most of the time.',
+qs:[
+{cat:'Energy',q:'After spending 2+ hours at a large group event, you usually feel...',ex:'💡 Think about your last conference, workshop, or big social gathering.',
+opts:[{t:'Energised — bring on more!',d:{E:3}},{t:'Good overall — I enjoyed it.',d:{E:2}},{t:'A bit tired and ready for some quiet.',d:{I:2}},{t:'Drained — I desperately need alone time.',d:{I:3}}]},
+{cat:'Decisions',q:'When facing a major decision that affects your team, what guides you most?',ex:'💡 Imagine deciding whether to restructure a key team role.',
+opts:[{t:'Logic, data, and objective analysis.',d:{T:3}},{t:'Mostly facts, with some gut-feeling mixed in.',d:{T:2,F:1}},{t:'Mostly what feels right for the people involved.',d:{F:2,T:1}},{t:'Empathy and impact on people — that\'s what matters most.',d:{F:3}}]},
+{cat:'Planning',q:'Your honest approach to planning a new initiative is...',ex:'💡 You\'ve just been handed a major new project to lead.',
+opts:[{t:'I map everything out in detail before the first step.',d:{J:3}},{t:'I build a solid plan but stay open to changes.',d:{J:2}},{t:'I sketch a rough direction and discover as I go.',d:{P:2}},{t:'I dive in — figuring it out as we go is my style!',d:{P:3}}]},
+{cat:'Information',q:'When exploring a new leadership topic, you naturally gravitate to...',ex:'💡 You\'re learning a new approach to team management.',
+opts:[{t:'Concrete steps, real examples, proven methods.',d:{S:3}},{t:'A mix of practical examples and broader concepts.',d:{S:2,N:1}},{t:'Big ideas, patterns, and theoretical frameworks.',d:{N:2,S:1}},{t:'Abstract visions that spark my imagination.',d:{N:3}}]},
+{cat:'Social Energy',q:'At a large networking event with mostly strangers, you typically...',ex:'💡 Picture yourself at an industry conference cocktail reception.',
+opts:[{t:'Dive in and work the room — I love it!',d:{E:3}},{t:'Connect with a handful of interesting people.',d:{E:2}},{t:'Stay close to people I know and join conversations carefully.',d:{I:2}},{t:'Observe, listen, and wait until I feel comfortable.',d:{I:3}}]},
+{cat:'Deadlines & Structure',q:'When it comes to daily structure and schedules, you...',ex:'💡 How do you prefer your workday to look?',
+opts:[{t:'Thrive on a clear schedule — it helps me perform.',d:{J:3}},{t:'Like structure with some built-in flexibility.',d:{J:2}},{t:'Prefer loose guidelines I can adapt as I go.',d:{P:2}},{t:'Work best with total freedom to flow day to day.',d:{P:3}}]},
+{cat:'Problem Solving',q:'When your team hits a difficult roadblock, you first...',ex:'💡 A key project is stuck and everyone looks to you.',
+opts:[{t:'Analyse the problem logically and find the rational solution.',d:{T:3,S:1}},{t:'Look at the facts first, then trust my instinct.',d:{T:2,N:1}},{t:'Ask how this is affecting people before solving.',d:{F:2}},{t:'Focus on team morale and emotional wellbeing first.',d:{F:3}}]},
+{cat:'Future Vision',q:'When imagining your organisation\'s next 5 years, you...',ex:'💡 A strategic planning session is beginning. How do you naturally engage?',
+opts:[{t:'Focus on what\'s realistically achievable with current resources.',d:{S:3}},{t:'Balance near-term realities with long-term ambition.',d:{S:2,N:1}},{t:'Get excited about possibilities — what could we become?',d:{N:2}},{t:'Dream boldly — the biggest vision is what energises me!',d:{N:3}}]}
+]},
+fr:{title:'Évaluation de la Personnalité',sub:'Pas de bonnes ou mauvaises réponses — choisissez ce qui vous semble le plus vrai la plupart du temps.',
+qs:[
+{cat:'Énergie',q:'Après avoir passé 2h+ lors d\'un grand événement de groupe, vous vous sentez généralement...',ex:'💡 Pensez à votre dernière conférence, atelier ou grand rassemblement social.',
+opts:[{t:'Énergisé(e) — encore plus !',d:{E:3}},{t:'Bien dans l\'ensemble — j\'ai apprécié.',d:{E:2}},{t:'Un peu fatigué(e) et prêt(e) pour du calme.',d:{I:2}},{t:'Épuisé(e) — j\'ai désespérément besoin de temps seul(e).',d:{I:3}}]},
+{cat:'Décisions',q:'Face à une décision majeure qui affecte votre équipe, ce qui vous guide le plus est...',ex:'💡 Imaginez décider de restructurer un rôle clé dans l\'équipe.',
+opts:[{t:'La logique, les données et l\'analyse objective.',d:{T:3}},{t:'Surtout les faits, avec un peu d\'instinct.',d:{T:2,F:1}},{t:'Surtout ce qui semble juste pour les personnes impliquées.',d:{F:2,T:1}},{t:'L\'empathie et l\'impact sur les gens — c\'est ce qui compte.',d:{F:3}}]},
+{cat:'Planification',q:'Votre approche honnête pour planifier une nouvelle initiative est...',ex:'💡 On vous vient de confier un grand nouveau projet à diriger.',
+opts:[{t:'Je cartographie tout en détail avant la première étape.',d:{J:3}},{t:'Je construis un plan solide mais reste ouvert(e) aux changements.',d:{J:2}},{t:'Je trace une direction approximative et découvre en chemin.',d:{P:2}},{t:'Je plonge — trouver au fur et à mesure, c\'est mon style !',d:{P:3}}]},
+{cat:'Information',q:'En explorant un nouveau sujet de leadership, vous gravitez naturellement vers...',ex:'💡 Vous apprenez une nouvelle approche de gestion d\'équipe.',
+opts:[{t:'Des étapes concrètes, des exemples réels, des méthodes éprouvées.',d:{S:3}},{t:'Un mélange d\'exemples pratiques et de concepts plus larges.',d:{S:2,N:1}},{t:'De grandes idées, des tendances et des cadres théoriques.',d:{N:2,S:1}},{t:'Des visions abstraites qui stimulent mon imagination.',d:{N:3}}]},
+{cat:'Énergie Sociale',q:'Lors d\'un grand événement de réseautage avec surtout des inconnus, vous...',ex:'💡 Imaginez-vous à une réception de conférence professionnelle.',
+opts:[{t:'Plongez et faites le tour de la salle — j\'adore ça !',d:{E:3}},{t:'Vous connectez avec quelques personnes intéressantes.',d:{E:2}},{t:'Restez près des personnes que vous connaissez.',d:{I:2}},{t:'Observez, écoutez et attendez de vous sentir à l\'aise.',d:{I:3}}]},
+{cat:'Délais & Structure',q:'En ce qui concerne la structure quotidienne et les horaires, vous...',ex:'💡 Comment préférez-vous que votre journée de travail se déroule ?',
+opts:[{t:'Vous épanouissez avec un calendrier clair — ça m\'aide à performer.',d:{J:3}},{t:'Aimez la structure avec une certaine flexibilité intégrée.',d:{J:2}},{t:'Préférez des directives souples que vous pouvez adapter.',d:{P:2}},{t:'Travaillez mieux avec une totale liberté.',d:{P:3}}]},
+{cat:'Résolution de Problèmes',q:'Quand votre équipe atteint un obstacle difficile, vous commencez par...',ex:'💡 Un projet clé est bloqué et tout le monde vous regarde.',
+opts:[{t:'Analyser le problème logiquement et trouver la solution rationnelle.',d:{T:3,S:1}},{t:'Regarder d\'abord les faits, puis faire confiance à votre instinct.',d:{T:2,N:1}},{t:'Demander comment cela affecte les gens avant de résoudre.',d:{F:2}},{t:'Se concentrer d\'abord sur le moral et le bien-être émotionnel.',d:{F:3}}]},
+{cat:'Vision d\'Avenir',q:'En imaginant les 5 prochaines années de votre organisation, vous...',ex:'💡 Une session de planification stratégique commence. Comment vous engagez-vous ?',
+opts:[{t:'Vous concentrez sur ce qui est réalistement réalisable.',d:{S:3}},{t:'Équilibrez les réalités à court terme avec l\'ambition à long terme.',d:{S:2,N:1}},{t:'Vous enthousiasmez pour les possibilités — que pourrions-nous devenir ?',d:{N:2}},{t:'Rêvez audacieusement — la plus grande vision est ce qui m\'énergise !',d:{N:3}}]}
+]}
+},
+
+leadership:{
+en:{title:'Leadership Style Test',sub:'There are no wrong styles — every type of leader is needed. Discover which is naturally YOURS.',
+qs:[
+{cat:'Crisis Response',q:'Your team faces a serious, unexpected crisis. Your immediate response is to...',ex:'💡 A key client is threatening to leave, a project is collapsing, and the team is rattled.',
+opts:[{t:'Establish clear priorities, assign roles, and drive execution immediately.',d:{EX:3}},{t:'Inspire the team with a compelling vision of how we get through this together.',d:{MO:3}},{t:'Step back, analyse the root cause, and redesign the approach.',d:{DE:3}},{t:'Bring the team together to talk, listen, and co-create the solution.',d:{TP:3}}]},
+{cat:'Developing People',q:'When a talented team member is struggling to reach their potential, you...',ex:'💡 Someone with great ability keeps falling short of expectations.',
+opts:[{t:'Set clear performance targets and hold them accountable to results.',d:{EX:3}},{t:'Inspire and encourage them — paint a picture of what they can become.',d:{MO:3}},{t:'Identify the system or process barrier that\'s holding them back.',d:{DE:3}},{t:'Have deep, honest conversations and support their growth journey.',d:{TP:3}}]},
+{cat:'Team Culture',q:'The kind of team culture you naturally build is one that is...',ex:'💡 If your team described their experience of working with you, what would they say?',
+opts:[{t:'Focused, results-driven, and accountable — we deliver!',d:{EX:3}},{t:'Energised, inspired, and united around a compelling vision.',d:{MO:3}},{t:'Structured, efficient, and always improving its processes.',d:{DE:3}},{t:'Safe, collaborative, and built on deep mutual trust.',d:{TP:3}}]},
+{cat:'Communication',q:'Your natural communication rhythm as a leader is...',ex:'💡 How do your team members experience your communication day to day?',
+opts:[{t:'Clear, direct, and action-oriented — no unnecessary words.',d:{EX:3}},{t:'Inspiring, energetic, and full of vision and narrative.',d:{MO:3}},{t:'Detailed, structured, and thorough — I cover everything.',d:{DE:3}},{t:'Open, warm, two-way — everyone\'s voice matters.',d:{TP:3}}]},
+{cat:'Success Definition',q:'For you, leadership success ultimately means...',ex:'💡 If you had a single personal measure of whether you\'re leading well — what is it?',
+opts:[{t:'Consistent, high-quality results delivered on schedule.',d:{EX:3}},{t:'A team of growing, inspired people who believe in the mission.',d:{MO:3}},{t:'Elegant, scalable systems and efficient, improving processes.',d:{DE:3}},{t:'A deeply trusting team where everyone is valued and heard.',d:{TP:3}}]},
+{cat:'Pressure',q:'When deadlines are tight and tension is high in the team, you instinctively...',ex:'💡 48 hours to deliver. People are stressed. What do you do?',
+opts:[{t:'Take clear command — direct traffic, assign tasks, drive completion.',d:{EX:3}},{t:'Rally the team\'s energy — "We\'ve got this. Here\'s why we\'ll make it!"',d:{MO:3}},{t:'Find the bottleneck in the process and redesign around it on the spot.',d:{DE:3}},{t:'Check on people\'s wellbeing and make sure the load is shared fairly.',d:{TP:3}}]}
+]},
+fr:{title:'Test de Style de Leadership',sub:'Il n\'y a pas de mauvais styles — chaque type de leader est nécessaire. Découvrez lequel est naturellement le VÔTRE.',
+qs:[
+{cat:'Réponse à la Crise',q:'Votre équipe fait face à une crise sérieuse et inattendue. Votre réponse immédiate est de...',ex:'💡 Un client clé menace de partir, un projet s\'effondre, et l\'équipe est ébranlée.',
+opts:[{t:'Établir des priorités claires, assigner des rôles et conduire l\'exécution immédiatement.',d:{EX:3}},{t:'Inspirer l\'équipe avec une vision convaincante de comment nous traversons cela ensemble.',d:{MO:3}},{t:'Prendre du recul, analyser la cause profonde et repenser l\'approche.',d:{DE:3}},{t:'Rassembler l\'équipe pour parler, écouter et co-créer la solution.',d:{TP:3}}]},
+{cat:'Développement des Personnes',q:'Quand un membre talentueux peine à atteindre son potentiel, vous...',ex:'💡 Quelqu\'un avec de grandes capacités n\'atteint constamment pas les attentes.',
+opts:[{t:'Fixez des objectifs de performance clairs et les tenez responsables des résultats.',d:{EX:3}},{t:'Inspirez et encouragez — peignez un tableau de ce qu\'ils peuvent devenir.',d:{MO:3}},{t:'Identifiez la barrière systémique ou processuelle qui les retient.',d:{DE:3}},{t:'Ayez des conversations profondes et honnêtes et soutenez leur parcours de croissance.',d:{TP:3}}]},
+{cat:'Culture d\'Équipe',q:'Le type de culture d\'équipe que vous construisez naturellement est...',ex:'💡 Si votre équipe décrivait son expérience de travailler avec vous, que diraient-ils ?',
+opts:[{t:'Focalisée, axée sur les résultats et responsable — nous livrons !',d:{EX:3}},{t:'Énergisée, inspirée et unie autour d\'une vision convaincante.',d:{MO:3}},{t:'Structurée, efficace et améliorant toujours ses processus.',d:{DE:3}},{t:'Sûre, collaborative et fondée sur une profonde confiance mutuelle.',d:{TP:3}}]},
+{cat:'Communication',q:'Votre rythme de communication naturel en tant que leader est...',ex:'💡 Comment les membres de votre équipe vivent-ils votre communication quotidienne ?',
+opts:[{t:'Clair, direct et orienté action — sans mots inutiles.',d:{EX:3}},{t:'Inspirant, énergique et plein de vision et de narration.',d:{MO:3}},{t:'Détaillé, structuré et approfondi — je couvre tout.',d:{DE:3}},{t:'Ouvert, chaleureux, bidirectionnel — la voix de chacun compte.',d:{TP:3}}]},
+{cat:'Définition du Succès',q:'Pour vous, le succès du leadership signifie ultimement...',ex:'💡 Si vous aviez une seule mesure personnelle pour savoir si vous dirigez bien — quelle serait-elle ?',
+opts:[{t:'Des résultats cohérents et de haute qualité livrés dans les délais.',d:{EX:3}},{t:'Une équipe de personnes en croissance, inspirées et qui croient en la mission.',d:{MO:3}},{t:'Des systèmes élégants et évolutifs et des processus efficaces.',d:{DE:3}},{t:'Une équipe profondément confiante où chacun est valorisé et entendu.',d:{TP:3}}]},
+{cat:'Pression',q:'Quand les délais sont serrés et les tensions élevées, instinctivement vous...',ex:'💡 48 heures pour livrer. Les gens sont stressés. Que faites-vous ?',
+opts:[{t:'Prenez le commandement clair — dirigez, assignez, conduisez à la complétion.',d:{EX:3}},{t:'Rallier l\'énergie de l\'équipe — "On y arrive. Voici pourquoi on va réussir !"',d:{MO:3}},{t:'Trouvez le goulot dans le processus et le repensez sur le champ.',d:{DE:3}},{t:'Vérifiez le bien-être des gens et assurez-vous que la charge est partagée équitablement.',d:{TP:3}}]}
+]}
+},
+
+emotional:{
+en:{title:'Emotional Intelligence',sub:'EQ is the #1 predictor of leadership success. Answer honestly — this is for your growth, not your judgment!',
+qs:[
+{cat:'Self-Awareness',q:'How quickly do you typically notice when your emotions are affecting your judgment or behaviour?',ex:'💡 You\'ve just received critical feedback right before an important team decision.',
+opts:[{t:'Almost immediately — I catch it and can name it.',d:{SA:3}},{t:'Within a few minutes once I tune in.',d:{SA:2}},{t:'Sometimes, but I often only realise after the fact.',d:{SA:1}},{t:'Rarely — usually only when someone else points it out.',d:{SA:0}}]},
+{cat:'Empathy',q:'When a team member is struggling (even silently — they haven\'t told you), you...',ex:'💡 A normally engaged colleague has been quiet, withdrawn, and distracted for several days.',
+opts:[{t:'Almost always notice and reach out proactively.',d:{EM:3}},{t:'Often pick up on it and check in gently.',d:{EM:2}},{t:'Sometimes notice, but probably miss it more than I realise.',d:{EM:1}},{t:'Rarely notice unless they tell me directly.',d:{EM:0}}]},
+{cat:'Regulation',q:'In a heated confrontation or public disagreement at work, you...',ex:'💡 A colleague strongly and publicly challenges a decision you\'ve made in front of the team.',
+opts:[{t:'Stay calm and grounded — I can separate emotion from the issue.',d:{ER:3}},{t:'Feel it strongly inside but manage to stay composed outwardly.',d:{ER:2}},{t:'Get a bit activated but recover fairly quickly.',d:{ER:1}},{t:'Find it very hard to stay composed — I feel and show it.',d:{ER:0}}]},
+{cat:'Social Intelligence',q:'When managing a team with very different personalities, cultural backgrounds, and working styles...',ex:'💡 Your team includes people from 4 different countries with genuinely different work values.',
+opts:[{t:'I thrive — diversity energises and fascinates me.',d:{SS:3}},{t:'I manage it well with conscious attention and effort.',d:{SS:2}},{t:'I manage, but tensions sometimes get hard to navigate.',d:{SS:1}},{t:'I find it draining and prefer working with similar people.',d:{SS:0}}]},
+{cat:'Inner Drive',q:'When you face major setbacks — repeated failures, loss of momentum, team frustration — what sustains you?',ex:'💡 Your key initiative has hit its third major setback in three months.',
+opts:[{t:'A deep sense of purpose — I know exactly WHY I\'m doing this.',d:{MT:3}},{t:'The people I care about and am committed to serving.',d:{MT:2}},{t:'Clear milestones and visible evidence of progress.',d:{MT:1}},{t:'Honestly — I struggle significantly and sometimes feel like stopping.',d:{MT:0}}]}
+]},
+fr:{title:'Intelligence Émotionnelle',sub:'Le QE est le meilleur prédicteur du succès. Répondez honnêtement — c\'est pour votre croissance !',
+qs:[
+{cat:'Conscience de Soi',q:'À quelle vitesse remarquez-vous habituellement quand vos émotions affectent votre jugement ou comportement ?',ex:'💡 Vous venez de recevoir un feedback critique juste avant une décision importante.',
+opts:[{t:'Presque immédiatement — je le capte et peux le nommer.',d:{SA:3}},{t:'En quelques minutes une fois que je me concentre.',d:{SA:2}},{t:'Parfois, mais souvent je réalise seulement après coup.',d:{SA:1}},{t:'Rarement — généralement seulement quand quelqu\'un d\'autre me le signale.',d:{SA:0}}]},
+{cat:'Empathie',q:'Quand un membre de l\'équipe souffre (même silencieusement — il ne vous l\'a pas dit), vous...',ex:'💡 Un collègue normalement engagé est silencieux, renfermé et distrait depuis plusieurs jours.',
+opts:[{t:'Remarquez presque toujours et contactez proactivement.',d:{EM:3}},{t:'Captez souvent et vérifiez doucement.',d:{EM:2}},{t:'Remarquez parfois, mais probablement ratez plus que vous ne le réalisez.',d:{EM:1}},{t:'Remarquez rarement sauf s\'on vous le dit directement.',d:{EM:0}}]},
+{cat:'Régulation',q:'Dans une confrontation vive ou un désaccord public au travail, vous...',ex:'💡 Un collègue remet fortement et publiquement en question une décision que vous avez prise.',
+opts:[{t:'Restez calme — je peux séparer l\'émotion du problème.',d:{ER:3}},{t:'Le ressentez fortement intérieurement mais restez composé(e) extérieurement.',d:{ER:2}},{t:'Vous activez un peu mais vous reprenez assez vite.',d:{ER:1}},{t:'Trouvez très difficile de rester composé(e) — je le ressens et le montre.',d:{ER:0}}]},
+{cat:'Intelligence Sociale',q:'Pour gérer une équipe avec des personnalités, des origines culturelles et des styles de travail très différents...',ex:'💡 Votre équipe inclut des personnes de 4 pays différents avec des valeurs de travail genuinement différentes.',
+opts:[{t:'Je m\'épanouis — la diversité m\'énergise et me fascine.',d:{SS:3}},{t:'Je gère bien avec une attention consciente et un effort.',d:{SS:2}},{t:'Je gère, mais les tensions deviennent parfois difficiles à naviguer.',d:{SS:1}},{t:'Je trouve ça épuisant et préfère travailler avec des personnes similaires.',d:{SS:0}}]},
+{cat:'Motivation Intérieure',q:'Face à des revers majeurs — échecs répétés, perte d\'élan, frustration de l\'équipe — qu\'est-ce qui vous soutient ?',ex:'💡 Votre initiative clé a connu son troisième grand revers en trois mois.',
+opts:[{t:'Un sens profond de la mission — je sais exactement POURQUOI je fais ça.',d:{MT:3}},{t:'Les personnes auxquelles je tiens et que je suis engagé(e) à servir.',d:{MT:2}},{t:'Des jalons clairs et des preuves visibles de progrès.',d:{MT:1}},{t:'Honnêtement — je lutte significativement et me sens parfois envie de m\'arrêter.',d:{MT:0}}]}
+]}
+},
+
+values:{
+en:{title:'Core Values Compass',sub:'Your values shape every decision, every priority, and every relationship. Let\'s map yours.',
+qs:[
+{cat:'Ethical Tension',q:'A shortcut would save 3 weeks but requires bending the rules slightly. You...',ex:'💡 No one would know — and the deadline is genuinely critical.',
+opts:[{t:'Refuse — we do things right, even when it\'s costly.',d:{INT:3}},{t:'Weigh the impact carefully and choose the most beneficial path.',d:{IMP:3}},{t:'Ask the team — the community\'s trust matters more than speed.',d:{COM:2,INT:1}},{t:'Look for a creative alternative that\'s both fast AND right.',d:{INN:3}}]},
+{cat:'Leadership Legacy',q:'If your team was writing your leadership tribute 10 years from now, you most want it to say...',ex:'💡 What do you hope people remember about how you led?',
+opts:[{t:'He/she always did the right thing, no matter the personal cost.',d:{INT:3}},{t:'He/she made a real, lasting difference in people\'s lives.',d:{IMP:3}},{t:'He/she built a community where everyone belonged and thrived.',d:{COM:3}},{t:'He/she changed the way we do things — bold, pioneering, creative.',d:{INN:3}}]},
+{cat:'Leadership Fuel',q:'What genuinely excites and energises you most about leading?',ex:'💡 What makes you say "yes — THIS is why I choose to lead"?',
+opts:[{t:'Being a living example of integrity and ethical leadership.',d:{INT:3}},{t:'Seeing the concrete, tangible difference my leadership makes.',d:{IMP:3}},{t:'The deep relationships and community I build with my people.',d:{COM:3}},{t:'Creating something bold and new that has never existed before.',d:{INN:3}}]},
+{cat:'Hard Trade-offs',q:'Budget cuts force you to protect one of the following. You choose...',ex:'💡 Resources are tight. Something must give. What is non-negotiable for you?',
+opts:[{t:'Our ethical standards — values are never negotiable.',d:{INT:3}},{t:'The programmes making the most measurable direct impact.',d:{IMP:3}},{t:'Our people — no one gets left behind.',d:{COM:3}},{t:'Innovation investment — the future of everything depends on it.',d:{INN:3}}]}
+]},
+fr:{title:'Boussole des Valeurs Fondamentales',sub:'Vos valeurs façonnent chaque décision, chaque priorité et chaque relation. Cartographions les vôtres.',
+qs:[
+{cat:'Tension Éthique',q:'Un raccourci économiserait 3 semaines mais nécessite de plier légèrement les règles. Vous...',ex:'💡 Personne ne le saurait — et le délai est genuinement critique.',
+opts:[{t:'Refusez — nous faisons les choses correctement, même si ça coûte.',d:{INT:3}},{t:'Pesez soigneusement l\'impact et choisissez le chemin le plus bénéfique.',d:{IMP:3}},{t:'Demandez à l\'équipe — la confiance de la communauté compte plus que la vitesse.',d:{COM:2,INT:1}},{t:'Cherchez une alternative créative qui soit à la fois rapide ET juste.',d:{INN:3}}]},
+{cat:'Héritage de Leadership',q:'Si votre équipe écrivait votre hommage de leadership dans 10 ans, vous voulez surtout qu\'il dise...',ex:'💡 Que voulez-vous que les gens retiennent de votre façon de diriger ?',
+opts:[{t:'Il/elle a toujours fait la bonne chose, quoi qu\'en soit le coût personnel.',d:{INT:3}},{t:'Il/elle a fait une vraie différence durable dans la vie des gens.',d:{IMP:3}},{t:'Il/elle a construit une communauté où chacun appartenait et s\'épanouissait.',d:{COM:3}},{t:'Il/elle a changé notre façon de faire — audacieux, pionnier, créatif.',d:{INN:3}}]},
+{cat:'Carburant de Leadership',q:'Qu\'est-ce qui vous enthousiasme vraiment le plus dans le leadership ?',ex:'💡 Qu\'est-ce qui vous fait dire "oui — C\'EST pour ça que je choisis de diriger" ?',
+opts:[{t:'Être un exemple vivant d\'intégrité et de leadership éthique.',d:{INT:3}},{t:'Voir la différence concrète et tangible que mon leadership fait.',d:{IMP:3}},{t:'Les relations profondes et la communauté que je construis avec mes gens.',d:{COM:3}},{t:'Créer quelque chose d\'audacieux et de nouveau qui n\'a jamais existé auparavant.',d:{INN:3}}]},
+{cat:'Compromis Difficiles',q:'Des coupes budgétaires vous forcent à protéger l\'un des éléments suivants. Vous choisissez...',ex:'💡 Les ressources sont limitées. Quelque chose doit céder. Qu\'est-ce qui est non négociable pour vous ?',
+opts:[{t:'Nos standards éthiques — les valeurs ne sont jamais négociables.',d:{INT:3}},{t:'Les programmes faisant l\'impact direct le plus mesurable.',d:{IMP:3}},{t:'Nos gens — personne n\'est laissé derrière.',d:{COM:3}},{t:'L\'investissement en innovation — l\'avenir de tout en dépend.',d:{INN:3}}]}
+]}
+},
+
+communication:{
+en:{title:'Communication Style',sub:'How you communicate IS how you lead. Let\'s discover your natural style!',
+qs:[
+{cat:'Giving Direction',q:'When briefing your team on a new, complex task, you naturally...',ex:'💡 Monday morning — new project brief to your team of 8.',
+opts:[{t:'Get to the point fast: here\'s what, who, when — let\'s go.',d:{DIR:3}},{t:'Tell the story first — the "why" and the vision — then the plan.',d:{INS:3}},{t:'Cover every detail: objectives, timelines, risks, success metrics.',d:{ANA:3}},{t:'Open it up — ask the team what they think before sharing your plan.',d:{CON:3}}]},
+{cat:'Active Listening',q:'In a team brainstorm, while others share ideas, you...',ex:'💡 The team is generating solutions to a major challenge.',
+opts:[{t:'Listen for the bottom line — what\'s the actual recommendation here?',d:{DIR:3}},{t:'Get excited by ideas that open up new possibilities and horizons.',d:{INS:3}},{t:'Take detailed notes, ask probing questions, evaluate evidence.',d:{ANA:3}},{t:'Actively ensure quieter voices get space to contribute.',d:{CON:3}}]},
+{cat:'Conflict',q:'When two strong personalities in the team clash, you handle it by...',ex:'💡 Two key team members deeply disagree on the best approach.',
+opts:[{t:'Cutting to the core issue fast: here are the facts, let\'s decide.',d:{DIR:3}},{t:'Reframing it as creative tension — it\'s a sign of a passionate team!',d:{INS:3}},{t:'Laying out all the evidence on both sides and finding the logical answer.',d:{ANA:3}},{t:'Slowing down to make sure both people feel fully heard and respected.',d:{CON:3}}]},
+{cat:'Written Communication',q:'Your key team messages and updates tend to be...',ex:'💡 Think about your typical emails and team reports.',
+opts:[{t:'Short, sharp, and action-focused — just the critical information.',d:{DIR:3}},{t:'Engaging and narrative — I want people to feel something when they read it.',d:{INS:3}},{t:'Comprehensive and structured — I include everything relevant.',d:{ANA:3}},{t:'Warm and inclusive — I acknowledge people and make everyone feel included.',d:{CON:3}}]},
+{cat:'Giving Feedback',q:'When giving a team member honest, difficult feedback, you...',ex:'💡 Their performance has been below standard for 3 weeks.',
+opts:[{t:'Am direct and clear: here\'s the issue, here\'s what needs to change.',d:{DIR:3}},{t:'Frame it as a growth story: "You\'re capable of so much more."',d:{INS:3}},{t:'Present specific evidence and data: "Here\'s exactly what I observed."',d:{ANA:3}},{t:'Start with genuine appreciation, then gently address the issue.',d:{CON:3}}]}
+]},
+fr:{title:'Style de Communication',sub:'La façon dont vous communiquez EST la façon dont vous dirigez. Découvrons votre style naturel !',
+qs:[
+{cat:'Donner des Instructions',q:'Quand vous briefez votre équipe sur une nouvelle tâche complexe, vous...',ex:'💡 Lundi matin — nouveau brief de projet pour votre équipe de 8 personnes.',
+opts:[{t:'Allez droit au but : voici quoi, qui, quand — allons-y.',d:{DIR:3}},{t:'Racontez d\'abord l\'histoire — le "pourquoi" et la vision — puis le plan.',d:{INS:3}},{t:'Couvrez chaque détail : objectifs, délais, risques, métriques de succès.',d:{ANA:3}},{t:'L\'ouvrez — demandez ce que l\'équipe pense avant de partager votre plan.',d:{CON:3}}]},
+{cat:'Écoute Active',q:'Lors d\'un brainstorming d\'équipe, pendant que les autres partagent des idées, vous...',ex:'💡 L\'équipe génère des solutions à un grand défi.',
+opts:[{t:'Écoutez pour l\'essentiel — quelle est la recommandation réelle ici ?',d:{DIR:3}},{t:'Vous enthousiasmez par des idées qui ouvrent de nouvelles possibilités.',d:{INS:3}},{t:'Prenez des notes détaillées, posez des questions pointues, évaluez les preuves.',d:{ANA:3}},{t:'Assurez activement que les voix plus discrètes aient de l\'espace.',d:{CON:3}}]},
+{cat:'Conflit',q:'Quand deux personnalités fortes dans l\'équipe s\'affrontent, vous gérez en...',ex:'💡 Deux membres clés sont profondément en désaccord sur la meilleure approche.',
+opts:[{t:'Allant rapidement au cœur du problème : voici les faits, décidons.',d:{DIR:3}},{t:'Le recadrant comme une tension créative — c\'est un signe d\'une équipe passionnée !',d:{INS:3}},{t:'Exposant toutes les preuves des deux côtés et trouvant la réponse logique.',d:{ANA:3}},{t:'Ralentissant pour s\'assurer que les deux personnes se sentent pleinement entendues.',d:{CON:3}}]},
+{cat:'Communication Écrite',q:'Vos messages et mises à jour clés d\'équipe tendent à être...',ex:'💡 Pensez à vos emails et rapports d\'équipe typiques.',
+opts:[{t:'Courts, percutants et axés sur l\'action — juste l\'information critique.',d:{DIR:3}},{t:'Engageants et narratifs — je veux que les gens ressentent quelque chose.',d:{INS:3}},{t:'Complets et structurés — j\'inclus tout ce qui est pertinent.',d:{ANA:3}},{t:'Chaleureux et inclusifs — j\'reconnais les gens et fais sentir chacun inclus.',d:{CON:3}}]},
+{cat:'Feedback',q:'Pour donner à un membre un feedback honnête et difficile, vous...',ex:'💡 Leur performance est en dessous des standards depuis 3 semaines.',
+opts:[{t:'Êtes direct(e) et clair(e) : voici le problème, voici ce qui doit changer.',d:{DIR:3}},{t:'Cadrez comme une histoire de croissance : "Tu es capable de tellement plus."',d:{INS:3}},{t:'Présentez des preuves et données spécifiques : "Voici exactement ce que j\'ai observé."',d:{ANA:3}},{t:'Commencez par une appréciation sincère, puis abordez doucement le problème.',d:{CON:3}}]}
+]}
+},
+
+stress:{
+en:{title:'Stress Response Profile',sub:'Knowing how you behave under pressure is a leadership superpower. Answer honestly!',
+qs:[
+{cat:'First Response',q:'When extreme, sustained pressure hits — multiple crises, tight deadlines, team tension — your immediate instinct is to...',ex:'💡 Three urgent fires, a team conflict, and an unexpected board request all land on the same day.',
+opts:[{t:'Push harder — intensify my focus and drive forward.',d:{PUSH:3}},{t:'Pump up the team — rally energy and keep spirits high.',d:{RALLY:3}},{t:'Step back, assess, and build a structured response plan.',d:{PLAN:3}},{t:'Check in with the team first and make sure everyone is okay.',d:{CARE:3}}]},
+{cat:'Warning Signs',q:'When you\'re approaching your stress limit, others tend to notice...',ex:'💡 What do people around you observe when you\'re nearing your edge?',
+opts:[{t:'I become more blunt, impatient, and controlling than usual.',d:{PUSH:3}},{t:'I project excessive optimism that doesn\'t match the reality.',d:{RALLY:3}},{t:'I withdraw into deep analysis and slow down on decisions.',d:{PLAN:3}},{t:'I absorb everyone else\'s stress and forget to manage my own.',d:{CARE:3}}]},
+{cat:'Recovery',q:'After an intensely stressful period, you restore yourself best through...',ex:'💡 You\'ve just completed an exhausting 3-week sprint. What restores you?',
+opts:[{t:'Completing a meaningful task — crossing things off restores me.',d:{PUSH:3}},{t:'Being around positive, energetic people I enjoy.',d:{RALLY:3}},{t:'Quiet time alone to think, plan, and reset.',d:{PLAN:3}},{t:'Deep, meaningful conversation with someone I trust.',d:{CARE:3}}]},
+{cat:'Stress Impact',q:'Under sustained high stress, what suffers most in your leadership?',ex:'💡 Think about your last really difficult professional season.',
+opts:[{t:'My relationships — I become distant, cold, or impatient with people.',d:{PUSH:3}},{t:'My realism — I over-promise and underestimate the difficulty.',d:{RALLY:3}},{t:'My decisiveness — I get stuck in analysis and slow everything down.',d:{PLAN:3}},{t:'My own wellbeing — I put everyone else first and neglect myself.',d:{CARE:3}}]},
+{cat:'What Helps Most',q:'When you\'re genuinely struggling, what kind of support helps you most?',ex:'💡 You\'re going through a difficult professional season. What do you need?',
+opts:[{t:'Clear goals, a sense of momentum, and visible wins.',d:{PUSH:3}},{t:'Encouragement and genuine belief from people I respect.',d:{RALLY:3}},{t:'Space and time to think, plan, and process quietly.',d:{PLAN:3}},{t:'Someone to truly listen — just to be present with me.',d:{CARE:3}}]}
+]},
+fr:{title:'Profil de Réponse au Stress',sub:'Savoir comment vous vous comportez sous pression est un superpouvoir de leadership. Répondez honnêtement !',
+qs:[
+{cat:'Première Réponse',q:'Quand une pression extrême et soutenue frappe — crises multiples, délais serrés, tensions d\'équipe — votre instinct immédiat est de...',ex:'💡 Trois urgences, un conflit d\'équipe et une demande inattendue du conseil arrivent le même jour.',
+opts:[{t:'Pousser plus fort — intensifier mon focus et avancer.',d:{PUSH:3}},{t:'Galvaniser l\'équipe — rallier l\'énergie et maintenir le moral.',d:{RALLY:3}},{t:'Prendre du recul, évaluer et construire un plan de réponse structuré.',d:{PLAN:3}},{t:'Vérifier d\'abord avec l\'équipe et m\'assurer que tout le monde va bien.',d:{CARE:3}}]},
+{cat:'Signes Avant-Coureurs',q:'Quand vous approchez de votre limite de stress, les autres tendent à remarquer...',ex:'💡 Qu\'observent les personnes autour de vous quand vous êtes près de votre limite ?',
+opts:[{t:'Je deviens plus brusque, impatient(e) et contrôlant(e) que d\'habitude.',d:{PUSH:3}},{t:'Je projette un optimisme excessif qui ne correspond pas à la réalité.',d:{RALLY:3}},{t:'Je me retire dans une analyse profonde et ralentis sur les décisions.',d:{PLAN:3}},{t:'J\'absorbe le stress de tout le monde et oublie de gérer le mien.',d:{CARE:3}}]},
+{cat:'Récupération',q:'Après une période intensément stressante, vous vous restaurez le mieux en...',ex:'💡 Vous venez de terminer un sprint épuisant de 3 semaines. Qu\'est-ce qui vous restaure ?',
+opts:[{t:'Accomplir une tâche significative — cocher des choses me restaure.',d:{PUSH:3}},{t:'Être avec des personnes positives et énergiques que j\'apprécie.',d:{RALLY:3}},{t:'Du temps calme seul(e) pour penser, planifier et me réinitialiser.',d:{PLAN:3}},{t:'Une conversation profonde et significative avec quelqu\'un en qui j\'ai confiance.',d:{CARE:3}}]},
+{cat:'Impact du Stress',q:'Sous un stress soutenu élevé, qu\'est-ce qui souffre le plus dans votre leadership ?',ex:'💡 Pensez à votre dernière saison professionnelle vraiment difficile.',
+opts:[{t:'Mes relations — je deviens distant(e), froid(e) ou impatient(e) avec les gens.',d:{PUSH:3}},{t:'Mon réalisme — je sur-promets et sous-estime la difficulté.',d:{RALLY:3}},{t:'Ma décisivité — je me bloque dans l\'analyse et ralentis tout.',d:{PLAN:3}},{t:'Mon propre bien-être — je mets tout le monde en premier et me néglige.',d:{CARE:3}}]},
+{cat:'Ce Qui Aide le Plus',q:'Quand vous luttez vraiment, quel type de soutien vous aide le plus ?',ex:'💡 Vous traversez une saison professionnelle difficile. De quoi avez-vous besoin ?',
+opts:[{t:'Des objectifs clairs, un sentiment d\'élan et des victoires visibles.',d:{PUSH:3}},{t:'Encouragement et foi sincère de personnes que je respecte.',d:{RALLY:3}},{t:'De l\'espace et du temps pour penser, planifier et traiter tranquillement.',d:{PLAN:3}},{t:'Quelqu\'un pour vraiment écouter — juste être présent(e) avec moi.',d:{CARE:3}}]}
+]}
+}
+};
+
+// ═══════════════════════════════════════════════════════════════════
+// PROFILE LOOKUP TABLES
+// ═══════════════════════════════════════════════════════════════════
+const PTYPES={
+en:{
+ENTJ:{n:'The Commander',d:'Bold, decisive, and built to lead at scale. You combine strategic vision with the drive to make it happen. You set ambitious goals and inspire others to achieve what they once thought impossible.',s:['Strategic vision','Natural authority','Decisive action','Long-term planning']},
+ENFJ:{n:'The Protagonist',d:'Charismatic, empathetic, and genuinely inspiring. You lead by lifting others. People grow, thrive, and believe in themselves because of your investment in them.',s:['Empathy','Authentic inspiration','Connection','People development']},
+INTJ:{n:'The Architect',d:'Visionary, systematic, and quietly powerful. You design better futures with precision, pattern-recognition, and disciplined execution. Others may not always see your vision at first — but they always see the results.',s:['Systems thinking','Strategic planning','Analytical depth','Independence']},
+INFJ:{n:'The Advocate',d:'Purpose-driven and deeply values-led. You lead with quiet conviction and a compelling sense of mission. People follow you not because of authority but because of who you genuinely are.',s:['Deep vision','Integrity','Empathy','Meaningful impact']},
+ESTJ:{n:'The Executive',d:'Organised, reliable, and results-driven. You are the backbone of any team — setting clear standards, maintaining accountability, and consistently delivering. People know exactly where they stand with you.',s:['Organisation','High standards','Reliability','Execution excellence']},
+ESFJ:{n:'The Consul',d:'Warm, supportive, and community-centred. You build environments where people feel genuinely cared for, valued, and unified. Your team is not just a team — it\'s a family.',s:['Team harmony','Genuine care','Loyalty','Community building']},
+ISTJ:{n:'The Logistician',d:'Thorough, dependable, and deeply disciplined. You are the steady, reliable force that keeps everything running smoothly. Your team never has to wonder if you\'ll follow through — you always do.',s:['Reliability','Thoroughness','Integrity','Consistent follow-through']},
+ISFJ:{n:'The Defender',d:'Loyal, caring, and quietly extraordinarily strong. You serve with excellence, protect your team fiercely, and give your best — often without seeking any recognition.',s:['Loyalty','Quiet strength','Attention to detail','Servant leadership']},
+ENTP:{n:'The Debater',d:'Creative, energetic, and intellectually fearless. You challenge the status quo, generate bold ideas, and push your team and organisation to think beyond their current boundaries.',s:['Innovation','Intellectual courage','Quick thinking','Creative problem solving']},
+ENFP:{n:'The Campaigner',d:'Imaginative, enthusiastic, and deeply people-centred. You spark movements, build coalitions, and make every person you lead feel like they genuinely matter.',s:['Authentic enthusiasm','People magnetism','Creativity','Inspiring vision']},
+INTP:{n:'The Thinker',d:'Analytical, inventive, and endlessly intellectually curious. You solve complex problems with elegant logic and build systems that are ahead of their time.',s:['Analytical depth','Innovation','Logical precision','Deep problem solving']},
+INFP:{n:'The Mediator',d:'Idealistic, deeply empathetic, and values-driven to the core. You lead with authenticity and inspire others by living your principles without compromise, every single day.',s:['Deep authenticity','Empathy','Creative vision','Values-led leadership']},
+ESTP:{n:'The Entrepreneur',d:'Bold, observant, and energised by action and results. You thrive in fast-moving environments and lead by doing — hands-on, instinctive, and remarkably effective under pressure.',s:['Action orientation','Adaptability','Instinctive risk-taking','Crisis leadership']},
+ESFP:{n:'The Performer',d:'Spontaneous, warm, and naturally magnetic. You bring energy, joy, and authenticity to every team you lead — and people don\'t just respect you, they genuinely want to follow you.',s:['Natural energy','People connection','Authenticity','Positive culture building']},
+ISTP:{n:'The Virtuoso',d:'Practical, deeply analytical, and exceptionally calm under pressure. You lead by solving — quietly, efficiently, and effectively — what others find completely overwhelming.',s:['Practical problem solving','Calm under pressure','Technical excellence','Efficient execution']},
+ISFP:{n:'The Adventurer',d:'Artistic, sensitive, and grounded in deep personal values. You lead with quiet authenticity and create space for others to discover and express their best selves.',s:['Authentic leadership','Flexibility','Deep empathy','Values-led approach']},
+default:{n:'The Balanced Leader',d:'You show a rich, adaptive blend of traits across all personality dimensions. This versatility makes you exceptionally well-equipped to lead in complex, diverse, and rapidly changing environments.',s:['Exceptional adaptability','Balance across dimensions','Versatile leadership','Intuitive situational awareness']}
+},
+fr:{
+ENTJ:{n:'Le Commandant',d:'Audacieux, décisif et fait pour diriger à grande échelle. Vous combinez une vision stratégique avec la détermination de la réaliser.',s:['Vision stratégique','Autorité naturelle','Action décisive','Planification à long terme']},
+ENFJ:{n:'Le Protagoniste',d:'Charismatique, empathique et genuinement inspirant. Vous dirigez en élevant les autres.',s:['Empathie','Inspiration authentique','Connexion','Développement des personnes']},
+INTJ:{n:'L\'Architecte',d:'Visionnaire, systématique et discrètement puissant. Vous concevez de meilleurs avenirs avec précision et exécution disciplinée.',s:['Pensée systémique','Planification stratégique','Profondeur analytique','Indépendance']},
+INFJ:{n:'L\'Avocat',d:'Guidé(e) par la mission et profondément centré(e) sur les valeurs. Les gens vous suivent non pas pour votre autorité mais pour qui vous êtes genuinement.',s:['Vision profonde','Intégrité','Empathie','Impact significatif']},
+ESTJ:{n:'L\'Exécutif',d:'Organisé(e), fiable et axé(e) sur les résultats. Vous êtes l\'épine dorsale de toute équipe — fixant des standards clairs et livrant de manière constante.',s:['Organisation','Standards élevés','Fiabilité','Excellence d\'exécution']},
+ESFJ:{n:'Le Consul',d:'Chaleureux(se), soutenant(e) et centré(e) sur la communauté. Vous construisez des environnements où les gens se sentent genuinement valorisés.',s:['Harmonie d\'équipe','Soin sincère','Loyauté','Construction de communauté']},
+ISTJ:{n:'Le Logisticien',d:'Approfondi(e), fiable et profondément discipliné(e). Vous êtes la force stable qui maintient tout en bon ordre.',s:['Fiabilité','Approfondissement','Intégrité','Suivi constant']},
+ISFJ:{n:'Le Défenseur',d:'Loyal(e), bienveillant(e) et discrètement fort(e). Vous servez avec excellence et protégez votre équipe.',s:['Loyauté','Force discrète','Souci du détail','Leadership servant']},
+ENTP:{n:'Le Débatteur',d:'Créatif(ve), énergique et intellectuellement courageux(se). Vous challengez le statu quo et poussez à penser au-delà des frontières actuelles.',s:['Innovation','Courage intellectuel','Pensée rapide','Résolution créative']},
+ENFP:{n:'Le Militant',d:'Imaginatif(ve), enthousiaste et profondément centré(e) sur les personnes. Vous déclenchez des mouvements et faites sentir à chaque personne qu\'elle compte genuinement.',s:['Enthousiasme authentique','Magnétisme humain','Créativité','Vision inspirante']},
+INTP:{n:'Le Penseur',d:'Analytique, inventif(ve) et endlessement curieux(se). Vous résolvez des problèmes complexes avec une logique élégante.',s:['Profondeur analytique','Innovation','Précision logique','Résolution profonde']},
+INFP:{n:'Le Médiateur',d:'Idéaliste, profondément empathique et guidé(e) par les valeurs. Vous dirigez avec authenticité et inspirez en vivant vos principes.',s:['Authenticité profonde','Empathie','Vision créative','Leadership axé sur les valeurs']},
+ESTP:{n:'L\'Entrepreneur',d:'Audacieux(se), observateur(trice) et énergisé(e) par l\'action. Vous vous épanouissez dans des environnements rapides.',s:['Orientation action','Adaptabilité','Prise de risque instinctive','Leadership de crise']},
+ESFP:{n:'L\'Artiste',d:'Spontané(e), chaleureux(se) et naturellement magnétique. Vous apportez énergie et authenticité à chaque équipe.',s:['Énergie naturelle','Connexion humaine','Authenticité','Construction de culture positive']},
+ISTP:{n:'Le Virtuose',d:'Pratique, profondément analytique et exceptionnellement calme sous pression.',s:['Résolution pratique','Calme sous pression','Excellence technique','Exécution efficace']},
+ISFP:{n:'L\'Aventurier',d:'Artistique, sensible et ancré(e) dans des valeurs personnelles profondes.',s:['Leadership authentique','Flexibilité','Empathie profonde','Approche axée sur les valeurs']},
+default:{n:'Le Leader Équilibré',d:'Vous montrez un mélange riche et adaptatif de traits sur toutes les dimensions.',s:['Adaptabilité exceptionnelle','Équilibre','Leadership polyvalent','Conscience situationnelle']}
+}
+};
+
+const LSTYLE={
+en:{
+DE:{label:'Designer-Developer',col:'#3B6D11',
+desc:'You are an architect of systems, structures, and solutions. You see the structural problems that others walk right past, and you build elegant, scalable answers. Your team always knows: when you design something — it works.',
+growth:['Communicate your designs simply — not everyone thinks in systems or blueprints.','Partner with a Motivator to breathe energy and storytelling into your vision.','Practice "done is better than perfect" — avoid analysis paralysis.','Trust your team to execute without over-managing every detail.','Ask "how does this feel for people?" alongside "how does this work?"']},
+MO:{label:'Motivator-Influential',col:'#BA7517',
+desc:'You are a force of energy, vision, and infectious belief. People don\'t follow you because they have to — they follow you because you make them believe in themselves and in something worth fighting for. Your presence transforms the emotional temperature of any room.',
+growth:['Build your follow-through discipline — great inspiration requires great delivery.','Use data and evidence to ground your vision in credibility.','Partner with an Executor to turn inspiring ideas into measurable results.','Practice listening as deeply as you inspire — sometimes people need to be heard.','Slow down to honour the detail-oriented members of your team.']},
+TP:{label:'Team Player',col:'#185FA5',
+desc:'You are the irreplaceable glue that makes teams genuinely work. Your gift for empathy, inclusion, and authentic collaboration creates environments where people feel safe to speak, contribute, take risks, and carry each other. Strong teams exist because of leaders like you.',
+growth:['Build confidence in making firm, clear decisions when the team needs you to lead.','Practice giving direct, constructive feedback — kindness and clarity are not opposites.','Learn to protect your own time, energy, and emotional wellbeing.','Lead conflict conversations with grace and courage instead of avoiding them.','Celebrate your individual contributions, not just the team\'s.']},
+EX:{label:'Executor',col:'#A32D2D',
+desc:'You are a results engine with remarkable clarity and discipline. Where others get stuck in endless planning, you create momentum. Your team always knows where they stand, what\'s expected, and exactly where they\'re headed. You make important things happen.',
+growth:['Slow down to invest in relationships — results are sustainable only with trust.','Develop patience for people who process and move at different speeds.','Create genuine space for creativity, innovation, and experimentation.','Build your empathy skills to deeply understand what drives your people.','Celebrate the journey, not only the destination.']}
+},
+fr:{
+DE:{label:'Concepteur-Développeur',col:'#3B6D11',
+desc:'Vous êtes un architecte de systèmes, structures et solutions. Vous voyez les problèmes structurels que les autres ignorent et construisez des réponses élégantes et évolutives.',
+growth:['Communiquez vos conceptions simplement — tout le monde ne pense pas en systèmes.','Associez-vous à un Motivateur pour insuffler énergie et narration à votre vision.','Pratiquez "fait vaut mieux que parfait" — évitez la paralysie d\'analyse.','Faites confiance à votre équipe sans gérer chaque détail.','Demandez "comment cela se ressent-il pour les gens ?" en plus de "comment cela fonctionne-t-il ?"']},
+MO:{label:'Motivateur-Influent',col:'#BA7517',
+desc:'Vous êtes une force d\'énergie, de vision et de croyance contagieuse. Les gens ne vous suivent pas parce qu\'ils le doivent — ils vous suivent parce que vous les faites croire en eux-mêmes.',
+growth:['Développez votre discipline de suivi — la grande inspiration nécessite une grande livraison.','Utilisez les données pour ancrer votre vision dans la crédibilité.','Associez-vous à un Exécuteur pour transformer les idées inspirantes en résultats mesurables.','Pratiquez l\'écoute aussi profondément que vous inspirez.','Ralentissez pour honorer les membres orientés détail de votre équipe.']},
+TP:{label:'Joueur d\'Équipe',col:'#185FA5',
+desc:'Vous êtes la colle irremplaçable qui fait genuinement fonctionner les équipes. Votre don pour l\'empathie, l\'inclusion et la collaboration crée des environnements où les gens se sentent en sécurité.',
+growth:['Développez la confiance pour prendre des décisions fermes et claires quand l\'équipe a besoin que vous dirigiez.','Pratiquez le feedback direct et constructif — gentillesse et clarté ne sont pas des opposés.','Apprenez à protéger votre propre temps, énergie et bien-être émotionnel.','Dirigez les conversations de conflit avec grâce et courage au lieu de les éviter.','Célébrez vos contributions individuelles, pas seulement celles de l\'équipe.']},
+EX:{label:'Exécuteur',col:'#A32D2D',
+desc:'Vous êtes un moteur de résultats avec une clarté et une discipline remarquables. Là où d\'autres se bloquent dans une planification sans fin, vous créez de l\'élan.',
+growth:['Ralentissez pour investir dans les relations — les résultats ne sont durables qu\'avec la confiance.','Développez la patience pour les personnes qui traitent et se déplacent à des vitesses différentes.','Créez un espace genuinement pour la créativité, l\'innovation et l\'expérimentation.','Développez vos compétences en empathie pour comprendre profondément ce qui motive vos gens.','Célébrez le voyage, pas seulement la destination.']}
+}
+};
+
+const CSTYLE={
+en:{
+DIR:{label:'The Director',desc:'You communicate with clarity, brevity, and decisive purpose. No unnecessary words — just clear direction and results. Your team always knows exactly what\'s needed and when.',tips:['Add more "why" to your direction — context helps people own the work.','Slow down with empathetic team members who need warmth alongside clarity.','Your directness is a genuine superpower — pair it with intentional listening.']},
+INS:{label:'The Inspirer',desc:'You communicate through story, vision, and energy that moves people. You don\'t just convey information — you make people feel like they\'re part of something genuinely meaningful.',tips:['Add concrete details and specifics to make inspiration immediately actionable.','Follow through consistently on what you promise — your words carry immense weight.','Balance vision-casting with clear, practical, dated next steps.']},
+ANA:{label:'The Analyst',desc:'You communicate with depth, rigour, and impeccable accuracy. People trust your analysis because you leave nothing important unaddressed and your evidence is airtight.',tips:['Lead with the headline — give the conclusion first, then the supporting detail.','Watch for over-communication — not every update needs five paragraphs.','Build relational warmth before launching into data and analysis.']},
+CON:{label:'The Connector',desc:'You communicate with warmth, genuine inclusion, and authentic care for every person in the room. People feel truly heard, respected, and valued in every conversation you lead.',tips:['Build confidence in delivering direct feedback when it\'s clearly needed.','Be careful not to soften messages so much that the core point is lost.','Your relational style is an extraordinary gift — use it to build the trust that makes hard conversations possible.']}
+},
+fr:{
+DIR:{label:'Le Directeur',desc:'Vous communiquez avec clarté, concision et objectif décisif. Votre équipe sait toujours exactement ce qui est nécessaire et quand.',tips:['Ajoutez plus de "pourquoi" à votre direction — le contexte aide les gens à s\'approprier le travail.','Ralentissez avec les membres empathiques qui ont besoin de chaleur aux côtés de la clarté.','Votre franchise est un superpouvoir — associez-la à une écoute intentionnelle.']},
+INS:{label:'L\'Inspirateur',desc:'Vous communiquez à travers l\'histoire, la vision et l\'énergie qui meut les gens. Vous ne transmettez pas seulement de l\'information — vous faites sentir aux gens qu\'ils font partie de quelque chose de genuinement significatif.',tips:['Ajoutez des détails concrets et des spécifications pour rendre l\'inspiration immédiatement actionnable.','Tenez constamment vos promesses — vos mots portent un immense poids.','Équilibrez la projection de vision avec des prochaines étapes claires, pratiques et datées.']},
+ANA:{label:'L\'Analyste',desc:'Vous communiquez avec profondeur, rigueur et précision impeccable. Les gens font confiance à votre analyse parce que vous ne laissez rien d\'important sans réponse.',tips:['Commencez par le titre — donnez la conclusion d\'abord, puis le détail de soutien.','Surveillez la sur-communication — toutes les mises à jour n\'ont pas besoin de cinq paragraphes.','Construisez une chaleur relationnelle avant de vous lancer dans les données et l\'analyse.']},
+CON:{label:'Le Connecteur',desc:'Vous communiquez avec chaleur, inclusion sincère et soin authentique pour chaque personne. Les gens se sentent genuinement entendus, respectés et valorisés.',tips:['Développez la confiance pour donner un feedback direct quand c\'est clairement nécessaire.','Faites attention à ne pas trop adoucir les messages au point que le point central soit perdu.','Votre style relationnel est un don extraordinaire — utilisez-le pour construire la confiance.']}
+}
+};
+
+const SSTYLE={
+en:{
+PUSH:{label:'The Driver',desc:'Under extreme pressure, you intensify your focus and drive harder. This remarkable ability to push through adversity is one of your greatest leadership strengths — and it inspires others to dig deep alongside you.',recovery:'Achievement, forward momentum, and completing meaningful work',watch:'Becoming controlling, dismissive, or impatient with people who move at a different pace'},
+RALLY:{label:'The Energiser',desc:'Under pressure, you lift the spirits of everyone around you and keep the collective energy high. Your positivity and belief in the team is genuinely infectious — and it often makes the difference between a team that gives up and one that pushes through.',recovery:'Positive, energising people and environments that fuel your spirit',watch:'Projecting excessive optimism that masks real problems and keeps the team from addressing root causes'},
+PLAN:{label:'The Strategist',desc:'Under pressure, you slow down, step back, and build a structured response. Your analytical calm is an extraordinary leadership asset — you prevent panic and create clarity precisely when people need it most.',recovery:'Quiet, uninterrupted time to think, plan, reflect, and reset your internal compass',watch:'Analysis paralysis — getting so deep in planning that the window for action closes'},
+CARE:{label:'The Nurturer',desc:'Under pressure, you instinctively prioritise the wellbeing of your people. Your team will always feel supported and never abandoned — and this creates the kind of loyalty that sustains teams through genuinely hard times.',recovery:'Deep, meaningful conversation and authentic connection with people you trust and love',watch:'Consistently neglecting your own needs and absorbing others\' stress into yourself'}
+},
+fr:{
+PUSH:{label:'Le Moteur',desc:'Sous une pression extrême, vous intensifiez votre focus et poussez plus fort. Cette capacité remarquable à traverser l\'adversité est l\'une de vos plus grandes forces de leadership.',recovery:'Accomplissement, élan vers l\'avant et accomplissement d\'un travail significatif',watch:'Devenir contrôlant(e), méprisant(e) ou impatient(e) avec des personnes qui se déplacent à un rythme différent'},
+RALLY:{label:'L\'Énergiseur',desc:'Sous pression, vous élevez les esprits de tous ceux qui vous entourent et maintenez l\'énergie collective élevée.',recovery:'Des personnes positives et énergisantes et des environnements qui alimentent votre esprit',watch:'Projeter un optimisme excessif qui masque de vrais problèmes'},
+PLAN:{label:'Le Stratège',desc:'Sous pression, vous ralentissez, prenez du recul et construisez une réponse structurée. Votre calme analytique est un atout de leadership extraordinaire.',recovery:'Du temps calme et ininterrompu pour penser, planifier, réfléchir et réinitialiser',watch:'La paralysie d\'analyse — s\'enfoncer si profondément dans la planification que la fenêtre d\'action se ferme'},
+CARE:{label:'Le Soignant',desc:'Sous pression, vous priorisez instinctivement le bien-être de vos personnes. Votre équipe se sentira toujours soutenue et jamais abandonnée.',recovery:'Une conversation profonde et significative et une connexion authentique avec des personnes en qui vous avez confiance',watch:'Négliger constamment vos propres besoins et absorber le stress des autres en vous-même'}
+}
+};
+
+// ═══════════════════════════════════════════════════════════════════
+// UTILITIES
+// ═══════════════════════════════════════════════════════════════════
+function $(id){return document.getElementById(id);}
+function p(v,max){return Math.min(100,Math.max(0,Math.round((v/max)*100)));}
+function topKey(obj){return Object.entries(obj).sort((a,b)=>b[1]-a[1])[0]?.[0]||'?';}
+function getPCode(){const s=scores.personality||{};return [(s.E||0)>=(s.I||0)?'E':'I',(s.S||0)>=(s.N||0)?'S':'N',(s.T||0)>=(s.F||0)?'T':'F',(s.J||0)>=(s.P||0)?'J':'P'].join('');}
+function getLS(){const s=scores.leadership||{};return topKey({DE:s.DE||0,MO:s.MO||0,TP:s.TP||0,EX:s.EX||0});}
+function getEQ(){const s=scores.emotional||{};return Math.round(((s.SA||0)+(s.EM||0)+(s.ER||0)+(s.SS||0)+(s.MT||0))/15*100);}
+function getTV(){const s=scores.values||{};return topKey({INT:s.INT||0,IMP:s.IMP||0,COM:s.COM||0,INN:s.INN||0});}
+function getCS(){const s=scores.communication||{};return topKey({DIR:s.DIR||0,INS:s.INS||0,ANA:s.ANA||0,CON:s.CON||0});}
+function getSS(){const s=scores.stress||{};return topKey({PUSH:s.PUSH||0,RALLY:s.RALLY||0,PLAN:s.PLAN||0,CARE:s.CARE||0});}
+
+// ═══════════════════════════════════════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════════════════════════════════════
+const SECS=['home','personality','leadership','emotional','values','communication','stress','results'];
+function showSec(name){
+  SECS.forEach(s=>{
+    $('section-'+s).style.display=s===name?'block':'none';
+    const t=$('tab-'+s);if(t)t.classList.toggle('active',s===name);
+  });
+  if(name==='home')renderHome();
+  if(name==='results')renderResults();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function updatePips(){
+  Object.keys(completed).forEach(k=>{
+    const pip=$('pip-'+k);if(pip)pip.style.background=completed[k]?'var(--g400)':'var(--border)';
+    const tab=$('tab-'+k);if(tab)tab.classList.toggle('done',completed[k]);
+  });
+}
+function toggleLang(){
+  lang=lang==='en'?'fr':'en';
+  $('lang-btn').textContent=lang==='en'?'🇫🇷 Français':'🇬🇧 English';
+  $('hdr-tag').textContent=UI[lang].tag;
+  const nl=UI[lang].navLabels;
+  ['home','personality','leadership','emotional','values','communication','stress','results'].forEach((id,i)=>{const e=$('tn-'+id);if(e)e.textContent=nl[i];});
+  if(currentTest)renderTest(currentTest);else{const a=document.querySelector('.ntab.active');showSec(a?a.id.replace('tab-',''):'home');}
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// HOME
+// ═══════════════════════════════════════════════════════════════════
+function renderHome(){
+  const ui=UI[lang];
+  const n=Object.values(completed).filter(Boolean).length;
+  const t=6;
+  const cont=$('section-home');
+  cont.innerHTML=`
+  <div class="hero">
+    <div class="hero-chip">${ui.heroBadge}</div>
+    <h2 style="white-space:pre-line;">${ui.heroTitle}</h2>
+    <p class="hero-sub">${ui.heroSub}</p>
+    <div class="name-box">
+      <input class="name-input" id="name-input" type="text" placeholder="${ui.namePh}" value="${userName}" maxlength="50"/>
+      <button class="name-save-btn" onclick="saveName()">${ui.save}</button>
+    </div>
+    ${n>0?`<div class="infobox" style="max-width:560px;margin:0 auto 24px;text-align:left;">${ui.doneCount(n,t)}</div>`:''}
+    <div class="tgrid">
+      ${ui.cards.map((c,i)=>{
+        const done=c.key!=='results'&&completed[c.key];
+        const isFirst=i===0&&!completed[c.key];
+        return`<div class="tc${isFirst?' primary':''}${done?' done-card':''}" onclick="${c.key==='results'?'showSec(\'results\')':'startTest(\''+c.key+'\')'}">
+          ${done?`<div class="tc-done-stamp">✓ ${lang==='en'?'Done':'Fait'}</div>`:''}
+          <div class="tc-ico">${c.ico}</div>
+          <h3>${c.title}</h3>
+          <p class="tc-desc">${c.desc}</p>
+          <div class="tc-time">${done?'✅ '+(lang==='en'?'Complete — retake anytime':'Complet — refaire à tout moment'):c.time}</div>
+        </div>`;}).join('')}
+    </div>
+    ${n>0?`<div style="margin-top:24px;"><button class="pbtn" onclick="showSec('results')">${ui.viewProfile}</button></div>`:''}
+  </div>`;
+}
+function saveName(){const v=$('name-input');if(v){userName=v.value.trim();renderHome();}}
+
+// ═══════════════════════════════════════════════════════════════════
+// TEST ENGINE
+// ═══════════════════════════════════════════════════════════════════
+function startTest(key){
+  currentTest=key;currentQ=0;
+  currentAnswers=new Array(TESTS[key][lang].qs.length).fill(null);
+  scores[key]={};
+  showSec(key);renderTest(key);
+}
+function renderTest(key){
+  const data=TESTS[key][lang];
+  const q=data.qs[currentQ];
+  const total=data.qs.length;
+  const pct=Math.round((currentQ/total)*100);
+  const isLast=currentQ===total-1;
+  const ui=UI[lang];
+  const cont=$('section-'+key);
+  cont.innerHTML=`
+  <div style="margin-bottom:20px;">
+    <h2 style="font-family:'Playfair Display',serif;font-size:22px;color:var(--g900);margin-bottom:5px;">${data.title}</h2>
+    <p style="font-size:13px;color:var(--muted);">${data.sub}</p>
+  </div>
+  <div class="prog-wrap">
+    <div class="prog-meta"><span style="font-weight:600;">${ui.q} ${currentQ+1} ${ui.of} ${total}</span><span>${pct}% ${lang==='en'?'complete':'complété'}</span></div>
+    <div class="prog-track"><div class="prog-fill" style="width:${pct}%"></div></div>
+  </div>
+  <div class="step-dots">${data.qs.map((_,i)=>`<div class="sdot${i<currentQ?' done':i===currentQ?' cur':''}"></div>`).join('')}</div>
+  <div class="qcard">
+    <div class="qcat">${q.cat}</div>
+    <div class="qtext">${q.q}</div>
+    <div class="qex">${q.ex}</div>
+    <div class="opts">
+      ${q.opts.map((o,i)=>`<button class="opt${currentAnswers[currentQ]===i?' sel':''}" onclick="selA(${i})">
+        <div class="od"></div><span>${o.t}</span>
+      </button>`).join('')}
+    </div>
+  </div>
+  <div class="nav-btns">
+    <button class="btn btn-s" onclick="prevQ()" ${currentQ===0?'disabled':''}>${ui.prev}</button>
+    <button class="btn btn-p" onclick="nextQ()" ${currentAnswers[currentQ]===null?'disabled':''}>${isLast?ui.finish:ui.next}</button>
+  </div>`;
+}
+function selA(i){currentAnswers[currentQ]=i;renderTest(currentTest);}
+function prevQ(){if(currentQ>0){currentQ--;renderTest(currentTest);}}
+function nextQ(){
+  if(currentAnswers[currentQ]===null)return;
+  const q=TESTS[currentTest][lang].qs[currentQ];
+  const d=q.opts[currentAnswers[currentQ]].d;
+  Object.entries(d).forEach(([k,v])=>{scores[currentTest][k]=(scores[currentTest][k]||0)+v;});
+  if(currentQ<TESTS[currentTest][lang].qs.length-1){currentQ++;renderTest(currentTest);}
+  else{completed[currentTest]=true;updatePips();currentTest=null;showSec('results');}
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// RADAR CHART
+// ═══════════════════════════════════════════════════════════════════
+function buildRadar(data,size=280){
+  const N=data.length;const cx=size/2,cy=size/2,r=size*0.38,labelR=r+28;
+  const angles=data.map((_,i)=>(-Math.PI/2)+(2*Math.PI*i/N));
+  function pt(a,val){return[cx+val*r*Math.cos(a),cy+val*r*Math.sin(a)];}
+  const rings=[0.25,0.5,0.75,1];
+  const ringPaths=rings.map(ring=>{
+    const pts=angles.map(a=>pt(a,ring));
+    return`<polygon points="${pts.map(p=>p.join(',')).join(' ')}" fill="none" stroke="var(--border)" stroke-width="${ring===1?1.5:1}" opacity="0.6"/>`;
+  }).join('');
+  const spokes=angles.map(a=>`<line x1="${cx}" y1="${cy}" x2="${pt(a,1)[0]}" y2="${pt(a,1)[1]}" stroke="var(--border)" stroke-width="1" opacity="0.6"/>`).join('');
+  const dataPath=data.map((d,i)=>pt(angles[i],d.val)).map((p,i)=>(i?'L':'M')+p[0]+','+p[1]).join(' ')+'Z';
+  const dots=data.map((d,i)=>{const[x,y]=pt(angles[i],d.val);return`<circle cx="${x}" cy="${y}" r="4" fill="var(--g600)" stroke="#fff" stroke-width="1.5"/>`;}).join('');
+  const labels=data.map((d,i)=>{
+    const[x,y]=pt(angles[i],labelR/r);
+    const anchor=x<cx-5?'end':x>cx+5?'start':'middle';
+    const lines=d.label.split('\n');
+    return`<text x="${x}" y="${y-(lines.length-1)*7}" text-anchor="${anchor}" font-size="10" fill="var(--muted)" font-weight="600" font-family="DM Sans,sans-serif">${lines.map((l,j)=>`<tspan x="${x}" dy="${j===0?0:14}">${l}</tspan>`).join('')}</text>`;
+  }).join('');
+  return`<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" xmlns="http://www.w3.org/2000/svg">
+  ${ringPaths}${spokes}
+  <polygon points="${data.map((_,i)=>pt(angles[i],data[i].val).join(',')).join(' ')}" fill="rgba(59,109,17,0.15)" stroke="var(--g600)" stroke-width="2.5"/>
+  ${dots}${labels}
+  </svg>`;
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// RESULTS
+// ═══════════════════════════════════════════════════════════════════
+function renderResults(){
+  const cont=$('section-results');
+  const any=Object.values(completed).some(Boolean);
+  if(!any){
+    cont.innerHTML=`<div class="empty"><div class="eico">🌱</div>
+    <h3>${lang==='en'?'Your leadership portrait awaits!':'Votre portrait de leadership vous attend !'}</h3>
+    <p>${lang==='en'?'Complete at least one assessment above to see your profile.':'Complétez au moins une évaluation ci-dessus pour voir votre profil.'}</p>
+    <button class="pbtn" style="margin-top:24px;" onclick="showSec('home')">${lang==='en'?'Start an Assessment':'Commencer une Évaluation'}</button></div>`;
+    return;
+  }
+  const ui=UI[lang],sp=ui.spirit;
+  const ptC=getPCode(),ptI=(PTYPES[lang]?.[ptC])||PTYPES[lang]?.default||PTYPES.en.default;
+  const ls=getLS(),lI=LSTYLE[lang]?.[ls]||LSTYLE.en[ls];
+  const eq=getEQ(),tv=getTopValue(),cs=getCS(),ss=getSS();
+  const csI=CSTYLE[lang]?.[cs]||CSTYLE.en[cs],ssI=SSTYLE[lang]?.[ss]||SSTYLE.en[ss];
+  const emos=scores.emotional||{},leds=scores.leadership||{},vals=scores.values||{},coms=scores.communication||{},strs=scores.stress||{};
+  const dCount=Object.values(completed).filter(Boolean).length;
+  const now=new Date().toLocaleDateString(lang==='en'?'en-GB':'fr-FR',{year:'numeric',month:'long',day:'numeric'});
+
+  // badges
+  const badges=[
+    completed.personality?`<span class="r-badge gold">${ptC} — ${ptI.n}</span>`:'',
+    completed.leadership?`<span class="r-badge">${lI.label}</span>`:'',
+    completed.emotional?`<span class="r-badge">EQ ${eq}%</span>`:'',
+    completed.communication?`<span class="r-badge">${csI.label}</span>`:'',
+    completed.stress?`<span class="r-badge">${ssI.label}</span>`:'',
+  ].filter(Boolean).join('');
+
+  // summary score cards
+  const sCards=[
+    completed.personality?`<div class="scard"><div class="sl">${lang==='en'?'Personality':'Personnalité'}</div><div class="sv">${ptC}</div><div class="sm">${ptI.n}</div></div>`:'',
+    completed.leadership?`<div class="scard"><div class="sl">${lang==='en'?'Leadership':'Leadership'}</div><div class="sv" style="font-size:16px;">${lI.label.split('-')[0]}</div><div class="sm">${lI.label}</div></div>`:'',
+    completed.emotional?`<div class="scard"><div class="sl">EQ Score</div><div class="sv">${eq}%</div><div class="sbar"><div class="sfill" style="width:${eq}%"></div></div></div>`:'',
+    completed.values?`<div class="scard"><div class="sl">${lang==='en'?'Core Value':'Valeur Principale'}</div><div class="sv" style="font-size:16px;">${{INT:lang==='en'?'Integrity':'Intégrité',IMP:'Impact',COM:lang==='en'?'Community':'Communauté',INN:'Innovation'}[tv]||tv}</div></div>`:'',
+    completed.communication?`<div class="scard"><div class="sl">${lang==='en'?'Comm Style':'Style Comm.'}</div><div class="sv" style="font-size:16px;">${csI.label.split(' ').slice(1).join(' ')}</div></div>`:'',
+    completed.stress?`<div class="scard"><div class="sl">${lang==='en'?'Under Pressure':'Sous Pression'}</div><div class="sv" style="font-size:16px;">${ssI.label.split(' ').slice(1).join(' ')}</div></div>`:'',
+  ].filter(Boolean).join('');
+
+  // radar chart
+  const radarData=[];
+  if(completed.emotional){
+    const e=scores.emotional||{};
+    radarData.push(
+      {label:lang==='en'?'Self-\nAware':'Conscience\nde Soi',val:p(e.SA||0,3)/100},
+      {label:lang==='en'?'Empathy':'Empathie',val:p(e.EM||0,3)/100},
+      {label:lang==='en'?'Regulation':'Régulation',val:p(e.ER||0,3)/100},
+      {label:lang==='en'?'Social\nSkills':'Compétences\nSociales',val:p(e.SS||0,3)/100},
+      {label:lang==='en'?'Motivation':'Motivation',val:p(e.MT||0,3)/100}
+    );
+  }
+
+  let html=`
+  <div class="r-header">
+    <div class="rh-date">${now} · ${dCount}/6 ${lang==='en'?'assessments completed':'évaluations complétées'}</div>
+    ${userName?`<div class="rh-name">${lang==='en'?'Portrait prepared for':'Portrait préparé pour'}: ${userName}</div>`:''}
+    <h2>${lang==='en'?'My Leadership Profile':'Mon Profil de Leadership'}</h2>
+    <p class="rh-sub">${lang==='en'?'Team21 Leadership Assessment Tool (T21 LAT) · by Innocent Forteh':'Outil d\'Évaluation du Leadership Team21 (T21 LAT) · par Innocent Forteh'}</p>
+    <div class="r-badges">${badges}</div>
+  </div>`;
+
+  // summary cards
+  if(sCards)html+=`<div class="sc-grid">${sCards}</div>`;
+
+  // radar
+  if(radarData.length>=3)html+=`<div class="sec"><h3>📊 ${lang==='en'?'Emotional Intelligence Radar':'Radar d\'Intelligence Émotionnelle'}</h3><div class="radar-wrap">${buildRadar(radarData,300)}</div></div>`;
+
+  // PERSONALITY SECTION
+  if(completed.personality){
+    const sp2=scores.personality||{};
+    const dims={
+      en:[[{k:'E',lbl:'Extrovert',max:9},{k:'I',lbl:'Introvert',max:9}],[{k:'S',lbl:'Sensing',max:6},{k:'N',lbl:'Intuitive',max:6}],[{k:'T',lbl:'Thinking',max:6},{k:'F',lbl:'Feeling',max:6}],[{k:'J',lbl:'Judging',max:6},{k:'P',lbl:'Perceiving',max:6}]],
+      fr:[[{k:'E',lbl:'Extraverti',max:9},{k:'I',lbl:'Introverti',max:9}],[{k:'S',lbl:'Sensitif',max:6},{k:'N',lbl:'Intuitif',max:6}],[{k:'T',lbl:'Pensée',max:6},{k:'F',lbl:'Sentiment',max:6}],[{k:'J',lbl:'Jugement',max:6},{k:'P',lbl:'Perception',max:6}]]
+    };
+    html+=`<div class="sec">
+    <h3>🧠 ${lang==='en'?'Personality Assessment':'Évaluation de la Personnalité'}: <span style="color:var(--g600);font-size:17px;">${ptC}</span> — ${ptI.n}</h3>
+    <div class="sec-desc">${ptI.d}</div>
+    ${dims[lang].map(pair=>pair.map(d=>`<div class="trow"><div class="tlbl">${d.lbl}</div><div class="tbw"><div class="tb" style="width:${p(sp2[d.k]||0,d.max)}%"></div></div><div class="tpct">${p(sp2[d.k]||0,d.max)}%</div></div>`).join('')).join('')}
+    <p style="font-size:13px;font-weight:700;color:var(--g800);margin:14px 0 8px;">${lang==='en'?'Key Strengths':'Forces Clés'}</p>
+    <div class="tags">${ptI.s.map(s=>`<span class="tag">${s}</span>`).join('')}</div>
+    </div>`;
+  }
+
+  // LEADERSHIP
+  if(completed.leadership){
+    html+=`<div class="sec">
+    <h3>🌿 ${lang==='en'?'Leadership Style':'Style de Leadership'}: <span style="color:${lI.col};">${lI.label}</span></h3>
+    <div class="sec-desc">${lI.desc}</div>
+    ${Object.entries({DE:leds.DE||0,MO:leds.MO||0,TP:leds.TP||0,EX:leds.EX||0}).map(([k,v])=>{
+      const lb=LSTYLE[lang][k]||LSTYLE.en[k];
+      return`<div class="trow"><div class="tlbl" style="font-size:11px;">${lb.label}</div><div class="tbw"><div class="tb${k===ls?' gold':''}" style="width:${p(v,18)}%"></div></div><div class="tpct">${p(v,18)}%</div></div>`;
+    }).join('')}
+    <p style="font-size:13px;font-weight:700;color:var(--g800);margin:16px 0 8px;">🎯 ${lang==='en'?'Growth Suggestions':'Suggestions de Croissance'}</p>
+    <ul style="padding-left:18px;">${lI.growth.map(g=>`<li style="font-size:13px;color:var(--muted);line-height:1.75;margin-bottom:6px;">${g}</li>`).join('')}</ul>
+    </div>`;
+  }
+
+  // EQ
+  if(completed.emotional){
+    const eqLabs=lang==='en'?{SA:'Self-Awareness',EM:'Empathy',ER:'Emotional Regulation',SS:'Social Skills',MT:'Inner Drive & Motivation'}:{SA:'Conscience de Soi',EM:'Empathie',ER:'Régulation Émotionnelle',SS:'Compétences Sociales',MT:'Motivation Intérieure'};
+    const eqNote=eq>=85?lang==='en'?'Exceptional emotional leadership intelligence — a rare and powerful gift.':'Intelligence émotionnelle de leadership exceptionnelle — un don rare et puissant.':eq>=70?lang==='en'?'Strong EQ — you are a highly emotionally aware leader.':'QE fort — vous êtes un leader hautement conscient émotionnellement.':eq>=50?lang==='en'?'Solid foundation — consistent EQ practice will compound your effectiveness.':'Base solide — une pratique constante du QE renforcera votre efficacité.':lang==='en'?'Significant growth opportunity — emotional skills are learnable and the returns are extraordinary.':'Opportunité de croissance significative — les compétences émotionnelles s\'apprennent.';
+    html+=`<div class="sec">
+    <h3>💚 ${lang==='en'?'Emotional Intelligence':'Intelligence Émotionnelle'} — <span style="color:var(--g600);">EQ ${eq}%</span></h3>
+    <div class="infobox">${eqNote}</div>
+    <div class="sc-grid" style="margin-bottom:0;">
+      ${Object.entries({SA:emos.SA||0,EM:emos.EM||0,ER:emos.ER||0,SS:emos.SS||0,MT:emos.MT||0}).map(([k,v])=>`
+      <div class="scard"><div class="sl">${eqLabs[k]}</div><div class="sv">${p(v,3)}%</div><div class="sbar"><div class="sfill" style="width:${p(v,3)}%"></div></div></div>`).join('')}
+    </div>
+    </div>`;
+  }
+
+  // VALUES
+  if(completed.values){
+    const vLab=lang==='en'?{INT:'Integrity',IMP:'Impact',COM:'Community',INN:'Innovation'}:{INT:'Intégrité',IMP:'Impact',COM:'Communauté',INN:'Innovation'};
+    const vDesc=lang==='en'?{INT:'You lead with uncompromising ethics — your word is your bond.',IMP:'You lead for results that make a lasting, tangible difference.',COM:'You lead by building deep belonging and united communities.',INN:'You lead by pioneering bold new ideas and approaches.'}:{INT:'Vous dirigez avec une éthique sans compromis.',IMP:'Vous dirigez pour des résultats qui font une différence durable.',COM:'Vous dirigez en construisant une appartenance profonde.',INN:'Vous dirigez en pionnier de nouvelles idées audacieuses.'};
+    html+=`<div class="sec">
+    <h3>⭐ ${lang==='en'?'Core Values Compass':'Boussole des Valeurs Fondamentales'}</h3>
+    ${Object.entries({INT:vals.INT||0,IMP:vals.IMP||0,COM:vals.COM||0,INN:vals.INN||0}).map(([k,v])=>`
+    <div class="trow"><div class="tlbl">${vLab[k]}</div><div class="tbw"><div class="tb${k===tv?' gold':''}" style="width:${p(v,9)}%"></div></div><div class="tpct">${p(v,9)}%</div></div>`).join('')}
+    <div class="infobox" style="margin-top:14px;">🌟 ${lang==='en'?`Your primary value is <strong>${vLab[tv]}</strong>. ${vDesc[tv]}`:`Votre valeur principale est <strong>${vLab[tv]}</strong>. ${vDesc[tv]}`}</div>
+    </div>`;
+  }
+
+  // COMMUNICATION
+  if(completed.communication){
+    const cLab=lang==='en'?{DIR:'Director',INS:'Inspirer',ANA:'Analyst',CON:'Connector'}:{DIR:'Directeur',INS:'Inspirateur',ANA:'Analyste',CON:'Connecteur'};
+    html+=`<div class="sec">
+    <h3>🗣️ ${lang==='en'?'Communication Style':'Style de Communication'}: <span style="color:var(--g600);">${csI.label}</span></h3>
+    <div class="sec-desc">${csI.desc}</div>
+    ${Object.entries({DIR:coms.DIR||0,INS:coms.INS||0,ANA:coms.ANA||0,CON:coms.CON||0}).map(([k,v])=>`
+    <div class="trow"><div class="tlbl" style="font-size:11px;">${cLab[k]}</div><div class="tbw"><div class="tb${k===cs?' gold':''}" style="width:${p(v,15)}%"></div></div><div class="tpct">${p(v,15)}%</div></div>`).join('')}
+    <p style="font-size:13px;font-weight:700;color:var(--g800);margin:14px 0 8px;">💡 ${lang==='en'?'Communication Growth Tips':'Conseils de Croissance en Communication'}</p>
+    <ul style="padding-left:18px;">${csI.tips.map(t=>`<li style="font-size:13px;color:var(--muted);line-height:1.75;margin-bottom:5px;">${t}</li>`).join('')}</ul>
+    </div>`;
+  }
+
+  // STRESS
+  if(completed.stress){
+    const sLab=lang==='en'?{PUSH:'Driver',RALLY:'Energiser',PLAN:'Strategist',CARE:'Nurturer'}:{PUSH:'Moteur',RALLY:'Énergiseur',PLAN:'Stratège',CARE:'Soignant'};
+    html+=`<div class="sec">
+    <h3>🌊 ${lang==='en'?'Stress Response Profile':'Profil de Réponse au Stress'}: <span style="color:var(--g600);">${ssI.label}</span></h3>
+    <div class="sec-desc">${ssI.desc}</div>
+    ${Object.entries({PUSH:strs.PUSH||0,RALLY:strs.RALLY||0,PLAN:strs.PLAN||0,CARE:strs.CARE||0}).map(([k,v])=>`
+    <div class="trow"><div class="tlbl" style="font-size:11px;">${sLab[k]}</div><div class="tbw"><div class="tb${k===ss?' gold':''}" style="width:${p(v,15)}%"></div></div><div class="tpct">${p(v,15)}%</div></div>`).join('')}
+    <div class="two-col">
+      <div class="infobox">✅ <strong>${lang==='en'?'Best Recovery:':'Meilleure Récupération:'}</strong><br>${ssI.recovery}</div>
+      <div class="warnbox">⚠️ <strong>${lang==='en'?'Watch For:':'Attention à:'}</strong><br>${ssI.watch}</div>
+    </div>
+    </div>`;
+  }
+
+  // SPIRITUAL
+  html+=`<div class="spirit">
+  <h3>${sp.title}</h3>
+  <blockquote>${sp.verse}</blockquote>
+  <p>${sp.p1}</p><p style="margin-top:12px;">${sp.p2}</p>
+  <p style="margin-top:12px;">${sp.p3}</p>
+  <p style="margin-top:12px;">${sp.p4}</p>
+  <p class="italicline">${sp.italic}</p>
+  <div class="sig">
+    <p>${sp.sign}</p>
+    <strong>${sp.name}</strong>
+    <small>${sp.role}</small><br>
+    <small style="display:block;margin-top:6px;opacity:.7;">${sp.copy}</small>
+  </div>
+  </div>`;
+
+  html+=`<div class="action-row">
+  <button class="pbtn" onclick="window.print()">${ui.print}</button>
+  <button class="rbtn" onclick="if(confirm('${lang==='en'?'This will reset all your scores. Are you sure?':'Cela réinitialisera tous vos scores. Êtes-vous sûr(e) ?'}'))resetAll()">${ui.retake}</button>
+  </div>`;
+
+  cont.innerHTML=html;
+}
+
+function getTopValue(){return getTV();}
+
+function resetAll(){
+  scores={personality:{},leadership:{},emotional:{},values:{},communication:{},stress:{}};
+  completed={personality:false,leadership:false,emotional:false,values:false,communication:false,stress:false};
+  currentTest=null;currentQ=0;currentAnswers=[];
+  updatePips();showSec('home');
+}
+
+// INIT
+updatePips();renderHome();
+</script>
+</body>
+</html>

@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Team21 Academy — PMP Exam Preparation</title>
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=EB+Garamond:ital,wght@0,400;1,400&display=swap" rel="stylesheet" />
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%;background:#0D1428}
+    #root{min-height:100vh}
+    input:focus{outline:none;border-color:#C9A84C !important;box-shadow:0 0 0 2px rgba(201,168,76,0.2)}
+    ::-webkit-scrollbar{width:6px}
+    ::-webkit-scrollbar-track{background:#0D1428}
+    ::-webkit-scrollbar-thumb{background:#C9A84C55;border-radius:3px}
+    button{transition:opacity 0.15s,transform 0.1s}
+    button:active{opacity:0.85;transform:scale(0.98)}
+  </style>
+</head>
+<body>
+<div id="root"><div style="display:flex;height:100vh;align-items:center;justify-content:center;color:#C9A84C;font-family:Georgia,serif;font-size:18px">Loading Team21 Academy...</div></div>
+<script type="text/babel">
+const { useState, useEffect, useRef } = React;
+const PASS_SCORE = 70;
+
+// ── QUESTION BANK ─────────────────────────────────────────────────────────────
+const QUESTION_BANK = [
+  {id:1,domain:"People",topic:"Conflict Management",question:"A team member consistently misses deadlines and becomes defensive when confronted, blaming others. As PM, what is the BEST approach?",options:["Escalate immediately to the sponsor","Use a confronting/problem-solving approach to understand root cause","Issue a formal warning and document the behavior","Redistribute that team member's work to others"],answer:1,rationale:"Confronting/problem-solving directly addresses root causes rather than avoiding or forcing. PMI ranks this as the most effective technique. Escalation and formal warnings are premature without first attempting direct resolution."},
+  {id:2,domain:"People",topic:"Leadership Styles",question:"Your project is in crisis — timelines slipping, team anxious, stakeholders demanding answers. Which leadership style is MOST appropriate RIGHT NOW?",options:["Servant leadership","Laissez-faire leadership","Directive/autocratic leadership","Democratic consensus-building"],answer:2,rationale:"In a genuine crisis, directive leadership provides clear direction, reduces ambiguity, and enables rapid decisions. Once the crisis stabilizes, transitioning to collaborative styles is appropriate."},
+  {id:3,domain:"People",topic:"Team Development",question:"A newly formed cross-departmental team is polite but cautious, with unclear roles and no established norms. Per Tuckman's model, what stage is this and what should the PM do?",options:["Storming — facilitate open debate to surface conflicts","Norming — establish performance metrics","Forming — establish ground rules and clarify roles","Adjourning — begin transition planning"],answer:2,rationale:"Forming is characterized by politeness, caution, and role ambiguity. The PM must provide structure: ground rules, role clarity, and shared goals. Moving too quickly to performance expectations skips essential bonding."},
+  {id:4,domain:"People",topic:"Motivation Theory",question:"A high performer requests to lead a sub-project. Which motivation theory BEST explains this?",options:["Herzberg's Hygiene Theory — better working conditions needed","Maslow's Hierarchy — self-actualization needs","McGregor's Theory X — external motivation required","Vroom's Expectancy Theory — expects recognition for effort"],answer:1,rationale:"Requesting leadership reflects self-actualization at the top of Maslow's Hierarchy — the drive to reach one's full potential. This is an intrinsic motivator, not a hygiene factor."},
+  {id:5,domain:"People",topic:"Emotional Intelligence",question:"During a retrospective, two senior developers have a heated argument and one walks out. What should the PM do FIRST?",options:["Document the incident immediately","Allow a cooling-off period, then meet each person privately","Call an all-hands meeting to address the conflict publicly","Escalate to HR and recommend replacing one developer"],answer:1,rationale:"Emotional intelligence requires recognizing heightened emotions and creating space before attempting resolution. Meeting separately first lets each person express concerns privately, preserving dignity and building trust for reconciliation."},
+  {id:6,domain:"People",topic:"Virtual Teams",question:"Your distributed team spans 5 time zones. Cohesion is low and miscommunications are frequent. What is the MOST effective intervention?",options:["Require all communication to be in writing only","Establish overlapping core hours for real-time collaboration and explicit communication protocols","Hire local coordinators in each time zone","Convert the project to co-located model"],answer:1,rationale:"Overlapping core hours address time-zone fragmentation for real-time connection, while explicit protocols reduce misinterpretation. This is more scalable than co-location and more effective than purely asynchronous methods."},
+  {id:7,domain:"People",topic:"Stakeholder Engagement",question:"A key stakeholder who approved the project charter is now actively opposing the project after scope changes. Best action?",options:["Escalate immediately to the project sponsor","Remove them from distribution lists","Schedule a private meeting to understand concerns and re-engage","Send a formal memo documenting their opposition"],answer:2,rationale:"A private meeting to understand opposition is the right first step. It shows respect, may reveal legitimate concerns worth addressing, and gives the stakeholder a chance to feel heard — usually the root of opposition."},
+  {id:8,domain:"People",topic:"Team Performance",question:"Team velocity dropped 30% over two sprints but no one raises concerns in stand-ups. What should the PM do?",options:["Wait one more sprint before taking action","Immediately remove underperforming members","Proactively investigate through one-on-ones and retrospectives","Reduce sprint scope to restore velocity metrics"],answer:2,rationale:"A silent team with declining performance signals psychological safety issues, hidden impediments, or morale problems. The PM must proactively create safe channels to surface issues — not wait passively or make assumptions."},
+  {id:9,domain:"People",topic:"Negotiation",question:"A vendor insists on a price 20% above your budget. What negotiation approach is BEST?",options:["Accept and request a budget increase from sponsor","Use principled negotiation: focus on interests, not positions","Walk away immediately to signal strength","Counter at 15% below without explanation"],answer:1,rationale:"Principled negotiation (Fisher & Ury) separates people from the problem, focuses on underlying interests, and generates options for mutual gain. Positional bargaining damages relationships and rarely finds optimal outcomes."},
+  {id:10,domain:"People",topic:"Psychological Safety",question:"Which team activity BEST builds psychological safety?",options:["Competitive leaderboards ranking individual performance","Regular blameless retrospectives treating failures as learning opportunities","Publishing individual defect counts","Assigning individual accountability for all bugs"],answer:1,rationale:"Blameless retrospectives — where failures are learning events, not blame events — are the strongest psychological safety builder. Google's Project Aristotle found this the #1 predictor of team performance."},
+  {id:11,domain:"Process",topic:"Earned Value",question:"CPI = 0.85, SPI = 0.92. Sponsor asks for EAC assuming past performance continues. Which formula applies?",options:["EAC = AC + (BAC - EV)","EAC = BAC / CPI","EAC = AC + ETC","EAC = BAC / (CPI x SPI)"],answer:1,rationale:"When past performance is expected to continue, EAC = BAC / CPI. The CPI captures actual cost efficiency and projects it forward. EAC = AC + (BAC - EV) assumes future work at planned rate — contradicting the assumption."},
+  {id:12,domain:"Process",topic:"Risk Management",question:"A risk has 40% probability and $50,000 impact. What is the Expected Monetary Value (EMV)?",options:["$50,000","$20,000","$30,000","$90,000"],answer:1,rationale:"EMV = Probability x Impact = 0.40 x $50,000 = $20,000. This goes into the risk reserve and is used in decision tree analysis to compare options on a common monetary basis."},
+  {id:13,domain:"Process",topic:"Quality Management",question:"Testing finds 45 defects in Module A and 8 in Module B. Using the Pareto principle, what is the BEST action?",options:["Assign equal resources to both modules","Focus 80% of quality resources on Module A","Rewrite both modules from scratch","Outsource defect resolution to the vendor"],answer:1,rationale:"Pareto (80/20): Module A holds ~85% of all defects. Concentrating resources on the vital few sources of defects maximizes quality improvement ROI."},
+  {id:14,domain:"Process",topic:"Procurement",question:"IT services are needed. Requirements are well-defined. Buyer wants to minimize cost risk. Which contract type is BEST?",options:["Cost Plus Fixed Fee (CPFF)","Time and Material (T&M)","Firm Fixed Price (FFP)","Cost Plus Incentive Fee (CPIF)"],answer:2,rationale:"FFP transfers maximum cost risk to the seller — ideal when scope is fully defined. The seller bears overrun risk and has efficiency incentives. CPFF/CPIF shift risk to the buyer and suit uncertain requirements."},
+  {id:15,domain:"Process",topic:"Integrated Change Control",question:"A team member implements a 'minor' improvement without going through change control. PM should do FIRST:",options:["Praise the initiative but document retroactively","Immediately revert the change","Conduct impact analysis and submit through Integrated Change Control","Escalate directly to the Change Control Board"],answer:2,rationale:"ALL changes go through ICC regardless of perceived size. Conduct impact analysis first to understand consequences, then formalize. Reverting without analysis could cause additional harm."},
+  {id:16,domain:"Process",topic:"Scope Management",question:"What is the PRIMARY purpose of the Work Breakdown Structure (WBS)?",options:["Assign resources to project tasks","Hierarchically decompose total project scope into manageable deliverables","Sequence activities for scheduling","Estimate project costs by work package"],answer:1,rationale:"The WBS organizes and defines total scope into deliverable-oriented work packages. It is NOT activity-oriented (that comes in schedule planning) or resource-focused. It is the foundation of scope management."},
+  {id:17,domain:"Process",topic:"Schedule Compression",question:"Project is 3 weeks behind. PM adds resources to critical path tasks. This is called:",options:["Fast tracking","Crashing","Resource leveling","Critical chain method"],answer:1,rationale:"Crashing adds resources (people, overtime, equipment) to compress the critical path — at increased cost. Fast tracking overlaps phases. These are the two primary schedule compression techniques. Crashing is appropriate here."},
+  {id:18,domain:"Process",topic:"Agile",question:"During sprint review, stakeholders request a major scope change affecting 40% of future sprints. Correct action?",options:["Add it to the current sprint backlog immediately","Reject it — sprint is in progress","Add to product backlog for Product Owner prioritization","Escalate to project sponsor for approval"],answer:2,rationale:"In Scrum, new requests go to the product backlog. The Product Owner prioritizes based on value and capacity. The sprint review exists precisely for this feedback — the system is working correctly."},
+  {id:19,domain:"Process",topic:"Earned Value",question:"PV=$100,000; EV=$85,000; AC=$95,000. What is Schedule Variance and what does it indicate?",options:["SV=-$10,000; over budget","SV=-$15,000; behind schedule","SV=+$10,000; ahead of schedule","SV=-$10,000; behind schedule"],answer:1,rationale:"SV = EV - PV = $85,000 - $100,000 = -$15,000. Negative SV means less value earned than planned — project is BEHIND schedule. CV = EV - AC = -$10,000, also indicating a cost overrun."},
+  {id:20,domain:"Process",topic:"Communications",question:"A project with 8 stakeholders adds 4 more. How many NEW communication channels are created?",options:["4 new channels","38 new channels","66 total channels","56 new channels"],answer:1,rationale:"Formula: n(n-1)/2. Original: 8x7/2=28. New total: 12x11/2=66. Additional channels: 66-28=38. This exponential growth explains why communications management becomes critical on large projects."},
+  {id:21,domain:"Process",topic:"Risk Response",question:"A key vendor may go bankrupt. The PM pre-negotiates contracts with two alternative vendors. This is:",options:["Risk avoidance","Risk mitigation","Risk transference","Contingency reserve"],answer:1,rationale:"Securing alternatives reduces probability and impact of the risk — this is mitigation. Avoidance eliminates the risk entirely (e.g., bringing work in-house). Transference shifts financial consequences (e.g., insurance/bonding)."},
+  {id:22,domain:"Process",topic:"Estimating",question:"Which technique uses historical data from similar past projects with minimal analysis?",options:["Parametric estimating","Bottom-up estimating","Analogous estimating","Three-point (PERT) estimating"],answer:2,rationale:"Analogous estimating uses comparable past project data as the basis — fast but less accurate. Bottom-up builds from work packages. Parametric uses statistical unit relationships. Three-point uses O/ML/P distributions."},
+  {id:23,domain:"Process",topic:"Project Closure",question:"During project closure, what document is MOST important for organizational learning?",options:["Final performance report","Lessons learned register","Updated risk register","Contract closure documents"],answer:1,rationale:"Lessons learned capture what worked, what didn't, and recommendations — the primary vehicle for organizational improvement. They feed future project planning and build institutional knowledge that outlasts the project team."},
+  {id:24,domain:"Process",topic:"Hybrid PM",question:"A project needs fixed regulatory deliverables AND evolving user features. Which approach is BEST?",options:["Pure Waterfall for entire project","Pure Scrum for entire project","Hybrid: Waterfall for compliance components, Agile for feature development","Skip planning and prototype immediately"],answer:2,rationale:"PMBOK 7 and PMI explicitly recognize hybrid approaches. Fixed compliance requirements suit predictive methods; evolving features benefit from iterative Agile. Hybrid optimizes value delivery while meeting regulatory constraints."},
+  {id:25,domain:"Process",topic:"Cost Baseline",question:"What is the difference between the Cost Baseline and the Project Budget?",options:["They are identical terms","Project Budget includes Management Reserves; Cost Baseline does not","Cost Baseline includes Management Reserves; Project Budget does not","Project Budget excludes contingency reserves"],answer:1,rationale:"Cost Baseline = BAC including contingency reserves (for known unknowns). Project Budget = Cost Baseline + Management Reserve (for unknown unknowns). Management reserves are not in the baseline — they require sponsor approval to use."},
+  {id:26,domain:"Business Environment",topic:"Benefits Realization",question:"A project is delivered on time and on budget but business benefits are NOT realized 18 months later. Who is PRIMARILY responsible?",options:["The project manager","The project team","The project sponsor and business owner","The PMO Director"],answer:2,rationale:"Benefits realization is the sponsor and business owner's responsibility — they own the investment and adoption. The PM delivers the project; the business must adopt outputs and realize benefits. PMBOK 7 emphasizes outcome-focus over output-focus."},
+  {id:27,domain:"Business Environment",topic:"Governance",question:"Which document formally authorizes the project manager and launches the project?",options:["Project Management Plan","Project Charter","Business Case","Statement of Work"],answer:1,rationale:"The Project Charter formally authorizes the project, names the PM with authority level, and provides high-level scope. Issued by the sponsor, it is the PM's legal basis for committing resources. The PM Plan details HOW to manage; the charter says IF and WHO."},
+  {id:28,domain:"Business Environment",topic:"Organizational Structure",question:"An organization wants maximum adaptability and PM authority. Which structure is BEST?",options:["Functional hierarchy","Weak matrix","Projectized","Strong bureaucracy"],answer:2,rationale:"Projectized structures give PMs full authority, dedicate resources to projects, and enable the fastest pivots. Functional structures optimize specialization but respond slowly. Agile transformations typically move toward projectized or strong matrix structures."},
+  {id:29,domain:"Business Environment",topic:"Compliance",question:"During execution, the PM discovers the technical approach may violate local data privacy regulations. Do FIRST:",options:["Continue and document as a risk","Immediately suspend the project","Assess the compliance gap, engage legal counsel, and develop corrective options","Inform sponsor only and keep confidential"],answer:2,rationale:"Compliance breaches require immediate expert assessment. Engaging legal counsel and developing corrective options (redesign, exceptions, descoping) is proper. Continuing creates liability; suspending before assessment may be premature and costly."},
+  {id:30,domain:"Business Environment",topic:"Strategic Alignment",question:"Six months after charter approval, market conditions change significantly, making original benefits unlikely. PM should:",options:["Complete the project as planned since it was approved","Re-evaluate the business case and present options to sponsor","Expand scope to try to recover value","Wait for the sponsor to raise the concern"],answer:1,rationale:"PMBOK 7 emphasizes continuous value delivery, not just delivery completion. If the business case is undermined, the PM must proactively surface this to governance. The decision to continue, pivot, or close belongs to the sponsor — but the PM must raise it."},
+  {id:31,domain:"Business Environment",topic:"PMBOK 7",question:"Which statement BEST describes the shift from PMBOK 6 to PMBOK 7?",options:["From Agile to Waterfall emphasis","From process-based/knowledge-areas to principles-based/performance-domains","From sponsor authority to PM authority","From risk avoidance to risk acceptance"],answer:1,rationale:"PMBOK 7 replaced 49 processes and 10 knowledge areas with 12 principles and 8 performance domains. It is outcomes-focused, methodology-agnostic, and emphasizes value delivery and stewardship over prescriptive process compliance."},
+  {id:32,domain:"Business Environment",topic:"EEF vs OPA",question:"Which is an Enterprise Environmental Factor (EEF) rather than an Organizational Process Asset (OPA)?",options:["Historical project files","Lessons learned database","Government regulations and industry standards","Organizational templates"],answer:2,rationale:"EEFs are conditions not controlled by the team (regulations, market, culture, infrastructure). OPAs are organization-created assets (templates, historical data, policies). Regulations constrain projects but aren't created by the organization — classic EEF."},
+  {id:33,domain:"Business Environment",topic:"Portfolio Management",question:"An organization has 15 active projects with limited resources. Best prioritization approach?",options:["Allocate resources equally across all projects","Prioritize by PM seniority","Align to strategic objectives; prioritize by value and strategic fit","Complete oldest projects first (FIFO)"],answer:2,rationale:"Portfolio management requires strategic alignment and value-based trade-offs. PMI's portfolio standard emphasizes conscious resource decisions to maximize organizational value — not FIFO, seniority, or equality."},
+  {id:34,domain:"Business Environment",topic:"Stakeholder Grid",question:"A stakeholder has HIGH power and LOW interest. Best engagement strategy?",options:["Manage closely — consult regularly on all decisions","Monitor — minimal effort","Keep satisfied — address their specific interests proactively","Keep informed — regular detailed updates"],answer:2,rationale:"Power/Interest grid: High Power, Low Interest = Keep Satisfied. These stakeholders can impact the project but aren't interested in detail. Target communications to their specific interests; over-communicating wastes everyone's time and may annoy them."},
+  {id:35,domain:"Business Environment",topic:"Cultural Intelligence",question:"A PM from a direct, action-oriented culture leads a team that values hierarchy and consensus. What is CRITICAL for success?",options:["Apply standard PM methods and ignore cultural differences","Adapt communication and decision-making to respect the host culture","Insist the team adopt the PM's cultural norms","Request cultural training for the team only"],answer:1,rationale:"Cultural intelligence (CQ) is essential in global projects. Adapting to hierarchy-and-consensus norms — especially in decision processes — builds trust. Imposing one's own norms creates resistance and is a leading cause of global project failure."},
+  {id:36,domain:"Process",topic:"Critical Path",question:"Network paths: A-B-C=15 days; A-D-E=18 days; A-F=12 days. Task D is delayed 4 days. Project impact?",options:["No delay — D is not on critical path","Project delayed 4 days","Project delayed 2 days","Project delayed 6 days"],answer:1,rationale:"Critical path is A-D-E at 18 days — the longest path. D IS on the critical path. A 4-day delay on D makes A-D-E=22 days, delaying the project 4 days. Paths with float (A-B-C, A-F) absorb delays without project impact."},
+  {id:37,domain:"People",topic:"Servant Leadership",question:"A servant leader PM is MOST likely to:",options:["Make all technical decisions to protect the team from complexity","Create an environment for team self-organization and actively remove impediments","Reward high performers with additional responsibilities","Set strict monitoring controls to ensure compliance"],answer:1,rationale:"Servant leadership (Robert Greenleaf) means serving the team: removing obstacles, providing resources, facilitating growth, enabling self-organization. The servant leader empowers rather than controls — leads from behind."},
+  {id:38,domain:"Process",topic:"Agile Velocity",question:"A Scrum team delivers 40 story points/sprint consistently. 320 points remain. Approximately how many sprints remain?",options:["6 sprints","8 sprints","10 sprints","12 sprints"],answer:1,rationale:"Sprints remaining = Backlog / Velocity = 320 / 40 = 8 sprints. This is basic Agile forecasting. Note it's an estimate — velocity varies with scope changes, team composition, and sprint content."},
+  {id:39,domain:"Business Environment",topic:"Ethics",question:"A vendor offers expensive sporting event tickets during active contract negotiations. PM should:",options:["Accept — it's a professional courtesy","Accept but disclose to the sponsor","Decline — it creates a conflict of interest during negotiations","Accept only if below company gift policy limit"],answer:2,rationale:"PMI's Code of Ethics requires avoiding conflicts of interest and maintaining impartiality. Accepting gifts DURING negotiations — regardless of value — creates real or perceived bias. Decline AND disclose the offer to maintain integrity."},
+  {id:40,domain:"Process",topic:"Kanban",question:"In Kanban, limiting Work in Progress (WIP) primarily achieves:",options:["Ensuring team members are always busy","Reducing cycle time and exposing bottlenecks","Increasing throughput through parallel processing","Eliminating the need for retrospectives"],answer:1,rationale:"WIP limits force finishing before starting new work, reducing cycle time and making bottlenecks visible (work piles before constrained steps). Idle time that reveals a bottleneck is preferable to busyness that hides it."},
+  {id:41,domain:"People",topic:"Influence",question:"A PM has no formal authority but needs a functional manager to release a key resource. Most effective approach?",options:["Issue a directive using positional authority","Threaten to escalate to the sponsor","Leverage expert and referent power — build relationships and demonstrate value","Reference the project charter as legal authority"],answer:2,rationale:"Without formal authority, expert power (credibility and knowledge) and referent power (trust and relationship) are the most effective tools. Coercion damages relationships; PMs rarely have true positional authority over functional managers in matrix organizations."},
+  {id:42,domain:"Process",topic:"Monitoring",question:"The primary output of Monitor and Control Project Work is:",options:["Updated project management plan","Work Performance Reports","Change Requests","Project charter updates"],answer:1,rationale:"Work Performance Reports synthesize information from all monitoring processes (schedule, cost, quality, risk) into a comprehensive status view for stakeholders and governance. This is the primary communications output of the monitoring process group."},
+  {id:43,domain:"Business Environment",topic:"Change Management",question:"A project will require significant behavior change from 500 employees. PM should EARLY in planning:",options:["Focus on technical delivery; address change management at go-live","Develop an organizational change management plan alongside the project plan","Assign all change management to HR exclusively","Communicate only when the product is ready"],answer:1,rationale:"OCM (Organizational Change Management) must start in planning. Early stakeholder analysis, communication strategy, training plans, and resistance management dramatically improve adoption. Projects that skip OCM achieve technical success but fail to realize benefits."},
+  {id:44,domain:"Process",topic:"Contract Types",question:"External legal expertise is needed for a short, scope-uncertain task. BEST contract type?",options:["Firm Fixed Price","Cost Plus Award Fee","Time and Material","Fixed Price Incentive Fee"],answer:2,rationale:"T&M works best for short engagements where exact hours are unpredictable — like specialized legal work. FFP requires fully defined scope. T&M combines unit rates (limiting buyer risk) with flexibility (limiting seller risk) for unclear scope."},
+  {id:45,domain:"People",topic:"Inclusive Facilitation",question:"Quieter team members from cultures deferring to seniority rarely speak in meetings. Key insights are missed. Best response?",options:["Continue — participation is individual responsibility","Use structured turn-taking, anonymous input, and one-on-ones to create multiple participation channels","Ask senior members to speak less","Replace quiet members with more assertive ones"],answer:1,rationale:"Inclusive facilitation creates multiple channels for participation that accommodate different communication styles and cultural norms. Structured techniques (round-robins, written input, private channels) ensure all voices contribute — improving decisions and team belonging."},
+  {id:46,domain:"Process",topic:"Agile",question:"In Agile, the Definition of Done (DoD) is BEST described as:",options:["Acceptance criteria for a specific user story","Shared team agreement on quality standards every increment must meet to be complete","The PM's sign-off on deliverables","Customer final approval of the product"],answer:1,rationale:"The DoD is a team agreement defining quality standards every increment must meet (reviewed, tested, documented, deployable). It differs from acceptance criteria (story-specific). A strong DoD prevents technical debt accumulation."},
+  {id:47,domain:"Business Environment",topic:"Project Selection",question:"Project A: NPV=$250,000. Project B: NPV=$400,000. Resources can support only one. Recommendation?",options:["Project A — lower risk","Project B — higher NPV","Analyze IRR before deciding","Split resources between both"],answer:1,rationale:"Higher NPV = higher value creation. With equal resource constraints and no other data, Project B creates $150K more organizational value. NPV accounts for time value of money and is the preferred project selection metric."},
+  {id:48,domain:"Process",topic:"Risk vs Issue",question:"What is the key difference between a Risk and an Issue?",options:["They are the same with different labels","A risk is a potential future event; an issue is a problem that has already occurred","A risk is always negative; an issue can be positive or negative","Issues are managed by the PM; risks by the team"],answer:1,rationale:"Risks are uncertain future events (proactively managed in the risk register). Issues are current problems requiring immediate resolution (tracked in the issue log). Risks that materialize become issues — a critical PM distinction."},
+  {id:49,domain:"People",topic:"Feedback",question:"A team member submits work significantly below quality standards. Best feedback approach?",options:["Group email highlighting common mistakes to avoid singling them out","Address publicly in team meeting to set quality standards","Use the SBI model privately: Situation, Behavior, Impact — then focus on improvement path","Document and wait for the next performance review"],answer:2,rationale:"SBI (Situation-Behavior-Impact) provides specific, non-judgmental, actionable feedback delivered privately — preserving dignity and enabling growth. Public shaming destroys psychological safety. Waiting for reviews allows problems to compound."},
+  {id:50,domain:"Business Environment",topic:"Continuous Improvement",question:"A project team applies Kaizen principles. This MOST means they:",options:["Conduct radical periodic redesign of all processes","Make small, continuous incremental improvements involving everyone","Conduct monthly executive performance reviews","Outsource non-core activities"],answer:1,rationale:"Kaizen (Japanese: 'change for better') means ongoing, incremental improvements made by everyone. It builds a culture of continuous learning and marginal gains — contrasted with dramatic, infrequent overhauls like Business Process Reengineering."},
+  {id:51,domain:"Process",topic:"Risk Analysis",question:"Monte Carlo simulation for schedule risk primarily produces:",options:["A single definitive project completion date","A probability distribution of possible project completion dates","The critical path activities","Resource utilization forecasts"],answer:1,rationale:"Monte Carlo runs thousands of schedule scenarios with probability distributions for task durations, producing probability of completing by various dates (e.g., '80% chance of delivery by March 15'). Far superior to single-point estimates for understanding schedule risk."},
+  {id:52,domain:"People",topic:"Team Charter",question:"The PRIMARY benefit of a team charter is:",options:["It defines the project scope formally","It establishes shared values, norms, and operating agreements to guide team behavior","It replaces the project management plan","It documents individual KPIs"],answer:1,rationale:"A team charter creates explicit, shared agreements on values, communication norms, decision processes, and conflict resolution. This psychological safety foundation is especially valuable for newly formed or cross-functional teams."},
+  {id:53,domain:"Process",topic:"Stakeholder Register",question:"The stakeholder register PRIMARILY documents:",options:["Financial contributions of each stakeholder","Identification, assessment information, and engagement classification for each stakeholder","Meeting minutes from stakeholder interactions","Risk thresholds by stakeholder"],answer:1,rationale:"The stakeholder register captures: identification (name, role, contact), assessment (interests, influence, impact), and engagement classification (unaware/resistant/neutral/supportive/leading). It is the foundation of the stakeholder engagement plan."},
+  {id:54,domain:"Business Environment",topic:"Scrum Roles",question:"In Scrum, who is responsible for maximizing product value and managing the product backlog?",options:["Scrum Master","Project Manager","Product Owner","Development Team collectively"],answer:2,rationale:"The Product Owner maximizes product value, owns and prioritizes the product backlog, and represents stakeholder interests. The Scrum Master facilitates the process. In hybrid environments, the PM may play a complementary governance and coordination role."},
+  {id:55,domain:"Process",topic:"Lessons Learned",question:"WHEN should lessons learned be captured during a project?",options:["Only at project closure","At each phase gate","Continuously throughout the project","Only when something goes wrong"],answer:2,rationale:"PMBOK best practice: continuous capture throughout the project while events are fresh. Phase-end and project-end reviews formalize and compile them. Waiting until closure results in lost detail and institutional knowledge."},
+  {id:56,domain:"People",topic:"Conflict Sources",question:"According to PMI research, the MOST common source of conflict on projects is:",options:["Personal incompatibilities","Schedule conflicts","Technical disagreements","Resource competition"],answer:1,rationale:"PMI research (Adams & Kirchof) identifies schedule conflicts as the most frequent project conflict source. Resource competition and priorities follow. Understanding this helps PMs proactively manage scheduling to prevent conflict."},
+  {id:57,domain:"Process",topic:"Scope",question:"What distinguishes scope creep from an approved change?",options:["Scope creep is always negative; approved changes are always positive","Scope creep is unauthorized scope expansion; approved changes go through Integrated Change Control","They are the same — all scope changes are scope creep","Scope creep is schedule slippage; approved changes are scope additions"],answer:1,rationale:"Scope creep is uncontrolled scope expansion without change control — unauthorized, underfunded, and undocumented. Approved changes go through ICC, are analyzed for impact, formally documented, and properly resourced."},
+  {id:58,domain:"Business Environment",topic:"Lean",question:"Value stream mapping reveals 70% of a process is waiting time. This primarily suggests:",options:["The project is well-optimized","Significant waste exists requiring workflow redesign","Insufficient resources","Team underperformance"],answer:1,rationale:"In Lean, waiting is a primary form of waste (muda). 70% wait ratio indicates severe bottlenecks, poor sequencing, or handoff delays. Value stream mapping exposes these wastes so teams can redesign for flow efficiency — the Lean core objective."},
+  {id:59,domain:"Process",topic:"Resource Leveling",question:"Resource leveling typically results in:",options:["Shorter project schedules","Extended project duration beyond original end dates","Reduced project costs","Elimination of the critical path"],answer:1,rationale:"Resource leveling delays tasks when resources are over-allocated, smoothing utilization — often extending project duration. It prioritizes resource constraints over schedule. Resource smoothing works within float to balance without extending duration."},
+  {id:60,domain:"People",topic:"Stakeholder Engagement",question:"Moving a stakeholder from 'Resistant' to 'Supportive' requires:",options:["Simply increasing communication frequency","Understanding their concerns, addressing them directly, and involving them appropriately in decisions","Bypassing them in key communications","Replacing them with a more supportive stakeholder"],answer:1,rationale:"Moving stakeholders up the engagement ladder requires genuine dialogue: understanding resistance sources (fears, misinformation, competing interests), addressing them directly, and finding meaningful involvement. Frequency alone rarely changes fundamental attitudes."},
+  {id:61,domain:"Process",topic:"Agile",question:"Product backlog refinement should consume approximately what percentage of team capacity?",options:["25-30%","10% or less","50%","1-2%"],answer:1,rationale:"Scrum Guide recommends no more than 10% of team capacity for refinement. Too much wastes planning time; too little creates sprint planning bottlenecks. This keeps planning lean while ensuring sprint readiness."},
+  {id:62,domain:"Business Environment",topic:"Benefits Management",question:"Who is primarily responsible for developing the Benefits Management Plan?",options:["Project Manager","Project Sponsor with PM support","PMO Director","Program Manager"],answer:1,rationale:"The Benefits Management Plan belongs to the sponsor — they are accountable for the investment and its returns. The PM provides project-specific input. The plan describes how and when benefits will be realized, measured, and sustained."},
+  {id:63,domain:"Process",topic:"Quality",question:"Quality Assurance (QA) differs from Quality Control (QC) in that:",options:["QA checks the product; QC checks the process","QA is process-focused and preventive; QC is product-focused and detective","QA is done by the team; QC by the customer","They are the same activity"],answer:1,rationale:"QA = audit processes to prevent defects (preventive). QC = inspect outputs to identify defects (detective). Both are needed: good processes reduce defect probability; QC catches what the process misses."},
+  {id:64,domain:"People",topic:"Ground Rules",question:"Team ground rules are MOST valuable because they:",options:["Give the PM formal authority to discipline team members","Create shared expectations that reduce friction and increase accountability","Replace the need for individual performance management","Are required by PMI's Code of Ethics"],answer:1,rationale:"Ground rules establish explicit shared expectations about communication, decision-making, and team behavior. Explicit agreements make it easier to address violations constructively — the team agreed to the rules, not just the PM imposing them."},
+  {id:65,domain:"Business Environment",topic:"OPM3",question:"An organization has standardized processes but doesn't consistently apply them. This is OPM3 maturity level:",options:["Initial (Level 1)","Managed (Level 2)","Defined (Level 3)","Quantitatively Managed (Level 4)"],answer:2,rationale:"Level 3 (Defined) = standardized processes exist organization-wide but application is inconsistent. Level 2 (Managed) = processes planned and tracked at project level. Level 4 uses metrics for process control. Consistent application is the Level 3-to-4 gap."},
+  {id:66,domain:"Process",topic:"Project Management Plan",question:"The Project Management Plan is BEST described as:",options:["A collection of all subsidiary management plans and performance baselines","A summary of the project schedule","The project charter with added technical detail","The sponsor-approved budget document"],answer:0,rationale:"The Project Management Plan integrates all subsidiary plans (scope, schedule, cost, quality, communications, risk, procurement, stakeholder, resource management) plus the performance measurement baselines. It is the master document describing how the project will be managed."},
+  {id:67,domain:"Process",topic:"Risk",question:"Risk appetite differs from risk tolerance in that:",options:["They are the same concept","Risk appetite is strategic disposition toward risk; risk tolerance is acceptable variance level","Risk tolerance is strategic; risk appetite is operational","Risk appetite applies to opportunities only"],answer:1,rationale:"Risk appetite = overall strategic attitude toward risk (e.g., 'we are growth-oriented and accept uncertainty'). Risk tolerance = specific acceptable variance (e.g., 'schedule may slip no more than 2 weeks'). Both inform risk management strategy."},
+  {id:68,domain:"Business Environment",topic:"Matrix Org",question:"In a Balanced Matrix organization, who has more authority — the PM or the Functional Manager?",options:["PM has significantly more authority","Functional Manager has significantly more authority","They have roughly equal authority","Neither — the sponsor controls all authority"],answer:2,rationale:"By definition, Balanced Matrix = roughly equal authority between PM and Functional Manager. Weak Matrix favors Functional Managers; Strong Matrix favors PMs. This balance creates productive tension but requires strong negotiation and clear governance."},
+  {id:69,domain:"Process",topic:"Communications",question:"A PM sends detailed status reports but stakeholders say they are confused about project status. Where did the communication MOST LIKELY break down?",options:["Encoding — PM failed to translate information into audience-understandable form","Decoding — stakeholders misinterpreted a clear message","Feedback loop — stakeholders didn't respond","Medium — email is wrong for status reporting"],answer:0,rationale:"Communication model: Sender > Encode > Medium > Decode > Receiver > Feedback. If the audience is confused, encoding is the most likely failure — the PM didn't translate information into terms the stakeholders could understand. Know your audience."},
+  {id:70,domain:"Process",topic:"SAFe",question:"In SAFe, Program Increment (PI) Planning primarily:",options:["Conducts performance reviews for Agile team members","Aligns multiple Agile teams to a shared mission and plans 8-12 weeks of work","Replaces all other project planning activities","Negotiates vendor contracts for the program"],answer:1,rationale:"PI Planning is SAFe's heartbeat event — face-to-face alignment across all teams on the Agile Release Train. It creates a shared vision, surfaces dependencies, and produces team-level iteration plans for the next 4-5 sprints (8-12 weeks)."},
+  {id:71,domain:"Business Environment",topic:"Financial Analysis",question:"Which financial metric considers BOTH the time value of money AND the full investment period?",options:["Payback Period","Return on Investment (ROI)","Net Present Value (NPV)","Benefit-Cost Ratio (BCR)"],answer:2,rationale:"NPV discounts all future cash flows to present value and accounts for the entire project life. Payback period ignores time value. ROI is a simple ratio without timing consideration. BCR is a ratio. NPV is the gold standard for investment evaluation."},
+  {id:72,domain:"People",topic:"Informal Leaders",question:"The PM discovers the team has a strong informal leader who is not the official lead. Best approach?",options:["Immediately establish formal authority and sideline the informal leader","Privately engage the informal leader, understand their influence, and align their energy to project goals","Report to HR as a governance violation","Restructure the team to eliminate the informal hierarchy"],answer:1,rationale:"Informal leaders emerge from genuine competence and trust. A skilled PM recognizes this dynamic, builds a relationship, and channels the influence constructively. Opposing them creates resistance; partnering with them creates a powerful ally."},
+  {id:73,domain:"Process",topic:"Lessons Learned",question:"Who can update the Lessons Learned Register during project execution?",options:["Only the project manager","Only the project sponsor","Any project team member or stakeholder","Only the PMO"],answer:2,rationale:"The Lessons Learned Register is a living document updated by any participant — team members, stakeholders, PM. Broader participation captures diverse perspectives and builds a learning culture. The PM facilitates but doesn't monopolize input."},
+  {id:74,domain:"Business Environment",topic:"Executive Communication",question:"Presenting to the Board of Directors, which communication approach is MOST appropriate?",options:["Detailed technical deep-dive with complete metrics","Brief executive summary: key decisions required, strategic impacts, and RAG status","Informal verbal update without visual aids","Distribute the complete project management plan"],answer:1,rationale:"Executives need concise, decision-focused communication: status (RAG), strategic implications, decisions required, critical risks. Detailed technical content overwhelms; informal updates lack gravitas. Always tailor communication to the audience's role and information needs."},
+  {id:75,domain:"Process",topic:"Make-or-Buy",question:"Build internally: $300,000. Outsource: $250,000 + $30,000 contract management. Recommendation?",options:["Build internally — it costs the same net","Outsource — it saves $20,000","Base decision on strategic capability factors, not just cost","Always outsource to transfer risk"],answer:2,rationale:"While outsourcing saves $20K ($300K vs $280K), make-or-buy decisions must consider: capability building, IP protection, quality control, vendor dependency, and long-term strategy. Pure cost comparison misses these critical strategic dimensions."},
+  {id:76,domain:"People",topic:"Motivation",question:"A high performer wants growth opportunities. Herzberg's Two-Factor Theory says MOST motivating would be:",options:["A salary increase","Better office space and equipment","Challenging assignments, recognition, and advancement opportunities","Reduced workload and more flexibility"],answer:2,rationale:"Herzberg separates: Motivators (intrinsic: achievement, recognition, advancement, responsibility, growth — create satisfaction) from Hygiene Factors (extrinsic: salary, conditions — prevent dissatisfaction). High performers are primarily driven by intrinsic motivators."},
+  {id:77,domain:"Process",topic:"Variance Analysis",question:"SV = -$25,000 and CV = +$15,000. This describes a project that is:",options:["Ahead of schedule and over budget","Behind schedule and under budget","Behind schedule and over budget","Ahead of schedule and under budget"],answer:1,rationale:"SV = EV - PV: negative = behind schedule. CV = EV - AC: positive = under budget (spending less than earned). The project is behind schedule but spending less than planned — likely because delayed work simply hasn't been performed yet."},
+  {id:78,domain:"Business Environment",topic:"Regulatory",question:"For a heavily regulated industry project, regulatory requirements should be integrated:",options:["After delivery as a compliance audit","Only during the testing phase","From the beginning — in scope definition and requirements planning","When regulators specifically request documentation"],answer:2,rationale:"Regulatory requirements must be integrated from inception — they define scope, influence design, create quality gates, and require specific documentation trails. Late compliance integration is extremely expensive and can invalidate completed deliverables. Compliance by design, not by audit."},
+  {id:79,domain:"People",topic:"Tuckman",question:"As a project nears completion, some team members disengage and productivity drops. This MOST likely reflects:",options:["Scope creep effects","Tuckman's Adjourning stage — anxiety about team dissolution and transition","Poor PM leadership throughout","Team member burnout from overwork"],answer:1,rationale:"The Adjourning (5th Tuckman) stage involves team dissolution. Members may disengage anticipating the end, worry about next assignments, or experience loss about the team breaking up. PM should acknowledge this, celebrate achievements, and support transition."},
+  {id:80,domain:"Process",topic:"WBS Dictionary",question:"The WBS Dictionary primarily contains:",options:["Team member names and role assignments","Detailed descriptions of each WBS component: scope, deliverables, acceptance criteria, resources, costs","The project schedule in Gantt format","Risk descriptions for each work package"],answer:1,rationale:"The WBS Dictionary is a companion document providing detailed information per component: description, responsible party, schedule milestones, resource requirements, cost estimates, quality requirements, and acceptance criteria. It prevents scope ambiguity and gold-plating."},
+  {id:81,domain:"Business Environment",topic:"Benefits Realization",question:"Which organizational function focuses specifically on tracking and realizing benefits AFTER project delivery?",options:["Traditional PMO","Value Realization Office (VRO) or Benefits Realization function","Functional department heads","Project team retained post-delivery"],answer:1,rationale:"A Value Realization Office (VRO) fills the gap between project closure and benefit realization — tracking adoption, measuring outcomes, and supporting the business in capturing intended value. Traditional PMOs focus on project delivery, not post-delivery outcomes."},
+  {id:82,domain:"Process",topic:"Agile Estimation",question:"Planning Poker in Agile is MOST valuable because:",options:["It is faster than traditional estimation methods","It surfaces diverse perspectives and drives calibrated group consensus on effort","It produces exact story point values","It eliminates the need for historical velocity data"],answer:1,rationale:"Planning Poker uses the wisdom of crowds: independent simultaneous voting prevents anchoring bias; outlier discussion surfaces different assumptions. The result is better-calibrated estimates with shared understanding — a collaborative technique, not just a speed tool."},
+  {id:83,domain:"People",topic:"Cultural Differences",question:"A team member from a collectivist culture consistently refers decisions to the group instead of deciding individually, frustrating individualist colleagues. PM should:",options:["Coach team member to make independent decisions","Explain that collectivist decision-making is valid and establish an agreed decision framework","Separate this team member to avoid friction","Escalate to HR as a performance issue"],answer:1,rationale:"This is a cultural value difference, not a performance problem. The PM's role is to bridge perspectives by establishing a shared decision framework that respects diverse cultural approaches. This turns potential friction into a strength of the team."},
+  {id:84,domain:"Process",topic:"Change Control",question:"After the Change Control Board approves a significant scope change, what MUST happen NEXT?",options:["Immediately begin implementing the change","Update all affected project documents and baselines, then communicate","Escalate to the sponsor for secondary approval","Issue contract amendments if vendors are involved"],answer:1,rationale:"After CCB approval, ICC requires updating ALL affected documents: scope baseline, schedule baseline, cost baseline, risk register, stakeholder register, and subsidiary plans. Document updates must precede implementation to maintain baseline integrity and enable tracking."},
+  {id:85,domain:"Business Environment",topic:"Portfolio",question:"When balancing a project portfolio, strategic alignment PLUS which factor are MOST critical?",options:["PM seniority and experience","Risk balance across the portfolio","Total project count","Average project duration"],answer:1,rationale:"Optimal portfolios balance strategic alignment WITH risk distribution. All high-risk projects create organizational vulnerability; all low-risk projects underperform strategically. The goal is a balanced portfolio optimized for value, risk, return, and resource availability."},
+  {id:86,domain:"Process",topic:"Quality Tools",question:"A PM wants to examine the relationship between defect count and code complexity. The BEST tool is:",options:["Fishbone (Ishikawa) diagram","Control chart","Scatter diagram","Histogram"],answer:2,rationale:"Scatter diagrams show relationships between two variables and reveal correlations. Fishbone identifies root causes of a single problem. Control charts monitor process stability over time. Histograms show frequency distribution of one variable."},
+  {id:87,domain:"People",topic:"Recognition",question:"A PM creates a public leaderboard ranking team members by defects found. This is MOST likely to:",options:["Improve quality and team motivation","Create healthy competition improving overall performance","Undermine collaboration and psychological safety","Demonstrate servant leadership principles"],answer:2,rationale:"Competitive public rankings damage psychological safety (fear of being 'last') and undermine knowledge-sharing (people hoard to maintain advantage). Quality improvement requires team-level psychological safety and learning orientation — not individual competition."},
+  {id:88,domain:"Process",topic:"Assumptions",question:"Assumptions in the Assumptions Log should be treated as:",options:["Verified facts not requiring further review","Potential risks to be monitored and validated","Team member commitments to deliver","Fixed sponsor requirements"],answer:1,rationale:"Assumptions are unverified beliefs about project conditions. If an assumption proves false, it often becomes a risk or issue. Good PM practice treats assumptions as potential risks: document them, assign owners, and set trigger points for validation."},
+  {id:89,domain:"Process",topic:"Expert Judgment",question:"Expert judgment as a tool and technique appears in:",options:["Only planning process group","Only initiating process group","Virtually all process groups — from initiating through closing","Only executing process group"],answer:2,rationale:"Expert judgment appears as a T&T across nearly every PMBOK process. This reflects reality: PM requires specialized knowledge at every stage — business case evaluation through closure. Experts may be internal (team, PMO) or external (consultants, industry associations)."},
+  {id:90,domain:"People",topic:"PMI Talent Triangle",question:"PMI's Talent Triangle defines three PM competency domains as:",options:["Technical PM, Leadership, and Strategic Business Management","Planning, Execution, and Closure","Scope, Schedule, and Cost","People, Process, and Technology"],answer:0,rationale:"PMI's Talent Triangle: Technical PM (project-specific knowledge/skills), Leadership (guiding, motivating, directing teams), and Strategic & Business Management (organizational awareness, delivering value). These three domains define modern PM excellence."},
+  {id:91,domain:"Process",topic:"Requirements",question:"The Requirements Traceability Matrix (RTM) is PRIMARILY used to:",options:["Track team task completion status","Link requirements to their source and trace through the lifecycle to verify all are addressed","Document stakeholder communication preferences","Prioritize the product backlog by value"],answer:1,rationale:"The RTM links each requirement to its business need, stakeholder, deliverable, test case, and final verification. It ensures no requirement is lost or gold-plated, provides scope management baseline, and is essential for compliance-critical projects."},
+  {id:92,domain:"Business Environment",topic:"Sustainability",question:"A project will create significant environmental impact. Modern PM's expanded stakeholder view requires:",options:["Focus only on contractually obligated stakeholders","Identify and engage affected communities and environmental groups as legitimate stakeholders","Treat environmental impact as a compliance checkbox only","Minimize environmental reporting to protect project budget"],answer:1,rationale:"PMBOK 7 emphasizes stewardship and sustainable outcomes. Modern PM recognizes broader stakeholder communities including affected communities and environmental groups — especially as ESG criteria become central to organizational legitimacy and project social license to operate."},
+  {id:93,domain:"Process",topic:"Project Initiation",question:"Which document PRECEDES the Project Charter in the project lifecycle?",options:["Project Management Plan","Requirements Documentation","Business Case or Feasibility Study","Stakeholder Register"],answer:2,rationale:"The Business Case (often with feasibility study) justifies the investment and is used by sponsors to decide whether to initiate. Only after approval is the Project Charter created to formally authorize the project. The PM Plan and Stakeholder Register come after the charter."},
+  {id:94,domain:"People",topic:"Agile Accountability",question:"To build team accountability in Agile without micromanaging, the PM/Scrum Master should:",options:["Publish daily individual productivity metrics","Let the team self-organize and hold each other accountable through commitments and retrospectives","Conduct weekly individual performance reviews","Require sign-off on all tasks before work begins"],answer:1,rationale:"Agile accountability is team-based: teams commit together (sprint goals), track transparently (burndown, board), and address issues collectively (stand-ups, retrospectives). Self-organization and peer accountability outperform managerial oversight for knowledge work."},
+  {id:95,domain:"Process",topic:"Risk Identification",question:"Which risk identification technique categorizes risks hierarchically by source type (technical, external, organizational)?",options:["Delphi technique","Risk Breakdown Structure (RBS) analysis","Monte Carlo simulation","SWOT analysis"],answer:1,rationale:"The Risk Breakdown Structure (RBS) hierarchically categorizes risks by source, enabling systematic identification by walking down the hierarchy. It complements brainstorming with structure. Delphi uses anonymous expert rounds; Monte Carlo models outcomes probabilistically."},
+  {id:96,domain:"Business Environment",topic:"Program Management",question:"A Program is BEST defined as:",options:["A very large project with many team members","A group of related projects managed in a coordinated way to obtain benefits unavailable from individual management","Any project managed by a PMO","A portfolio of unrelated projects"],answer:1,rationale:"A Program is related projects, subsidiary programs, and program activities managed for collective benefits and control unavailable from individual management. Programs focus on interdependencies and synergies — distinct from portfolios (strategic prioritization) and large single projects."},
+  {id:97,domain:"Process",topic:"Agile Scrum",question:"In Scrum, the Scrum Master's PRIMARY role regarding impediments is to:",options:["Directly resolve all impediments using positional authority","Facilitate the team's ability to remove impediments and escalate organizational ones","Document impediments for the project record","Assign impediment resolution to individual team members"],answer:1,rationale:"The Scrum Master serves the team by facilitating impediment removal — coaching self-organization, sometimes resolving directly, and escalating organizational blockers the team cannot address. The goal is team capability, not Scrum Master dependency."},
+  {id:98,domain:"Business Environment",topic:"Change Readiness",question:"Before implementing a major process change, a PM should FIRST assess:",options:["Technical feasibility of the change","Organizational change readiness using ADKAR — Awareness, Desire, Knowledge, Ability, Reinforcement","Total cost of the change","Schedule impact of the change"],answer:1,rationale:"ADKAR (Prosci) identifies WHERE people are in the change journey, revealing specific resistance or capability gaps for targeted interventions. Implementing without readiness assessment is the primary reason organizational changes fail — people, not technology, determine change success."},
+  {id:99,domain:"Process",topic:"Project Closure",question:"Administrative closure differs from contract closure in that:",options:["They are identical processes with different names","Administrative closure finalizes the project internally; contract closure formally closes procurement agreements","Contract closure always happens before administrative closure","Administrative closure is done by PMO; contract closure by PM"],answer:1,rationale:"Administrative closure: internal project finalization — final acceptance, lessons learned, resource release, document archiving. Contract closure: formally closing each procurement — final payment, dispute resolution, contract record archiving. Both are required and distinct."},
+  {id:100,domain:"People",topic:"Team Building",question:"Which factor has the GREATEST impact on project team performance according to Google's Project Aristotle research?",options:["Individual technical skills of team members","Team size and composition","Psychological safety — belief that one can speak up without fear","Clarity of project goals and metrics"],answer:2,rationale:"Google's Project Aristotle (2016) studied 180 teams and found psychological safety was the single most important factor in team effectiveness — above skills, composition, goals, or structure. Teams that feel safe to take risks and be vulnerable consistently outperform those that don't."}
+];
+
+// ── UTILITIES ─────────────────────────────────────────────────────────────────
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function openCertificate(studentName, score, examName, dateStr) {
+  const passed = score >= PASS_SCORE;
+  if (!passed) { alert("Certificate is only issued for passing scores (70% or above)."); return; }
+  const parts = [
+    "<!DOCTYPE html><html><head><meta charset='UTF-8'>",
+    "<title>Certificate - " + studentName + "</title>",
+    "<link href='https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=EB+Garamond:ital,wght@0,400;1,400&display=swap' rel='stylesheet'>",
+    "<style>",
+    "*{margin:0;padding:0;box-sizing:border-box}",
+    "body{background:#0D1428;display:flex;justify-content:center;align-items:center;min-height:100vh;font-family:'EB Garamond',serif}",
+    ".page{width:277mm;height:190mm;position:relative;background:linear-gradient(135deg,#0D1428 0%,#1A2B5E 50%,#0D1428 100%);display:flex;justify-content:center;align-items:center;overflow:hidden}",
+    ".b1{position:absolute;inset:10px;border:6px solid #C9A84C}",
+    ".b2{position:absolute;inset:22px;border:1px solid rgba(201,168,76,0.4)}",
+    ".c{position:absolute;width:30px;height:30px}",
+    ".tl{top:9px;left:9px;border-top:3px solid #C9A84C;border-left:3px solid #C9A84C}",
+    ".tr{top:9px;right:9px;border-top:3px solid #C9A84C;border-right:3px solid #C9A84C}",
+    ".bl{bottom:9px;left:9px;border-bottom:3px solid #C9A84C;border-left:3px solid #C9A84C}",
+    ".br{bottom:9px;right:9px;border-bottom:3px solid #C9A84C;border-right:3px solid #C9A84C}",
+    ".inner{position:relative;z-index:10;text-align:center;padding:16px 50px;width:100%}",
+    ".acad{font-family:'Cinzel',serif;font-size:24px;color:#C9A84C;letter-spacing:5px;margin-bottom:3px}",
+    ".sub{font-size:11px;color:#8899CC;letter-spacing:2px;margin-bottom:12px}",
+    ".div{width:55%;height:1px;background:linear-gradient(90deg,transparent,#C9A84C,transparent);margin:0 auto 12px}",
+    ".title{font-family:'Cinzel',serif;font-size:30px;color:white;letter-spacing:4px;margin-bottom:6px}",
+    ".to{font-size:13px;color:#AAB8D0;margin-bottom:6px}",
+    ".name{font-family:'Cinzel',serif;font-size:38px;color:#C9A84C;margin-bottom:3px}",
+    ".nline{width:45%;height:1px;background:#C9A84C;margin:0 auto 12px;opacity:0.7}",
+    ".ach{font-size:12px;color:#AAB8D0;line-height:1.7;margin-bottom:12px}",
+    ".badge{width:75px;height:75px;border-radius:50%;border:3px solid #C9A84C;background:rgba(201,168,76,0.1);display:flex;flex-direction:column;justify-content:center;align-items:center;margin:0 auto 12px}",
+    ".bnum{font-family:'Cinzel',serif;font-size:22px;color:#C9A84C}",
+    ".blbl{font-size:9px;color:#8899CC;letter-spacing:2px}",
+    ".footer{display:flex;justify-content:space-between;align-items:flex-end;padding:0 20px}",
+    ".dl{font-size:10px;color:#556677;letter-spacing:1px;margin-bottom:2px}",
+    ".dv{font-size:12px;color:#AAB8D0}",
+    ".sig{text-align:center}",
+    ".sn{font-family:'Cinzel',serif;font-size:16px;color:#C9A84C;font-style:italic;margin-bottom:3px}",
+    ".sl{width:160px;height:1px;background:#C9A84C;margin:0 auto 3px;opacity:0.7}",
+    ".st{font-size:9px;color:#8899CC}",
+    ".seal{width:60px;height:60px;border-radius:50%;border:2px solid #C9A84C;display:flex;flex-direction:column;justify-content:center;align-items:center;opacity:0.8}",
+    ".seal-t{font-family:'Cinzel',serif;font-size:7px;color:#C9A84C;text-align:center}",
+    "@media print{body{background:white}@page{size:A4 landscape;margin:0}}",
+    "</style></head><body>",
+    "<div class='page'>",
+    "<div class='b1'></div><div class='b2'></div>",
+    "<div class='c tl'></div><div class='c tr'></div><div class='c bl'></div><div class='c br'></div>",
+    "<div class='inner'>",
+    "<div class='acad'>TEAM21 ACADEMY</div>",
+    "<div class='sub'>PMP EXAMINATION PREPARATION PROGRAM &bull; UNLOCKING POTENTIAL</div>",
+    "<div class='div'></div>",
+    "<div class='title'>CERTIFICATE OF ACHIEVEMENT</div>",
+    "<div class='to'>This is to certify that</div>",
+    "<div class='name'>" + studentName + "</div>",
+    "<div class='nline'></div>",
+    "<div class='ach'>has successfully completed the <strong style='color:#C9A84C'>" + examName + "</strong><br>demonstrating proficiency across all PMP domains: People, Process &amp; Business Environment</div>",
+    "<div class='badge'><div class='bnum'>" + score + "%</div><div class='blbl'>SCORE</div></div>",
+    "<div class='footer'>",
+    "<div><div class='dl'>DATE ISSUED</div><div class='dv'>" + dateStr + "</div></div>",
+    "<div class='sig'><div class='sn'>Innocent Forteh, PMP</div><div class='sl'></div><div class='st'>Program Manager &amp; PMP-Certified Trainer<br>Team21 Academy &bull; Cameroon</div></div>",
+    "<div class='seal'><div class='seal-t'>TEAM21<br>ACADEMY<br>&#9670; PMP &#9670;<br>PREP</div></div>",
+    "</div></div></div>",
+    "<script>window.onload=function(){window.print();}<\/script>",
+    "</body></html>"
+  ];
+  const win = window.open('', '_blank');
+  if (!win) { alert("Please allow pop-ups to print your certificate."); return; }
+  win.document.write(parts.join(''));
+  win.document.close();
+}
+
+// ── STYLES HELPERS ─────────────────────────────────────────────────────────────
+const G = "#C9A84C";
+const DARK = "#0D1428";
+const BLUE = "#1A2B5E";
+
+// ── LOGIN SCREEN ───────────────────────────────────────────────────────────────
+function LoginScreen({ onLogin }) {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [selectedExam, setSelectedExam] = useState("pmp-full");
+  const [error, setError] = useState("");
+
+  const exams = [
+    { id:"pmp-full", label:"Full PMP Simulation (100 Questions)", questions:100 },
+    { id:"pmp-people", label:"People Domain Focus (30 Questions)", questions:30, domain:"People" },
+    { id:"pmp-process", label:"Process Domain Focus (30 Questions)", questions:30, domain:"Process" },
+    { id:"pmp-biz", label:"Business Environment Focus (30 Questions)", questions:30, domain:"Business Environment" },
+    { id:"pmp-quick", label:"Quick Practice (20 Questions)", questions:20 },
+  ];
+
+  const handleStart = () => {
+    if (!name.trim() || !email.trim()) { setError("Please enter your full name and email to continue."); return; }
+    if (!email.includes('@')) { setError("Please enter a valid email address."); return; }
+    const exam = exams.find(e => e.id === selectedExam);
+    onLogin({ name: name.trim(), email: email.trim(), exam });
+  };
+
+  const wrap = { minHeight:"100vh", background:"linear-gradient(135deg,#0D1428 0%,#1A2B5E 60%,#0D1428 100%)", display:"flex", alignItems:"center", justifyContent:"center", padding:"20px", fontFamily:"Georgia,serif" };
+  const card = { background:"rgba(255,255,255,0.04)", border:"1px solid rgba(201,168,76,0.3)", borderRadius:12, padding:36, backdropFilter:"blur(10px)" };
+  const label = { display:"block", color:G, fontSize:11, letterSpacing:1.5, marginBottom:6 };
+  const input = { width:"100%", padding:"12px 14px", background:"rgba(255,255,255,0.06)", border:"1px solid rgba(201,168,76,0.3)", borderRadius:6, color:"white", fontSize:15, fontFamily:"Georgia,serif", boxSizing:"border-box" };
+
+  return (
+    <div style={wrap}>
+      <div style={{ maxWidth:500, width:"100%" }}>
+        <div style={{ textAlign:"center", marginBottom:36 }}>
+          <div style={{ width:80, height:80, borderRadius:"50%", border:"3px solid "+G, background:"rgba(201,168,76,0.1)", display:"flex", alignItems:"center", justifyContent:"center", margin:"0 auto 14px", fontSize:32 }}>🎓</div>
+          <div style={{ fontSize:26, fontWeight:"bold", color:G, letterSpacing:3, marginBottom:5 }}>TEAM21 ACADEMY</div>
+          <div style={{ fontSize:12, color:"#8899CC", letterSpacing:2, marginBottom:10 }}>PMP EXAM PREPARATION PLATFORM</div>
+          <div style={{ width:50, height:1, background:G, margin:"0 auto 10px", opacity:0.6 }}></div>
+          <div style={{ fontSize:12, color:"#667799", fontStyle:"italic" }}>Unlocking Potential — Innocent Forteh, PMP</div>
+        </div>
+
+        <div style={card}>
+          <h2 style={{ color:"white", fontSize:18, marginBottom:22, textAlign:"center", fontWeight:"normal", letterSpacing:1 }}>Sign In to Begin Your Exam</h2>
+
+          <div style={{ marginBottom:16 }}>
+            <label style={label}>FULL NAME</label>
+            <input value={name} onChange={e => setName(e.target.value)} placeholder="Enter your full name" style={input} onKeyDown={e => e.key==='Enter' && handleStart()} />
+          </div>
+          <div style={{ marginBottom:18 }}>
+            <label style={label}>EMAIL ADDRESS</label>
+            <input value={email} onChange={e => setEmail(e.target.value)} placeholder="Enter your email address" style={input} onKeyDown={e => e.key==='Enter' && handleStart()} />
+          </div>
+          <div style={{ marginBottom:22 }}>
+            <label style={label}>SELECT EXAM TYPE</label>
+            {exams.map(exam => (
+              <div key={exam.id} onClick={() => setSelectedExam(exam.id)} style={{ display:"flex", alignItems:"center", gap:10, padding:"10px 14px", marginBottom:6, background:selectedExam===exam.id?"rgba(201,168,76,0.15)":"rgba(255,255,255,0.03)", border:"1px solid "+(selectedExam===exam.id?G:"rgba(255,255,255,0.1)"), borderRadius:6, cursor:"pointer" }}>
+                <div style={{ width:14, height:14, borderRadius:"50%", border:"2px solid "+(selectedExam===exam.id?G:"#444"), background:selectedExam===exam.id?G:"transparent", flexShrink:0 }}></div>
+                <span style={{ color:selectedExam===exam.id?"white":"#AAB8D0", fontSize:13 }}>{exam.label}</span>
+              </div>
+            ))}
+          </div>
+
+          {error && <div style={{ color:"#ff6b6b", fontSize:13, marginBottom:14, textAlign:"center" }}>{error}</div>}
+
+          <button onClick={handleStart} style={{ width:"100%", padding:"14px", background:"linear-gradient(135deg,#C9A84C,#A07A30)", border:"none", borderRadius:8, color:DARK, fontSize:15, fontWeight:"bold", letterSpacing:1.5, cursor:"pointer", fontFamily:"Georgia,serif" }}>
+            BEGIN EXAMINATION →
+          </button>
+          <p style={{ textAlign:"center", color:"#556677", fontSize:11, marginTop:14 }}>Certified by Innocent Forteh, PMP · Team21 Academy, Cameroon</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── EXAM SCREEN ────────────────────────────────────────────────────────────────
+function ExamScreen({ student, onComplete }) {
+  const [questions] = useState(() => {
+    let pool = [...QUESTION_BANK];
+    if (student.exam.domain) pool = pool.filter(q => q.domain === student.exam.domain);
+    pool = shuffle(pool);
+    return pool.slice(0, Math.min(student.exam.questions, pool.length));
+  });
+
+  const [batchStart, setBatchStart] = useState(0);
+  const [allAnswers, setAllAnswers] = useState({});
+  const [batchAnswers, setBatchAnswers] = useState({});
+  const [showReview, setShowReview] = useState(false);
+  const [timeLeft, setTimeLeft] = useState(student.exam.questions * 75);
+  const timerRef = useRef(null);
+
+  const BATCH = 10;
+  const batchEnd = Math.min(batchStart + BATCH, questions.length);
+  const currentBatch = questions.slice(batchStart, batchEnd);
+  const totalBatches = Math.ceil(questions.length / BATCH);
+  const batchNum = Math.floor(batchStart / BATCH) + 1;
+  const answered = Object.keys(allAnswers).length + Object.keys(batchAnswers).length;
+  const progress = Math.round((answered / questions.length) * 100);
+
+  useEffect(() => {
+    timerRef.current = setInterval(() => setTimeLeft(t => t > 0 ? t - 1 : 0), 1000);
+    return () => clearInterval(timerRef.current);
+  }, []);
+
+  const fmt = (s) => {
+    const h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60), sec = s % 60;
+    return (h > 0 ? h + ':' : '') + String(m).padStart(2,'0') + ':' + String(sec).padStart(2,'0');
+  };
+
+  const submitBatch = () => {
+    setAllAnswers(prev => Object.assign({}, prev, batchAnswers));
+    setShowReview(true);
+  };
+
+  const nextBatch = () => {
+    const merged = Object.assign({}, allAnswers, batchAnswers);
+    const newStart = batchStart + BATCH;
+    if (newStart >= questions.length) {
+      clearInterval(timerRef.current);
+      const correct = questions.filter(q => merged[q.id] === q.answer).length;
+      const score = Math.round((correct / questions.length) * 100);
+      onComplete({ answers: merged, score, correct, total: questions.length, questions });
+    } else {
+      setAllAnswers(merged);
+      setBatchStart(newStart);
+      setBatchAnswers({});
+      setShowReview(false);
+      window.scrollTo(0, 0);
+    }
+  };
+
+  const allBatchDone = currentBatch.every(q => batchAnswers[q.id] !== undefined);
+
+  if (showReview) {
+    const batchCorrect = currentBatch.filter(q => batchAnswers[q.id] === q.answer).length;
+    const batchPct = Math.round((batchCorrect / currentBatch.length) * 100);
+    const domainMap = {};
+    currentBatch.forEach(q => {
+      if (!domainMap[q.domain]) domainMap[q.domain] = { c:0, t:0 };
+      domainMap[q.domain].t++;
+      if (batchAnswers[q.id] === q.answer) domainMap[q.domain].c++;
+    });
+
+    return (
+      <div style={{ minHeight:"100vh", background:"#0A0F1E", fontFamily:"Georgia,serif", padding:"20px" }}>
+        <div style={{ maxWidth:860, margin:"0 auto" }}>
+          <div style={{ background:"linear-gradient(135deg,#1A2B5E,#0D1428)", border:"1px solid rgba(201,168,76,0.4)", borderRadius:12, padding:28, marginBottom:24, textAlign:"center" }}>
+            <div style={{ fontSize:12, color:"#8899CC", letterSpacing:2, marginBottom:8 }}>BATCH {batchNum} OF {totalBatches} — REVIEW</div>
+            <div style={{ fontSize:56, fontWeight:"bold", color:batchPct>=70?"#4CAF50":"#FF6B6B", marginBottom:8 }}>{batchPct}%</div>
+            <div style={{ fontSize:16, color:"white", marginBottom:6 }}>{batchCorrect} of {currentBatch.length} correct</div>
+            <div style={{ display:"flex", justifyContent:"center", gap:16, flexWrap:"wrap", marginTop:14 }}>
+              {Object.entries(domainMap).map(([d, s]) => (
+                <div key={d} style={{ background:"rgba(255,255,255,0.05)", border:"1px solid rgba(201,168,76,0.2)", borderRadius:8, padding:"8px 16px" }}>
+                  <div style={{ fontSize:10, color:"#8899CC", marginBottom:2 }}>{d}</div>
+                  <div style={{ fontSize:16, color:s.c===s.t?"#4CAF50":s.c/s.t>=0.5?"#FFC107":"#FF6B6B", fontWeight:"bold" }}>{s.c}/{s.t}</div>
+                </div>
+              ))}
+            </div>
+            <div style={{ marginTop:14, padding:"10px 20px", background:batchPct>=70?"rgba(76,175,80,0.12)":"rgba(255,107,107,0.12)", borderRadius:8, border:"1px solid "+(batchPct>=70?"#4CAF50":"#FF6B6B"), display:"inline-block" }}>
+              <span style={{ color:batchPct>=70?"#4CAF50":"#FF6B6B", fontSize:13 }}>
+                {batchPct>=90?"🏆 Outstanding — Excellent performance this batch!" : batchPct>=70?"✅ Good Pass — Above the 70% PMP threshold." : "⚠️ Below Threshold — Review these topics before exam day."}
+              </span>
+            </div>
+          </div>
+
+          {currentBatch.map((q, idx) => {
+            const ua = batchAnswers[q.id];
+            const ok = ua === q.answer;
+            return (
+              <div key={q.id} style={{ background:"rgba(255,255,255,0.03)", border:"1px solid "+(ok?"rgba(76,175,80,0.4)":"rgba(255,107,107,0.4)"), borderRadius:12, padding:24, marginBottom:18 }}>
+                <div style={{ display:"flex", justifyContent:"space-between", marginBottom:10 }}>
+                  <div>
+                    <span style={{ background:ok?"rgba(76,175,80,0.2)":"rgba(255,107,107,0.2)", color:ok?"#4CAF50":"#FF6B6B", padding:"2px 10px", borderRadius:20, fontSize:11, marginRight:8 }}>{ok?"✓ CORRECT":"✗ INCORRECT"}</span>
+                    <span style={{ color:G, fontSize:11 }}>{q.domain} · {q.topic}</span>
+                  </div>
+                  <span style={{ color:"#556677", fontSize:11 }}>Q{batchStart+idx+1}</span>
+                </div>
+                <p style={{ color:"white", fontSize:14, lineHeight:1.75, marginBottom:14 }}>{q.question}</p>
+                {q.options.map((opt, oi) => {
+                  let bg = "rgba(255,255,255,0.03)";
+                  let bc = "rgba(255,255,255,0.08)";
+                  let tc = "#8899AA";
+                  if (oi === q.answer) { bg="rgba(76,175,80,0.15)"; bc="#4CAF50"; tc="#81C784"; }
+                  else if (oi === ua && !ok) { bg="rgba(255,107,107,0.15)"; bc="#FF6B6B"; tc="#EF9A9A"; }
+                  return (
+                    <div key={oi} style={{ display:"flex", alignItems:"flex-start", gap:10, padding:"10px 14px", marginBottom:6, background:bg, border:"1px solid "+bc, borderRadius:6 }}>
+                      <span style={{ color:tc, fontSize:13, minWidth:20, flexShrink:0 }}>{oi===q.answer?"✓":oi===ua&&!ok?"✗":String.fromCharCode(65+oi)+"."}</span>
+                      <span style={{ color:tc, fontSize:13, lineHeight:1.5 }}>{opt}</span>
+                    </div>
+                  );
+                })}
+                <div style={{ marginTop:14, padding:"14px 16px", background:"rgba(201,168,76,0.07)", border:"1px solid rgba(201,168,76,0.25)", borderRadius:8 }}>
+                  <div style={{ fontSize:11, color:G, letterSpacing:1, marginBottom:6 }}>💡 RATIONALE</div>
+                  <p style={{ color:"#C8D8E8", fontSize:13, lineHeight:1.75 }}>{q.rationale}</p>
+                </div>
+              </div>
+            );
+          })}
+
+          <div style={{ textAlign:"center", padding:"20px 0 40px" }}>
+            <button onClick={nextBatch} style={{ padding:"16px 48px", background:"linear-gradient(135deg,#C9A84C,#A07A30)", border:"none", borderRadius:8, color:DARK, fontSize:15, fontWeight:"bold", cursor:"pointer", letterSpacing:1, fontFamily:"Georgia,serif" }}>
+              {batchStart + BATCH >= questions.length ? "COMPLETE EXAM & VIEW RESULTS →" : "CONTINUE TO BATCH " + (batchNum+1) + " →"}
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div style={{ minHeight:"100vh", background:"#0A0F1E", fontFamily:"Georgia,serif" }}>
+      <div style={{ background:"rgba(13,20,40,0.97)", borderBottom:"1px solid rgba(201,168,76,0.2)", padding:"12px 24px", position:"sticky", top:0, zIndex:100, display:"flex", justifyContent:"space-between", alignItems:"center" }}>
+        <div style={{ display:"flex", alignItems:"center", gap:14 }}>
+          <span style={{ color:G, fontWeight:"bold" }}>TEAM21 ACADEMY</span>
+          <span style={{ color:"#556677" }}>|</span>
+          <span style={{ color:"#8899CC", fontSize:12 }}>{student.exam.label}</span>
+        </div>
+        <div style={{ display:"flex", gap:24 }}>
+          <div style={{ textAlign:"center" }}>
+            <div style={{ fontSize:9, color:"#556677", letterSpacing:1 }}>TIME</div>
+            <div style={{ fontSize:16, color:timeLeft<300?"#FF6B6B":G, fontWeight:"bold" }}>{fmt(timeLeft)}</div>
+          </div>
+          <div style={{ textAlign:"center" }}>
+            <div style={{ fontSize:9, color:"#556677", letterSpacing:1 }}>PROGRESS</div>
+            <div style={{ fontSize:16, color:"white" }}>{answered}/{questions.length}</div>
+          </div>
+        </div>
+      </div>
+      <div style={{ height:3, background:"rgba(255,255,255,0.05)" }}>
+        <div style={{ height:"100%", width:progress+"%", background:"linear-gradient(90deg,#C9A84C,#4CAF50)", transition:"width 0.3s" }}></div>
+      </div>
+
+      <div style={{ maxWidth:800, margin:"0 auto", padding:"24px 20px" }}>
+        <div style={{ marginBottom:22, padding:"14px 20px", background:"rgba(255,255,255,0.03)", border:"1px solid rgba(201,168,76,0.2)", borderRadius:8, display:"flex", justifyContent:"space-between", alignItems:"center" }}>
+          <div>
+            <span style={{ color:G, fontWeight:"bold" }}>Batch {batchNum} of {totalBatches}</span>
+            <span style={{ color:"#556677", margin:"0 10px" }}>·</span>
+            <span style={{ color:"#8899CC", fontSize:13 }}>Questions {batchStart+1}–{batchEnd}</span>
+          </div>
+          <span style={{ color:"#667788", fontSize:12 }}>{student.name}</span>
+        </div>
+
+        {currentBatch.map((q, idx) => {
+          const sel = batchAnswers[q.id];
+          return (
+            <div key={q.id} style={{ background:"rgba(255,255,255,0.03)", border:"1px solid rgba(255,255,255,0.08)", borderRadius:12, padding:24, marginBottom:18 }}>
+              <div style={{ display:"flex", justifyContent:"space-between", marginBottom:10 }}>
+                <span style={{ color:G, fontSize:12, background:"rgba(201,168,76,0.1)", padding:"3px 10px", borderRadius:20 }}>{q.domain} · {q.topic}</span>
+                <span style={{ color:"#556677", fontSize:12 }}>Q{batchStart+idx+1}</span>
+              </div>
+              <p style={{ color:"white", fontSize:15, lineHeight:1.8, marginBottom:18 }}>{q.question}</p>
+              {q.options.map((opt, oi) => (
+                <div key={oi} onClick={() => setBatchAnswers(prev => Object.assign({}, prev, {[q.id]: oi}))} style={{ display:"flex", alignItems:"flex-start", gap:12, padding:"12px 16px", marginBottom:8, background:sel===oi?"rgba(201,168,76,0.12)":"rgba(255,255,255,0.02)", border:"1px solid "+(sel===oi?G:"rgba(255,255,255,0.08)"), borderRadius:8, cursor:"pointer" }}>
+                  <div style={{ width:20, height:20, borderRadius:"50%", border:"2px solid "+(sel===oi?G:"#334455"), background:sel===oi?G:"transparent", flexShrink:0, display:"flex", alignItems:"center", justifyContent:"center", fontSize:10, color:sel===oi?DARK:"transparent", fontWeight:"bold" }}>✓</div>
+                  <span style={{ color:sel===oi?"white":"#8899AA", fontSize:14, lineHeight:1.6 }}>{String.fromCharCode(65+oi)}. {opt}</span>
+                </div>
+              ))}
+            </div>
+          );
+        })}
+
+        <div style={{ textAlign:"center", padding:"16px 0 40px" }}>
+          <div style={{ marginBottom:10, fontSize:13, color:"#556677" }}>
+            {allBatchDone ? "All " + currentBatch.length + " questions answered. Ready to submit!" : currentBatch.filter(q => batchAnswers[q.id]!==undefined).length + " of " + currentBatch.length + " answered."}
+          </div>
+          <button onClick={submitBatch} disabled={!allBatchDone} style={{ padding:"14px 40px", background:allBatchDone?"linear-gradient(135deg,#C9A84C,#A07A30)":"rgba(255,255,255,0.05)", border:allBatchDone?"none":"1px solid rgba(255,255,255,0.1)", borderRadius:8, color:allBatchDone?DARK:"#445566", fontSize:15, fontWeight:"bold", cursor:allBatchDone?"pointer":"not-allowed", letterSpacing:1, fontFamily:"Georgia,serif" }}>
+            SUBMIT BATCH & REVIEW ANSWERS
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── RESULTS SCREEN ─────────────────────────────────────────────────────────────
+function ResultsScreen({ student, result, onRetake }) {
+  const { score, correct, total, answers, questions } = result;
+  const passed = score >= PASS_SCORE;
+  const today = new Date().toLocaleDateString("en-US", { year:"numeric", month:"long", day:"numeric" });
+
+  const domainStats = {};
+  if (questions) questions.forEach(q => {
+    if (!domainStats[q.domain]) domainStats[q.domain] = { c:0, t:0 };
+    domainStats[q.domain].t++;
+    if (answers[q.id] === q.answer) domainStats[q.domain].c++;
+  });
+
+  return (
+    <div style={{ minHeight:"100vh", background:"#0A0F1E", fontFamily:"Georgia,serif", padding:"30px 20px" }}>
+      <div style={{ maxWidth:700, margin:"0 auto" }}>
+        <div style={{ textAlign:"center", padding:"36px 30px", background:"linear-gradient(135deg,#1A2B5E,#0D1428)", border:"2px solid "+(passed?G:"rgba(255,107,107,0.5)"), borderRadius:16, marginBottom:26 }}>
+          <div style={{ fontSize:13, color:"#8899CC", letterSpacing:3, marginBottom:14 }}>FINAL EXAM RESULTS</div>
+          <div style={{ fontSize:80, fontWeight:"bold", color:passed?G:"#FF6B6B", lineHeight:1 }}>{score}%</div>
+          <div style={{ fontSize:18, color:passed?G:"#FF6B6B", marginTop:12, marginBottom:8 }}>
+            {passed ? "🏆 CONGRATULATIONS — EXAM PASSED!" : "📚 KEEP STUDYING — YOU CAN DO IT!"}
+          </div>
+          <div style={{ fontSize:14, color:"#8899AA", marginBottom:8 }}>{correct} correct out of {total} questions</div>
+          <div style={{ fontSize:13, color:"#667788", marginBottom:6 }}>PMP Passing Threshold: {PASS_SCORE}% · Your Score: {score}%</div>
+          <div style={{ marginTop:10, padding:"8px 20px", background:passed?"rgba(76,175,80,0.1)":"rgba(255,107,107,0.1)", borderRadius:20, display:"inline-block" }}>
+            <span style={{ color:passed?"#4CAF50":"#FF6B6B", fontSize:13 }}>
+              {score>=90?"Above Target — Outstanding Performance" : score>=70?"Meets Requirement — Good Performance" : score>=55?"Approaching — More Preparation Needed" : "Below Requirement — Focus on Weak Areas"}
+            </span>
+          </div>
+        </div>
+
+        <div style={{ background:"rgba(255,255,255,0.03)", border:"1px solid rgba(255,255,255,0.08)", borderRadius:12, padding:24, marginBottom:22 }}>
+          <h3 style={{ color:G, marginBottom:16, fontWeight:"normal", letterSpacing:1, fontSize:13 }}>PERFORMANCE BY DOMAIN</h3>
+          {[["People","👥"],["Process","⚙️"],["Business Environment","🏢"]].map(([d, icon]) => {
+            const s = domainStats[d];
+            if (!s) return null;
+            const pct = Math.round((s.c / s.t) * 100);
+            return (
+              <div key={d} style={{ marginBottom:16 }}>
+                <div style={{ display:"flex", justifyContent:"space-between", marginBottom:6 }}>
+                  <span style={{ color:"white", fontSize:14 }}>{icon} {d}</span>
+                  <span style={{ color:pct>=70?"#4CAF50":"#FF6B6B", fontWeight:"bold" }}>{s.c}/{s.t} ({pct}%)</span>
+                </div>
+                <div style={{ height:8, background:"rgba(255,255,255,0.05)", borderRadius:4 }}>
+                  <div style={{ height:"100%", width:pct+"%", background:pct>=70?"linear-gradient(90deg,#4CAF50,#81C784)":"linear-gradient(90deg,#FF6B6B,#EF9A9A)", borderRadius:4, transition:"width 1s" }}></div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        <div style={{ display:"grid", gap:12, marginBottom:30 }}>
+          {passed && (
+            <button onClick={() => openCertificate(student.name, score, student.exam.label, today)} style={{ padding:"16px", background:"linear-gradient(135deg,#C9A84C,#A07A30)", border:"none", borderRadius:8, color:DARK, fontSize:15, fontWeight:"bold", cursor:"pointer", fontFamily:"Georgia,serif", letterSpacing:1 }}>
+              🎓 PRINT CERTIFICATE OF ACHIEVEMENT
+            </button>
+          )}
+          <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:12 }}>
+            <button onClick={onRetake} style={{ padding:"14px", background:"rgba(255,255,255,0.05)", border:"1px solid rgba(255,255,255,0.15)", borderRadius:8, color:"white", fontSize:13, cursor:"pointer", fontFamily:"Georgia,serif" }}>
+              🔄 Take Another Exam
+            </button>
+            <button onClick={() => window.print()} style={{ padding:"14px", background:"rgba(255,255,255,0.05)", border:"1px solid rgba(255,255,255,0.15)", borderRadius:8, color:"white", fontSize:13, cursor:"pointer", fontFamily:"Georgia,serif" }}>
+              🖨️ Print Results
+            </button>
+          </div>
+        </div>
+
+        <div style={{ textAlign:"center", color:"#334455", fontSize:11, borderTop:"1px solid rgba(255,255,255,0.05)", paddingTop:18 }}>
+          Team21 Academy PMP Prep Platform · Certified by Innocent Forteh, PMP<br/>
+          Unlocking Potential · team21online@gmail.com · Yaoundé, Cameroon
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── MAIN APP ──────────────────────────────────────────────────────────────────
+function App() {
+  const [phase, setPhase] = useState("login");
+  const [student, setStudent] = useState(null);
+  const [result, setResult] = useState(null);
+
+  const handleLogin = (s) => { setStudent(s); setPhase("exam"); };
+  const handleComplete = (r) => { setResult(r); setPhase("results"); };
+  const handleRetake = () => { setStudent(null); setResult(null); setPhase("login"); };
+
+  if (phase === "login") return <LoginScreen onLogin={handleLogin} />;
+  if (phase === "exam") return <ExamScreen student={student} onComplete={handleComplete} />;
+  if (phase === "results") return <ResultsScreen student={student} result={result} onRetake={handleRetake} />;
+  return null;
+}
+
+const rootEl = document.getElementById('root');
+ReactDOM.createRoot(rootEl).render(<App />);
+</script>
+</body>
+</html>

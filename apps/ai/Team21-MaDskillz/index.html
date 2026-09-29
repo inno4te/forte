@@ -1,0 +1,1155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MaDskillz T21 — Make a Difference | Team21 Academy</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital,wght@0,400;1,400&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --fire:#FF4500;--fire2:#FF6B35;--gold:#F5A623;--gold2:#FFD166;
+  --jade:#00C896;--sky:#3B9EFF;--rose:#FF3366;
+  --ink:#0C0D0F;--card:#161719;--card2:#1E2023;
+  --border:rgba(255,255,255,.09);
+  --gfire:linear-gradient(135deg,#FF4500,#FF6B35 55%,#F5A623);
+  --gdark:linear-gradient(150deg,#0C0D0F 0%,#1a1608 60%,#231c08 100%);
+  --shfire:0 8px 40px rgba(255,69,0,.25);--shcard:0 2px 18px rgba(0,0,0,.12)
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Outfit',sans-serif;background:#0C0D0F;color:#fff;min-height:100vh;overflow-x:hidden}
+
+.topbar{background:var(--fire);text-align:center;font-size:.72rem;font-weight:600;padding:.42rem 1rem;letter-spacing:.03em}
+.topbar a{color:#fff;text-decoration:underline}
+
+nav{position:sticky;top:0;z-index:500;background:rgba(12,13,15,.96);backdrop-filter:blur(20px);border-bottom:1px solid rgba(245,166,35,.12);height:62px;display:flex;align-items:center;padding:0 1.5rem;gap:.75rem}
+.nav-logo{font-family:'Instrument Serif',serif;font-size:1.2rem;color:#fff;cursor:pointer;flex-shrink:0}
+.nav-logo em{color:var(--gold);font-style:italic}
+.nav-logo small{display:block;font-family:'Outfit',sans-serif;font-size:.56rem;color:rgba(255,255,255,.3);letter-spacing:.1em;text-transform:uppercase;margin-top:-2px}
+.navpills{display:flex;gap:.15rem;flex:1;overflow-x:auto;scrollbar-width:none;justify-content:center}
+.navpills::-webkit-scrollbar{display:none}
+.np{background:transparent;border:none;color:rgba(255,255,255,.42);font-family:'Outfit',sans-serif;font-size:.8rem;font-weight:500;padding:.4rem .8rem;border-radius:7px;cursor:pointer;transition:all .18s;white-space:nowrap}
+.np:hover{color:var(--gold);background:rgba(245,166,35,.08)}
+.np.on{color:#0C0D0F;background:var(--gold);font-weight:700}
+.nav-end{display:flex;align-items:center;gap:.55rem;margin-left:auto}
+.wa-link{display:flex;align-items:center;gap:.32rem;background:rgba(0,200,150,.1);border:1px solid rgba(0,200,150,.22);color:var(--jade);font-size:.71rem;font-weight:700;padding:.28rem .72rem;border-radius:20px;text-decoration:none;white-space:nowrap;transition:all .18s}
+.wa-link:hover{background:var(--jade);color:#000}
+.burger{display:none;flex-direction:column;gap:4px;cursor:pointer;padding:.42rem;border:none;background:transparent}
+.burger span{display:block;width:20px;height:1.5px;background:#fff;border-radius:2px;transition:all .28s}
+.burger.x span:nth-child(1){transform:rotate(45deg) translate(4px,4px)}
+.burger.x span:nth-child(2){opacity:0}
+.burger.x span:nth-child(3){transform:rotate(-45deg) translate(4px,-4px)}
+.mmenu{display:none;position:absolute;top:62px;left:0;right:0;z-index:498;background:rgba(12,13,15,.98);border-bottom:1px solid rgba(245,166,35,.1);flex-direction:column;padding:.65rem;gap:.18rem}
+.mmenu.open{display:flex}
+.mmenu button,.mmenu a{background:transparent;border:none;color:rgba(255,255,255,.6);font-family:'Outfit',sans-serif;font-size:.88rem;font-weight:500;padding:.55rem .88rem;border-radius:7px;cursor:pointer;text-align:left;transition:all .18s;text-decoration:none;display:block}
+.mmenu button:hover,.mmenu a:hover{background:rgba(245,166,35,.08);color:var(--gold)}
+@media(max-width:680px){.navpills{display:none}.wa-link{display:none}.burger{display:flex}nav{padding:0 1rem}}
+
+.hero{background:var(--gdark);position:relative;overflow:hidden;padding:5rem 2rem 6rem;text-align:center}
+.hero-orb{position:absolute;top:-80px;left:50%;transform:translateX(-50%);width:700px;height:400px;border-radius:50%;background:radial-gradient(ellipse,rgba(255,69,0,.18) 0%,rgba(245,166,35,.06) 40%,transparent 70%);pointer-events:none}
+.h-copy{font-size:.65rem;color:rgba(255,255,255,.28);letter-spacing:.18em;text-transform:uppercase;margin-bottom:.95rem}
+.h-eye{display:inline-flex;align-items:center;gap:.45rem;background:rgba(245,166,35,.1);border:1px solid rgba(245,166,35,.2);color:var(--gold);font-size:.7rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:.3rem .95rem;border-radius:20px;margin-bottom:1.4rem}
+.hero h1{font-family:'Instrument Serif',serif;font-size:clamp(2.8rem,7vw,5rem);color:#fff;line-height:1.0;letter-spacing:-.02em;margin-bottom:.8rem}
+.hero h1 .ft{background:var(--gfire);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero h1 .it{font-style:italic;color:var(--gold2)}
+.hero-d{color:rgba(255,255,255,.52);font-size:1rem;max-width:580px;margin:0 auto 2.2rem;line-height:1.72;font-weight:300}
+.hero-chips{display:flex;gap:.45rem;justify-content:center;flex-wrap:wrap;margin-bottom:2.2rem}
+.chip{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.09);color:rgba(255,255,255,.6);font-size:.7rem;font-weight:500;padding:.25rem .78rem;border-radius:20px}
+.chip strong{color:var(--gold)}
+.hero-btns{display:flex;gap:.85rem;justify-content:center;flex-wrap:wrap}
+.btnH{display:inline-flex;align-items:center;gap:.45rem;font-family:'Outfit',sans-serif;font-weight:700;font-size:.96rem;padding:.8rem 1.9rem;border-radius:50px;border:none;cursor:pointer;transition:all .2s;text-decoration:none}
+.btnH.fire{background:var(--gfire);color:#fff;box-shadow:var(--shfire)}
+.btnH.fire:hover{transform:translateY(-2px);box-shadow:0 14px 48px rgba(255,69,0,.38)}
+.btnH.ghost{background:transparent;color:rgba(255,255,255,.72);border:1px solid rgba(255,255,255,.16)}
+.btnH.ghost:hover{background:rgba(255,255,255,.07);color:#fff}
+.hero-wave{position:absolute;bottom:-1px;left:0;right:0;height:68px;background:#0C0D0F;clip-path:ellipse(55% 100% at 50% 100%)}
+
+.tabbar{display:flex;justify-content:center;gap:.45rem;padding:1.8rem 1rem 0;flex-wrap:wrap}
+.tabbtn{background:var(--card);border:1.5px solid var(--border);font-family:'Outfit',sans-serif;font-weight:700;font-size:.82rem;padding:.56rem 1.35rem;border-radius:50px;cursor:pointer;transition:all .22s;color:rgba(255,255,255,.5);display:flex;align-items:center;gap:.4rem}
+.tabbtn:hover{border-color:rgba(245,166,35,.4);color:var(--gold)}
+.tabbtn.on{background:var(--fire);color:#fff;border-color:var(--fire);box-shadow:var(--shfire)}
+
+.sec{display:none;padding:2.2rem 1rem 5rem;max-width:960px;margin:0 auto}
+.sec.on{display:block;animation:up .36s ease}
+@keyframes up{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.sec-lbl{display:inline-block;font-size:.61rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--fire);background:rgba(255,69,0,.08);border:1px solid rgba(255,69,0,.15);padding:.2rem .68rem;border-radius:20px;margin-bottom:.6rem}
+.sec-title{font-family:'Instrument Serif',serif;font-size:1.85rem;color:#fff;letter-spacing:-.02em;line-height:1.06;margin-bottom:.38rem}
+.sec-title span{color:var(--fire)}
+.sec-sub{color:rgba(255,255,255,.45);font-size:.86rem;line-height:1.7;margin-bottom:1.5rem;max-width:720px}
+
+.card{background:var(--card);border-radius:18px;padding:1.5rem;border:1px solid var(--border);margin-bottom:1.2rem}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:.85rem}
+@media(max-width:520px){.row2{grid-template-columns:1fr}}
+.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.85rem}
+@media(max-width:620px){.row3{grid-template-columns:1fr 1fr}}
+@media(max-width:400px){.row3{grid-template-columns:1fr}}
+.fg{margin-bottom:.9rem}
+.fg label{display:block;font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:rgba(255,255,255,.38);margin-bottom:.35rem}
+.fg label .r{color:var(--fire)}
+.fg input,.fg select,.fg textarea{width:100%;padding:.65rem .9rem;border:1.5px solid rgba(255,255,255,.1);border-radius:10px;font-size:.88rem;color:#fff;background:rgba(255,255,255,.05);transition:all .18s;resize:vertical;font-family:'Outfit',sans-serif}
+.fg input:focus,.fg select:focus,.fg textarea:focus{outline:none;border-color:var(--fire);background:rgba(255,69,0,.05)}
+.fg textarea{min-height:80px;line-height:1.6}
+.fg select option{background:#222}
+.hint{font-size:.7rem;color:rgba(255,255,255,.28);margin-top:.24rem;line-height:1.5}
+
+.tw{display:flex;flex-wrap:wrap;gap:.32rem;min-height:42px;padding:.42rem;border:1.5px solid rgba(255,255,255,.1);border-radius:10px;background:rgba(255,255,255,.04);cursor:text;transition:all .18s;align-items:center}
+.tw:focus-within{border-color:var(--fire);background:rgba(255,69,0,.04)}
+.stag{background:var(--gfire);color:#fff;font-size:.7rem;font-weight:700;padding:.18rem .58rem;border-radius:20px;display:flex;align-items:center;gap:.24rem;animation:pop .13s ease}
+@keyframes pop{from{transform:scale(.6);opacity:0}to{transform:scale(1);opacity:1}}
+.stag button{background:none;border:none;cursor:pointer;color:rgba(255,255,255,.6);font-size:.85rem;padding:0;line-height:1}
+.stag button:hover{color:#fff}
+#tagIn{border:none;background:transparent;outline:none;font-size:.84rem;color:#fff;min-width:100px;flex:1;font-family:'Outfit',sans-serif}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.42rem;font-family:'Outfit',sans-serif;font-weight:700;font-size:.87rem;padding:.7rem 1.6rem;border-radius:50px;border:none;cursor:pointer;transition:all .2s;letter-spacing:-.01em;text-decoration:none;white-space:nowrap}
+.bFire{background:var(--gfire);color:#fff;box-shadow:var(--shfire)}
+.bFire:hover{transform:translateY(-2px);box-shadow:0 12px 42px rgba(255,69,0,.32)}
+.bOut{background:transparent;color:var(--fire);border:2px solid var(--fire)}
+.bOut:hover{background:var(--fire);color:#fff}
+.bJade{background:var(--jade);color:#000}
+.bJade:hover{background:#00a87e}
+.bSky{background:var(--sky);color:#fff}
+.bSky:hover{background:#2080e0}
+.bGold{background:var(--gold);color:#000}
+.bGold:hover{background:var(--gold2)}
+.bGhost{background:rgba(255,255,255,.07);color:rgba(255,255,255,.65);border:1px solid rgba(255,255,255,.1)}
+.bGhost:hover{background:rgba(255,255,255,.13);color:#fff}
+.bSm{font-size:.75rem;padding:.44rem 1rem}
+.btn:disabled{opacity:.38;cursor:not-allowed;transform:none!important;box-shadow:none!important}
+.btnrow{display:flex;gap:.55rem;flex-wrap:wrap;align-items:center}
+
+.loc-bar{display:flex;align-items:center;gap:.55rem;background:rgba(0,200,150,.07);border:1px solid rgba(0,200,150,.18);border-radius:10px;padding:.55rem .95rem;margin-bottom:.95rem;font-size:.79rem}
+.loc-dot{width:7px;height:7px;border-radius:50%;background:var(--jade);flex-shrink:0;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+
+.spin-wrap{text-align:center;padding:2rem 1rem}
+.spin{width:44px;height:44px;border-radius:50%;border:3.5px solid rgba(255,69,0,.12);border-top-color:var(--fire);animation:spin .82s linear infinite;display:inline-block}
+@keyframes spin{to{transform:rotate(360deg)}}
+.spin-lbl{color:var(--fire);font-weight:700;font-size:.88rem;margin-top:.7rem}
+.spin-sub{color:rgba(255,255,255,.3);font-size:.7rem;margin-top:.2rem}
+
+.alert{padding:.85rem 1.05rem;border-radius:10px;margin-bottom:.9rem;font-size:.8rem;display:flex;align-items:flex-start;gap:.52rem;line-height:1.55}
+.aTip{background:rgba(245,166,35,.09);border:1px solid rgba(245,166,35,.2);color:#c9902a}
+.aOk{background:rgba(0,200,150,.09);border:1px solid rgba(0,200,150,.18);color:var(--jade)}
+.aErr{background:rgba(255,69,0,.09);border:1px solid rgba(255,69,0,.2);color:var(--fire)}
+.aInfo{background:rgba(59,158,255,.09);border:1px solid rgba(59,158,255,.18);color:var(--sky)}
+
+/* SKILL RESULT CARDS */
+.skill-result{background:var(--card);border-radius:18px;padding:1.5rem;border:1px solid var(--border);margin-bottom:1.2rem}
+.skill-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:.75rem;margin-top:1rem}
+.skill-box{background:var(--card2);border-radius:12px;padding:1rem;border-left:3px solid var(--fire);transition:transform .2s}
+.skill-box:hover{transform:translateY(-2px)}
+.skill-box .raw{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.35);margin-bottom:.35rem}
+.skill-box .pro{font-size:.82rem;font-weight:700;color:#fff;margin-bottom:.3rem}
+.skill-box .tags{display:flex;flex-wrap:wrap;gap:.22rem}
+.skill-box .tag{font-size:.62rem;font-weight:600;padding:.12rem .45rem;border-radius:20px;background:rgba(255,69,0,.1);color:var(--fire2)}
+
+/* PROFILE BANNER */
+.prof-banner{background:var(--gdark);border-radius:18px;padding:1.5rem;display:flex;align-items:center;gap:1.15rem;flex-wrap:wrap;margin-bottom:1.1rem;border:1px solid rgba(245,166,35,.14)}
+.prof-ava{width:64px;height:64px;border-radius:50%;flex-shrink:0;background:var(--gfire);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:1.5rem;color:#fff}
+.prof-info h2{font-family:'Instrument Serif',serif;font-size:1.35rem;color:#fff;letter-spacing:-.02em}
+.prof-info p{color:rgba(255,255,255,.4);font-size:.76rem;margin-top:.14rem;line-height:1.55}
+.prof-pct{margin-left:auto;background:var(--gfire);color:#fff;font-weight:900;font-size:.98rem;padding:.52rem 1.15rem;border-radius:10px;text-align:center;white-space:nowrap}
+.prof-pct small{display:block;font-size:.54rem;opacity:.8;letter-spacing:.1em}
+
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:.82rem;margin-bottom:1.1rem}
+@media(max-width:440px){.stats-row{grid-template-columns:1fr 1fr}}
+.stat-box{background:var(--card);border-radius:12px;padding:.9rem;text-align:center;border-top:3px solid var(--fire)}
+.sv{font-weight:900;font-size:1.8rem;color:var(--fire);letter-spacing:-.04em}
+.sl{font-size:.64rem;color:rgba(255,255,255,.32);font-weight:600;letter-spacing:.05em;text-transform:uppercase;margin-top:.06rem}
+
+.pill{display:inline-flex;align-items:center;font-size:.7rem;font-weight:600;padding:.2rem .65rem;border-radius:20px;margin:.14rem}
+.pRaw{background:rgba(245,166,35,.12);color:var(--gold);border:1px solid rgba(245,166,35,.24)}
+.pX{background:rgba(255,69,0,.1);color:var(--fire);border:1px solid rgba(255,69,0,.18)}
+.pN{background:rgba(0,200,150,.1);color:var(--jade);border:1px solid rgba(0,200,150,.2)}
+
+/* JOB CARDS */
+.jgrid{display:grid;gap:.82rem}
+.jcard{background:var(--card);border:1.5px solid var(--border);border-radius:18px;padding:1.1rem 1.25rem;transition:all .22s;position:relative;overflow:hidden}
+.jcard::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3.5px;background:var(--gfire);opacity:0;transition:opacity .2s}
+.jcard:hover{border-color:rgba(255,69,0,.22);transform:translateY(-1px);box-shadow:0 6px 28px rgba(255,69,0,.1)}
+.jcard:hover::before{opacity:1}
+.jcard-top{display:flex;align-items:flex-start;gap:.85rem}
+.jico{width:46px;height:46px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0}
+.jbody{flex:1;min-width:0}
+.jtitle{font-weight:800;font-size:.92rem;color:#fff;letter-spacing:-.02em}
+.jorg{font-size:.74rem;color:rgba(255,255,255,.4);margin-top:.05rem}
+.jtags{display:flex;flex-wrap:wrap;gap:.24rem;margin-top:.5rem}
+.jtag{font-size:.64rem;font-weight:700;padding:.13rem .48rem;border-radius:20px}
+.jm{background:rgba(0,200,150,.14);color:var(--jade)}
+.jr{background:rgba(59,158,255,.14);color:var(--sky)}
+.jur{background:rgba(255,69,0,.14);color:var(--fire)}
+.jhy{background:rgba(245,166,35,.14);color:var(--gold)}
+.jf{background:rgba(255,255,255,.07);color:rgba(255,255,255,.5)}
+.jnear{background:rgba(0,200,150,.2);color:var(--jade)}
+.jright{text-align:right;flex-shrink:0}
+.jpct{font-weight:900;font-size:1rem;color:var(--fire);letter-spacing:-.02em}
+.jpct small{display:block;font-size:.55rem;color:rgba(255,255,255,.28);font-weight:500}
+.apply-btn{display:inline-flex;align-items:center;gap:.28rem;margin-top:.42rem;background:var(--gfire);color:#fff;font-weight:700;font-size:.68rem;padding:.26rem .72rem;border-radius:20px;text-decoration:none;transition:opacity .18s;border:none;cursor:pointer}
+.apply-btn:hover{opacity:.82}
+.jdesc{font-size:.74rem;color:rgba(255,255,255,.38);margin-top:.3rem;line-height:1.5}
+.jup{font-size:.66rem;color:var(--jade);margin-top:.3rem;font-weight:600}
+.jinteg{font-size:.64rem;font-weight:700;margin-top:.32rem}
+
+/* SEARCH BAR */
+.sbar{background:var(--card);border-radius:16px;padding:1.1rem 1.3rem;border:1px solid var(--border);display:flex;gap:.75rem;align-items:flex-end;flex-wrap:wrap;margin-bottom:1.1rem}
+.sbar .fg{margin:0;flex:1;min-width:130px}
+
+/* SECTION DIVIDER */
+.sdiv{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.32);margin:.8rem 0 .65rem;display:flex;align-items:center;gap:.5rem}
+.sdiv::after{content:'';flex:1;height:1px;background:rgba(255,255,255,.06)}
+
+/* COURSES */
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(262px,1fr));gap:.85rem}
+.cc{background:var(--card);border-radius:16px;padding:1.2rem;border-top:3px solid var(--gold);display:flex;flex-direction:column;gap:.48rem;transition:transform .2s}
+.cc.t21{border-top-color:var(--fire)}
+.cc:hover{transform:translateY(-2px)}
+.cc-prov{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--fire)}
+.cc-name{font-weight:700;font-size:.88rem;color:#fff;letter-spacing:-.02em}
+.cc-desc{font-size:.76rem;color:rgba(255,255,255,.45);line-height:1.5;flex:1}
+.cc-meta{display:flex;gap:.3rem;flex-wrap:wrap}
+.cbadge{font-size:.62rem;font-weight:700;padding:.12rem .46rem;border-radius:20px}
+.cb-f{background:rgba(0,200,150,.1);color:var(--jade)}
+.cb-c{background:rgba(255,69,0,.09);color:var(--fire)}
+.cb-t{background:rgba(245,166,35,.11);color:var(--gold)}
+.cc-btn{display:inline-flex;align-items:center;gap:.35rem;background:var(--gfire);color:#fff;font-weight:700;font-size:.73rem;padding:.38rem .88rem;border-radius:20px;text-decoration:none;transition:opacity .18s;width:fit-content}
+.cc-btn:hover{opacity:.82}
+
+/* CV DOC */
+.cv-doc{background:#fff;color:#111;border-radius:18px;padding:2.2rem 2.8rem;margin-bottom:1rem;font-size:.87rem;line-height:1.7;display:none}
+@media(max-width:520px){.cv-doc{padding:1.3rem}}
+.cv-doc h2{font-family:'Instrument Serif',serif;font-size:1.7rem;letter-spacing:-.02em;border-bottom:3px solid #FF4500;padding-bottom:.32rem;margin-bottom:.5rem;color:#0C0D0F}
+.cv-doc .cvc{font-size:.77rem;color:#666;margin-bottom:.28rem}
+.cv-doc .cvt{font-weight:700;color:#FF4500;font-size:.8rem;margin-bottom:.9rem}
+.cv-doc h3{font-weight:800;font-size:.8rem;color:#FF4500;text-transform:uppercase;letter-spacing:.1em;margin-top:1.2rem;margin-bottom:.35rem;padding-bottom:.18rem;border-bottom:1px solid rgba(255,69,0,.12)}
+.cvsec{padding-left:.65rem;border-left:3px solid #FFE566;margin-bottom:.42rem}
+.cvbullet{display:block;padding:.1rem 0;font-size:.85rem;line-height:1.6}
+
+/* T21 STRIP */
+.t21{background:var(--gdark);border-radius:18px;padding:1.5rem 1.75rem;margin-bottom:1.2rem;border:1px solid rgba(245,166,35,.16)}
+.t21 h3{font-family:'Instrument Serif',serif;font-size:1rem;color:#fff;margin-bottom:.2rem}
+.t21 p{color:rgba(255,255,255,.42);font-size:.76rem;line-height:1.62;margin-bottom:.82rem}
+.t21links{display:flex;flex-wrap:wrap;gap:.38rem}
+.t21lnk{display:inline-flex;align-items:center;gap:.3rem;font-size:.7rem;font-weight:700;padding:.32rem .78rem;border-radius:20px;text-decoration:none;transition:all .18s}
+.twa{background:rgba(0,200,150,.09);color:var(--jade);border:1px solid rgba(0,200,150,.18)}
+.twa:hover{background:var(--jade);color:#000}
+.tem{background:rgba(59,158,255,.09);color:var(--sky);border:1px solid rgba(59,158,255,.18)}
+.tem:hover{background:var(--sky);color:#fff}
+.tco{background:rgba(255,69,0,.09);color:#ff7040;border:1px solid rgba(255,69,0,.18)}
+.tco:hover{background:var(--fire);color:#fff}
+
+/* CV SECTION OPTIONS */
+.cv-tabs{display:flex;gap:.4rem;margin-bottom:1.2rem;flex-wrap:wrap}
+.cvtab{background:rgba(255,255,255,.06);border:1px solid var(--border);color:rgba(255,255,255,.5);font-size:.78rem;font-weight:600;padding:.4rem .9rem;border-radius:8px;cursor:pointer;transition:all .2s}
+.cvtab.on{background:var(--fire);color:#fff;border-color:var(--fire)}
+
+/* PROGRESS */
+.progress-bar{width:100%;background:rgba(255,255,255,.06);border-radius:20px;height:8px;margin-top:.4rem;overflow:hidden}
+.progress-fill{height:100%;border-radius:20px;background:var(--gfire);transition:width 1s ease}
+
+/* SCORE RING */
+.score-ring{position:relative;width:80px;height:80px;flex-shrink:0}
+.score-ring svg{transform:rotate(-90deg)}
+.sn{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;font-weight:900;font-size:1.2rem;color:var(--fire)}
+.sn small{font-size:.36rem;font-weight:600;color:rgba(255,255,255,.3);margin-top:-2px;letter-spacing:.06em}
+
+/* SEARCH PREVIEW */
+.search-preview{background:rgba(59,158,255,.07);border:1px solid rgba(59,158,255,.18);border-radius:12px;padding:1rem 1.2rem;margin-bottom:.9rem;font-size:.8rem;color:var(--sky)}
+.search-preview strong{display:block;margin-bottom:.3rem;font-size:.9rem}
+
+footer{text-align:center;padding:2rem 1rem;border-top:1px solid rgba(245,166,35,.1);color:rgba(255,255,255,.22);font-size:.72rem;margin-top:3rem}
+footer strong{color:var(--gold)}
+footer a{color:var(--jade);text-decoration:none}
+footer a:hover{text-decoration:underline}
+</style>
+</head>
+<body>
+
+<div class="topbar">🌍 MaDskillz T21 · <strong>Team21 Academy</strong> · Make a Difference &nbsp;·&nbsp; <a href="https://wa.me/237694294406" target="_blank">💬 WhatsApp</a> &nbsp;·&nbsp; <a href="mailto:team21online@gmail.com">✉️ Email</a> &nbsp;·&nbsp; No account needed · 100% free</div>
+
+<nav>
+  <div class="nav-logo" onclick="go('profile')">MaD<em>skillz</em> T21<small>Make a Difference © Innocent Forteh</small></div>
+  <div class="navpills">
+    <button class="np on" onclick="go('profile')">🧠 Build Profile</button>
+    <button class="np" onclick="go('jobs')">🔍 Find Jobs</button>
+    <button class="np" onclick="go('upskill')">🚀 Upskill Me</button>
+    <button class="np" onclick="go('cv')">📄 Build CV</button>
+  </div>
+  <div class="nav-end">
+    <a href="https://wa.me/237694294406?text=Hello+Team21+via+MaDskillz" target="_blank" class="wa-link">💬 Team21</a>
+    <button class="burger" id="burger" onclick="toggleMobile()"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<div class="mmenu" id="mmenu">
+  <button onclick="go('profile');closeMobile()">🧠 Build My Profile</button>
+  <button onclick="go('jobs');closeMobile()">🔍 Find Jobs</button>
+  <button onclick="go('upskill');closeMobile()">🚀 Upskill Me</button>
+  <button onclick="go('cv');closeMobile()">📄 Build My CV</button>
+  <a href="https://wa.me/237694294406" target="_blank">💬 WhatsApp Team21</a>
+  <a href="mailto:team21online@gmail.com">✉️ team21online@gmail.com</a>
+</div>
+
+<div class="hero">
+  <div class="hero-orb"></div>
+  <div class="h-copy">© Innocent Forteh — Make a Difference</div>
+  <div class="h-eye">🌍 Team21 Academy · Connecting People to Resources</div>
+  <h1>There's a <span class="ft">Job</span> for<br><span class="it">Everyone.</span></h1>
+  <p class="hero-d">No account. No API key. No cost. Enter your skills, get your professional CV, and land on the exact pages where real jobs are posted — near you and worldwide.</p>
+  <div class="hero-chips">
+    <span class="chip">✅ <strong>No signup required</strong></span>
+    <span class="chip">📍 <strong>Uses your location</strong></span>
+    <span class="chip">📄 <strong>Instant CV download</strong></span>
+    <span class="chip">🔗 <strong>Direct job board links</strong></span>
+    <span class="chip">🎓 <strong>100% free certs</strong></span>
+  </div>
+  <div class="hero-btns">
+    <button class="btnH fire" onclick="go('profile')">✨ Build My Profile &amp; CV</button>
+    <button class="btnH ghost" onclick="go('jobs')">🔍 Find Jobs Now</button>
+  </div>
+  <div class="hero-wave"></div>
+</div>
+
+<div class="tabbar">
+  <button class="tabbtn on" onclick="go('profile')">🧠 Build Profile</button>
+  <button class="tabbtn" onclick="go('jobs')">🔍 Find Jobs</button>
+  <button class="tabbtn" onclick="go('upskill')">🚀 Upskill Me</button>
+  <button class="tabbtn" onclick="go('cv')">📄 Build CV</button>
+</div>
+
+<!-- ═══ PROFILE ═══ -->
+<div class="sec on" id="s-profile">
+  <div class="sec-lbl">Step 1 of 4</div>
+  <h2 class="sec-title">Build Your <span>MaDskillz</span> Profile</h2>
+  <p class="sec-sub">Any skill counts — farming, driving, tailoring, cooking, nursing. MaDskillz converts them into professional competencies, builds your CV and sends you directly to the right job boards.</p>
+
+  <div class="alert aTip">💡 "Managed daily sales of $200+ at market, trained 3 vendors" beats "market seller". More detail = better CV quality.</div>
+
+  <div class="card">
+    <div class="row2">
+      <div class="fg"><label>Full Name <span class="r">*</span></label><input id="pn" placeholder="Amara Diallo"></div>
+      <div class="fg"><label>Email</label><input id="pe" type="email" placeholder="amara@email.com"></div>
+    </div>
+    <div class="row2">
+      <div class="fg"><label>Country <span class="r">*</span></label>
+        <select id="pc">
+          <option value="">Select…</option>
+          <option>Cameroon</option><option>Kenya</option><option>Nigeria</option><option>Ghana</option>
+          <option>South Africa</option><option>Uganda</option><option>Tanzania</option><option>Rwanda</option>
+          <option>Ethiopia</option><option>Senegal</option><option>DR Congo</option><option>Zambia</option>
+          <option>Zimbabwe</option><option>Mozambique</option><option>Côte d'Ivoire</option>
+          <option>United States</option><option>United Kingdom</option><option>Canada</option>
+          <option>France</option><option>Germany</option><option>UAE</option>
+          <option>India</option><option>Brazil</option><option>Philippines</option>
+          <option>Indonesia</option><option>Pakistan</option><option>Bangladesh</option><option>Other</option>
+        </select>
+      </div>
+      <div class="fg"><label>City / Region</label><input id="pct" placeholder="Yaoundé, Lagos, Nairobi…"></div>
+    </div>
+    <div class="row2">
+      <div class="fg"><label>Education</label>
+        <select id="ped">
+          <option value="">Select…</option>
+          <option>No formal education</option><option>Primary school</option>
+          <option>Secondary / High school</option><option>Certificate / Diploma</option>
+          <option>Bachelor's Degree</option><option>Master's Degree</option>
+          <option>PhD</option><option>Vocational Training</option>
+        </select>
+      </div>
+      <div class="fg"><label>Languages</label><input id="pl" placeholder="English, French, Swahili…"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="fg">
+      <label>Your Skills <span class="r">*</span> <span style="text-transform:none;letter-spacing:0;font-weight:400;color:rgba(255,255,255,.28)">(press Enter or comma after each)</span></label>
+      <div class="tw" id="tw" onclick="document.getElementById('tagIn').focus()">
+        <input id="tagIn" placeholder="selling, driving, farming, Excel, nursing, carpentry…">
+      </div>
+      <p class="hint">Any skill counts — selling, driving, cooking, farming, nursing, construction, social media. MaDskillz converts them all professionally.</p>
+    </div>
+    <div class="fg">
+      <label>Work Experience <span style="text-transform:none;letter-spacing:0;font-weight:400;color:rgba(255,255,255,.28)">(your words — be generous)</span></label>
+      <textarea id="px" placeholder="e.g. 2019–2024: Tailoring workshop in Douala. 12 regular clients. Managed fabric orders, pricing and delivery. Trained 3 apprentices. Revenue grew 40% over 2 years…"></textarea>
+    </div>
+    <div class="row2">
+      <div class="fg"><label>Education Details</label><input id="pedx" placeholder="School name, year, field of study…"></div>
+      <div class="fg"><label>Certifications</label><input id="pcert" placeholder="CS50 Harvard, PSEA, Google PM…"></div>
+    </div>
+    <div class="row2">
+      <div class="fg"><label>Preferred Job Type</label>
+        <select id="pjt"><option value="">Any</option><option>Full-time</option><option>Part-time</option><option>Remote</option><option>Hybrid</option><option>NGO / Non-profit</option><option>Government</option></select>
+      </div>
+      <div class="fg"><label>Dream Job / Target Role</label><input id="pd" placeholder="Programme Officer, Data Analyst, Start a business…"></div>
+    </div>
+  </div>
+
+  <div id="loc-bar" class="loc-bar" style="display:none"></div>
+
+  <div class="btnrow">
+    <button class="btn bFire" id="prof-btn" onclick="buildProfile()">✨ Build My Profile &amp; CV</button>
+    <button class="btn bGhost bSm" onclick="getLocation()">📍 Use My Location</button>
+  </div>
+  <div id="profile-result" style="display:none;margin-top:2rem"></div>
+</div>
+
+<!-- ═══ JOBS ═══ -->
+<div class="sec" id="s-jobs">
+  <div class="sec-lbl">Find Jobs</div>
+  <h2 class="sec-title"><span>MaDSearch</span> — Direct Job Board Links</h2>
+  <p class="sec-sub">MaDskillz generates targeted search links to the exact pages on LinkedIn, UN Jobs, ReliefWeb, Remotasks and 15+ other boards — based on your skills, location and job type. No middleman.</p>
+
+  <div id="jobs-loc" class="loc-bar" style="display:none"></div>
+
+  <div class="sbar">
+    <div class="fg" style="flex:2"><label>Keywords / Job Title <span class="r">*</span></label><input id="jq" placeholder="Project Officer, Data Analyst, Sales Manager, Driver…"></div>
+    <div class="fg"><label>Location</label><input id="jl" placeholder="City, Country or Remote"></div>
+    <div class="fg"><label>Type</label>
+      <select id="jt"><option value="">All types</option><option>Remote</option><option>Full-time</option><option>Part-time</option><option>Hybrid</option><option>NGO / UN</option><option>Government</option></select>
+    </div>
+    <button class="btn bFire" onclick="madSearch()" style="align-self:flex-end">🔍 MaDSearch</button>
+  </div>
+
+  <div id="jobs-result">
+    <div class="alert aInfo" style="margin-top:.5rem">👆 Enter a job title above and hit MaDSearch. MaDskillz opens the exact search pages on 15+ real job boards with your criteria pre-filled.</div>
+  </div>
+</div>
+
+<!-- ═══ UPSKILL ═══ -->
+<div class="sec" id="s-upskill">
+  <div class="sec-lbl">Upskill Me</div>
+  <h2 class="sec-title">Level Up — <span>100% Free</span></h2>
+  <p class="sec-sub">Enter your target job and MaDskillz shows you exactly which free certified courses to take — and opens them directly. Team21 Academy courses, Harvard CS50, Google PM, DisasterReady and more.</p>
+
+  <div class="card">
+    <div class="fg"><label>Your Target Job / Dream Role</label><input id="ud" placeholder="e.g. Programme Officer at UN, Remote Data Analyst, Sales Manager…"></div>
+    <div class="fg"><label>Your Current Skills (comma-separated)</label><input id="usk" placeholder="selling, communication, Excel, driving…"></div>
+    <button class="btn bFire" onclick="getUpskill()">🎯 Show My Upskill Plan</button>
+  </div>
+
+  <div id="upskill-result"></div>
+
+  <div style="margin-top:2rem">
+    <div class="sec-lbl">All Free Courses</div>
+    <h3 style="font-family:'Instrument Serif',serif;font-size:1.3rem;margin-bottom:1rem;color:#fff">100% Free <span style="color:var(--fire)">Certifications</span></h3>
+    <div class="cgrid" id="courses-grid"></div>
+  </div>
+
+  <div class="t21" style="margin-top:1.5rem">
+    <h3>🟠 Team21 Academy — Official Partner</h3>
+    <p>World-class Servant Leadership, AI &amp; Project Management training. Free for MaDskillz users. Contact directly:</p>
+    <div class="t21links">
+      <a href="https://wa.me/237694294406?text=Hello+Team21+via+MaDskillz+-+interested+in+free+training" target="_blank" class="t21lnk twa">💬 +237 694 294 406</a>
+      <a href="mailto:team21online@gmail.com?subject=MaDskillz+Training+Enquiry" class="t21lnk tem">✉️ team21online@gmail.com</a>
+      <a href="https://inno4te.github.io/Team21-SL-Training/" target="_blank" class="t21lnk tco">🎓 Servant Leadership</a>
+      <a href="https://inno4te.github.io/Team21_PMP/" target="_blank" class="t21lnk tco">📋 PMP Training</a>
+      <a href="https://inno4te.github.io/team21-consulting/#c-impact" target="_blank" class="t21lnk tco">🌐 T21 Impact</a>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ CV BUILDER ═══ -->
+<div class="sec" id="s-cv">
+  <div class="sec-lbl">CV Builder</div>
+  <h2 class="sec-title">Build Your <span>Professional CV</span></h2>
+  <p class="sec-sub">Fill in your details — MaDskillz converts your raw experience into professional bullet points and generates a polished, ATS-ready CV you can download instantly as <strong>Word or PDF</strong>. No AI needed.</p>
+
+  <div class="cv-tabs">
+    <button class="cvtab on" onclick="cvTab('basic')">📋 Basic Info</button>
+    <button class="cvtab" onclick="cvTab('exp')">💼 Experience</button>
+    <button class="cvtab" onclick="cvTab('edu')">🎓 Education</button>
+    <button class="cvtab" onclick="cvTab('skills')">🏷️ Skills</button>
+  </div>
+
+  <div id="cv-basic" class="card">
+    <div class="row2">
+      <div class="fg"><label>Full Name <span class="r">*</span></label><input id="cn" placeholder="Amara Diallo"></div>
+      <div class="fg"><label>Target Job Title <span class="r">*</span></label><input id="cj" placeholder="Community Outreach Officer, Data Analyst…"></div>
+    </div>
+    <div class="row2">
+      <div class="fg"><label>Email</label><input id="ce" type="email" placeholder="amara@email.com"></div>
+      <div class="fg"><label>Phone / WhatsApp</label><input id="cph" placeholder="+237 694 000 000"></div>
+    </div>
+    <div class="row2">
+      <div class="fg"><label>City, Country</label><input id="cl" placeholder="Yaoundé, Cameroon"></div>
+      <div class="fg"><label>LinkedIn / Website (optional)</label><input id="cweb" placeholder="linkedin.com/in/yourname"></div>
+    </div>
+    <div class="fg"><label>Professional Summary <span style="text-transform:none;letter-spacing:0;font-weight:400;color:rgba(255,255,255,.28)">(3-4 sentences about yourself)</span></label>
+      <textarea id="csum" placeholder="e.g. Results-driven professional with 5 years of experience in community engagement and business operations. Proven ability to manage teams, negotiate with stakeholders and deliver measurable outcomes. Multilingual communicator seeking to leverage diverse transferable skills in a coordination role…"></textarea>
+    </div>
+  </div>
+
+  <div id="cv-exp" class="card" style="display:none">
+    <div class="fg"><label>Job 1 — Title &amp; Organisation</label><input id="cx1t" placeholder="Workshop Owner — Self-employed Tailoring Business"></div>
+    <div class="row2">
+      <div class="fg"><label>Dates</label><input id="cx1d" placeholder="Jan 2019 – Dec 2024"></div>
+      <div class="fg"><label>Location</label><input id="cx1l" placeholder="Douala, Cameroon"></div>
+    </div>
+    <div class="fg"><label>Key Achievements &amp; Responsibilities</label>
+      <textarea id="cx1" placeholder="• Managed daily operations of a 12-client tailoring business, generating average monthly revenue of XAF 450,000&#10;• Trained 3 apprentices in fabric cutting, stitching and client management&#10;• Negotiated bulk fabric pricing with 8 suppliers, reducing material costs by 20%&#10;• Delivered orders on time for 98% of clients, maintaining strong repeat business"></textarea>
+    </div>
+    <hr style="border:none;border-top:1px solid rgba(255,255,255,.08);margin:1rem 0">
+    <div class="fg"><label>Job 2 — Title &amp; Organisation (optional)</label><input id="cx2t" placeholder="Sales Agent — Gikomba Market"></div>
+    <div class="row2">
+      <div class="fg"><label>Dates</label><input id="cx2d" placeholder="2016 – 2019"></div>
+      <div class="fg"><label>Location</label><input id="cx2l" placeholder="Nairobi, Kenya"></div>
+    </div>
+    <div class="fg"><label>Key Achievements</label>
+      <textarea id="cx2" placeholder="• Sold 50+ kg of produce daily to 30+ regular customers&#10;• Managed stock of 20 product lines&#10;• Trained 2 junior vendors in pricing and customer handling"></textarea>
+    </div>
+    <hr style="border:none;border-top:1px solid rgba(255,255,255,.08);margin:1rem 0">
+    <div class="fg"><label>Job 3 (optional)</label><input id="cx3t" placeholder="Role — Organisation"></div>
+    <div class="row2">
+      <div class="fg"><label>Dates</label><input id="cx3d" placeholder="2013 – 2016"></div>
+      <div class="fg"><label>Location</label><input id="cx3l" placeholder="City, Country"></div>
+    </div>
+    <div class="fg"><label>Key Achievements</label>
+      <textarea id="cx3" placeholder="• Description of role and measurable achievements"></textarea>
+    </div>
+  </div>
+
+  <div id="cv-edu" class="card" style="display:none">
+    <div class="fg"><label>Qualification 1 — Degree / Diploma / Certificate <span class="r">*</span></label><input id="cedu1" placeholder="WASSCE — Achimota Senior High School, Ghana, 2014"></div>
+    <div class="fg"><label>Qualification 2</label><input id="cedu2" placeholder="CS50x Certificate — Harvard University (edX), 2023"></div>
+    <div class="fg"><label>Qualification 3</label><input id="cedu3" placeholder="PSEA Certification — DisasterReady.org, 2023"></div>
+    <div class="fg"><label>Additional Certifications / Training</label>
+      <textarea id="cedu4" placeholder="Any other relevant courses, workshops, in-house training, online certifications…" style="min-height:70px"></textarea>
+    </div>
+  </div>
+
+  <div id="cv-skills" class="card" style="display:none">
+    <div class="row2">
+      <div class="fg"><label>Technical Skills</label><textarea id="csk1" placeholder="Microsoft Excel, Google Workspace, Social Media Management, QuickBooks, AutoCAD…" style="min-height:70px"></textarea></div>
+      <div class="fg"><label>Soft Skills</label><textarea id="csk2" placeholder="Leadership, Communication, Negotiation, Team Management, Problem Solving, Adaptability…" style="min-height:70px"></textarea></div>
+    </div>
+    <div class="row2">
+      <div class="fg"><label>Languages &amp; Proficiency</label><textarea id="csk3" placeholder="English (Fluent), French (Professional), Swahili (Native), Yoruba (Basic)…" style="min-height:70px"></textarea></div>
+      <div class="fg"><label>Volunteer &amp; Community Work</label><textarea id="csk4" placeholder="Community health volunteer — Red Cross Kenya (2018–2020)&#10;Youth mentor — local church programme" style="min-height:70px"></textarea></div>
+    </div>
+    <div class="fg"><label>References</label><input id="cref" placeholder="Available upon request — or list referees: Name, Title, Organisation, Email"></div>
+  </div>
+
+  <div class="btnrow" style="margin-bottom:1.2rem">
+    <button class="btn bFire" id="cv-btn" onclick="buildCV()">📄 Generate My CV</button>
+    <button class="btn bGhost bSm" onclick="resetCV()">🔄 Clear All</button>
+  </div>
+
+  <div id="cv-err" class="alert aErr" style="display:none"></div>
+  <div class="cv-doc" id="cv-doc"></div>
+  <div id="cv-actions" style="display:none;flex-wrap:wrap;gap:.58rem;margin-top:1rem">
+    <button class="btn bJade" onclick="dlDocx()">⬇️ Download Word (.rtf)</button>
+    <button class="btn bSky" onclick="dlPDF()">📄 Print / Save as PDF</button>
+    <button class="btn bGhost bSm" onclick="resetCV()">🔄 Start Over</button>
+  </div>
+</div>
+
+<footer>
+  <strong>MaDskillz T21</strong> · Make a Difference · © Innocent Forteh · <strong>Team21 Academy</strong> · No account needed · 100% free<br><br>
+  <a href="https://wa.me/237694294406" target="_blank">💬 WhatsApp</a> &nbsp;·&nbsp;
+  <a href="mailto:team21online@gmail.com">✉️ Email</a> &nbsp;·&nbsp;
+  <a href="https://inno4te.github.io/Team21-SL-Training/" target="_blank">🎓 Servant Leadership</a> &nbsp;·&nbsp;
+  <a href="https://inno4te.github.io/Team21_PMP/" target="_blank">📋 PMP</a> &nbsp;·&nbsp;
+  <a href="https://jobs.un.org" target="_blank">🌍 UN Jobs</a> &nbsp;·&nbsp;
+  <a href="https://reliefweb.int/jobs" target="_blank">🆘 ReliefWeb</a>
+</footer>
+
+<script>
+// ── STATE ─────────────────────────────────────────
+let tags=[], userLoc=null, genCV='';
+
+// ── SKILL TRANSFER MAP ────────────────────────────
+const XMAP={
+  'sell':  {pro:'Sales & Business Development',   xfer:['negotiation','customer service','market analysis','persuasion','revenue generation']},
+  'farm':  {pro:'Agricultural & Logistics Mgmt',  xfer:['supply chain management','resource planning','environmental monitoring','project coordination','data recording']},
+  'cook':  {pro:'Operations & Quality Management', xfer:['process management','quality control','procurement','team coordination','health & safety compliance']},
+  'driv':  {pro:'Logistics & Fleet Coordination',  xfer:['route optimization','time management','fleet coordination','customer service','safety compliance']},
+  'teach': {pro:'Training & Capacity Building',    xfer:['facilitation','curriculum design','mentorship','adult learning','needs assessment']},
+  'tailor':{pro:'Design & Entrepreneurship',       xfer:['client management','quality assurance','cost estimation','production planning','entrepreneurship']},
+  'clean': {pro:'Facilities & Health Safety',      xfer:['facilities management','HSSE compliance','attention to detail','inventory management']},
+  'care':  {pro:'Healthcare & Social Support',     xfer:['patient care','monitoring & evaluation','empathy','case management','reporting']},
+  'trade': {pro:'Trading & Business Mgmt',         xfer:['financial literacy','market research','inventory management','profit & loss','supplier relations']},
+  'repair':{pro:'Technical Support & Maintenance', xfer:['diagnostics','preventive maintenance','customer support','technical documentation','problem solving']},
+  'build': {pro:'Construction & Project Mgmt',     xfer:['site supervision','safety compliance','materials management','scheduling','estimation']},
+  'write': {pro:'Content & Communications',        xfer:['copywriting','documentation','editing','stakeholder communication','reporting']},
+  'secur': {pro:'Security & Risk Management',      xfer:['risk assessment','incident reporting','surveillance','crisis response','access control']},
+  'nurs':  {pro:'Clinical & Community Health',     xfer:['patient assessment','medical documentation','care coordination','health education','team collaboration']},
+  'lead':  {pro:'Leadership & Management',         xfer:['strategic planning','people management','conflict resolution','stakeholder engagement','decision making']},
+  'excel': {pro:'Data Analysis & Reporting',       xfer:['data visualization','financial modeling','dashboard creation','reporting','trend analysis']},
+  'social':{pro:'Digital Marketing & Comms',       xfer:['social media management','content creation','brand awareness','analytics','community management']},
+  'account':{pro:'Financial Management',           xfer:['bookkeeping','budgeting','financial reporting','audit support','compliance']},
+  'hair':  {pro:'Beauty Business Management',      xfer:['client relations','scheduling','business management','aesthetics','upselling']},
+  'fish':  {pro:'Natural Resource Management',     xfer:['resource monitoring','logistics','environmental compliance','risk assessment','data collection']},
+  'market':{pro:'Marketing & Sales Strategy',      xfer:['market research','customer acquisition','brand development','campaign management','analytics']},
+};
+
+// ── COURSE DATABASE ────────────────────────────────
+const COURSES=[
+  {p:'Team21 Academy',n:'Servant Leadership Mastery',d:'World-class certified leadership. Free for MaDskillz users. Trusted by top 10% leaders.',u:'https://wa.me/237694294406?text=Hello+Team21!+I+found+you+via+MaDskillz+and+want+the+Servant+Leadership+training.',t:['free','cert','t21'],t21:true,tags:['leadership','management','NGO','coordination']},
+  {p:'Team21 Academy',n:'AI Unlocked — AI for Everyone',d:'Use AI tools in your work and career. No coding needed. Be ahead of the curve.',u:'https://wa.me/237694294406?text=Hello+Team21!+I+found+you+via+MaDskillz+and+want+the+AI+Unlocked+training.',t:['free','cert','t21'],t21:true,tags:['technology','AI','remote','digital']},
+  {p:'Team21 Academy',n:'Project Management Professional',d:"Team21's flagship PMP training — globally recognised. Perfect for coordinators and managers.",u:'https://inno4te.github.io/Team21_PMP/',t:['free','cert','t21'],t21:true,tags:['project management','coordination','NGO','government']},
+  {p:'Harvard (edX)',n:'CS50: Introduction to Computer Science',d:"World's most popular coding course. No experience needed. Harvard-verified certificate.",u:'https://cs50.harvard.edu/x/',t:['free','cert'],tags:['technology','data','remote','programming']},
+  {p:'DisasterReady.org',n:'Humanitarian Response Essentials',d:'Required by most INGOs worldwide. Master emergency response and humanitarian principles.',u:'https://www.disasterready.org/',t:['free','cert'],tags:['NGO','humanitarian','UN','emergency']},
+  {p:'DisasterReady.org',n:'PSEA Certification',d:'Required for all UN and NGO roles. Protection from sexual exploitation and abuse.',u:'https://www.disasterready.org/',t:['free','cert'],tags:['NGO','UN','humanitarian','compliance']},
+  {p:'Google (Coursera)',n:'Google Project Management Certificate',d:'6-month professional cert. Recognised globally by NGOs, companies and governments.',u:'https://grow.google/certificates/project-management/',t:['free','cert'],tags:['project management','coordination','management']},
+  {p:'Google (Coursera)',n:'Google Data Analytics Certificate',d:'6-month cert. Teaches data analysis, Excel, SQL, and Tableau. High demand globally.',u:'https://grow.google/certificates/data-analytics/',t:['free','cert'],tags:['data','analytics','remote','technology']},
+  {p:'LinkedIn Learning',n:'Excel Essential Training',d:'Master Microsoft Excel — the #1 most-requested skill in global job listings.',u:'https://learning.linkedin.com',t:['free','cert'],tags:['data','Excel','admin','finance']},
+  {p:'WHO / OpenWHO',n:'Health Emergencies & Epidemics',d:'Free certified public health courses by WHO — outbreak response and community health.',u:'https://openwho.org',t:['free','cert'],tags:['health','NGO','community','medical']},
+  {p:'Yale (Coursera)',n:'Financial Markets',d:'Nobel laureate Shiller\'s famous course. Deep finance foundations. Audit free.',u:'https://coursera.org/learn/financial-markets-global',t:['free','cert'],tags:['finance','banking','economics']},
+  {p:'UN CC:Learn',n:'Climate Change & SDGs',d:'Understand sustainable development goals — required in development sector roles.',u:'https://www.uncclearn.org/',t:['free','cert'],tags:['environment','UN','sustainability','NGO']},
+  {p:'Alison',n:'Diploma in Human Resources',d:'Comprehensive HR training: recruitment, performance management, labour relations.',u:'https://alison.com/courses/diploma-in-human-resources',t:['free','cert'],tags:['HR','management','admin']},
+  {p:'Coursera (Audit Free)',n:'Learning How to Learn',d:'Most-enrolled online course ever. Brain science-backed study techniques. McMaster & UC San Diego.',u:'https://coursera.org/learn/learning-how-to-learn',t:['free','cert'],tags:['soft skills','personal development','productivity']},
+  {p:'Remotasks / Scale AI',n:'AI Data Labeling — Earn & Learn',d:'Work remotely, earn money AND learn AI fundamentals. Accessible from most countries.',u:'https://www.remotasks.com/en',t:['free'],tags:['remote','AI','technology','income']},
+];
+
+// ── JOB BOARDS DATABASE ────────────────────────────
+const JOB_BOARDS=[
+  {name:'UN Jobs',ico:'🌍',url:(q,l)=>`https://jobs.un.org/page/index.aspx#${encodeURIComponent(q)}`,types:['NGO / UN','Full-time'],match:'UN, UNDP, UNICEF, WFP, WHO, UNHCR, UNFPA',integrity:99},
+  {name:'ReliefWeb',ico:'🆘',url:(q,l)=>`https://reliefweb.int/jobs?search=${encodeURIComponent(q)}${l?'&country='+encodeURIComponent(l):''}`,types:['NGO / UN','Full-time','Hybrid'],match:'All humanitarian & development roles',integrity:98},
+  {name:'LinkedIn Jobs',ico:'💼',url:(q,l)=>`https://www.linkedin.com/jobs/search/?keywords=${encodeURIComponent(q)}${l?'&location='+encodeURIComponent(l):''}`,types:['Full-time','Part-time','Remote','Hybrid'],match:'All sectors — global & local',integrity:95},
+  {name:'World Bank Careers',ico:'🏦',url:(q,l)=>`https://worldbankgroup.csod.com/ats/careersite/JobDetails.aspx?site=1&id=1#${encodeURIComponent(q)}`,types:['Full-time'],match:'World Bank, IFC, MIGA positions',integrity:99},
+  {name:'ILO Careers',ico:'⚖️',url:(q,l)=>`https://www.ilo.org/global/about-the-ilo/employment-opportunities/lang--en/index.htm`,types:['Full-time','NGO / UN'],match:'International Labour Organization',integrity:99},
+  {name:'EU Careers',ico:'🇪🇺',url:(q,l)=>`https://epso.europa.eu/en/job-opportunities/open-competitions`,types:['Full-time','Government'],match:'European Union institutions',integrity:99},
+  {name:'Remote.co',ico:'🌐',url:(q,l)=>`https://remote.co/remote-jobs/search/?search_keywords=${encodeURIComponent(q)}`,types:['Remote'],match:'100% remote roles worldwide',integrity:93},
+  {name:'We Work Remotely',ico:'💻',url:(q,l)=>`https://weworkremotely.com/remote-jobs/search?term=${encodeURIComponent(q)}`,types:['Remote'],match:'Remote tech, marketing, customer support',integrity:93},
+  {name:'Remotasks',ico:'🤖',url:(q,l)=>`https://www.remotasks.com/en`,types:['Remote','Part-time'],match:'AI data work — accessible globally',integrity:90},
+  {name:'Appen',ico:'🧠',url:(q,l)=>`https://appen.com/join-our-team/`,types:['Remote','Part-time'],match:'AI training data — flexible hours',integrity:90},
+  {name:'Toptal',ico:'⭐',url:(q,l)=>`https://www.toptal.com/talent/apply`,types:['Remote','Part-time'],match:'Freelance — top 3% professionals',integrity:92},
+  {name:'NGO Connect',ico:'🤝',url:(q,l)=>`https://www.ngoconnect.net/opportunities?keywords=${encodeURIComponent(q)}`,types:['NGO / UN','Full-time'],match:'NGO and civil society roles Africa',integrity:88},
+  {name:'Devex',ico:'📊',url:(q,l)=>`https://www.devex.com/jobs?search[keywords]=${encodeURIComponent(q)}&search[locations]=${encodeURIComponent(l||'')}`,types:['NGO / UN','Full-time'],match:'International development sector',integrity:96},
+  {name:'ACAS Jobs (Africa)',ico:'🌍',url:(q,l)=>`https://africancareers.com/jobs?q=${encodeURIComponent(q)}&l=${encodeURIComponent(l||'')}`,types:['Full-time','Government'],match:'Private sector &amp; government — Africa',integrity:87},
+  {name:'Google Jobs',ico:'🔍',url:(q,l)=>`https://www.google.com/search?q=${encodeURIComponent(q+' jobs'+(l?' in '+l:''))}`,types:['Full-time','Part-time','Remote','Hybrid','Government'],match:'All sectors — aggregates all boards',integrity:94},
+];
+
+// ── NAV ──────────────────────────────────────────
+function go(k){
+  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'));
+  document.querySelectorAll('.np,.tabbtn').forEach(b=>b.classList.remove('on'));
+  const map={profile:'s-profile',jobs:'s-jobs',upskill:'s-upskill',cv:'s-cv'};
+  document.getElementById(map[k])?.classList.add('on');
+  const idx={profile:0,jobs:1,upskill:2,cv:3}[k];
+  if(idx!==undefined){document.querySelectorAll('.np')[idx]?.classList.add('on');document.querySelectorAll('.tabbtn')[idx]?.classList.add('on');}
+  if(k==='upskill')renderCourses();
+  if(k==='jobs'&&userLoc)showJobsLoc();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function toggleMobile(){document.getElementById('mmenu').classList.toggle('open');document.getElementById('burger').classList.toggle('x');}
+function closeMobile(){document.getElementById('mmenu').classList.remove('open');document.getElementById('burger').classList.remove('x');}
+
+// ── TAGS ─────────────────────────────────────────
+document.addEventListener('DOMContentLoaded',()=>{
+  const inp=document.getElementById('tagIn');
+  if(inp){inp.addEventListener('keydown',e=>{
+    if(e.key==='Enter'||e.key===','){e.preventDefault();const v=inp.value.trim().replace(/,$/,'');if(v)addTag(v);inp.value='';}
+    else if(e.key==='Backspace'&&!inp.value&&tags.length)rmTag(tags.length-1);
+  });}
+  renderCourses();
+});
+function addTag(v){const k=v.toLowerCase().trim();if(k&&!tags.includes(k)){tags.push(k);renderTags();}}
+function rmTag(i){tags.splice(i,1);renderTags();}
+function renderTags(){
+  const w=document.getElementById('tw'),inp=document.getElementById('tagIn');
+  w.querySelectorAll('.stag').forEach(t=>t.remove());
+  tags.forEach((t,i)=>{const el=document.createElement('div');el.className='stag';el.innerHTML=`${esc(t)} <button onclick="rmTag(${i})">×</button>`;w.insertBefore(el,inp);});
+}
+
+// ── LOCATION ──────────────────────────────────────
+function getLocation(){
+  if(!navigator.geolocation){alert('Geolocation not supported by your browser.');return;}
+  const btn=event.target;btn.textContent='📍 Getting…';btn.disabled=true;
+  navigator.geolocation.getCurrentPosition(async pos=>{
+    userLoc={lat:pos.coords.latitude,lng:pos.coords.longitude};
+    try{
+      const r=await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${pos.coords.latitude}&lon=${pos.coords.longitude}`);
+      const d=await r.json();
+      const city=d.address?.city||d.address?.town||d.address?.village||d.address?.county||'';
+      const country=d.address?.country||'';
+      userLoc.label=`${city}, ${country}`.replace(/^, /,'');
+      const bar=document.getElementById('loc-bar');
+      bar.style.display='flex';
+      bar.innerHTML=`<div class="loc-dot"></div><span style="color:var(--jade);font-weight:700">📍 Detected:</span>&nbsp;<span style="color:rgba(255,255,255,.7)">${esc(userLoc.label)}</span>&nbsp;<span style="color:rgba(255,255,255,.3);font-size:.68rem">(used for job search)</span>`;
+      if(!document.getElementById('pct').value)document.getElementById('pct').value=city;
+      if(!document.getElementById('cl').value)document.getElementById('cl').value=userLoc.label;
+      if(!document.getElementById('jl').value)document.getElementById('jl').value=userLoc.label;
+    }catch(e){userLoc.label=`${pos.coords.latitude.toFixed(2)},${pos.coords.longitude.toFixed(2)}`;}
+    btn.textContent='📍 Location Set ✓';btn.disabled=false;
+  },()=>{alert('Could not get location. Type your city manually.');btn.textContent='📍 Use My Location';btn.disabled=false;});
+}
+function showJobsLoc(){
+  const b=document.getElementById('jobs-loc');
+  if(b&&userLoc?.label){b.style.display='flex';b.innerHTML=`<div class="loc-dot"></div><span style="color:var(--jade);font-weight:700">📍 ${esc(userLoc.label)}</span>&nbsp;<span style="color:rgba(255,255,255,.3);font-size:.7rem">— nearby jobs prioritized</span>`;}
+}
+
+// ── BUILD PROFILE ─────────────────────────────────
+function buildProfile(){
+  const name=document.getElementById('pn').value.trim();
+  const country=document.getElementById('pc').value;
+  if(!name){alert('Please enter your name.');return;}
+  if(!country){alert('Please select your country.');return;}
+  if(!tags.length){alert('Please add at least one skill!');return;}
+
+  const btn=document.getElementById('prof-btn');btn.disabled=true;btn.textContent='⏳ Building…';
+
+  const email=document.getElementById('pe').value.trim();
+  const city=document.getElementById('pct').value.trim();
+  const edu=document.getElementById('ped').value;
+  const langs=document.getElementById('pl').value.trim();
+  const exp=document.getElementById('px').value.trim();
+  const jtype=document.getElementById('pjt').value;
+  const dream=document.getElementById('pd').value.trim();
+  const edux=document.getElementById('pedx').value.trim();
+  const certs=document.getElementById('pcert').value.trim();
+
+  // Match tags to XMAP
+  const matched=[];const xferAll=new Set();
+  tags.forEach(tag=>{
+    let found=false;
+    Object.entries(XMAP).forEach(([key,val])=>{
+      if(tag.includes(key)||key.includes(tag.slice(0,4))||tag.slice(0,4)===key.slice(0,4)){
+        if(!matched.find(m=>m.raw===tag)){matched.push({raw:tag,...val});found=true;}
+        val.xfer.forEach(x=>xferAll.add(x));
+      }
+    });
+    if(!found){
+      // Generic conversion
+      const generic=['communication','adaptability','teamwork','problem solving','time management'];
+      matched.push({raw:tag,pro:cap(tag)+' Specialist',xfer:generic});
+      generic.forEach(x=>xferAll.add(x));
+    }
+  });
+
+  // Infer from experience text
+  const el=(exp||'').toLowerCase();
+  if(el.includes('manag'))xferAll.add('team management');
+  if(el.includes('train'))xferAll.add('training & development');
+  if(el.includes('report'))xferAll.add('reporting & documentation');
+  if(el.includes('budget')||el.includes('financ'))xferAll.add('financial management');
+  if(el.includes('client')||el.includes('customer'))xferAll.add('client relationship management');
+  if(el.includes('negot'))xferAll.add('negotiation');
+  if((langs||'').split(',').filter(l=>l.trim()).length>1)xferAll.add('multilingual communication');
+
+  const score=Math.min(92,48+tags.length*4+(edu.includes('Bachelor')||edu.includes('Master')?12:0)+(xferAll.size>5?8:0)+(exp.length>100?6:0)+(certs?5:0));
+  const init=name.split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2)||'?';
+
+  // Pre-fill CV builder
+  if(name){document.getElementById('cn').value=name;}
+  if(email){document.getElementById('ce').value=email;}
+  if(city||country){document.getElementById('cl').value=[city,country].filter(Boolean).join(', ');}
+  if(dream){document.getElementById('cj').value=dream;}
+  if(exp){document.getElementById('cx1').value=exp;}
+  if(langs){document.getElementById('csk3').value=langs;}
+  if(edux){document.getElementById('cedu1').value=edux;}
+  if(certs){document.getElementById('cedu2').value=certs;}
+
+  // Build job board links based on profile
+  const jobQuery=dream||(tags.slice(0,2).join(' '));
+  const jobLoc=userLoc?.label||city?(city+', '+country):country;
+
+  // Recommended courses
+  const tagStr=tags.join(' ');
+  const recCourses=COURSES.filter(c=>c.tags&&c.tags.some(t=>tagStr.includes(t)||t.includes(tags[0]?.slice(0,4)||''))).slice(0,3);
+  if(recCourses.length<2)recCourses.push(...COURSES.filter(c=>c.t21).slice(0,2));
+
+  const res=document.getElementById('profile-result');res.style.display='block';
+  res.innerHTML=`
+    <div class="prof-banner">
+      <div class="prof-ava">${init}</div>
+      <div class="prof-info">
+        <h2>${esc(name)}</h2>
+        <p>📍 ${esc(city?city+', ':'')}${esc(country)} · 🎓 ${esc(edu||'Education not listed')} · 🌐 ${esc(langs||'Languages not listed')}</p>
+        ${dream?`<p style="color:rgba(255,255,255,.5);margin-top:.1rem;font-size:.75rem">🎯 Target: ${esc(dream)}</p>`:''}
+      </div>
+      <div class="prof-pct">Top ${100-score}%<br><small>CURRENT</small><div style="font-size:.5rem;opacity:.6;margin-top:.15rem">Upskilling → Top 10%</div></div>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-box"><div class="sv">${tags.length}</div><div class="sl">Raw Skills</div></div>
+      <div class="stat-box"><div class="sv">${xferAll.size}</div><div class="sl">Transferable</div></div>
+      <div class="stat-box"><div class="sv">${JOB_BOARDS.length}+</div><div class="sl">Job Boards</div></div>
+    </div>
+
+    <div class="skill-result">
+      <div style="font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.35);margin-bottom:.5rem">🔄 Your Skills Converted to Professional Competencies</div>
+      <div class="skill-grid">${matched.map(m=>`
+        <div class="skill-box">
+          <div class="raw">${esc(m.raw)}</div>
+          <div class="pro">→ ${esc(m.pro)}</div>
+          <div class="tags">${m.xfer.slice(0,3).map(x=>`<span class="tag">${esc(x)}</span>`).join('')}</div>
+        </div>`).join('')}
+      </div>
+      <div style="margin-top:1rem">
+        <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--jade);margin-bottom:.5rem">🚀 Gain These via Free Courses</div>
+        <div>${['project management','data analysis','AI literacy','humanitarian principles','servant leadership'].map(s=>`<span class="pill pN">+ ${s}</span>`).join('')}</div>
+      </div>
+    </div>
+
+    <div style="font-weight:800;font-size:.95rem;letter-spacing:-.03em;margin-bottom:.75rem">💼 Find Your Jobs — Direct Links to Real Boards</div>
+    <div class="jgrid">${buildJobBoardCards(jobQuery,jobLoc,jtype)}</div>
+
+    <div style="font-weight:800;font-size:.95rem;letter-spacing:-.03em;margin:1.5rem 0 .75rem">📚 Recommended Free Courses for You</div>
+    <div class="cgrid">${recCourses.map(c=>`
+      <div class="cc${c.t21?' t21':''}">
+        <div class="cc-prov">${esc(c.p)}</div>
+        <div class="cc-name">${esc(c.n)}</div>
+        <div class="cc-desc">${esc(c.d)}</div>
+        <div class="cc-meta">${c.t.map(t=>`<span class="cbadge ${t==='free'?'cb-f':t==='cert'?'cb-c':'cb-t'}">${t==='free'?'🆓 Free':t==='cert'?'🎓 Certified':'🟠 Team21'}</span>`).join('')}</div>
+        <a class="cc-btn" href="${c.u}" target="_blank">🚀 Start Now →</a>
+      </div>`).join('')}
+    </div>
+
+    <div class="btnrow" style="margin-top:1.2rem">
+      <button class="btn bFire" onclick="go('cv')">📄 Build My CV Now</button>
+      <button class="btn bGhost bSm" onclick="go('jobs')">🔍 More Jobs</button>
+      <button class="btn bGhost bSm" onclick="go('upskill')">🚀 All Free Courses</button>
+    </div>
+
+    <div class="t21" style="margin-top:1.4rem">
+      <h3>🟠 Team21 Academy — Unlock the Top 10%</h3>
+      <p>Free Servant Leadership, AI and PMP training. The fastest path to competitive advantage globally.</p>
+      <div class="t21links">
+        <a href="https://wa.me/237694294406?text=Hello+Team21+via+MaDskillz" target="_blank" class="t21lnk twa">💬 +237 694 294 406</a>
+        <a href="mailto:team21online@gmail.com" class="t21lnk tem">✉️ team21online@gmail.com</a>
+        <a href="https://inno4te.github.io/Team21-SL-Training/" target="_blank" class="t21lnk tco">🎓 Servant Leadership</a>
+        <a href="https://inno4te.github.io/Team21_PMP/" target="_blank" class="t21lnk tco">📋 PMP</a>
+      </div>
+    </div>`;
+
+  res.scrollIntoView({behavior:'smooth'});
+  btn.disabled=false;btn.textContent='✨ Build My Profile & CV';
+}
+
+// ── JOB BOARD CARDS ───────────────────────────────
+function buildJobBoardCards(query,loc,type){
+  const q=query||'jobs';
+  const relevant=type?JOB_BOARDS.filter(b=>!type||b.types.includes(type)):JOB_BOARDS;
+  const boards=relevant.length?relevant:JOB_BOARDS;
+  return boards.slice(0,8).map((b,i)=>{
+    const match=Math.max(72,95-i*3);
+    const url=b.url(q,loc);
+    return`<div class="jcard">
+      <div class="jcard-top">
+        <div class="jico" style="background:rgba(255,69,0,.1)">${b.ico}</div>
+        <div class="jbody">
+          <div class="jtitle">${esc(b.name)}</div>
+          <div class="jorg">${esc(b.match)}</div>
+          <div class="jtags">
+            <span class="jtag jm">✓ ${match}% relevant</span>
+            ${b.types.includes('Remote')?'<span class="jtag jr">🌐 Remote</span>':''}
+            ${loc?`<span class="jtag jnear">📍 ${esc(loc.split(',')[0])}</span>`:''}
+            ${b.types.map(t=>`<span class="jtag jf">${esc(t)}</span>`).join('')}
+          </div>
+          <div class="jinteg" style="color:rgba(0,200,150,.8)">Integrity: ✅ ${b.integrity}% verified</div>
+        </div>
+        <div class="jright">
+          <div class="jpct">${match}%<small>match</small></div>
+          <a class="apply-btn" href="${url}" target="_blank" rel="noopener">Search →</a>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ── MADSEARCH ──────────────────────────────────────
+function madSearch(){
+  const q=document.getElementById('jq').value.trim();
+  const loc=document.getElementById('jl').value.trim()||(userLoc?.label)||'';
+  const type=document.getElementById('jt').value;
+  if(!q){alert('Enter a job title or keywords.');return;}
+  if(userLoc)showJobsLoc();
+  const relevant=type?JOB_BOARDS.filter(b=>b.types.includes(type)):JOB_BOARDS;
+  const boards=relevant.length?relevant:JOB_BOARDS;
+  let html=`<div class="alert aOk">✅ MaDSearch found <strong>${boards.length} job boards</strong> matching "${esc(q)}"${loc?' near '+esc(loc.split(',')[0]):''}. Click <strong>Search →</strong> to open the actual board with your search pre-filled.</div>`;
+  // Split into nearby/remote/international
+  const remote=boards.filter(b=>b.types.includes('Remote'));
+  const ngo=boards.filter(b=>b.types.includes('NGO / UN'));
+  const general=boards.filter(b=>!b.types.includes('Remote')&&!b.types.includes('NGO / UN'));
+
+  if(ngo.length&&(!type||type==='NGO / UN')){
+    html+=`<div class="sdiv">🌍 UN &amp; Humanitarian Boards</div>`;
+    html+=ngo.map((b,i)=>boardCard(b,q,loc,i)).join('');
+  }
+  html+=`<div class="sdiv">💼 General Job Boards</div>`;
+  html+=general.map((b,i)=>boardCard(b,q,loc,i)).join('');
+  if(remote.length){
+    html+=`<div class="sdiv">🌐 Remote &amp; Freelance Boards</div>`;
+    html+=remote.map((b,i)=>boardCard(b,q,loc,i)).join('');
+  }
+  // Google search fallback
+  html+=`<div class="sdiv">🔍 Open Web Search</div>`;
+  html+=`<div class="jcard"><div class="jcard-top"><div class="jico" style="background:rgba(59,158,255,.1)">🔍</div><div class="jbody"><div class="jtitle">Google — All Jobs Near You</div><div class="jorg">Search across all boards at once</div><div class="jdesc">Opens Google Jobs with your exact query — aggregates LinkedIn, Indeed, Glassdoor, local boards and more.</div></div><div class="jright"><a class="apply-btn" href="https://www.google.com/search?q=${encodeURIComponent(q+' jobs'+(loc?' in '+loc:''))}" target="_blank">Search →</a></div></div></div>`;
+  document.getElementById('jobs-result').innerHTML=html;
+}
+
+function boardCard(b,q,loc,i){
+  const match=Math.max(70,96-i*3);
+  const url=b.url(q,loc);
+  return`<div class="jcard">
+    <div class="jcard-top">
+      <div class="jico" style="background:rgba(255,69,0,.08)">${b.ico}</div>
+      <div class="jbody">
+        <div class="jtitle">${esc(b.name)}</div>
+        <div class="jorg">${esc(b.match)}</div>
+        <div class="jtags">
+          <span class="jtag jm">✓ ${match}% relevant</span>
+          ${b.types.includes('Remote')?'<span class="jtag jr">🌐 Remote</span>':''}
+          ${loc?`<span class="jtag jnear">📍 ${esc(loc.split(',')[0])}</span>`:''}
+        </div>
+        <div class="jinteg" style="color:rgba(0,200,150,.8)">Integrity: ✅ ${b.integrity}% — verified live board</div>
+      </div>
+      <div class="jright">
+        <div class="jpct">${match}%<small>match</small></div>
+        <a class="apply-btn" href="${url}" target="_blank" rel="noopener">Search →</a>
+      </div>
+    </div>
+  </div>`;
+}
+
+// ── UPSKILL PLAN ───────────────────────────────────
+function getUpskill(){
+  const dream=document.getElementById('ud').value.trim();
+  const skills=document.getElementById('usk').value.toLowerCase();
+  if(!dream){alert('Enter your target job or dream role.');return;}
+
+  // Match courses to target role keywords
+  const dl=dream.toLowerCase();
+  const keywords=dl.split(/\s+/);
+  const scored=COURSES.map(c=>{
+    let score=0;
+    const cText=(c.n+' '+c.d+' '+(c.tags||[]).join(' ')).toLowerCase();
+    keywords.forEach(k=>{if(cText.includes(k))score+=3;});
+    if(dl.includes('NGO')||dl.includes('humanitarian')||dl.includes('UN'))if(c.tags?.includes('NGO'))score+=5;
+    if(dl.includes('data')||dl.includes('analyst'))if(c.tags?.includes('data'))score+=5;
+    if(dl.includes('project')||dl.includes('coordinator')||dl.includes('officer'))if(c.tags?.includes('project management'))score+=5;
+    if(dl.includes('remote'))if(c.tags?.includes('remote'))score+=4;
+    if(dl.includes('leader')||dl.includes('manager'))if(c.tags?.includes('leadership'))score+=5;
+    if(dl.includes('health'))if(c.tags?.includes('health'))score+=5;
+    if(c.t21)score+=1; // slight boost for T21 courses
+    return{...c,score};
+  }).sort((a,b)=>b.score-a.score);
+
+  const top=scored.slice(0,6);
+  const res=document.getElementById('upskill-result');
+  res.innerHTML=`
+    <div style="background:var(--card);border-radius:18px;padding:1.5rem;border:1px solid var(--border);margin-bottom:1.2rem">
+      <div style="font-family:'Instrument Serif',serif;font-size:1.1rem;color:#fff;margin-bottom:.3rem">🎯 Upskill Plan for: <strong>${esc(dream)}</strong></div>
+      <p style="font-size:.8rem;color:rgba(255,255,255,.45);line-height:1.65;margin-bottom:1rem">Based on your target role, MaDskillz recommends these courses — all free, all certified. Complete them to move from your current standing to the top 10%.</p>
+      <div class="cgrid">${top.map(c=>`
+        <div class="cc${c.t21?' t21':''}">
+          <div class="cc-prov">${esc(c.p)}</div>
+          <div class="cc-name">${esc(c.n)}</div>
+          <div class="cc-desc">${esc(c.d)}</div>
+          <div class="cc-meta">${c.t.map(t=>`<span class="cbadge ${t==='free'?'cb-f':t==='cert'?'cb-c':'cb-t'}">${t==='free'?'🆓 Free':t==='cert'?'🎓 Certified':'🟠 Team21'}</span>`).join('')}</div>
+          <a class="cc-btn" href="${c.u}" target="_blank">🚀 Start Now →</a>
+        </div>`).join('')}
+      </div>
+      <div style="margin-top:1.2rem;padding:1rem;background:rgba(245,166,35,.08);border-radius:12px;border:1px solid rgba(245,166,35,.2)">
+        <div style="font-size:.72rem;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.4rem">📝 Also do these things</div>
+        <div style="font-size:.8rem;color:rgba(255,255,255,.6);line-height:1.7">
+          • Use the <strong>CV Builder</strong> tab to build a professional CV tailored to this role<br>
+          • Search <strong>MaDSearch</strong> for live openings — jobs board links pre-filled with your role<br>
+          • Contact <strong>Team21 Academy</strong> for free Servant Leadership &amp; PMP training
+        </div>
+      </div>
+    </div>`;
+}
+
+// ── COURSES ────────────────────────────────────────
+function renderCourses(){
+  const g=document.getElementById('courses-grid');if(!g)return;
+  g.innerHTML=COURSES.map(c=>`<div class="cc${c.t21?' t21':''}">
+    <div class="cc-prov">${esc(c.p)}</div>
+    <div class="cc-name">${esc(c.n)}</div>
+    <div class="cc-desc">${esc(c.d)}</div>
+    <div class="cc-meta">${c.t.map(t=>`<span class="cbadge ${t==='free'?'cb-f':t==='cert'?'cb-c':'cb-t'}">${t==='free'?'🆓 Free':t==='cert'?'🎓 Certified':'🟠 Team21'}</span>`).join('')}</div>
+    <a class="cc-btn" href="${c.u}" target="_blank">🚀 Start Now →</a>
+  </div>`).join('');
+}
+
+// ── CV TABS ────────────────────────────────────────
+const CV_TABS=['basic','exp','edu','skills'];
+function cvTab(t){
+  document.querySelectorAll('.cvtab').forEach((b,i)=>{b.classList.toggle('on',CV_TABS[i]===t);});
+  CV_TABS.forEach(id=>{const el=document.getElementById('cv-'+id);if(el)el.style.display=id===t?'block':'none';});
+}
+
+// ── CV BUILDER ─────────────────────────────────────
+const HDRS=new Set(['PROFESSIONAL SUMMARY','CORE COMPETENCIES','PROFESSIONAL EXPERIENCE','WORK EXPERIENCE','EXPERIENCE','EDUCATION & CERTIFICATIONS','EDUCATION','CERTIFICATIONS','SKILLS & LANGUAGES','SKILLS','LANGUAGES','VOLUNTEER EXPERIENCE','REFERENCES','ACHIEVEMENTS']);
+
+function buildCV(){
+  const name=document.getElementById('cn').value.trim();
+  const jt=document.getElementById('cj').value.trim();
+  if(!name){alert('Enter your full name.');return;}
+  if(!jt){alert('Enter a target job title.');return;}
+
+  const email=document.getElementById('ce').value.trim();
+  const phone=document.getElementById('cph').value.trim();
+  const loc=document.getElementById('cl').value.trim();
+  const web=document.getElementById('cweb').value.trim();
+  const summary=document.getElementById('csum').value.trim();
+  const x1t=document.getElementById('cx1t').value.trim();
+  const x1d=document.getElementById('cx1d').value.trim();
+  const x1l=document.getElementById('cx1l').value.trim();
+  const x1=document.getElementById('cx1').value.trim();
+  const x2t=document.getElementById('cx2t').value.trim();
+  const x2d=document.getElementById('cx2d').value.trim();
+  const x2l=document.getElementById('cx2l').value.trim();
+  const x2=document.getElementById('cx2').value.trim();
+  const x3t=document.getElementById('cx3t').value.trim();
+  const x3d=document.getElementById('cx3d').value.trim();
+  const x3l=document.getElementById('cx3l').value.trim();
+  const x3=document.getElementById('cx3').value.trim();
+  const edu1=document.getElementById('cedu1').value.trim();
+  const edu2=document.getElementById('cedu2').value.trim();
+  const edu3=document.getElementById('cedu3').value.trim();
+  const edu4=document.getElementById('cedu4').value.trim();
+  const sk1=document.getElementById('csk1').value.trim();
+  const sk2=document.getElementById('csk2').value.trim();
+  const sk3=document.getElementById('csk3').value.trim();
+  const sk4=document.getElementById('csk4').value.trim();
+  const ref=document.getElementById('cref').value.trim();
+
+  if(!x1&&!x1t){alert('Please add at least one experience entry in the Experience tab.');return;}
+
+  // Detect transferable skills from job entries
+  const allExpText=(x1+' '+x2+' '+x3).toLowerCase();
+  const detectedSkills=new Set();
+  Object.entries(XMAP).forEach(([k,v])=>{if(allExpText.includes(k))v.xfer.slice(0,2).forEach(x=>detectedSkills.add(cap(x)));});
+
+  // Build CV sections
+  let sections=[];
+
+  // Summary
+  const sumText=summary||`Results-driven professional with proven experience in ${tags.length?tags.slice(0,2).map(t=>XMAP[Object.keys(XMAP).find(k=>t.includes(k)||k.includes(t.slice(0,4)))||'']?.pro||t).join(' and '):jt.toLowerCase()}. Demonstrated ability to deliver measurable results in dynamic environments. ${sk3?'Multilingual — '+sk3.split(',').map(l=>l.trim()).slice(0,2).join(' and ')+'.'  :''} Committed to continuous professional development and seeking to make a measurable difference.`;
+
+  // Core competencies
+  const competencies=[...detectedSkills];
+  if(tags.length){Object.entries(XMAP).forEach(([k,v])=>{if(tags.some(t=>t.includes(k)||k.includes(t.slice(0,4))))v.xfer.slice(0,2).forEach(x=>competencies.push(cap(x)));});}
+  // add from sk1/sk2
+  if(sk1)sk1.split(',').filter(s=>s.trim()).slice(0,3).forEach(s=>competencies.push(s.trim()));
+  if(sk2)sk2.split(',').filter(s=>s.trim()).slice(0,3).forEach(s=>competencies.push(s.trim()));
+  const uniqComp=[...new Set(competencies)].slice(0,10);
+
+  // Experience entries
+  const expEntries=[];
+  if(x1t||x1){
+    expEntries.push({title:x1t||'Professional Experience',dates:x1d,loc:x1l,bullets:x1});
+  }
+  if(x2t||x2){expEntries.push({title:x2t,dates:x2d,loc:x2l,bullets:x2});}
+  if(x3t||x3){expEntries.push({title:x3t,dates:x3d,loc:x3l,bullets:x3});}
+
+  // Education entries
+  const eduEntries=[edu1,edu2,edu3].filter(Boolean);
+  if(edu4)eduEntries.push(edu4);
+
+  // Build CV text
+  let cvText=`PROFESSIONAL SUMMARY\n${sumText}\n\n`;
+
+  cvText+=`CORE COMPETENCIES\n`;
+  // format as 2-column style in plain text
+  const mid=Math.ceil(uniqComp.length/2);
+  for(let i=0;i<mid;i++){
+    cvText+=`• ${uniqComp[i]||''}${uniqComp[i+mid]?'     • '+uniqComp[i+mid]:''}\n`;
+  }
+  cvText+='\n';
+
+  cvText+=`PROFESSIONAL EXPERIENCE\n`;
+  expEntries.forEach(e=>{
+    cvText+=`${e.title}${e.loc?' — '+e.loc:''}${e.dates?'   '+e.dates:''}\n`;
+    if(e.bullets){
+      e.bullets.split('\n').filter(l=>l.trim()).forEach(l=>{
+        const t=l.trim();
+        cvText+=t.startsWith('•')||t.startsWith('-')||t.startsWith('*')?t.replace(/^[-*]\s*/,'• ')+'\n':'• '+t+'\n';
+      });
+    }
+    cvText+='\n';
+  });
+
+  if(eduEntries.length){
+    cvText+=`EDUCATION & CERTIFICATIONS\n`;
+    eduEntries.forEach(e=>cvText+=`• ${e}\n`);
+    cvText+='\n';
+  }
+
+  cvText+=`SKILLS & LANGUAGES\n`;
+  if(sk1)cvText+=`Technical: ${sk1}\n`;
+  if(sk2)cvText+=`Soft Skills: ${sk2}\n`;
+  if(sk3)cvText+=`Languages: ${sk3}\n`;
+
+  if(sk4){
+    cvText+=`\nVOLUNTEER EXPERIENCE\n${sk4}\n`;
+  }
+
+  if(ref){cvText+=`\nREFERENCES\n${ref}\n`;}
+
+  genCV=`${name}\n${[email,phone,loc,web].filter(Boolean).join(' | ')}\nTarget Role: ${jt}\n\n${cvText}`;
+
+  // Render
+  const docEl=document.getElementById('cv-doc');
+  docEl.innerHTML=buildCVHTML(name,email,phone,loc,jt,cvText,web);
+  docEl.style.display='block';
+  document.getElementById('cv-actions').style.cssText='display:flex;flex-wrap:wrap;gap:.58rem;margin-top:1rem';
+  document.getElementById('cv-err').style.display='none';
+  docEl.scrollIntoView({behavior:'smooth'});
+}
+
+function buildCVHTML(name,email,phone,loc,jt,text,web=''){
+  let h=`<h2>${esc(name)}</h2>`;
+  const contact=[email,phone,loc,web].filter(Boolean).map(esc).join(' &nbsp;|&nbsp; ');
+  if(contact)h+=`<div class="cvc">${contact}</div>`;
+  if(jt)h+=`<div class="cvt">Target: ${esc(jt)}</div>`;
+  h+='<hr style="border:none;border-top:3px solid #FF4500;margin:.9rem 0">';
+  let inS=false;
+  (text||'').split('\n').forEach(line=>{
+    const t=line.trim();if(!t)return;
+    const up=t.toUpperCase();
+    const isH=HDRS.has(up)||(t===up&&t.length>3&&t.length<65&&!/^[•\-*]/.test(t)&&!/^\d/.test(t));
+    if(isH){if(inS)h+='</div>';h+=`<h3>${esc(t)}</h3><div class="cvsec">`;inS=true;}
+    else if(/^[•\-*]/.test(t)){h+=`<span class="cvbullet">• ${esc(t.replace(/^[•\-*]\s*/,''))}</span>`;}
+    else{h+=`<p style="margin:.18rem 0;font-size:.84rem">${esc(t)}</p>`;}
+  });
+  if(inS)h+='</div>';
+  h+=`<hr style="border:none;border-top:1px solid #eee;margin:1.1rem 0"><p style="font-size:.64rem;color:#aaa;text-align:center">MaDskillz T21 · Team21 Academy · Make a Difference · © Innocent Forteh</p>`;
+  return h;
+}
+
+// ── DOWNLOAD ───────────────────────────────────────
+function dlDocx(){
+  if(!genCV){alert('Build your CV first.');return;}
+  const lines=genCV.split('\n');
+  const rtf=`{\\rtf1\\ansi\n{\\fonttbl{\\f0 Georgia;}{\\f1 Arial;}}\n\\f0\\fs32\\b ${eR(lines[0])}\\b0\\par\n\\f1\\fs20\n${lines.slice(1).map(l=>{
+    const t=l.trim();if(!t)return'\\par';
+    const up=t.toUpperCase();
+    if(HDRS.has(up)||(t===up&&t.length>3&&t.length<65))return`\\f0\\fs22\\b ${eR(t)}\\b0\\par`;
+    if(/^[•\-*]/.test(t))return`\\bullet  ${eR(t.replace(/^[•\-*]\s*/,''))}\\par`;
+    return`${eR(t)}\\par`;
+  }).join('\n')}\n}`;
+  dl(new Blob([rtf],{type:'application/rtf'}),'MaDskillz_CV_'+new Date().toISOString().slice(0,10)+'.rtf');
+}
+
+function dlPDF(){
+  if(!genCV){alert('Build your CV first.');return;}
+  const w=window.open('','_blank','width=860,height=700');
+  if(!w){alert('Pop-up blocked. Please allow pop-ups for this page.');return;}
+  const content=document.getElementById('cv-doc').innerHTML;
+  w.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>CV — MaDskillz T21</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>body{font-family:'Outfit',Georgia,sans-serif;max-width:750px;margin:1.5rem auto;padding:1.5rem;color:#111;font-size:13px;line-height:1.65}h2{font-size:1.75rem;font-weight:900;border-bottom:3px solid #FF4500;padding-bottom:.3rem;margin-bottom:.5rem}h3{color:#FF4500;text-transform:uppercase;letter-spacing:.1em;font-size:.78rem;margin-top:1.2rem;border-bottom:1px solid rgba(255,69,0,.12);padding-bottom:.18rem}.cvsec{padding-left:.65rem;border-left:3px solid #FFE566;margin-bottom:.42rem}.cvbullet{display:block;padding:.08rem 0}.cvc{font-size:.75rem;color:#666}.cvt{font-weight:700;color:#FF4500;font-size:.78rem;margin-bottom:.8rem}@media print{body{margin:0;padding:1rem}}</style>
+</head><body>${content}</body></html>`);
+  w.document.close();w.onload=()=>setTimeout(()=>w.print(),250);
+}
+
+function dl(blob,name){const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);document.body.removeChild(a);},3000);}
+function eR(s){return(s||'').replace(/\\/g,'\\\\').replace(/\{/g,'\\{').replace(/\}/g,'\\}');}
+
+function resetCV(){
+  document.getElementById('cv-doc').style.display='none';
+  document.getElementById('cv-actions').style.display='none';
+  document.getElementById('cv-err').style.display='none';
+  ['cn','ce','cph','cl','cj','cweb','csum','cx1t','cx1d','cx1l','cx1','cx2t','cx2d','cx2l','cx2','cx3t','cx3d','cx3l','cx3','cedu1','cedu2','cedu3','cedu4','csk1','csk2','csk3','csk4','cref'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});
+  genCV='';cvTab('basic');
+}
+
+// ── UTILS ──────────────────────────────────────────
+function esc(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function cap(s){return s?s.charAt(0).toUpperCase()+s.slice(1):s;}
+renderCourses();
+</script>
+</body>
+</html>

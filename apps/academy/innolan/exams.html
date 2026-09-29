@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Practice Exams · inno4te Networking Academy</title>
+<meta name="description" content="Realistic CCNA, Network+ and Security+ practice exams with domain scoring, question flagging and detailed explanations. Pass thresholds match real certs.">
+<link rel="stylesheet" href="css/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%231F6FEB'/><text x='50' y='68' font-size='44' text-anchor='middle' fill='white' font-weight='bold'>i4</text></svg>">
+<style>
+.track-select-wrap .track-card{height:auto;}
+.track-select-wrap .btn{pointer-events:all;}
+.pn.current{background:var(--accent)!important;color:#fff!important;}
+.pn.flagged{outline:2px solid var(--yellow);}
+#examClock{font-family:var(--mono);font-weight:900;font-size:1.3rem;background:var(--surface-3);padding:6px 14px;border-radius:9px;letter-spacing:.05em;}
+</style>
+</head>
+<body>
+<header class="site-header">
+  <nav class="wrap nav">
+    <a class="brand" href="index.html"><span class="brand-mark">i4</span><span class="brand-name">inno<em>4</em>te Networking Academy</span></a>
+    <button class="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li><li><a href="simulator.html">Simulator</a></li>
+      <li><a href="exams.html" class="active">Exams</a></li><li><a href="cli.html">CLI</a></li>
+      <li><a href="subnetting.html">Subnetting</a></li><li><a href="labs/guided-labs.html">Lab Guide</a></li>
+    </ul>
+  </nav>
+</header>
+
+<div id="examContainer">
+
+<!-- ── SETUP ── -->
+<section id="examSetup" class="section">
+  <div class="wrap">
+    <span class="eyebrow">Practice exams</span>
+    <h1 style="font-size:clamp(1.9rem,4vw,2.8rem);margin-bottom:8px">Real exam conditions.</h1>
+    <p class="lead">Choose a track, then pick Practice (15 random questions), Full Exam (all questions, timed to match the real cert), or Timed Practice (per-question countdown). Pass thresholds match the actual certification.</p>
+    <div style="display:flex;flex-wrap:wrap;gap:10px;margin:16px 0 8px;font-size:.86rem;color:var(--text-3)">
+      <span>✅ = Correct &nbsp;|&nbsp; ❌ = Wrong &nbsp;|&nbsp; 🚩 = Flagged for review &nbsp;|&nbsp; Explanations shown after each answer</span>
+    </div>
+    <div id="trackSelector" class="track-grid mt-6" style="grid-template-columns:1fr 1fr;gap:18px"></div>
+  </div>
+</section>
+
+<!-- ── EXAM ── -->
+<section id="examMain" class="section" style="display:none">
+  <div class="wrap">
+    <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:20px">
+      <h2 id="examTitle" style="font-size:1.3rem"></h2>
+      <span id="examClock" style="display:none"></span>
+      <button id="btnBackTracks" class="btn btn-ghost btn-sm" style="margin-left:auto">← Exit exam</button>
+    </div>
+    <div class="exam-wrap">
+      <div>
+        <div class="q-card">
+          <div class="q-header">
+            <span class="q-num" id="qNum"></span>
+            <div style="display:flex;gap:10px;align-items:center">
+              <button id="flagBtn" class="btn btn-ghost btn-sm btn-icon" title="Flag for review">⚑ Flag</button>
+              <span class="q-timer" id="qTimer" style="display:none"></span>
+            </div>
+          </div>
+          <p class="q-text" id="qText"></p>
+          <div class="opts" id="qOpts"></div>
+          <div class="explanation" id="qExplanation"></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:14px;flex-wrap:wrap;gap:10px">
+          <button id="btnPrev" class="btn btn-ghost btn-sm">← Previous</button>
+          <div style="display:flex;gap:10px">
+            <button id="btnNext" class="btn btn-ghost btn-sm">Next →</button>
+            <button id="btnFinish" class="btn btn-primary" style="display:none">Finish &amp; Review →</button>
+          </div>
+        </div>
+      </div>
+      <div class="exam-sidebar">
+        <div class="panel">
+          <div class="panel-header"><h3>Progress</h3></div>
+          <div class="prog-bar prog-lg" id="examProgress"><i style="width:0%"></i></div>
+          <div id="progressPips" class="progress-nums mt-4"></div>
+        </div>
+        <div class="panel mt-4" style="margin-top:12px">
+          <div style="font-size:.78rem;color:var(--text-3);display:grid;gap:4px">
+            <span>🟦 Current &nbsp; ✅ Correct &nbsp; ❌ Wrong</span>
+            <span>🟡 Flagged for review (⚑)</span>
+            <span style="margin-top:4px">Click any number to jump to that question.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── RESULTS ── -->
+<section id="examResults" class="section" style="display:none">
+  <div class="wrap" style="max-width:860px">
+    <div class="results-card">
+      <div class="score-ring">
+        <svg viewBox="0 0 104 104" width="140" height="140"><g id="scoreCircle"></g></svg>
+        <div class="score-text">
+          <span class="score-pct" id="scorePct">0%</span>
+          <span class="score-lbl" id="scoreLbl">RESULT</span>
+        </div>
+      </div>
+      <div id="resultSummary" style="margin-bottom:20px"></div>
+      <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:24px">
+        <button id="btnRetry" class="btn btn-primary">↺ Retry</button>
+        <button id="btnBackTracks" class="btn btn-ghost">← Choose track</button>
+      </div>
+    </div>
+
+    <div id="domainBreakdown" class="panel mt-8" style="margin-top:22px"></div>
+    <div id="flaggedNote" style="margin-top:16px"></div>
+    <h2 style="font-size:1.2rem;margin:24px 0 14px">Full question review with explanations</h2>
+    <div id="resultReview"></div>
+  </div>
+</section>
+</div>
+
+<footer class="site-footer">
+  <div class="footer-bottom">© <span data-year></span> inno4te Networking Academy · Innocent Forteh — Paid All Links Foundation. All rights reserved.</div>
+</footer>
+<script src="js/questions.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

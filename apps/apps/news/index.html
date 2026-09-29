@@ -1,0 +1,2377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Inno4te News — Good News. Smart Insights. Global Impact.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+/* ─── RESET & TOKENS ──────────────────────────────────────────────── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#0d1f0d;--ink2:#1e341e;--muted:#556655;
+  --surface:#f5f8f3;--card:#ffffff;
+  --brand:#146a2e;--brand-dark:#0e4f22;--brand-light:#e6f4eb;
+  --brand-mid:#1a8a3c;
+  --gold:#c07d10;--gold-light:#fef6e4;--gold-mid:#f59e0b;
+  --warm:#b84020;--sky:#1a5c8c;--violet:#6d28d9;
+  --border:rgba(0,0,0,0.07);--radius:14px;--radius-sm:8px;
+  --shadow:0 1px 3px rgba(0,0,0,0.07),0 4px 16px rgba(0,0,0,0.05);
+  --shadow-lg:0 4px 24px rgba(0,0,0,0.1);
+}
+html{scroll-behavior:smooth;font-size:16px}
+body{font-family:'DM Sans',sans-serif;background:var(--surface);color:var(--ink);min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{font-family:'Playfair Display',Georgia,serif}
+img{max-width:100%;display:block}
+a{text-decoration:none;color:inherit}
+button{cursor:pointer;border:none;background:none;font-family:'DM Sans',sans-serif}
+
+/* ─── UTILITIES ───────────────────────────────────────────────────── */
+.container{max-width:1200px;margin:0 auto;padding:0 24px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow)}
+.card-hover{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);transition:transform .2s,box-shadow .2s,border-color .2s;cursor:pointer}
+.card-hover:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg);border-color:rgba(20,106,46,.2)}
+.btn-primary{display:inline-flex;align-items:center;gap:6px;padding:9px 18px;background:var(--brand);color:#fff;border-radius:var(--radius-sm);font-size:13px;font-weight:600;transition:background .15s,transform .1s}
+.btn-primary:hover{background:var(--brand-dark)}
+.btn-primary:active{transform:scale(.97)}
+.btn-ghost{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border:1px solid var(--border);background:var(--card);color:var(--ink2);border-radius:var(--radius-sm);font-size:13px;font-weight:500;transition:all .15s}
+.btn-ghost:hover{border-color:var(--brand);color:var(--brand);background:var(--brand-light)}
+.tag{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;letter-spacing:.2px}
+.score-pill{display:inline-flex;align-items:center;gap:3px;font-size:11px;font-weight:600;color:var(--gold)}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+
+/* ─── ANIMATIONS ──────────────────────────────────────────────────── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+@keyframes shimmer{0%{background-position:-400px 0}100%{background-position:400px 0}}
+.fade-up{animation:fadeUp .45s ease both}
+.delay-1{animation-delay:.08s}.delay-2{animation-delay:.16s}.delay-3{animation-delay:.24s}.delay-4{animation-delay:.32s}
+
+/* ─── TOPBAR (TICKER) ─────────────────────────────────────────────── */
+.topbar{background:var(--ink);color:#fff;height:32px;display:flex;align-items:center;overflow:hidden;position:relative}
+.topbar-label{background:var(--gold-mid);color:#000;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:0 12px;height:100%;display:flex;align-items:center;flex-shrink:0;white-space:nowrap;z-index:2;position:relative}
+.ticker-track{display:flex;overflow:hidden;flex:1}
+.ticker-inner{display:flex;gap:0;animation:ticker 30s linear infinite;white-space:nowrap}
+.ticker-inner:hover{animation-play-state:paused}
+.tick{padding:0 28px;font-size:12px;font-family:'DM Mono',monospace;border-right:1px solid rgba(255,255,255,.1);display:flex;align-items:center;gap:8px;height:32px}
+.tick-sym{color:rgba(255,255,255,.5);font-size:10px;letter-spacing:.5px}
+.tick-price{color:#fff;font-weight:500}
+.up{color:#4ade80}.dn{color:#f87171}
+
+/* ─── NAVBAR ──────────────────────────────────────────────────────── */
+.navbar{background:var(--card);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;box-shadow:0 1px 12px rgba(0,0,0,.06)}
+.nav-inner{display:flex;align-items:center;height:58px;gap:20px}
+.logo{font-family:'Playfair Display',serif;font-size:22px;font-weight:900;color:var(--brand);letter-spacing:-.5px;white-space:nowrap;cursor:pointer}
+.logo-dot{color:var(--gold-mid)}
+.logo-tag{font-family:'DM Sans',sans-serif;font-size:10px;color:var(--muted);border-left:2px solid var(--brand-light);padding-left:10px;line-height:1.35;letter-spacing:.1px}
+.nav-links{display:flex;gap:2px;margin-left:12px}
+.nav-link{font-size:13px;font-weight:500;color:var(--muted);padding:6px 11px;border-radius:6px;cursor:pointer;transition:all .15s;white-space:nowrap}
+.nav-link:hover,.nav-link.active{color:var(--brand);background:var(--brand-light)}
+.nav-right{margin-left:auto;display:flex;align-items:center;gap:8px}
+.nav-search{display:flex;align-items:center;gap:6px;padding:6px 12px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface);font-size:12px;color:var(--muted);cursor:text;transition:all .15s;min-width:160px}
+.nav-search:hover{border-color:var(--brand);color:var(--brand)}
+.nav-search input{border:none;background:none;outline:none;font-size:12px;color:var(--ink);font-family:'DM Sans',sans-serif;width:100%;min-width:0}
+.nav-search input::placeholder{color:var(--muted)}
+.nav-cta{background:var(--brand);color:#fff;font-size:13px;font-weight:600;padding:8px 18px;border-radius:var(--radius-sm);cursor:pointer;transition:background .15s;white-space:nowrap}
+.nav-cta:hover{background:var(--brand-dark)}
+
+/* ─── HERO ────────────────────────────────────────────────────────── */
+.hero{border-bottom:1px solid var(--border);background:var(--card)}
+.hero-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:var(--border)}
+.hero-main{grid-column:1/3;background:var(--card);padding:36px 36px 32px;position:relative;overflow:hidden}
+.hero-main::after{content:'';position:absolute;top:0;right:0;bottom:0;width:220px;background:linear-gradient(to left,var(--brand-light),transparent);pointer-events:none;opacity:.6}
+.hero-eyebrow{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--brand);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.hero-eyebrow::before{content:'';display:block;width:24px;height:2px;background:var(--brand);border-radius:1px}
+.hero-headline{font-size:38px;font-weight:900;line-height:1.12;color:var(--ink);margin-bottom:14px;max-width:520px;letter-spacing:-.5px}
+.hero-headline em{color:var(--brand);font-style:normal}
+.hero-summary{font-size:14px;color:var(--muted);line-height:1.75;max-width:460px;margin-bottom:20px}
+.hero-footer{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.hero-cat{font-size:11px;font-weight:700;letter-spacing:.5px;padding:4px 12px;border-radius:20px}
+.hero-source{font-size:12px;color:var(--muted)}
+.hero-read{font-size:12px;color:var(--brand);font-weight:600;display:flex;align-items:center;gap:4px;margin-top:12px;cursor:pointer}
+.hero-read:hover{text-decoration:underline}
+
+.hero-stack{background:var(--surface);display:flex;flex-direction:column}
+.hero-card{background:var(--card);padding:18px 20px;border-bottom:1px solid var(--border);flex:1;cursor:pointer;transition:background .15s}
+.hero-card:last-child{border-bottom:none}
+.hero-card:hover{background:var(--brand-light)}
+.hc-cat{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;font-weight:700;margin-bottom:6px}
+.hc-title{font-size:14px;font-weight:700;line-height:1.38;color:var(--ink);margin-bottom:6px}
+.hc-meta{font-size:11px;color:var(--muted)}
+
+/* ─── AI STRIP ────────────────────────────────────────────────────── */
+.ai-strip{background:var(--ink);padding:18px 0}
+.ai-strip-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(255,255,255,.07)}
+.ai-cell{background:var(--ink);padding:16px 24px;text-align:center}
+.ai-icon{font-size:22px;margin-bottom:6px;display:block}
+.ai-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:4px}
+.ai-val{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:#fff}
+.ai-sub{font-size:11px;color:rgba(255,255,255,.4);margin-top:2px}
+
+/* ─── LAYOUT ──────────────────────────────────────────────────────── */
+.page-layout{display:grid;grid-template-columns:1fr 340px;gap:0}
+.feed-col{padding:28px 32px;border-right:1px solid var(--border)}
+.side-col{padding:24px 20px}
+
+/* ─── SECTION HEADER ──────────────────────────────────────────────── */
+.sec-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.sec-title{font-size:18px;font-weight:700;color:var(--ink);display:flex;align-items:center;gap:8px}
+.sec-title::before{content:'';display:block;width:4px;height:18px;background:var(--brand);border-radius:2px}
+.sec-more{font-size:12px;color:var(--brand);font-weight:600;cursor:pointer}
+.sec-more:hover{text-decoration:underline}
+.divider{height:1px;background:var(--border);margin:24px 0}
+
+/* ─── CATEGORY PILLS ──────────────────────────────────────────────── */
+.cat-row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px}
+.cat-pill{padding:6px 14px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;border:1.5px solid;transition:all .15s}
+.cat-pill:hover,.cat-pill.on{color:#fff!important;border-color:transparent!important;background:var(--pill-color)!important}
+
+/* ─── ARTICLE GRID ────────────────────────────────────────────────── */
+.art-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:24px}
+.art-card{padding:16px;cursor:pointer}
+.art-card.wide{grid-column:1/3}
+.art-cat{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between}
+.art-title{font-size:15px;font-weight:700;line-height:1.38;color:var(--ink);margin-bottom:8px}
+.art-card.wide .art-title{font-size:19px}
+.art-summary{font-size:12px;color:var(--muted);line-height:1.7;margin-bottom:10px}
+.art-insight{background:var(--brand-light);border-radius:var(--radius-sm);padding:8px 11px;margin-bottom:10px}
+.art-insight-label{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--brand);margin-bottom:3px}
+.art-insight-text{font-size:11px;color:var(--brand-dark);line-height:1.55}
+.art-foot{display:flex;align-items:center;gap:6px}
+.art-source{font-size:11px;color:var(--muted);font-weight:500}
+.art-time{font-size:11px;color:rgba(0,0,0,.3)}
+.score-bar{display:flex;align-items:center;gap:5px;margin-left:auto}
+.score-track{width:36px;height:3px;background:var(--brand-light);border-radius:2px;overflow:hidden}
+.score-fill{height:100%;background:var(--brand);border-radius:2px;transition:width .8s ease}
+
+/* ─── SIDEBAR WIDGETS ─────────────────────────────────────────────── */
+.widget{margin-bottom:16px;overflow:hidden}
+.widget-head{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:1px solid var(--border)}
+.widget-title{font-size:13px;font-weight:700;color:var(--ink);display:flex;align-items:center;gap:6px}
+.live-dot{width:6px;height:6px;border-radius:50%;background:#22c55e;animation:pulse 1.5s infinite}
+
+/* Market */
+.market-row{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:1px solid var(--border);transition:background .15s;cursor:pointer}
+.market-row:last-child{border-bottom:none}
+.market-row:hover{background:var(--surface)}
+.mkt-sym{font-family:'DM Mono',monospace;font-size:12px;font-weight:500;color:var(--ink)}
+.mkt-name{font-size:10px;color:var(--muted);margin-top:1px}
+.mkt-price{font-size:14px;font-weight:700;color:var(--ink);text-align:right}
+.mkt-chg{font-size:11px;font-weight:600;text-align:right;display:flex;align-items:center;gap:2px;justify-content:flex-end}
+
+/* Trends */
+.trend-item{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .15s}
+.trend-item:last-child{border-bottom:none}
+.trend-item:hover{background:var(--surface)}
+.trend-num{font-family:'Playfair Display',serif;font-size:20px;font-weight:900;color:var(--brand-light);width:26px;text-align:right;line-height:1;flex-shrink:0;margin-top:1px}
+.trend-body{flex:1;min-width:0}
+.trend-title{font-size:12px;font-weight:600;color:var(--ink);line-height:1.4;margin-bottom:3px}
+.trend-meta{font-size:10px;color:var(--muted)}
+.trend-arrow{font-size:13px;color:var(--brand);flex-shrink:0;margin-top:2px}
+
+/* AI Insight */
+.ai-insight{background:linear-gradient(135deg,#0d2a0d,#1a4a2a);border-radius:var(--radius);padding:18px;color:#fff;margin-bottom:16px}
+.ai-insight-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:8px}
+.ai-insight-text{font-size:12px;line-height:1.7;color:rgba(255,255,255,.88);margin-bottom:12px}
+.ai-tags{display:flex;gap:5px;flex-wrap:wrap}
+.ai-tag{font-size:10px;padding:3px 9px;border-radius:20px;background:rgba(255,255,255,.1);color:rgba(255,255,255,.65)}
+
+/* Academy widget */
+.academy-head{background:var(--ink);padding:14px}
+.academy-ht{font-family:'Playfair Display',serif;font-size:15px;font-weight:700;color:#fff;margin-bottom:2px}
+.academy-hs{font-size:11px;color:rgba(255,255,255,.4)}
+.path-row{display:flex;align-items:center;gap:10px;padding:9px 14px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .15s}
+.path-row:last-child{border-bottom:none}
+.path-row:hover{background:var(--surface)}
+.path-icon{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.path-label{font-size:12px;font-weight:600;color:var(--ink)}
+.path-lessons{font-size:10px;color:var(--muted);margin-top:1px}
+.path-arrow{margin-left:auto;color:var(--muted);font-size:13px}
+.academy-footer{padding:10px 14px;background:var(--gold-light);border-top:1px solid rgba(192,125,16,.15)}
+.academy-footer-link{font-size:11px;font-weight:600;color:var(--gold);cursor:pointer}
+.academy-footer-link:hover{text-decoration:underline}
+
+/* Newsletter */
+.nl-card{background:linear-gradient(135deg,var(--brand-dark),var(--brand));border-radius:var(--radius);padding:20px;margin-bottom:16px;color:#fff}
+.nl-title{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;margin-bottom:4px}
+.nl-sub{font-size:12px;color:rgba(255,255,255,.7);margin-bottom:14px;line-height:1.6}
+.nl-form{display:flex;flex-direction:column;gap:7px}
+.nl-input{padding:9px 12px;border-radius:var(--radius-sm);border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.12);color:#fff;font-size:12px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color .15s}
+.nl-input::placeholder{color:rgba(255,255,255,.5)}
+.nl-input:focus{border-color:rgba(255,255,255,.6)}
+.nl-btn{padding:9px;border-radius:var(--radius-sm);background:var(--gold-mid);color:#fff;font-size:13px;font-weight:700;cursor:pointer;border:none;font-family:'DM Sans',sans-serif;transition:background .15s}
+.nl-btn:hover{background:#d97706}
+.nl-fine{font-size:10px;color:rgba(255,255,255,.45);text-align:center;margin-top:2px}
+
+/* ─── CATEGORY PAGES ──────────────────────────────────────────────── */
+.cat-page-header{padding:32px 0;border-bottom:1px solid var(--border)}
+.cat-page-inner{display:flex;align-items:flex-start;gap:20px}
+.cat-icon-big{font-size:52px;line-height:1}
+.cat-page-title{font-size:36px;font-weight:900;color:var(--ink);margin-bottom:4px}
+.cat-page-desc{font-size:14px;color:var(--muted);margin-bottom:10px}
+.cat-badge{font-size:11px;background:rgba(255,255,255,.7);padding:3px 10px;border-radius:20px;color:var(--muted);display:inline-block;backdrop-filter:blur(4px)}
+
+/* ─── FINANCE ACADEMY ─────────────────────────────────────────────── */
+.academy-hero{background:var(--ink);padding:48px 0}
+.academy-hero-title{font-size:40px;font-weight:900;color:#fff;margin-bottom:8px;text-align:center}
+.academy-hero-sub{font-size:15px;color:rgba(255,255,255,.55);max-width:520px;margin:0 auto;text-align:center;line-height:1.65}
+.path-card{padding:24px;cursor:pointer;border-left:4px solid}
+.path-card-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px}
+.path-emoji{font-size:38px;line-height:1}
+.path-title{font-size:20px;font-weight:700;color:var(--ink);margin-bottom:4px}
+.path-meta{font-size:11px;color:var(--muted);display:flex;gap:10px}
+.path-meta span{display:flex;align-items:center;gap:3px}
+.path-desc{font-size:13px;color:var(--muted);line-height:1.65;margin-bottom:12px}
+.path-tags{display:flex;flex-wrap:wrap;gap:5px}
+.path-tag{font-size:10px;padding:3px 9px;border-radius:20px;font-weight:500}
+.premium-badge{display:inline-flex;align-items:center;gap:3px;font-size:10px;font-weight:600;color:var(--gold);background:var(--gold-light);padding:3px 9px;border-radius:20px;border:1px solid rgba(192,125,16,.2)}
+
+/* ─── LESSON VIEW ─────────────────────────────────────────────────── */
+.lesson-layout{display:grid;grid-template-columns:1fr 320px;gap:24px;padding:28px 0}
+.lesson-body{padding:32px}
+.lesson-title{font-size:30px;font-weight:900;color:var(--ink);margin-bottom:6px;line-height:1.2}
+.lesson-desc{font-size:14px;color:var(--muted);margin-bottom:24px;padding-bottom:24px;border-bottom:1px solid var(--border)}
+.lesson-content p{font-size:14px;color:#374151;line-height:1.8;margin-bottom:14px}
+.lesson-content h3{font-size:17px;font-weight:700;color:var(--ink);margin:20px 0 8px}
+.lesson-content ul{padding-left:20px;margin-bottom:14px}
+.lesson-content li{font-size:14px;color:#374151;line-height:1.7;margin-bottom:4px}
+
+/* AI Tutor */
+.tutor-card{position:sticky;top:80px}
+.tutor-head{background:var(--ink);padding:12px 14px;border-radius:var(--radius) var(--radius) 0 0;display:flex;align-items:center;gap:8px}
+.tutor-title{font-size:13px;font-weight:600;color:#fff}
+.tutor-badge{margin-left:auto;font-size:10px;color:rgba(255,255,255,.4);font-family:'DM Mono',monospace}
+.tutor-messages{height:280px;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px;background:var(--surface)}
+.tutor-msg{display:flex;gap:7px;align-items:flex-start}
+.tutor-msg.user{flex-direction:row-reverse}
+.tutor-avatar{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;margin-top:1px}
+.tutor-avatar.ai{background:var(--brand-light);color:var(--brand)}
+.tutor-avatar.usr{background:#e5e7eb;color:#6b7280}
+.tutor-bubble{padding:9px 12px;border-radius:10px;max-width:82%;font-size:12px;line-height:1.6}
+.tutor-bubble.ai{background:var(--card);border:1px solid var(--border);color:var(--ink);border-bottom-left-radius:3px}
+.tutor-bubble.user{background:var(--brand);color:#fff;border-bottom-right-radius:3px}
+.tutor-input-row{display:flex;gap:7px;padding:10px;border-top:1px solid var(--border);background:var(--card);border-radius:0 0 var(--radius) var(--radius)}
+.tutor-input{flex:1;padding:8px 11px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:12px;font-family:'DM Sans',sans-serif;outline:none;color:var(--ink);transition:border-color .15s}
+.tutor-input:focus{border-color:var(--brand)}
+.tutor-send{width:32px;height:32px;background:var(--brand);border-radius:var(--radius-sm);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;transition:background .15s;border:none}
+.tutor-send:hover{background:var(--brand-dark)}
+
+/* Quiz */
+.quiz-card{margin-top:16px;padding:20px}
+.quiz-title{font-size:15px;font-weight:700;color:var(--ink);margin-bottom:14px;display:flex;align-items:center;gap:7px}
+.q-question{font-size:13px;font-weight:600;color:var(--ink);margin-bottom:8px}
+.q-option{width:100%;text-align:left;padding:9px 12px;border:1.5px solid var(--border);border-radius:var(--radius-sm);margin-bottom:6px;font-size:12px;color:var(--ink);cursor:pointer;transition:all .15s;font-family:'DM Sans',sans-serif;background:var(--card);display:flex;align-items:center;gap:7px}
+.q-option:hover:not([disabled]){border-color:var(--brand);color:var(--brand);background:var(--brand-light)}
+.q-option.selected{border-color:var(--brand);background:var(--brand-light);color:var(--brand)}
+.q-option.correct{border-color:#16a34a;background:#f0fdf4;color:#166534}
+.q-option.wrong{border-color:#dc2626;background:#fef2f2;color:#991b1b}
+.q-explanation{font-size:11px;color:var(--muted);background:var(--surface);border-radius:var(--radius-sm);padding:8px 10px;margin-top:6px;line-height:1.6}
+.quiz-submit{margin-top:14px;width:100%}
+.quiz-score{text-align:center;padding:12px;border-radius:var(--radius-sm);font-size:14px;font-weight:700;margin-top:10px}
+.score-pass{background:#f0fdf4;color:#166534}
+.score-fail{background:#fff7ed;color:#9a3412}
+
+/* ─── PRICING ─────────────────────────────────────────────────────── */
+.pricing-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;max-width:700px;margin:0 auto}
+.plan-card{padding:28px;position:relative}
+.plan-card.featured{border-color:var(--brand);border-width:2px}
+.plan-name{font-size:22px;font-weight:700;color:var(--ink);margin-bottom:2px}
+.plan-desc{font-size:12px;color:var(--muted);margin-bottom:16px}
+.plan-price{font-size:40px;font-weight:900;color:var(--ink);font-family:'Playfair Display',serif;line-height:1;margin-bottom:4px}
+.plan-price sup{font-size:18px;vertical-align:top;margin-top:8px;font-family:'DM Sans',sans-serif}
+.plan-period{font-size:12px;color:var(--muted);margin-bottom:20px}
+.plan-features{list-style:none;margin-bottom:22px;space-y:6px}
+.plan-feature{display:flex;align-items:flex-start;gap:7px;font-size:12px;color:#374151;margin-bottom:7px;line-height:1.4}
+.plan-feature::before{content:'✓';color:var(--brand);font-weight:700;flex-shrink:0;margin-top:1px}
+.most-popular{position:absolute;top:-11px;left:50%;transform:translateX(-50%);background:var(--brand);color:#fff;font-size:10px;font-weight:700;letter-spacing:.5px;padding:4px 12px;border-radius:20px;white-space:nowrap}
+.billing-toggle{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:32px}
+.toggle-label{font-size:13px;font-weight:500;color:var(--muted);cursor:pointer;transition:color .15s}
+.toggle-label.on{color:var(--ink)}
+.toggle-switch{width:44px;height:24px;background:var(--border);border-radius:20px;position:relative;cursor:pointer;transition:background .2s;border:1px solid var(--border)}
+.toggle-switch.on{background:var(--brand)}
+.toggle-thumb{position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.2);transition:transform .2s}
+.toggle-switch.on .toggle-thumb{transform:translateX(20px)}
+.save-badge{font-size:10px;font-weight:700;color:#16a34a;background:#f0fdf4;padding:2px 7px;border-radius:20px;margin-left:4px}
+
+/* ─── SEARCH ──────────────────────────────────────────────────────── */
+.search-hero{background:var(--ink);padding:40px 0}
+.search-form{display:flex;gap:10px;max-width:640px;margin:0 auto}
+.search-input{flex:1;padding:12px 16px;border-radius:var(--radius-sm);border:none;font-size:14px;font-family:'DM Sans',sans-serif;outline:none;color:var(--ink)}
+.search-btn{padding:12px 24px;background:var(--brand);color:#fff;border-radius:var(--radius-sm);font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap;border:none;font-family:'DM Sans',sans-serif;transition:background .15s}
+.search-btn:hover{background:var(--brand-dark)}
+
+/* ─── PROFILE ─────────────────────────────────────────────────────── */
+.profile-header{background:var(--surface);border-bottom:1px solid var(--border);padding:28px 0}
+.profile-avatar{width:60px;height:60px;border-radius:50%;background:var(--brand-light);display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:700;color:var(--brand);flex-shrink:0}
+.profile-name{font-size:22px;font-weight:700;color:var(--ink);margin-bottom:2px}
+.profile-email{font-size:13px;color:var(--muted)}
+
+/* ─── ADMIN ───────────────────────────────────────────────────────── */
+.admin-stats{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:24px}
+.admin-stat{padding:16px;text-align:center}
+.admin-stat-val{font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:var(--ink);margin-bottom:2px}
+.admin-stat-label{font-size:11px;color:var(--muted)}
+
+/* ─── FOOTER ──────────────────────────────────────────────────────── */
+.footer{background:var(--ink);color:rgba(255,255,255,.6);padding:40px 0 24px}
+.footer-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:32px;margin-bottom:32px}
+.footer-logo{font-family:'Playfair Display',serif;font-size:22px;color:#fff;font-weight:900;margin-bottom:6px}
+.footer-tag{font-size:11px;color:rgba(255,255,255,.35);letter-spacing:.3px;margin-bottom:10px}
+.footer-desc{font-size:11px;color:rgba(255,255,255,.35);line-height:1.7}
+.footer-heading{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+.footer-links{list-style:none}
+.footer-links li{margin-bottom:8px}
+.footer-links a{font-size:12px;color:rgba(255,255,255,.5);transition:color .15s;cursor:pointer}
+.footer-links a:hover{color:#fff}
+.footer-bottom{border-top:1px solid rgba(255,255,255,.07);padding-top:18px;display:flex;justify-content:space-between;align-items:center}
+.footer-copy{font-size:11px;color:rgba(255,255,255,.25)}
+.footer-powered{font-size:11px;color:rgba(255,255,255,.25)}
+
+/* ─── TABS & MODALS ───────────────────────────────────────────────── */
+.tabs{display:flex;gap:2px;border-bottom:1px solid var(--border);margin-bottom:20px}
+.tab{padding:8px 14px;font-size:13px;font-weight:500;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .15s}
+.tab:hover{color:var(--ink)}
+.tab.active{color:var(--brand);border-bottom-color:var(--brand)}
+
+/* ─── TOAST ───────────────────────────────────────────────────────── */
+.toast-container{position:fixed;bottom:20px;right:20px;z-index:9999;display:flex;flex-direction:column;gap:8px}
+.toast{padding:12px 16px;border-radius:var(--radius-sm);font-size:13px;font-weight:500;box-shadow:var(--shadow-lg);animation:fadeUp .3s ease;display:flex;align-items:center;gap:8px;max-width:320px}
+.toast.success{background:#166534;color:#fff}
+.toast.error{background:#991b1b;color:#fff}
+.toast.info{background:var(--ink);color:#fff}
+
+/* ─── SKELETON ────────────────────────────────────────────────────── */
+.skeleton{background:linear-gradient(90deg,#f0f0f0 25%,#e8e8e8 50%,#f0f0f0 75%);background-size:800px 100%;animation:shimmer 1.5s infinite;border-radius:4px}
+
+/* ─── RESPONSIVE ──────────────────────────────────────────────────── */
+@media(max-width:900px){
+  .hero-grid{grid-template-columns:1fr}
+  .hero-main{grid-column:1}
+  .hero-stack{display:none}
+  .page-layout{grid-template-columns:1fr}
+  .side-col{padding:0 24px 24px;border-top:1px solid var(--border)}
+  .ai-strip-grid{grid-template-columns:1fr 1fr}
+  .art-grid{grid-template-columns:1fr}
+  .art-card.wide{grid-column:1}
+  .pricing-grid{grid-template-columns:1fr}
+  .lesson-layout{grid-template-columns:1fr}
+  .admin-stats{grid-template-columns:repeat(3,1fr)}
+  .footer-grid{grid-template-columns:1fr 1fr}
+  .nav-links,.logo-tag{display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     TOAST CONTAINER
+═══════════════════════════════════════════════════════════════════════ -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     MARKET TICKER
+═══════════════════════════════════════════════════════════════════════ -->
+<div class="topbar" aria-label="Live market data">
+  <div class="topbar-label">Markets</div>
+  <div class="ticker-track">
+    <div class="ticker-inner" id="tickerInner">
+      <!-- filled by JS -->
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     NAVBAR
+═══════════════════════════════════════════════════════════════════════ -->
+<header class="navbar">
+  <div class="container">
+    <nav class="nav-inner">
+      <div class="logo" onclick="showPage('home')">Inno4te<span class="logo-dot">.</span>News</div>
+      <div class="logo-tag">Good News.<br>Smart Insights. Global Impact.</div>
+      <div class="nav-links">
+        <span class="nav-link active" data-page="home" onclick="showPage('home')">Home</span>
+        <span class="nav-link" data-page="evangelical" onclick="showPage('category','evangelical')">Faith</span>
+        <span class="nav-link" data-page="technology" onclick="showPage('category','technology')">Tech</span>
+        <span class="nav-link" data-page="health" onclick="showPage('category','health')">Health</span>
+        <span class="nav-link" data-page="finance" onclick="showPage('category','finance')">Finance</span>
+        <span class="nav-link" data-page="academy" onclick="showPage('academy')">Academy</span>
+        <span class="nav-link" data-page="pricing" onclick="showPage('pricing')">Pricing</span>
+      </div>
+      <div class="nav-right">
+        <div class="nav-search">
+          <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          <input type="text" placeholder="Search stories..." id="navSearch" onkeydown="if(event.key==='Enter')showPage('search',null,this.value)"/>
+        </div>
+        <button class="nav-cta" onclick="showPage('profile')">My Account</button>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     PAGES (only one visible at a time)
+═══════════════════════════════════════════════════════════════════════ -->
+
+<!-- ─────────────── HOME PAGE ─────────────────────────────────────── -->
+<div id="page-home">
+
+  <!-- Hero -->
+  <section class="hero fade-up">
+    <div class="hero-grid container" style="padding-left:0;padding-right:0;max-width:100%">
+      <div class="hero-main" id="heroMain"></div>
+      <div class="hero-stack" id="heroStack"></div>
+    </div>
+  </section>
+
+  <!-- AI Strip -->
+  <div class="ai-strip fade-up delay-1">
+    <div class="container">
+      <div class="ai-strip-grid" id="aiStrip"></div>
+    </div>
+  </div>
+
+  <!-- Main body -->
+  <div class="container">
+    <div class="page-layout">
+
+      <!-- Feed -->
+      <main class="feed-col fade-up delay-2">
+        <!-- Category filter -->
+        <div class="sec-hd" style="margin-top:4px">
+          <h2 class="sec-title">Browse by category</h2>
+        </div>
+        <div class="cat-row" id="catRow"></div>
+
+        <div class="sec-hd">
+          <h2 class="sec-title">Latest stories
+            <span id="feedStatus" style="display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:500;font-family:'DM Sans',sans-serif;color:var(--muted)">Sample stories</span>
+          </h2>
+          <span class="sec-more" onclick="loadMoreArticles()">Load more →</span>
+        </div>
+        <div class="art-grid" id="artGrid"></div>
+      </main>
+
+      <!-- Sidebar -->
+      <aside class="side-col fade-up delay-3">
+        <!-- Market snapshot -->
+        <div class="widget card" id="marketWidget">
+          <div class="widget-head">
+            <span class="widget-title">
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+              Market Snapshot
+            </span>
+            <span class="mkt-live-flag" style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--muted);font-weight:500">Sample data</span>
+          </div>
+          <div id="marketRows"></div>
+          <div style="padding:10px 14px;border-top:1px solid var(--border);background:var(--surface)">
+            <span class="sec-more" onclick="showPage('category','finance')">Finance section →</span>
+          </div>
+        </div>
+
+        <!-- AI Insight -->
+        <div class="ai-insight" id="aiInsight"></div>
+
+        <!-- Trends -->
+        <div class="widget card" id="trendWidget">
+          <div class="widget-head">
+            <span class="widget-title">
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+              AI-Detected Trends
+            </span>
+            <span style="font-size:10px;color:var(--muted);background:var(--surface);padding:2px 8px;border-radius:20px">Last 24h</span>
+          </div>
+          <div id="trendRows"></div>
+        </div>
+
+        <!-- Academy promo -->
+        <div class="widget card" id="academyPromo">
+          <div class="academy-head">
+            <div class="academy-ht">📚 Finance Academy</div>
+            <div class="academy-hs">Build lasting financial intelligence</div>
+          </div>
+          <div id="pathRows"></div>
+          <div class="academy-footer">
+            <span class="academy-footer-link" onclick="showPage('academy')">View all learning paths →</span>
+          </div>
+        </div>
+
+        <!-- Newsletter -->
+        <div class="nl-card">
+          <div class="nl-title">Daily Good News Digest</div>
+          <div class="nl-sub">The most encouraging stories from around the world — curated by AI, reviewed by humans. Every morning.</div>
+          <div class="nl-form">
+            <input class="nl-input" type="email" placeholder="Your email address" id="nlEmail"/>
+            <button class="nl-btn" onclick="subscribeNewsletter()">Subscribe free</button>
+          </div>
+          <div class="nl-fine">No spam. Unsubscribe anytime.</div>
+        </div>
+      </aside>
+
+    </div>
+  </div>
+</div>
+
+<!-- ─────────────── CATEGORY PAGE ─────────────────────────────────── -->
+<div id="page-category" style="display:none">
+  <div id="catPageHeader" class="cat-page-header">
+    <div class="container">
+      <div class="cat-page-inner" id="catPageInner"></div>
+    </div>
+  </div>
+  <div class="container" style="padding-top:28px">
+    <div class="page-layout">
+      <main class="feed-col">
+        <div class="art-grid" id="catArtGrid"></div>
+      </main>
+      <aside class="side-col">
+        <div class="widget card" id="catMarket">
+          <div class="widget-head">
+            <span class="widget-title">Market Snapshot</span>
+            <span class="mkt-live-flag" style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--muted);font-weight:500">Sample data</span>
+          </div>
+          <div id="catMarketRows"></div>
+        </div>
+        <div style="margin-top:16px">
+          <div class="nl-card">
+            <div class="nl-title">Daily Digest</div>
+            <div class="nl-sub">Get the best stories in this category every week.</div>
+            <div class="nl-form">
+              <input class="nl-input" type="email" placeholder="your@email.com" id="catNlEmail"/>
+              <button class="nl-btn" onclick="subscribeNewsletter('catNlEmail')">Subscribe</button>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</div>
+
+<!-- ─────────────── ACADEMY PAGE ──────────────────────────────────── -->
+<div id="page-academy" style="display:none">
+  <div class="academy-hero">
+    <div class="container">
+      <div style="text-align:center;margin-bottom:8px">
+        <span style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.4)">Finance Academy</span>
+      </div>
+      <div class="academy-hero-title">Inno4te Finance Academy</div>
+      <div class="academy-hero-sub">Build lasting financial intelligence — from understanding your first stock to advanced trading strategies. AI-powered tutoring included.</div>
+    </div>
+  </div>
+  <div class="container" style="padding-top:36px;padding-bottom:48px">
+    <div class="sec-hd"><h2 class="sec-title">Learning Paths</h2></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:36px" id="pathCards"></div>
+    <div class="sec-hd"><h2 class="sec-title">Why Inno4te Finance Academy?</h2></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px" id="academyFeatures"></div>
+  </div>
+</div>
+
+<!-- ─────────────── LESSON PAGE ───────────────────────────────────── -->
+<div id="page-lesson" style="display:none">
+  <div style="background:var(--ink);padding:16px 0">
+    <div class="container" style="display:flex;align-items:center;gap:10px">
+      <span style="font-size:12px;color:rgba(255,255,255,.4);cursor:pointer" onclick="showPage('academy')">← Academy</span>
+      <span style="color:rgba(255,255,255,.2)">|</span>
+      <span style="font-size:12px;color:rgba(255,255,255,.6)" id="lessonBreadcrumb">Beginner Investor</span>
+    </div>
+  </div>
+  <div class="container">
+    <div class="lesson-layout">
+      <div>
+        <div class="card lesson-body" id="lessonBody"></div>
+        <div class="card quiz-card" id="quizCard" style="margin-top:14px"></div>
+      </div>
+      <div class="tutor-card">
+        <div class="tutor-head">
+          <span style="font-size:16px">🤖</span>
+          <span class="tutor-title">AI Tutor</span>
+          <span class="tutor-badge">Claude AI</span>
+        </div>
+        <div class="tutor-messages" id="tutorMessages"></div>
+        <div class="tutor-input-row">
+          <input class="tutor-input" type="text" placeholder="Ask anything about this lesson..." id="tutorInput" onkeydown="if(event.key==='Enter')sendTutorMessage()"/>
+          <button class="tutor-send" onclick="sendTutorMessage()">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─────────────── PRICING PAGE ──────────────────────────────────── -->
+<div id="page-pricing" style="display:none">
+  <div style="background:var(--ink);padding:56px 0">
+    <div class="container" style="text-align:center">
+      <h1 style="font-size:40px;font-weight:900;color:#fff;margin-bottom:10px">Simple, honest pricing</h1>
+      <p style="font-size:15px;color:rgba(255,255,255,.5);max-width:440px;margin:0 auto">Good news is free. Premium unlocks the full Finance Academy, AI trend reports, and a personalized experience.</p>
+    </div>
+  </div>
+  <div class="container" style="padding-top:40px;padding-bottom:56px">
+    <div class="billing-toggle">
+      <span class="toggle-label" id="monthlyLabel" onclick="setBilling('monthly')">Monthly</span>
+      <div class="toggle-switch on" id="billingToggle" onclick="toggleBilling()">
+        <div class="toggle-thumb"></div>
+      </div>
+      <span class="toggle-label on" id="yearlyLabel" onclick="setBilling('yearly')">
+        Yearly <span class="save-badge">Save 33%</span>
+      </span>
+    </div>
+    <div class="pricing-grid" id="pricingCards"></div>
+    <div style="max-width:600px;margin:48px auto 0">
+      <h2 style="font-size:22px;font-weight:700;color:var(--ink);text-align:center;margin-bottom:20px">Frequently asked questions</h2>
+      <div id="faqList"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ─────────────── SEARCH PAGE ───────────────────────────────────── -->
+<div id="page-search" style="display:none">
+  <div class="search-hero">
+    <div class="container">
+      <h1 style="font-size:28px;font-weight:900;color:#fff;margin-bottom:16px;text-align:center">Search Inno4te News</h1>
+      <div class="search-form">
+        <input class="search-input" type="text" placeholder="Search topics, stories, or sources..." id="searchInput" onkeydown="if(event.key==='Enter')doSearch()"/>
+        <button class="search-btn" onclick="doSearch()">Search</button>
+      </div>
+    </div>
+  </div>
+  <div class="container" style="padding-top:24px">
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px" id="searchCatFilter"></div>
+    <div id="searchResults"></div>
+  </div>
+</div>
+
+<!-- ─────────────── PROFILE PAGE ──────────────────────────────────── -->
+<div id="page-profile" style="display:none">
+  <div class="profile-header">
+    <div class="container" style="display:flex;align-items:center;gap:16px">
+      <div class="profile-avatar">JD</div>
+      <div>
+        <div class="profile-name">John Doe</div>
+        <div class="profile-email">john@example.com</div>
+        <div style="display:flex;gap:8px;margin-top:6px">
+          <span style="font-size:11px;color:var(--muted);background:var(--card);padding:2px 10px;border-radius:20px;border:1px solid var(--border)">Free plan</span>
+          <span style="font-size:11px;color:var(--muted)">Member since Jan 2025</span>
+        </div>
+      </div>
+      <div style="margin-left:auto">
+        <button class="btn-primary" onclick="showPage('pricing')">
+          <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          Upgrade to Premium
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="container" style="padding-top:28px;padding-bottom:48px">
+    <div class="page-layout">
+      <main class="feed-col" style="padding-top:0">
+        <div class="card" style="padding:24px;margin-bottom:16px">
+          <h2 style="font-size:17px;font-weight:700;color:var(--ink);margin-bottom:16px">Edit Profile</h2>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
+            <div>
+              <label style="font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;display:block;margin-bottom:6px">Display name</label>
+              <input type="text" value="John Doe" style="width:100%;padding:9px 12px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:13px;font-family:'DM Sans',sans-serif;outline:none;color:var(--ink)" onfocus="this.style.borderColor='var(--brand)'" onblur="this.style.borderColor='var(--border)'"/>
+            </div>
+            <div>
+              <label style="font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;display:block;margin-bottom:6px">Email</label>
+              <input type="email" value="john@example.com" style="width:100%;padding:9px 12px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:13px;font-family:'DM Sans',sans-serif;outline:none;color:var(--ink)" onfocus="this.style.borderColor='var(--brand)'" onblur="this.style.borderColor='var(--border)'"/>
+            </div>
+          </div>
+          <div style="margin-bottom:16px">
+            <label style="font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;display:block;margin-bottom:6px">Bio</label>
+            <textarea rows="3" placeholder="Tell us about yourself..." style="width:100%;padding:9px 12px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:13px;font-family:'DM Sans',sans-serif;outline:none;color:var(--ink);resize:none" onfocus="this.style.borderColor='var(--brand)'" onblur="this.style.borderColor='var(--border)'"></textarea>
+          </div>
+          <button class="btn-primary" onclick="showToast('Profile saved!','success')">Save changes</button>
+        </div>
+        <div class="card" style="padding:24px">
+          <h2 style="font-size:17px;font-weight:700;color:var(--ink);margin-bottom:6px">News Preferences</h2>
+          <p style="font-size:12px;color:var(--muted);margin-bottom:14px">Select categories to prioritize in your feed.</p>
+          <div id="prefCats" style="display:flex;flex-wrap:wrap;gap:6px"></div>
+        </div>
+      </main>
+      <aside class="side-col" style="padding-top:0">
+        <div class="card" style="padding:18px;margin-bottom:14px">
+          <h3 style="font-size:13px;font-weight:700;color:var(--ink);margin-bottom:14px">Your Plan</h3>
+          <p style="font-size:12px;color:var(--muted);margin-bottom:12px">You're on the Free plan.</p>
+          <button class="btn-primary" style="width:100%;justify-content:center" onclick="showPage('pricing')">Upgrade to Premium</button>
+        </div>
+        <div class="card" style="padding:18px">
+          <h3 style="font-size:13px;font-weight:700;color:var(--ink);margin-bottom:12px">Quick links</h3>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <span style="font-size:12px;color:var(--brand);cursor:pointer;font-weight:500" onclick="showPage('academy')">Finance Academy →</span>
+            <span style="font-size:12px;color:var(--brand);cursor:pointer;font-weight:500" onclick="showPage('search')">Search articles →</span>
+            <span style="font-size:12px;color:var(--brand);cursor:pointer;font-weight:500">Newsletter settings →</span>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</div>
+
+<!-- ─────────────── ADMIN PAGE ─────────────────────────────────────── -->
+<div id="page-admin" style="display:none">
+  <div style="background:var(--ink);padding:20px 0">
+    <div class="container" style="display:flex;align-items:center;justify-content:space-between">
+      <h1 style="font-size:22px;font-weight:900;color:#fff">Admin Dashboard</h1>
+      <button class="btn-ghost" style="font-size:12px;color:rgba(255,255,255,.6);border-color:rgba(255,255,255,.15)" onclick="showToast('Ingestion triggered!','success')">⚡ Trigger Ingest</button>
+    </div>
+  </div>
+  <div class="container" style="padding-top:24px;padding-bottom:48px">
+    <div class="admin-stats" id="adminStats"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px" id="adminPanels"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     FOOTER
+═══════════════════════════════════════════════════════════════════════ -->
+<footer class="footer" id="siteFooter">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-logo">Inno4te<span style="color:var(--gold-mid)">.</span>News</div>
+        <div class="footer-tag">Good News. Smart Insights. Global Impact.</div>
+        <div class="footer-desc">AI-powered positive news aggregation. We collect, analyze, and link to original sources — we never republish content.</div>
+      </div>
+      <div>
+        <div class="footer-heading">Categories</div>
+        <ul class="footer-links" id="footerCats1"></ul>
+      </div>
+      <div>
+        <div class="footer-heading">&nbsp;</div>
+        <ul class="footer-links" id="footerCats2"></ul>
+      </div>
+      <div>
+        <div class="footer-heading">Academy</div>
+        <ul class="footer-links">
+          <li><a onclick="showPage('academy')">Beginner Investor</a></li>
+          <li><a onclick="showPage('academy')">Intermediate</a></li>
+          <li><a onclick="showPage('academy')">Swing Trader</a></li>
+          <li><a onclick="showPage('academy')">Advanced Analysis</a></li>
+        </ul>
+        <div class="footer-heading" style="margin-top:16px">Company</div>
+        <ul class="footer-links">
+          <li><a>About</a></li>
+          <li><a>Privacy Policy</a></li>
+          <li><a>Terms of Service</a></li>
+          <li><a onclick="showPage('admin')">Admin</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">© 2025 Inno4te News. All articles link to original sources.</span>
+      <span class="footer-powered">Powered by Claude AI · Built for positive impact</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════════
+   DATA
+═══════════════════════════════════════════════════════════════════════ */
+const CATEGORIES = [
+  {slug:'evangelical',label:'Evangelical',desc:'Global evangelical developments, missions & church growth',color:'#6d28d9',bg:'#f5f3ff',icon:'✝'},
+  {slug:'charismatic',label:'Charismatic',desc:'Revival, healing ministries & Spirit-led movements',color:'#b45309',bg:'#fffbeb',icon:'🔥'},
+  {slug:'technology',label:'Technology',desc:'AI, space, clean energy & software innovation',color:'#1a5c8c',bg:'#eff6ff',icon:'⚡'},
+  {slug:'health',label:'Health',desc:'Medical breakthroughs, public health & research',color:'#047857',bg:'#ecfdf5',icon:'💚'},
+  {slug:'education',label:'Education',desc:'EdTech, scholarships & educational innovation',color:'#be185d',bg:'#fdf2f8',icon:'📚'},
+  {slug:'governance',label:'Governance',desc:'Good governance, anti-corruption & civic innovation',color:'#0369a1',bg:'#f0f9ff',icon:'🏛'},
+  {slug:'sports',label:'Sports',desc:'Inspiring athletes, youth development & achievement',color:'#b84020',bg:'#fff7ed',icon:'🏆'},
+  {slug:'finance',label:'Finance',desc:'Wealth creation, fintech & financial literacy',color:'#c07d10',bg:'#fef6e4',icon:'📈'},
+]
+
+const ARTICLES = [
+  {id:'a1',title:'African Nations Achieve Record Literacy Rates Through AI-Powered Education',category:'education',source:'BBC World',time:'2h ago',score:96,summary:'A coalition of 14 African governments deployed AI tutoring in 40,000 schools, lifting literacy rates by 31% in just 18 months.',takeaway:'The fastest documented educational improvement in recorded history, driven by accessible AI.'},
+  {id:'a2',title:'Bible Translation Reaches 700th Language Milestone — Every Nation Has Scripture',category:'evangelical',source:'Mission Network News',time:'1h ago',score:98,summary:'Wycliffe Bible Translators announces the completion of Scripture in 700 languages simultaneously, a historic achievement in global missions.',takeaway:'Every major language group now has access to the Bible in their mother tongue.'},
+  {id:'a3',title:'OpenAI\'s New Model Diagnoses Rare Diseases 40x Faster Than Specialists',category:'technology',source:'MIT Tech Review',time:'3h ago',score:93,summary:'A breakthrough in medical AI helps doctors in underserved regions identify conditions that previously took years to diagnose.',takeaway:'Healthcare equity is being transformed by AI in the world\'s most remote communities.'},
+  {id:'a4',title:'Breakthrough: Scientists Reverse Alzheimer\'s Symptoms in Phase 3 Trial',category:'health',source:'Nature Medicine',time:'6h ago',score:97,summary:'A new gene therapy shows 78% efficacy in reversing early-stage Alzheimer\'s, with approval expected by 2025.',takeaway:'For the first time, Alzheimer\'s disease may be stoppable and reversible.'},
+  {id:'a5',title:'17-Year-Old From Nairobi Becomes Youngest Wimbledon Champion in History',category:'sports',source:'BBC Sport',time:'4h ago',score:89,summary:"Amara Osei's inspiring journey from a Nairobi community court to Wimbledon is capturing global hearts.",takeaway:'Sport remains one of humanity\'s greatest equalizers.'},
+  {id:'a6',title:'Nigeria\'s Fintech Sector Generates $5B in New Wealth, Creating 200K Jobs',category:'finance',source:'Bloomberg Africa',time:'5h ago',score:91,summary:"Africa's largest economy sees exponential growth in financial inclusion through mobile money innovations.",takeaway:'Financial technology is rapidly lifting millions out of poverty across Africa.'},
+  {id:'a7',title:'1 Million New Believers Reported Across Sub-Saharan Africa in 2024',category:'evangelical',source:'Christianity Today',time:'4h ago',score:94,summary:'Annual missions report documents extraordinary church growth across 12 nations, with youth conversions at an all-time high.',takeaway:'Christianity continues its historic growth in the Global South.'},
+  {id:'a8',title:'SpaceX Starlink Now Connects 50 Million People in Remote Communities',category:'technology',source:'TechCrunch',time:'5h ago',score:91,summary:'Satellite internet reaches fishing villages, mountain communities, and rural schools previously without any connectivity.',takeaway:'The digital divide is closing faster than any previous technological rollout.'},
+  {id:'a9',title:'Malaria Vaccine Trials Show 88% Efficacy in West Africa',category:'health',source:'The Lancet',time:'7h ago',score:97,summary:'The R21 vaccine achieves unprecedented efficacy across diverse populations, with WHO approval expected this quarter.',takeaway:'Malaria — which kills 600,000 people annually — may be near-eliminatable within a decade.'},
+  {id:'a10',title:'Anti-Corruption Technology Recovers $2B in Stolen Public Funds Across Africa',category:'governance',source:'Devex',time:'8h ago',score:88,summary:'Blockchain-based audit systems deployed in 8 African nations have identified and recovered misappropriated public money.',takeaway:'Civic technology is proving that transparency can be engineered into government systems.'},
+  {id:'a11',title:'EdTech Startup Gives Free University Degrees to 500,000 Students',category:'education',source:'EdSurge',time:'9h ago',score:95,summary:'An AI-powered learning platform eliminates tuition entirely through a novel employer-partnership revenue model.',takeaway:'Higher education may be entering a post-tuition era faster than anyone predicted.'},
+  {id:'a12',title:'Revival Meeting in Brazil Draws 2 Million Attendees Over Three Days',category:'charismatic',source:'Charisma News',time:'12h ago',score:90,summary:'The largest recorded charismatic gathering in South American history saw tens of thousands report healings and conversions.',takeaway:'Spirit-led Christianity continues its explosive growth in Latin America.'},
+]
+
+/* ═══════════════════════════════════════════════════════════════════
+   LIVE NEWS (Google News RSS per category, via CORS-friendly proxies)
+   Falls back to the bundled sample stories above if all fetches fail.
+═══════════════════════════════════════════════════════════════════════ */
+let liveNewsActive = false
+const SAMPLE_ARTICLES = ARTICLES.slice()
+
+const LIVE_QUERIES = {
+  evangelical:'evangelical church missions',
+  charismatic:'christian revival ministry',
+  technology:'technology breakthrough innovation',
+  health:'medical breakthrough health research',
+  education:'education innovation scholarships',
+  governance:'good governance anti-corruption',
+  sports:'inspiring sports achievement',
+  finance:'fintech markets financial inclusion',
+}
+
+const CORS_PROXIES = [
+  u => 'https://api.allorigins.win/raw?url=' + encodeURIComponent(u),
+  u => 'https://api.codetabs.com/v1/proxy?quest=' + encodeURIComponent(u),
+  u => 'https://corsproxy.io/?url=' + encodeURIComponent(u),
+]
+
+function timeAgo(date) {
+  const s = Math.max(1, Math.floor((Date.now() - date.getTime()) / 1000))
+  if (s < 3600) return Math.floor(s/60) + 'm ago'
+  if (s < 86400) return Math.floor(s/3600) + 'h ago'
+  return Math.floor(s/86400) + 'd ago'
+}
+
+// Stable pseudo positivity score (78–98) derived from the title
+function titleScore(title) {
+  let h = 0
+  for (let i = 0; i < title.length; i++) h = (h * 31 + title.charCodeAt(i)) >>> 0
+  return 78 + (h % 21)
+}
+
+async function fetchWithTimeout(url, ms = 10000) {
+  const ctrl = new AbortController()
+  const t = setTimeout(() => ctrl.abort(), ms)
+  try { return await fetch(url, {signal: ctrl.signal}) }
+  finally { clearTimeout(t) }
+}
+
+async function fetchViaProxy(url) {
+  for (const wrap of CORS_PROXIES) {
+    try {
+      const res = await fetchWithTimeout(wrap(url))
+      if (!res.ok) continue
+      const text = await res.text()
+      if (text.includes('<item>')) return text
+    } catch (e) { /* try next proxy */ }
+  }
+  return null
+}
+
+// Independent fallback: rss2json converts the feed server-side and
+// serves JSON with CORS headers, so it works without any proxy.
+async function fetchViaRss2json(rssUrl, slug) {
+  try {
+    const res = await fetchWithTimeout('https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent(rssUrl))
+    if (!res.ok) return []
+    const j = await res.json()
+    if (j.status !== 'ok' || !Array.isArray(j.items)) return []
+    return j.items.slice(0, 6).map((item, i) => {
+      let title = item.title || ''
+      let source = title.includes(' - ') ? title.split(' - ').pop() : 'News'
+      title = title.replace(/ - [^-]+$/, '').trim()
+      const summary = extractSummary(item.description, title)
+      title = escapeHtml(title)
+      source = escapeHtml(source)
+      const pub = new Date(item.pubDate || Date.now())
+      return {
+        id: `live-${slug}-${i}`,
+        title, category: slug, source,
+        time: timeAgo(pub), _ts: pub.getTime(),
+        score: titleScore(title),
+        summary, takeaway: '',
+        url: item.link || '',
+      }
+    }).filter(a => a.title && a.url)
+  } catch (e) { return [] }
+}
+
+function escapeHtml(s) {
+  return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))
+}
+
+// Pull a usable text summary out of an RSS description. Google News
+// descriptions are often just the headline as a link — skip those.
+function extractSummary(rawHtml, title) {
+  if (!rawHtml) return ''
+  const div = document.createElement('div')
+  div.innerHTML = rawHtml
+  const text = (div.textContent || '').replace(/\s+/g, ' ').trim()
+  if (text.length < 60) return ''
+  if (text.toLowerCase().startsWith(title.slice(0, 25).toLowerCase())) return ''
+  return escapeHtml(text.length > 220 ? text.slice(0, 217) + '…' : text)
+}
+
+function parseFeed(xmlText, slug) {
+  const doc = new DOMParser().parseFromString(xmlText, 'text/xml')
+  return [...doc.querySelectorAll('item')].slice(0, 6).map((item, i) => {
+    let title = item.querySelector('title')?.textContent || ''
+    let source = item.querySelector('source')?.textContent
+      || (title.includes(' - ') ? title.split(' - ').pop() : 'News')
+    title = title.replace(/ - [^-]+$/, '').trim()
+    const summary = extractSummary(item.querySelector('description')?.textContent, title)
+    title = escapeHtml(title)
+    source = escapeHtml(source)
+    const link = item.querySelector('link')?.textContent || ''
+    const pub = new Date(item.querySelector('pubDate')?.textContent || Date.now())
+    return {
+      id: `live-${slug}-${i}`,
+      title, category: slug, source,
+      time: timeAgo(pub), _ts: pub.getTime(),
+      score: titleScore(title),
+      summary, takeaway: '',
+      url: link,
+    }
+  }).filter(a => a.title && a.url)
+}
+
+let liveNewsLoading = false
+
+async function loadLiveNews() {
+  if (liveNewsLoading || liveNewsActive) return
+  liveNewsLoading = true
+  updateFeedStatus()
+  const results = await Promise.allSettled(
+    Object.entries(LIVE_QUERIES).map(async ([slug, q]) => {
+      const rssUrl = `https://news.google.com/rss/search?q=${encodeURIComponent(q)}&hl=en-US&gl=US&ceid=US:en`
+      const xml = await fetchViaProxy(rssUrl)
+      if (xml) return parseFeed(xml, slug)
+      return fetchViaRss2json(rssUrl, slug)
+    })
+  )
+  liveNewsLoading = false
+  const live = results.flatMap(r => r.status === 'fulfilled' ? r.value : [])
+  if (live.length < 4) {
+    showToast('Live news unavailable — showing sample stories. Click the "Sample stories" label to retry.','info')
+    updateFeedStatus()
+    return
+  }
+  live.sort((a, b) => (b._ts || 0) - (a._ts || 0))
+  // Backfill any category whose feed came back empty with the bundled
+  // sample stories so no section of the site renders blank
+  const covered = new Set(live.map(a => a.category))
+  CATEGORIES.forEach(c => {
+    if (!covered.has(c.slug)) live.push(...SAMPLE_ARTICLES.filter(a => a.category === c.slug))
+  })
+  ARTICLES.splice(0, ARTICLES.length, ...live)
+  liveNewsActive = true
+  // Refresh whatever the user is currently looking at
+  if (currentPage === 'home') renderHome()
+  else if (currentPage === 'category') renderCategory(currentCategory)
+  updateFeedStatus()
+}
+
+function updateFeedStatus() {
+  const el = document.getElementById('feedStatus')
+  if (!el) return
+  if (liveNewsActive) {
+    el.innerHTML = '<span class="live-dot"></span>Live'
+    el.style.color = '#16a34a'
+    el.style.cursor = 'default'
+    el.onclick = null
+    el.title = ''
+  } else if (liveNewsLoading) {
+    el.textContent = 'Loading live news…'
+    el.style.color = 'var(--muted)'
+    el.style.cursor = 'default'
+    el.onclick = null
+  } else {
+    el.innerHTML = 'Sample stories · <u>retry live</u>'
+    el.style.color = 'var(--muted)'
+    el.style.cursor = 'pointer'
+    el.title = 'Click to retry loading live news'
+    el.onclick = loadLiveNews
+  }
+}
+
+/* ─── LIVE MARKET DATA (Yahoo Finance charts via the same proxies) ── */
+const YAHOO_SYMBOLS = {SPY:'SPY', QQQ:'QQQ', BTC:'BTC-USD', GLD:'GLD'}
+let marketsLive = false
+
+async function fetchYahooChart(sym) {
+  const url = `https://query1.finance.yahoo.com/v8/finance/chart/${sym}?range=1mo&interval=1d`
+  for (const wrap of CORS_PROXIES) {
+    try {
+      const res = await fetchWithTimeout(wrap(url))
+      if (!res.ok) continue
+      const j = JSON.parse(await res.text())
+      const r = j?.chart?.result?.[0]
+      if (r?.meta) return r
+    } catch (e) { /* try next proxy */ }
+  }
+  return null
+}
+
+async function loadLiveMarkets() {
+  const results = await Promise.allSettled(MARKETS.map(async m => {
+    const r = await fetchYahooChart(YAHOO_SYMBOLS[m.sym])
+    if (!r) return false
+    const closes = (r.indicators?.quote?.[0]?.close || []).filter(v => typeof v === 'number')
+    const price = r.meta.regularMarketPrice ?? closes[closes.length - 1]
+    if (!price || closes.length < 2) return false
+    // Last close usually IS the current price during/after today's session,
+    // so compare against the close before it for the daily change
+    const last = closes[closes.length - 1]
+    const prev = Math.abs(last - price) < price * 0.001 ? closes[closes.length - 2] : last
+    m.price = +price.toFixed(2)
+    m.chg = +(((price - prev) / prev) * 100).toFixed(2)
+    MARKET_HISTORY[m.sym] = closes.slice(-12).map(v => +v.toFixed(2))
+    return true
+  }))
+  marketsLive = results.filter(r => r.status === 'fulfilled' && r.value).length >= 2
+  if (marketsLive) {
+    renderTicker()
+    renderMarket('marketRows')
+    renderMarket('catMarketRows')
+    if (document.getElementById('marketDetailContent')?.innerHTML) renderMarketDetail()
+  }
+  updateMarketStatus()
+}
+
+function updateMarketStatus() {
+  document.querySelectorAll('.mkt-live-flag').forEach(el => {
+    el.innerHTML = marketsLive
+      ? '<span class="live-dot"></span>Live'
+      : 'Sample data'
+    el.style.color = marketsLive ? '#16a34a' : 'var(--muted)'
+  })
+}
+
+function openArticle(id) {
+  const a = ARTICLES.find(x => x.id === id)
+  if (a?.url) window.open(a.url, '_blank', 'noopener')
+  else showToast(`Opening ${a?.source || 'source'}...`, 'info')
+}
+
+const MARKETS = [
+  {sym:'SPY',name:'S&P 500 ETF',price:545.12,chg:1.24},
+  {sym:'QQQ',name:'NASDAQ ETF',price:472.88,chg:1.83},
+  {sym:'BTC',name:'Bitcoin',price:71200,chg:3.14},
+  {sym:'GLD',name:'Gold ETF',price:225.40,chg:-0.31},
+]
+
+const TRENDS = [
+  {title:'AI adoption in African healthcare accelerating rapidly',cat:'health',count:47,momentum:'↑'},
+  {title:'Global evangelical church planting hits record pace',cat:'evangelical',count:31,momentum:'↑'},
+  {title:'Renewable energy costs drop below coal for 80% of world',cat:'technology',count:28,momentum:'↑'},
+  {title:'Youth sports development programs expanding globally',cat:'sports',count:19,momentum:'→'},
+  {title:'Financial inclusion surging across emerging markets',cat:'finance',count:22,momentum:'↑'},
+]
+
+const ACADEMY_PATHS = [
+  {id:'beginner',label:'Beginner Investor',emoji:'🌱',desc:'Start your investing journey. Learn what stocks, ETFs, and markets really are.',color:'#047857',bg:'#ecfdf5',premium:false,lessons:20},
+  {id:'intermediate',label:'Intermediate Investor',emoji:'📊',desc:'Deepen your skills. Technical analysis, risk management, and portfolio construction.',color:'#1d4ed8',bg:'#eff6ff',premium:true,lessons:20},
+  {id:'swing-trader',label:'Swing Trader',emoji:'📈',desc:'Capture medium-term moves. Entry/exit strategies, chart patterns, and trade management.',color:'#7e22ce',bg:'#fdf4ff',premium:true,lessons:20},
+  {id:'advanced',label:'Advanced Market Analysis',emoji:'🧠',desc:'Master-level concepts. Options, quantitative methods, and market psychology.',color:'#c2410c',bg:'#fff7ed',premium:true,lessons:20},
+]
+
+const LESSONS = {
+  beginner: [
+    {slug:'what-is-investing',title:'What Is Investing?',desc:'Understanding the basics of putting money to work',duration:8,
+     content:`<h3>What Is Investing?</h3><p>Investing means putting your money to work so it grows over time. Instead of leaving cash in a drawer (where inflation slowly erodes its value), investors deploy capital into assets — stocks, bonds, real estate, or businesses — that generate returns.</p><h3>The Core Idea: Your Money Working for You</h3><p>When you invest $1,000 in a company's stock, you become a part-owner of that business. If the business grows and becomes more valuable, your $1,000 grows too. This is fundamentally different from saving, where your money sits idle (or earns minimal interest).</p><h3>Why Start Now?</h3><p>The earlier you invest, the more time your money has to compound. $100 invested today at 8% annual returns becomes $466 in 20 years — without you doing anything. This is the power of compound interest, which Albert Einstein reportedly called "the eighth wonder of the world."</p><h3>Risk vs Reward</h3><p>All investing involves risk — the possibility of losing money. In general, higher potential returns come with higher risk. Understanding and managing this tradeoff is the core skill of investing.</p>`,
+     quiz:[{q:'What is the primary goal of investing?',opts:['Spend money today','Grow wealth over time','Avoid paying taxes','Impress others'],correct:1,exp:'Investing aims to grow your wealth over time by putting money to work in assets that increase in value.'}]},
+    {slug:'how-markets-work',title:'How Stock Markets Work',desc:'The mechanics of buying and selling shares',duration:10,
+     content:`<h3>How Stock Markets Work</h3><p>A stock market is a marketplace where buyers and sellers trade ownership stakes in companies. When a company wants to raise money, it can "go public" by selling shares through an Initial Public Offering (IPO). After that, those shares trade freely between investors on exchanges like the NYSE or NASDAQ.</p><h3>Supply and Demand</h3><p>Stock prices are determined by supply and demand. If more people want to buy a stock than sell it, the price goes up. If more people want to sell, the price drops. This happens continuously during market hours (9:30am–4pm Eastern Time in the US).</p><h3>Who Trades?</h3><p>The market includes individual retail investors (people like you), institutional investors (pension funds, mutual funds, hedge funds), and market makers who ensure there's always someone to buy or sell. Today, most trades happen in milliseconds through electronic systems.</p><h3>The Role of Exchanges</h3><p>Exchanges like the NYSE provide the infrastructure — the rules, technology, and oversight — that make trading safe and orderly. They ensure price transparency and that trades are settled correctly.</p>`,
+     quiz:[{q:'What determines a stock\'s price?',opts:['The government','Supply and demand','The company\'s CEO','Random chance'],correct:1,exp:'Stock prices are set by supply and demand — when more buyers want shares than sellers, the price rises, and vice versa.'}]},
+    {slug:'understanding-etfs',title:'Understanding ETFs',desc:'Exchange-traded funds explained simply',duration:12,
+     content:`<h3>What Is an ETF?</h3><p>An Exchange-Traded Fund (ETF) is a basket of securities — stocks, bonds, or commodities — that trades on an exchange just like a single stock. When you buy one share of an ETF, you're instantly diversified across all the assets inside it.</p><h3>The Most Famous Example: SPY</h3><p>The SPDR S&P 500 ETF (SPY) holds all 500 stocks in the S&P 500 index. When you buy SPY, you own a tiny slice of Apple, Microsoft, Amazon, and 497 other companies — all at once, for the price of one share.</p><h3>Why ETFs Are Revolutionary</h3><p>Before ETFs, getting diversified meant buying hundreds of individual stocks or paying high fees for mutual funds. ETFs made professional diversification available to anyone with $50. John Bogle, founder of Vanguard, called low-cost index ETFs "the greatest invention in the history of finance."</p><h3>Key Advantages</h3><p>ETFs offer low costs (many charge under 0.1% per year), instant diversification, tax efficiency, and transparency — you can always see exactly what's inside them. For most investors, a simple portfolio of a few ETFs beats 90% of actively managed funds over long periods.</p>`,
+     quiz:[{q:'What does an ETF do?',opts:['It\'s a type of bank account','It holds a basket of securities that trades like a stock','It guarantees returns','It only holds bonds'],correct:1,exp:'An ETF holds a basket of securities (stocks, bonds, etc.) and trades on exchanges like a single stock, giving investors instant diversification.'}]},
+  ]
+}
+
+const TUTOR_RESPONSES = [
+  "Great question! Think of it this way: {context}. The key principle here is that every financial concept builds on simpler foundations — once you understand the basics, the advanced stuff clicks naturally.",
+  "That's one of the most important things to understand about investing. The short answer is: {context}. Would you like me to go deeper on any aspect of this?",
+  "You're asking exactly the right questions. Here's the core insight: {context}. Many investors miss this and it costs them significantly over time.",
+  "Let me give you a practical example. {context}. Does that help clarify things? The goal is always to connect theory to real-world decisions you'll actually make.",
+]
+
+/* ═══════════════════════════════════════════════════════════════════
+   STATE
+═══════════════════════════════════════════════════════════════════════ */
+let currentPage = 'home'
+let currentCategory = null
+let activeCatFilter = ''
+let billingPeriod = 'yearly'
+let tutorHistory = []
+let quizAnswers = {}
+let quizSubmitted = false
+let selectedPrefCats = ['evangelical','technology','health']
+
+/* ═══════════════════════════════════════════════════════════════════
+   NAVIGATION
+═══════════════════════════════════════════════════════════════════════ */
+function showPage(page, param, query) {
+  // Hide all pages
+  document.querySelectorAll('[id^="page-"]').forEach(el => el.style.display = 'none')
+  document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'))
+
+  currentPage = page
+  const pageEl = document.getElementById('page-' + page)
+  if (pageEl) {
+    pageEl.style.display = 'block'
+    pageEl.scrollIntoView ? window.scrollTo(0,0) : null
+  }
+
+  // Highlight active nav link (category pages use the category slug)
+  const navKey = page === 'category' ? param : page
+  const activeLink = document.querySelector(`.nav-link[data-page="${navKey}"]`)
+  if (activeLink) activeLink.classList.add('active')
+
+  // Render page-specific content
+  if (page === 'home') renderHome()
+  else if (page === 'category') renderCategory(param)
+  else if (page === 'academy') renderAcademy()
+  else if (page === 'lesson') renderLesson(param)
+  else if (page === 'pricing') renderPricing()
+  else if (page === 'search') renderSearch(query)
+  else if (page === 'profile') renderProfile()
+  else if (page === 'admin') renderAdmin()
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   TICKER
+═══════════════════════════════════════════════════════════════════════ */
+function renderTicker() {
+  const items = [...MARKETS, ...MARKETS] // duplicate for seamless loop
+  const html = items.map(m => {
+    const up = m.chg >= 0
+    return `<div class="tick">
+      <span class="tick-sym">${m.sym}</span>
+      <span class="tick-price">${m.price.toLocaleString()}</span>
+      <span class="${up?'up':'dn'}">${up?'▲':'▼'}${Math.abs(m.chg)}%</span>
+    </div>`
+  }).join('')
+  document.getElementById('tickerInner').innerHTML = html
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   HOME PAGE
+═══════════════════════════════════════════════════════════════════════ */
+function renderHome() {
+  homeShownCount = 8
+  updateFeedStatus()
+  renderHero()
+  renderAiStrip()
+  renderCatPills('catRow', activeCatFilter)
+  renderArticleGrid('artGrid', activeCatFilter, 0, 8)
+  renderMarket('marketRows')
+  renderAiInsight()
+  renderTrends()
+  renderAcademyPromo()
+  renderFooter()
+}
+
+function renderHero() {
+  const main = ARTICLES[0]
+  const cat = CATEGORIES.find(c => c.slug === main.category)
+  document.getElementById('heroMain').innerHTML = `
+    <div class="hero-eyebrow">Today's top story</div>
+    <h1 class="hero-headline">${main.title.replace(/(AI|Record|Historic|Breakthrough|1 Million)/g,'<em>$1</em>')}</h1>
+    ${main.summary ? `<p class="hero-summary">${main.summary}</p>` : ''}
+    <div class="hero-footer">
+      <span class="hero-cat tag" style="background:${cat?.color};color:#fff">${cat?.label}</span>
+      <span class="hero-source">${main.source} · ${main.time}</span>
+      <span class="score-pill">★ ${main.score}/100</span>
+    </div>
+    <span class="hero-read" onclick="openArticle('${main.id}')">
+      <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      Read original source
+    </span>
+  `
+
+  document.getElementById('heroStack').innerHTML = ARTICLES.slice(1,4).map(a => {
+    const c = CATEGORIES.find(x => x.slug === a.category)
+    return `<div class="hero-card" onclick="openArticle('${a.id}')">
+      <div class="hc-cat" style="color:${c?.color}">${c?.label}</div>
+      <div class="hc-title">${a.title}</div>
+      <div class="hc-meta">${a.source} · ${a.time} · ★ ${a.score}</div>
+    </div>`
+  }).join('')
+}
+
+function renderAiStrip() {
+  const stats = [
+    {icon:'🧠',label:'Stories analyzed',val:ARTICLES.length.toString(),sub:'by Claude AI'},
+    {icon:'⭐',label:'Avg positivity',val:'92/100',sub:'across all categories'},
+    {icon:'🌍',label:'Countries covered',val:'147',sub:'real-time feeds'},
+    {icon:'📡',label:'Active sources',val:'23',sub:'trusted publishers'},
+  ]
+  document.getElementById('aiStrip').innerHTML = stats.map(s => `
+    <div class="ai-cell">
+      <span class="ai-icon">${s.icon}</span>
+      <div class="ai-label">${s.label}</div>
+      <div class="ai-val">${s.val}</div>
+      <div class="ai-sub">${s.sub}</div>
+    </div>
+  `).join('')
+}
+
+function renderCatPills(containerId, activeVal) {
+  const el = document.getElementById(containerId)
+  if (!el) return
+  el.innerHTML = `<button class="cat-pill ${activeVal===''?'on':''}" style="--pill-color:#374151;color:#374151;border-color:#e5e7eb;background:${activeVal===''?'#374151':'#f9fafb'};${activeVal===''?'color:#fff!important':''}" onclick="filterCat('')">All</button>` +
+    CATEGORIES.map(c => `
+      <button class="cat-pill ${activeVal===c.slug?'on':''}"
+        style="--pill-color:${c.color};color:${c.color};border-color:${c.bg};background:${activeCatFilter===c.slug?c.color:c.bg};${activeCatFilter===c.slug?'color:#fff!important':''}"
+        onclick="filterCat('${c.slug}')">${c.label}</button>
+    `).join('')
+}
+
+function filterCat(slug) {
+  activeCatFilter = slug
+  homeShownCount = 8
+  renderCatPills('catRow', slug)
+  renderArticleGrid('artGrid', slug, 0, 8)
+}
+
+function renderArticleGrid(containerId, catFilter, offset, limit) {
+  const el = document.getElementById(containerId)
+  if (!el) return
+  const filtered = catFilter ? ARTICLES.filter(a => a.category === catFilter) : ARTICLES
+  const slice = filtered.slice(offset, offset + limit)
+  el.innerHTML = slice.length
+    ? slice.map((a, i) => renderArticleCard(a, i === 0 && !catFilter && offset === 0)).join('')
+    : `<div style="grid-column:1/-1;text-align:center;padding:48px 0;color:var(--muted)">
+        <div style="font-size:36px;margin-bottom:10px;opacity:.35">📰</div>
+        <div style="font-family:'Playfair Display',serif;font-weight:700;font-size:18px;color:var(--ink);margin-bottom:4px">No stories here yet</div>
+        <div style="font-size:13px">New stories arrive throughout the day — check back soon.</div>
+      </div>`
+}
+
+function renderArticleCard(a, featured) {
+  const cat = CATEGORIES.find(c => c.slug === a.category)
+  return `<div class="art-card card-hover${featured?' wide':''}" onclick="openArticle('${a.id}')">
+    <div class="art-cat">
+      <span class="tag" style="background:${cat?.bg};color:${cat?.color}">${cat?.label}</span>
+      <span class="score-pill">★ ${a.score}</span>
+    </div>
+    <div class="art-title">${a.title}</div>
+    ${a.summary ? `<div class="art-summary">${a.summary}</div>` : ''}
+    ${a.takeaway ? `<div class="art-insight"><div class="art-insight-label">Key insight</div><div class="art-insight-text">${a.takeaway}</div></div>` : ''}
+    <div class="art-foot">
+      <span class="art-source">${a.source}</span>
+      <span class="art-time">· ${a.time}</span>
+      <div class="score-bar">
+        <div class="score-track"><div class="score-fill" style="width:${a.score}%"></div></div>
+        <span style="font-size:10px;color:var(--muted)">${a.score}</span>
+      </div>
+    </div>
+  </div>`
+}
+
+let homeShownCount = 8
+
+function loadMoreArticles() {
+  const filtered = activeCatFilter ? ARTICLES.filter(a => a.category === activeCatFilter) : ARTICLES
+  const next = filtered.slice(homeShownCount, homeShownCount + 4)
+  if (next.length === 0) {
+    showToast('No more stories in this view','info')
+    return
+  }
+  const grid = document.getElementById('artGrid')
+  grid.innerHTML += next.map(a => renderArticleCard(a, false)).join('')
+  homeShownCount += next.length
+  showToast(`${next.length} more stor${next.length===1?'y':'ies'} loaded`,'success')
+}
+
+function renderMarket(containerId) {
+  const el = document.getElementById(containerId)
+  if (!el) return
+  el.innerHTML = MARKETS.map(m => {
+    const up = m.chg >= 0
+    return `<div class="market-row">
+      <div><div class="mkt-sym">${m.sym}</div><div class="mkt-name">${m.name}</div></div>
+      <div>
+        <div class="mkt-price">${m.price >= 1000 ? m.price.toLocaleString() : m.price.toFixed(2)}</div>
+        <div class="mkt-chg ${up?'up':'dn'}">
+          <svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+            ${up ? '<polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>' : '<polyline points="1 6 10.5 14.5 15.5 9.5 23 18"/>'}
+          </svg>
+          ${up?'+':''}${m.chg}%
+        </div>
+      </div>
+    </div>`
+  }).join('')
+}
+
+function renderAiInsight() {
+  const el = document.getElementById('aiInsight')
+  if (!el) return
+  el.innerHTML = `
+    <div class="ai-insight-label">AI Trend Report</div>
+    <div class="ai-insight-text">"AI adoption in African healthcare is increasing rapidly — 47 stories tracked across 12 nations in the past 48 hours, signaling a structural shift in healthcare delivery across the continent."</div>
+    <div class="ai-tags">
+      <span class="ai-tag">Healthcare AI</span>
+      <span class="ai-tag">Africa</span>
+      <span class="ai-tag">Innovation</span>
+      <span class="ai-tag">Rising trend</span>
+    </div>
+  `
+}
+
+function renderTrends() {
+  const el = document.getElementById('trendRows')
+  if (!el) return
+  el.innerHTML = TRENDS.map((t, i) => {
+    const cat = CATEGORIES.find(c => c.slug === t.cat)
+    return `<div class="trend-item">
+      <div class="trend-num">${String(i+1).padStart(2,'0')}</div>
+      <div class="trend-body">
+        <div class="trend-title">${t.title}</div>
+        <div class="trend-meta" style="color:${cat?.color}">${cat?.label} · ${t.count} stories</div>
+      </div>
+      <div class="trend-arrow">${t.momentum}</div>
+    </div>`
+  }).join('')
+}
+
+function renderAcademyPromo() {
+  const el = document.getElementById('pathRows')
+  if (!el) return
+  el.innerHTML = ACADEMY_PATHS.map(p => `
+    <div class="path-row">
+      <div class="path-icon" style="background:${p.bg};color:${p.color}">${p.emoji}</div>
+      <div>
+        <div class="path-label">${p.label}</div>
+        <div class="path-lessons">${p.lessons} lessons${p.premium?' · Premium':''}</div>
+      </div>
+      <span class="path-arrow">›</span>
+    </div>
+  `).join('')
+
+  el.querySelectorAll('.path-row').forEach((el, i) => {
+    const p = ACADEMY_PATHS[i]
+    el.onclick = () => {
+      const first = LESSONS[p.id]?.[0]
+      if (first) showPage('lesson', {path: p.id, slug: first.slug})
+      else showPage('academy')
+    }
+  })
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   CATEGORY PAGE
+═══════════════════════════════════════════════════════════════════════ */
+function renderCategory(slug) {
+  currentCategory = slug
+  const cat = CATEGORIES.find(c => c.slug === slug)
+  if (!cat) return
+
+  document.getElementById('catPageHeader').style.background = cat.bg
+  document.getElementById('catPageInner').innerHTML = `
+    <div class="cat-icon-big">${cat.icon}</div>
+    <div>
+      <h1 class="cat-page-title">${cat.label} News</h1>
+      <p class="cat-page-desc">${cat.desc}</p>
+      <span class="cat-badge">${ARTICLES.filter(a=>a.category===slug).length} stories · AI-curated · positivity score 40+</span>
+    </div>
+  `
+
+  renderArticleGrid('catArtGrid', slug, 0, 12)
+  renderMarket('catMarketRows')
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   ACADEMY PAGE
+═══════════════════════════════════════════════════════════════════════ */
+function renderAcademy() {
+  document.getElementById('pathCards').innerHTML = ACADEMY_PATHS.map(p => `
+    <div class="path-card card-hover" style="border-left-color:${p.color}" onclick="openPath('${p.id}')">
+      <div class="path-card-head">
+        <div>
+          <div class="path-emoji">${p.emoji}</div>
+        </div>
+        ${p.premium ? '<span class="premium-badge">🔒 Premium</span>' : ''}
+      </div>
+      <div class="path-title">${p.label}</div>
+      <div class="path-meta">
+        <span>📖 ${p.lessons} lessons</span>
+        <span>⏱ ${p.lessons*10}–${p.lessons*15} min</span>
+      </div>
+      <div class="path-desc" style="margin-top:8px">${p.desc}</div>
+    </div>
+  `).join('')
+
+  document.getElementById('academyFeatures').innerHTML = [
+    {icon:'🤖',title:'AI Tutor',desc:'Ask any investing question and get personalized answers from Claude AI — available inside every lesson.'},
+    {icon:'📝',title:'Quizzes',desc:'Test your knowledge after each lesson with interactive quizzes that give you instant feedback and explanations.'},
+    {icon:'📊',title:'Live Market Context',desc:'Lessons connect to current market events so you\'re always learning with real-world examples.'},
+  ].map(f => `
+    <div class="card" style="padding:20px;text-align:center">
+      <div style="font-size:32px;margin-bottom:10px">${f.icon}</div>
+      <div style="font-family:'Playfair Display',serif;font-size:15px;font-weight:700;color:var(--ink);margin-bottom:6px">${f.title}</div>
+      <div style="font-size:12px;color:var(--muted);line-height:1.65">${f.desc}</div>
+    </div>
+  `).join('')
+}
+
+function openPath(pathId) {
+  const lessons = LESSONS[pathId]
+  if (lessons && lessons.length > 0) {
+    showPage('lesson', {path: pathId, slug: lessons[0].slug})
+  } else {
+    showToast('More lessons coming soon!','info')
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   LESSON PAGE
+═══════════════════════════════════════════════════════════════════════ */
+function renderLesson(params) {
+  const {path, slug} = params || {path:'beginner',slug:'what-is-investing'}
+  const pathLessons = LESSONS[path] || []
+  const lesson = pathLessons.find(l => l.slug === slug) || pathLessons[0]
+  if (!lesson) return
+
+  const pathMeta = ACADEMY_PATHS.find(p => p.id === path)
+  document.getElementById('lessonBreadcrumb').textContent = pathMeta?.label || path
+
+  document.getElementById('lessonBody').innerHTML = `
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
+      <span style="font-size:11px;color:var(--muted);display:flex;align-items:center;gap:4px">
+        <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        ${lesson.duration} min read
+      </span>
+      <span style="font-size:11px;color:var(--muted)">· Beginner</span>
+    </div>
+    <h1 class="lesson-title">${lesson.title}</h1>
+    <p class="lesson-desc">${lesson.desc}</p>
+    <div class="lesson-content">${lesson.content}</div>
+    <div style="display:flex;justify-content:space-between;margin-top:24px;padding-top:16px;border-top:1px solid var(--border)">
+      <button class="btn-ghost" onclick="showPage('academy')" style="font-size:12px">← Back to Academy</button>
+      ${pathLessons.indexOf(lesson) < pathLessons.length - 1 ?
+        `<button class="btn-primary" style="font-size:12px" onclick="showPage('lesson',{path:'${path}',slug:'${pathLessons[pathLessons.indexOf(lesson)+1]?.slug}'})">Next lesson →</button>` :
+        `<button class="btn-primary" style="font-size:12px" onclick="showToast('Path complete! 🎉','success')">Complete path ✓</button>`
+      }
+    </div>
+  `
+
+  // Quiz
+  if (lesson.quiz) {
+    quizAnswers = {}
+    quizSubmitted = false
+    renderQuiz(lesson.quiz)
+  } else {
+    document.getElementById('quizCard').style.display = 'none'
+  }
+
+  // Tutor
+  tutorHistory = []
+  document.getElementById('tutorMessages').innerHTML = `
+    <div class="tutor-msg">
+      <div class="tutor-avatar ai">🤖</div>
+      <div class="tutor-bubble ai">Hi! I'm your AI tutor for "${lesson.title}". Ask me anything about this lesson — I'll explain it in plain, simple language. 🎓</div>
+    </div>
+  `
+}
+
+let currentQuiz = null
+
+function renderQuiz(quiz) {
+  currentQuiz = quiz
+  const el = document.getElementById('quizCard')
+  el.style.display = 'block'
+  el.innerHTML = `
+    <div class="quiz-title">
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      Knowledge Check
+    </div>
+    ${quiz.map((q, qi) => `
+      <div style="margin-bottom:16px">
+        <div class="q-question">${qi+1}. ${q.q}</div>
+        ${q.opts.map((opt, oi) => `
+          <button class="q-option" id="opt-${qi}-${oi}" onclick="selectQuizOption(${qi},${oi})">${opt}</button>
+        `).join('')}
+        <div class="q-explanation" id="exp-${qi}" style="display:none">💡 ${q.exp}</div>
+      </div>
+    `).join('')}
+    <button class="btn-primary quiz-submit" id="quizSubmitBtn" onclick="submitQuiz()">Submit answers</button>
+    <div id="quizScore" style="display:none"></div>
+  `
+}
+
+function selectQuizOption(qi, oi) {
+  if (quizSubmitted) return
+  quizAnswers[qi] = oi
+  // Clear row selection
+  document.querySelectorAll(`[id^="opt-${qi}-"]`).forEach(el => el.classList.remove('selected'))
+  document.getElementById(`opt-${qi}-${oi}`).classList.add('selected')
+}
+
+function submitQuiz() {
+  const quiz = currentQuiz
+  if (!quiz) return
+  if (Object.keys(quizAnswers).length < quiz.length) {
+    showToast('Please answer all questions first','error')
+    return
+  }
+  quizSubmitted = true
+  let correct = 0
+  quiz.forEach((q, qi) => {
+    const selected = quizAnswers[qi]
+    document.querySelectorAll(`[id^="opt-${qi}-"]`).forEach((el, oi) => {
+      el.disabled = true
+      if (oi === q.correct) el.classList.add('correct')
+      else if (oi === selected && oi !== q.correct) el.classList.add('wrong')
+    })
+    document.getElementById(`exp-${qi}`).style.display = 'block'
+    if (selected === q.correct) correct++
+  })
+  const pct = Math.round((correct / quiz.length) * 100)
+  const scoreEl = document.getElementById('quizScore')
+  scoreEl.style.display = 'block'
+  scoreEl.className = `quiz-score ${pct >= 70 ? 'score-pass' : 'score-fail'}`
+  scoreEl.innerHTML = pct >= 70
+    ? `🎉 Excellent! You scored ${pct}%. Lesson complete!`
+    : `You scored ${pct}%. Review the lesson and try again!`
+  document.getElementById('quizSubmitBtn').style.display = 'none'
+  showToast(pct >= 70 ? `Great job! ${pct}% correct 🎉` : `${pct}% — keep practicing!`, pct >= 70 ? 'success' : 'info')
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   AI TUTOR
+═══════════════════════════════════════════════════════════════════════ */
+function sendTutorMessage() {
+  const input = document.getElementById('tutorInput')
+  const q = input.value.trim()
+  if (!q) return
+
+  const msgs = document.getElementById('tutorMessages')
+
+  // User message
+  msgs.innerHTML += `
+    <div class="tutor-msg user">
+      <div class="tutor-avatar usr">👤</div>
+      <div class="tutor-bubble user">${q}</div>
+    </div>`
+  input.value = ''
+
+  // Typing indicator
+  const typingId = 'typing-' + Date.now()
+  msgs.innerHTML += `<div class="tutor-msg" id="${typingId}"><div class="tutor-avatar ai">🤖</div><div class="tutor-bubble ai" style="color:var(--muted)">Thinking...</div></div>`
+  msgs.scrollTop = msgs.scrollHeight
+
+  // Simulated response
+  setTimeout(() => {
+    const typing = document.getElementById(typingId)
+    if (typing) {
+      const response = generateTutorResponse(q)
+      typing.outerHTML = `
+        <div class="tutor-msg">
+          <div class="tutor-avatar ai">🤖</div>
+          <div class="tutor-bubble ai">${response}</div>
+        </div>`
+      msgs.scrollTop = msgs.scrollHeight
+    }
+  }, 1200)
+
+  tutorHistory.push({role:'user', content:q})
+}
+
+function generateTutorResponse(question) {
+  const q = question.toLowerCase()
+  if (q.includes('stock') || q.includes('share')) return "A stock represents partial ownership of a company. When you buy a share, you literally own a tiny piece of that business — which means you benefit when it grows. The price goes up if more people want to own a piece of that company than want to sell."
+  if (q.includes('etf') || q.includes('fund')) return "An ETF (Exchange-Traded Fund) is like a basket of stocks bundled together. Buy one ETF like SPY and you instantly own tiny pieces of 500 companies. It's the most efficient way most investors can diversify — low cost, instant diversification, tax efficient."
+  if (q.includes('risk') || q.includes('safe')) return "Every investment involves risk — the possibility your money decreases in value. Generally, higher potential returns come with higher risk. The key strategy is diversification: spreading your money across many investments so no single failure hurts you badly."
+  if (q.includes('start') || q.includes('begin') || q.includes('how')) return "The best way to start: open a brokerage account (Fidelity, Schwab, or Robinhood are popular), start with index ETFs like VTI or SPY, invest consistently (even $50/month), and don't panic when markets drop. Time in the market beats timing the market."
+  if (q.includes('compound') || q.includes('interest')) return "Compound interest means you earn returns on your previous returns. $1,000 at 8% becomes $1,080 after year 1, then $1,166 after year 2 (you earned 8% on the $1,080, not just the original $1,000). Over 30 years that $1,000 becomes $10,063 — without adding a single cent!"
+  return `That's a great question about investing. The key principle here is to understand the fundamentals before moving to complexity. In investing, "${question}" relates to how markets work — specifically, the relationship between risk and reward that underpins every financial decision. Would you like me to explain a specific aspect in more detail?`
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   PRICING PAGE
+═══════════════════════════════════════════════════════════════════════ */
+function renderPricing() {
+  const monthlyPrice = billingPeriod === 'yearly' ? '6.67' : '9.99'
+  const yearlyNote = billingPeriod === 'yearly' ? '<div style="font-size:11px;color:var(--muted);margin-top:2px">billed $79.99/year</div>' : ''
+
+  document.getElementById('pricingCards').innerHTML = `
+    <div class="plan-card card">
+      <div class="plan-name">Free</div>
+      <div class="plan-desc">Everything you need to stay informed.</div>
+      <div class="plan-price"><sup>$</sup>0</div>
+      <div class="plan-period">forever</div>
+      <ul class="plan-features">
+        ${['All 8 news categories','AI summaries & positivity scores','Market snapshot','Newsletter subscription','Beginner Finance Academy','Save up to 10 articles','Search & filter'].map(f=>`<li class="plan-feature">${f}</li>`).join('')}
+      </ul>
+      <button class="btn-ghost" style="width:100%;justify-content:center" onclick="showPage('home')">Get started free</button>
+    </div>
+    <div class="plan-card card featured">
+      <span class="most-popular">⭐ Most popular</span>
+      <div class="plan-name">Premium</div>
+      <div class="plan-desc">Full Finance Academy + AI trend reports.</div>
+      <div class="plan-price"><sup>$</sup>${monthlyPrice}</div>
+      <div class="plan-period">/month${yearlyNote}</div>
+      <ul class="plan-features">
+        ${['Everything in Free','Full Finance Academy (80 lessons)','AI Tutor — unlimited questions','Weekly AI Trend Reports','Personalized news feed','Unlimited saved articles','Advanced market insights','Ad-free experience'].map(f=>`<li class="plan-feature">${f}</li>`).join('')}
+      </ul>
+      <button class="btn-primary" style="width:100%;justify-content:center;font-size:14px;padding:12px" onclick="showToast('Redirecting to secure checkout...','success')">
+        ⚡ Upgrade to Premium
+      </button>
+    </div>
+  `
+
+  document.getElementById('faqList').innerHTML = [
+    {q:'Can I cancel anytime?',a:'Yes. Cancel anytime from your account settings. You keep Premium access until the end of your billing period — no partial refunds needed.'},
+    {q:'Does Inno4te News republish articles?',a:'Never. We collect, analyze, and summarize news — all articles link directly to the original source. We respect copyright completely.'},
+    {q:'What AI powers the summaries and tutor?',a:'Claude by Anthropic — one of the most advanced AI systems available. Every summary, positivity score, and Finance Academy AI Tutor response is powered by Claude.'},
+    {q:'Is the Finance Academy useful for total beginners?',a:'Absolutely. The Beginner path starts from "What is a stock?" with zero assumed knowledge. Our AI tutor answers follow-up questions in plain language.'},
+  ].map(f => `
+    <details style="border:1px solid var(--border);border-radius:var(--radius-sm);margin-bottom:8px;overflow:hidden" class="card">
+      <summary style="padding:14px 16px;font-weight:600;font-size:13px;color:var(--ink);cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center">
+        ${f.q}
+        <span style="color:var(--muted);font-size:18px;line-height:1">+</span>
+      </summary>
+      <div style="padding:0 16px 14px;font-size:12px;color:var(--muted);line-height:1.7">${f.a}</div>
+    </details>
+  `).join('')
+
+  // Update toggle UI
+  const toggle = document.getElementById('billingToggle')
+  const ml = document.getElementById('monthlyLabel')
+  const yl = document.getElementById('yearlyLabel')
+  if (billingPeriod === 'yearly') {
+    toggle.classList.add('on')
+    ml.classList.remove('on')
+    yl.classList.add('on')
+  } else {
+    toggle.classList.remove('on')
+    yl.classList.remove('on')
+    ml.classList.add('on')
+  }
+}
+
+function toggleBilling() {
+  billingPeriod = billingPeriod === 'yearly' ? 'monthly' : 'yearly'
+  renderPricing()
+}
+
+function setBilling(period) {
+  billingPeriod = period
+  renderPricing()
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   SEARCH PAGE
+═══════════════════════════════════════════════════════════════════════ */
+function renderSearch(initialQuery) {
+  document.getElementById('searchCatFilter').innerHTML =
+    CATEGORIES.map(c => `
+      <button class="cat-pill" style="--pill-color:${c.color};color:${c.color};border-color:${c.bg};background:${c.bg}" onclick="this.classList.toggle('on');doSearch()">
+        ${c.label}
+      </button>
+    `).join('')
+
+  if (initialQuery) {
+    document.getElementById('searchInput').value = initialQuery
+    doSearch()
+  } else {
+    document.getElementById('searchResults').innerHTML = `
+      <div style="text-align:center;padding:60px 0">
+        <div style="font-size:40px;margin-bottom:12px;opacity:.3">🔍</div>
+        <div style="font-family:'Playfair Display',serif;font-weight:700;font-size:20px;color:var(--ink);margin-bottom:6px">Search for positive news</div>
+        <div style="font-size:13px;color:var(--muted)">Try "AI health Africa", "church planting", or "renewable energy"</div>
+      </div>
+    `
+  }
+}
+
+function doSearch() {
+  const q = (document.getElementById('searchInput')?.value || '').toLowerCase().trim()
+  const activeCats = [...document.querySelectorAll('#searchCatFilter .cat-pill.on')].map(el => {
+    const label = el.textContent.trim()
+    return CATEGORIES.find(c => c.label === label)?.slug
+  }).filter(Boolean)
+
+  const results = ARTICLES.filter(a => {
+    const matchesQ = !q || a.title.toLowerCase().includes(q) || a.summary?.toLowerCase().includes(q)
+    const matchesCat = activeCats.length === 0 || activeCats.includes(a.category)
+    return matchesQ && matchesCat
+  })
+
+  const el = document.getElementById('searchResults')
+  if (!q && activeCats.length === 0) { renderSearch(null); return }
+
+  el.innerHTML = `
+    <div style="font-size:13px;color:var(--muted);margin-bottom:16px">${results.length} result${results.length!==1?'s':''} ${q?`for "<strong style="color:var(--ink)">${q}</strong>"`:''}</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px">
+      ${results.map(a => renderArticleCard(a, false)).join('') || '<div style="padding:40px;text-align:center;color:var(--muted)">No stories found. Try different keywords.</div>'}
+    </div>
+  `
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   PROFILE PAGE
+═══════════════════════════════════════════════════════════════════════ */
+function renderProfile() {
+  const el = document.getElementById('prefCats')
+  if (!el) return
+  el.innerHTML = CATEGORIES.map(c => `
+    <button class="cat-pill ${selectedPrefCats.includes(c.slug)?'on':''}"
+      style="--pill-color:${c.color};color:${selectedPrefCats.includes(c.slug)?'#fff':c.color};border-color:${c.bg};background:${selectedPrefCats.includes(c.slug)?c.color:c.bg}"
+      onclick="togglePrefCat('${c.slug}',this,'${c.color}','${c.bg}')">${c.icon} ${c.label}</button>
+  `).join('')
+}
+
+function togglePrefCat(slug, btn, color, bg) {
+  if (selectedPrefCats.includes(slug)) {
+    selectedPrefCats = selectedPrefCats.filter(s => s !== slug)
+    btn.classList.remove('on')
+    btn.style.color = color
+    btn.style.background = bg
+  } else {
+    selectedPrefCats.push(slug)
+    btn.classList.add('on')
+    btn.style.color = '#fff'
+    btn.style.background = color
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   ADMIN PAGE
+═══════════════════════════════════════════════════════════════════════ */
+function renderAdmin() {
+  const stats = [
+    {val:ARTICLES.length.toString(),label:'Articles'},
+    {val:'23',label:'Active Sources'},
+    {val:'1,284',label:'Users'},
+    {val:'847',label:'Subscribers'},
+    {val:'2',label:'Pending Sources'},
+  ]
+  document.getElementById('adminStats').innerHTML = stats.map(s => `
+    <div class="admin-stat card">
+      <div class="admin-stat-val">${s.val}</div>
+      <div class="admin-stat-label">${s.label}</div>
+    </div>
+  `).join('')
+
+  document.getElementById('adminPanels').innerHTML = `
+    <div class="card" style="overflow:hidden">
+      <div style="padding:12px 16px;border-bottom:1px solid var(--border);font-size:13px;font-weight:700;color:var(--ink)">Recent Articles</div>
+      ${ARTICLES.map(a => {
+        const c = CATEGORIES.find(x => x.slug === a.category)
+        return `<div style="padding:10px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px">
+          <div style="flex:1;min-width:0">
+            <div style="font-size:12px;font-weight:500;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${a.title}</div>
+            <div style="font-size:10px;color:var(--muted);margin-top:2px">${a.source} · ${c?.label}</div>
+          </div>
+          <span style="font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px;background:${a.score>=80?'#f0fdf4':a.score>=60?'#fffbeb':'#f9fafb'};color:${a.score>=80?'#166534':a.score>=60?'#92400e':'#6b7280'}">${a.score}</span>
+        </div>`
+      }).join('')}
+    </div>
+    <div class="card" style="overflow:hidden">
+      <div style="padding:12px 16px;border-bottom:1px solid var(--border);font-size:13px;font-weight:700;color:var(--ink);display:flex;justify-content:space-between;align-items:center">
+        Sources
+        <button class="btn-primary" style="font-size:11px;padding:5px 10px" onclick="showToast('Add source form coming soon','info')">+ Add source</button>
+      </div>
+      ${[
+        {name:'Christianity Today',type:'RSS',cat:'Evangelical',active:true},
+        {name:'TechCrunch',type:'RSS',cat:'Technology',active:true},
+        {name:'WHO News',type:'RSS',cat:'Health',active:true},
+        {name:'Mission Network News',type:'RSS',cat:'Evangelical',active:true},
+        {name:'BBC Sport',type:'RSS',cat:'Sports',active:true},
+        {name:'Reuters Business',type:'RSS',cat:'Finance',active:false},
+      ].map(s => `
+        <div style="padding:10px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px">
+          <div style="flex:1">
+            <div style="font-size:12px;font-weight:500;color:var(--ink)">${s.name}</div>
+            <div style="font-size:10px;color:var(--muted);margin-top:1px">${s.type} · ${s.cat}</div>
+          </div>
+          <div style="width:7px;height:7px;border-radius:50%;background:${s.active?'#22c55e':'#d1d5db'}"></div>
+        </div>
+      `).join('')}
+    </div>
+  `
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   NEWSLETTER
+═══════════════════════════════════════════════════════════════════════ */
+function subscribeNewsletter(inputId) {
+  const email = document.getElementById(inputId || 'nlEmail')?.value?.trim()
+  if (!email || !email.includes('@')) {
+    showToast('Please enter a valid email address','error')
+    return
+  }
+  showToast(`📬 Check your inbox at ${email} to confirm!`,'success')
+  const el = document.getElementById(inputId || 'nlEmail')
+  if (el) el.value = ''
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   FOOTER
+═══════════════════════════════════════════════════════════════════════ */
+function renderFooter() {
+  const half = Math.ceil(CATEGORIES.length/2)
+  document.getElementById('footerCats1').innerHTML = CATEGORIES.slice(0,half).map(c => `<li><a onclick="showPage('category','${c.slug}')">${c.icon} ${c.label}</a></li>`).join('')
+  document.getElementById('footerCats2').innerHTML = CATEGORIES.slice(half).map(c => `<li><a onclick="showPage('category','${c.slug}')">${c.icon} ${c.label}</a></li>`).join('')
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   TOAST NOTIFICATIONS
+═══════════════════════════════════════════════════════════════════════ */
+function showToast(message, type='info') {
+  const container = document.getElementById('toastContainer')
+  const toast = document.createElement('div')
+  toast.className = `toast ${type}`
+  toast.innerHTML = `
+    ${type==='success'?'✓':type==='error'?'✕':'ℹ'}
+    <span>${message}</span>
+  `
+  container.appendChild(toast)
+  setTimeout(() => {
+    toast.style.opacity = '0'
+    toast.style.transition = 'opacity .3s'
+    setTimeout(() => toast.remove(), 300)
+  }, 3500)
+}
+
+// init at bottom
+
+/* ═══════════════════════════════════════════════════════════════════
+   ABOUT PAGE
+═══════════════════════════════════════════════════════════════════════ */
+function renderAbout() {}
+
+/* ═══════════════════════════════════════════════════════════════════
+   CONTACT PAGE
+═══════════════════════════════════════════════════════════════════════ */
+function submitContact() {
+  const name = document.getElementById('cName')?.value?.trim()
+  const email = document.getElementById('cEmail')?.value?.trim()
+  const msg = document.getElementById('cMsg')?.value?.trim()
+  if (!name || !email || !msg) { showToast('Please fill all fields','error'); return }
+  showToast('Message sent! We will reply within 24 hours.','success')
+  document.getElementById('cName').value = ''
+  document.getElementById('cEmail').value = ''
+  document.getElementById('cMsg').value = ''
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   SAVED ARTICLES
+═══════════════════════════════════════════════════════════════════════ */
+let savedArticles = ['a1','a3','a5']
+
+function toggleSave(articleId, btn) {
+  if (savedArticles.includes(articleId)) {
+    savedArticles = savedArticles.filter(id => id !== articleId)
+    if (btn) { btn.textContent = '🔖 Save'; btn.style.color = 'var(--muted)' }
+    showToast('Removed from saved articles','info')
+  } else {
+    savedArticles.push(articleId)
+    if (btn) { btn.textContent = '✓ Saved'; btn.style.color = 'var(--brand)' }
+    showToast('Article saved!','success')
+  }
+}
+
+function renderSaved() {
+  const articles = ARTICLES.filter(a => savedArticles.includes(a.id))
+  const el = document.getElementById('savedGrid')
+  if (!el) return
+  if (articles.length === 0) {
+    el.innerHTML = `<div style="text-align:center;padding:60px 0;grid-column:1/-1">
+      <div style="font-size:40px;margin-bottom:12px;opacity:.3">🔖</div>
+      <div style="font-family:'Playfair Display',serif;font-weight:700;font-size:20px;color:var(--ink);margin-bottom:6px">No saved articles yet</div>
+      <div style="font-size:13px;color:var(--muted)">Browse news and save articles you want to read later.</div>
+    </div>`
+    return
+  }
+  el.innerHTML = articles.map(a => renderArticleCard(a, false)).join('')
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   NEWSLETTER MANAGER PAGE
+═══════════════════════════════════════════════════════════════════════ */
+const NL_TYPES = [
+  {id:'DAILY_DIGEST',label:'Daily Good News Digest',desc:'The best positive stories every morning',freq:'Daily'},
+  {id:'WEEKLY_CHRISTIAN',label:'Weekly Christian Digest',desc:'Faith, missions & evangelical news weekly',freq:'Weekly'},
+  {id:'TECHNOLOGY_WEEKLY',label:'Technology Weekly',desc:'AI, innovation & science breakthroughs',freq:'Weekly'},
+  {id:'FINANCE_DAILY',label:'Finance Daily',desc:'Markets, fintech & financial literacy tips',freq:'Daily'},
+  {id:'HEALTH_INSIGHTS',label:'Health Insights',desc:'Medical breakthroughs & wellness news',freq:'Weekly'},
+  {id:'EDUCATION_UPDATE',label:'Education Update',desc:'EdTech, scholarships & learning innovations',freq:'Weekly'},
+]
+let subscribedNL = ['DAILY_DIGEST']
+
+function renderNewsletterManager() {
+  const el = document.getElementById('nlManagerList')
+  if (!el) return
+  el.innerHTML = NL_TYPES.map(t => {
+    const on = subscribedNL.includes(t.id)
+    return `<div class="card" style="padding:16px;display:flex;align-items:center;gap:14px;margin-bottom:10px">
+      <div style="flex:1">
+        <div style="font-size:14px;font-weight:600;color:var(--ink);margin-bottom:2px">${t.label}</div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:4px">${t.desc}</div>
+        <span style="font-size:10px;color:var(--brand);background:var(--brand-light);padding:2px 8px;border-radius:20px;font-weight:600">${t.freq}</span>
+      </div>
+      <button id="nl-btn-${t.id}" onclick="toggleNL('${t.id}')"
+        style="padding:7px 16px;border-radius:var(--radius-sm);font-size:12px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s;border:1px solid;
+        background:${on?'var(--brand)':'transparent'};color:${on?'#fff':'var(--brand)'};border-color:var(--brand)">
+        ${on?'✓ Subscribed':'Subscribe'}
+      </button>
+    </div>`
+  }).join('')
+}
+
+function toggleNL(id) {
+  const btn = document.getElementById(`nl-btn-${id}`)
+  if (subscribedNL.includes(id)) {
+    subscribedNL = subscribedNL.filter(x => x !== id)
+    btn.textContent = 'Subscribe'
+    btn.style.background = 'transparent'
+    btn.style.color = 'var(--brand)'
+    showToast('Unsubscribed','info')
+  } else {
+    subscribedNL.push(id)
+    btn.textContent = '✓ Subscribed'
+    btn.style.background = 'var(--brand)'
+    btn.style.color = '#fff'
+    showToast('Subscribed! Check your email to confirm.','success')
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   MARKET DETAIL PAGE
+═══════════════════════════════════════════════════════════════════════ */
+const MARKET_HISTORY = {
+  SPY: [520,525,518,530,535,528,540,545,542,548,550,545],
+  QQQ: [460,465,458,470,475,468,480,472,478,482,479,473],
+  BTC: [65000,67000,63000,69000,71000,68000,72000,71200,73000,70000,69500,71200],
+  GLD: [218,220,222,219,224,226,223,227,225,228,226,225],
+}
+
+function renderMarketDetail() {
+  const el = document.getElementById('marketDetailContent')
+  if (!el) return
+  el.innerHTML = `
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px">
+      ${MARKETS.map(m => {
+        const up = m.chg >= 0
+        return `<div class="card" style="padding:16px;cursor:pointer" onclick="renderMiniChart('${m.sym}')">
+          <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);margin-bottom:4px">${m.sym}</div>
+          <div style="font-size:20px;font-weight:700;color:var(--ink);margin-bottom:2px">${m.price>=1000?m.price.toLocaleString():m.price.toFixed(2)}</div>
+          <div style="font-size:12px;font-weight:600;color:${up?'#16a34a':'#dc2626'};display:flex;align-items:center;gap:3px">
+            ${up?'▲':'▼'} ${Math.abs(m.chg)}%
+          </div>
+          <div style="margin-top:8px;height:36px" id="spark-${m.sym}"></div>
+        </div>`
+      }).join('')}
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+      <div class="card" style="padding:18px">
+        <div style="font-size:13px;font-weight:700;color:var(--ink);margin-bottom:12px">📅 Typical Key Economic Events <span style="font-size:10px;font-weight:500;color:var(--muted)">(illustrative)</span></div>
+        ${[
+          {day:'Mon',event:'Fed Chair Powell Speech',impact:'High'},
+          {day:'Tue',event:'CPI Inflation Report',impact:'High'},
+          {day:'Wed',event:'FOMC Meeting Minutes',impact:'Medium'},
+          {day:'Thu',event:'Initial Jobless Claims',impact:'Medium'},
+          {day:'Fri',event:'Non-Farm Payrolls',impact:'High'},
+        ].map(e => `
+          <div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)">
+            <span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);width:28px">${e.day}</span>
+            <span style="font-size:12px;color:var(--ink);flex:1">${e.event}</span>
+            <span style="font-size:10px;font-weight:600;padding:2px 8px;border-radius:20px;
+              background:${e.impact==='High'?'#fef2f2':'#fffbeb'};
+              color:${e.impact==='High'?'#991b1b':'#92400e'}">${e.impact}</span>
+          </div>
+        `).join('')}
+      </div>
+      <div class="card" style="padding:18px">
+        <div style="font-size:13px;font-weight:700;color:var(--ink);margin-bottom:12px">📊 Market Insights <span style="font-size:10px;font-weight:500;color:var(--muted)">(sample commentary)</span></div>
+        ${[
+          {icon:'📈',title:'S&P 500 at all-time highs',body:'Tech earnings beat expectations driving broad market gains.'},
+          {icon:'💰',title:'Bitcoin breaks $71K resistance',body:'Institutional buying continues to support crypto markets.'},
+          {icon:'🏦',title:'Fed signals rate cuts ahead',body:'December meeting expected to bring first 25bps cut.'},
+        ].map(i => `
+          <div style="display:flex;gap:10px;margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid var(--border)">
+            <span style="font-size:20px">${i.icon}</span>
+            <div>
+              <div style="font-size:12px;font-weight:600;color:var(--ink);margin-bottom:2px">${i.title}</div>
+              <div style="font-size:11px;color:var(--muted);line-height:1.5">${i.body}</div>
+            </div>
+          </div>
+        `).join('')}
+        <div style="padding-top:4px">
+          <a onclick="showPage('academy')" style="font-size:12px;color:var(--brand);font-weight:600;cursor:pointer">Learn to read market signals →</a>
+        </div>
+      </div>
+    </div>
+  `
+  // Draw sparklines
+  setTimeout(() => MARKETS.forEach(m => drawSparkline(`spark-${m.sym}`, MARKET_HISTORY[m.sym], m.chg >= 0)), 50)
+}
+
+function drawSparkline(containerId, data, positive) {
+  const el = document.getElementById(containerId)
+  if (!el) return
+  const w = el.offsetWidth || 120, h = 36
+  const min = Math.min(...data), max = Math.max(...data)
+  const pts = data.map((v, i) => {
+    const x = (i / (data.length - 1)) * w
+    const y = h - ((v - min) / (max - min)) * h
+    return `${x},${y}`
+  }).join(' ')
+  const color = positive ? '#16a34a' : '#dc2626'
+  el.innerHTML = `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" style="display:block">
+    <polyline points="${pts}" fill="none" stroke="${color}" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/>
+  </svg>`
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   EXTRA ACADEMY LESSONS
+═══════════════════════════════════════════════════════════════════════ */
+LESSONS.beginner.push(
+  {slug:'risk-and-reward',title:'Risk and Reward',desc:'Why higher returns require accepting more risk',duration:8,
+   content:`<h3>The Risk-Reward Relationship</h3><p>One of the most fundamental principles in investing: higher potential returns always come with higher risk. There is no such thing as a high-return, zero-risk investment. If anyone offers you one, it's a scam.</p><h3>Types of Investment Risk</h3><p><strong>Market risk</strong>: The value of your investment goes down because the whole market falls (like in 2008 or 2020). <strong>Company risk</strong>: A specific company fails (like Enron or Lehman Brothers). <strong>Inflation risk</strong>: Your returns don't keep up with inflation, so you lose purchasing power even if the number goes up. <strong>Liquidity risk</strong>: You can't sell your investment when you need cash.</p><h3>The Risk Pyramid</h3><p>Think of investments as a pyramid. At the base: cash and government bonds (lowest risk, lowest return). In the middle: diversified index ETFs (moderate risk, historically 7-10% annually). At the top: individual stocks, crypto, options (highest risk, potentially highest reward).</p><h3>Time Reduces Risk</h3><p>Here's the good news: time is the greatest risk reducer. The S&P 500 has never lost money over any 20-year period in history. Short-term volatility smooths out over long time horizons — which is why starting young matters so much.</p>`,
+   quiz:[{q:'What is the relationship between risk and potential return?',opts:['Higher risk = lower return','Higher risk = higher potential return','They are unrelated','Lower risk = higher return'],correct:1,exp:'In investing, higher potential returns always come with higher risk. This is why government bonds return less than stocks — you take more risk with stocks.'}]}
+)
+
+LESSONS.intermediate = [
+  {slug:'technical-analysis-intro',title:'Introduction to Technical Analysis',desc:'Reading price charts to make smarter decisions',duration:15,
+   content:`<h3>What Is Technical Analysis?</h3><p>Technical analysis (TA) is the practice of analyzing price charts and trading volume to forecast future price movements. Unlike fundamental analysis (which studies company financials), TA assumes that all known information is already reflected in the price.</p><h3>The Three Core Assumptions</h3><p><strong>1. The market discounts everything</strong>: Price already reflects all public information, earnings, news, and sentiment. <strong>2. Price moves in trends</strong>: Stocks that are going up tend to keep going up (momentum). Stocks going down tend to keep going down. <strong>3. History repeats</strong>: Human psychology drives recurring patterns that show up repeatedly in charts.</p><h3>Key Chart Patterns</h3><p><strong>Support and Resistance</strong>: Support is a price level where buying has historically been strong enough to stop the price from falling further. Resistance is where selling pressure has historically stopped upward moves. <strong>Head and Shoulders</strong>: A bearish reversal pattern — three peaks with the middle one highest. <strong>Double Bottom</strong>: A bullish reversal pattern — two similar lows suggesting strong support.</p><h3>Key Indicators</h3><p><strong>Moving Averages (MA)</strong>: Smooth out price action to show the trend direction. The 50-day and 200-day MAs are widely watched. <strong>RSI (Relative Strength Index)</strong>: Measures momentum — above 70 is "overbought," below 30 is "oversold." <strong>MACD</strong>: Shows the relationship between two moving averages; crossovers signal potential trend changes.</p>`,
+   quiz:[{q:'What does support and resistance refer to in technical analysis?',opts:['Company earnings levels','Price levels where buying/selling pressure has historically been strong','Government price controls','Dividend payment levels'],correct:1,exp:'Support is a price where buying historically prevents further decline; resistance is where selling historically prevents further advance. These levels often become self-fulfilling as traders watch them.'}]},
+]
+
+LESSONS['swing-trader'] = [
+  {slug:'swing-trading-basics',title:'Swing Trading Fundamentals',desc:'Capturing medium-term price moves for profit',duration:20,
+   content:`<h3>What Is Swing Trading?</h3><p>Swing trading aims to capture gains over a period of days to weeks by trading the natural "swings" in stock prices. It's the middle ground between day trading (hours) and investing (years).</p><h3>The Core Swing Trading Cycle</h3><p>Stocks don't move in straight lines — they oscillate up and down around an overall trend. Swing traders aim to buy near the bottom of a swing (after a pullback within an uptrend) and sell near the top of the next swing. You're not trying to catch the absolute bottom or top — just a meaningful portion of each move.</p><h3>Identifying Swing Setups</h3><p><strong>The Pullback Setup</strong>: A stock is in a clear uptrend (higher highs, higher lows). It pulls back 5-15% from recent highs. Volume drops during the pullback (shows conviction is low — it's just profit-taking). You buy as it starts recovering, targeting the previous high.</p><h3>Risk Management Is Everything</h3><p>Professional swing traders risk only 1-2% of their total capital per trade. If you have $10,000, you never risk more than $100-200 on any single trade. Use a stop-loss — a pre-determined price below your entry where you'll exit to limit losses. The best traders are not those who are always right; they're those who manage losses ruthlessly.</p>`,
+   quiz:[{q:'What time frame do swing traders typically hold positions?',opts:['Minutes to hours','Days to weeks','Months to years','Exactly one day'],correct:1,exp:'Swing traders hold positions for days to weeks, trying to capture one "swing" in a stock\'s price — typically a 5-20% move within a larger trend.'}]},
+]
+
+LESSONS.advanced = [
+  {slug:'options-basics',title:'Options Trading Basics',desc:'Understanding calls, puts, and the Greeks',duration:25,
+   content:`<h3>What Are Options?</h3><p>An option is a contract that gives you the <em>right, but not the obligation</em>, to buy or sell a stock at a specific price (the "strike price") before a specific date (the "expiration"). You pay a premium for this right.</p><h3>Calls and Puts</h3><p><strong>Call option</strong>: The right to BUY 100 shares at the strike price. Profitable when you expect the stock to go UP. Example: You buy a AAPL $200 call for $5 (= $500 total, since it covers 100 shares). If AAPL rises to $220, your call is worth at least $20 ($2,000). You made $1,500 on a $500 investment.</p><p><strong>Put option</strong>: The right to SELL 100 shares at the strike price. Profitable when you expect the stock to go DOWN. Used by investors as insurance (hedging) against losses in their portfolio.</p><h3>The Greeks</h3><p><strong>Delta</strong>: How much the option price changes per $1 move in the stock. A delta of 0.5 means the option gains $0.50 for every $1 the stock rises. <strong>Theta</strong>: Time decay — options lose value as expiration approaches. Every day that passes, your option is worth slightly less, all else being equal. <strong>Vega</strong>: Sensitivity to volatility. Higher uncertainty = more expensive options. <strong>Gamma</strong>: Rate of change of delta — gets larger as expiration nears.</p><h3>⚠️ Options Are Risky</h3><p>Options can expire completely worthless, losing 100% of your premium. Never risk money you can't afford to lose. Start by learning to read options chains and paper-trade (simulate trades without real money) before using real capital.</p>`,
+   quiz:[{q:'What does a call option give you the right to do?',opts:['Sell shares at the strike price','Buy shares at the strike price','Borrow shares from a broker','Call the company\'s management'],correct:1,exp:'A call option gives you the right (but not obligation) to BUY 100 shares of a stock at the strike price before expiration. You profit when the stock rises above strike + premium paid.'}]},
+]
+
+/* ═══════════════════════════════════════════════════════════════════
+   OVERRIDE showPage TO HANDLE NEW PAGES
+═══════════════════════════════════════════════════════════════════════ */
+const _origShowPage = showPage
+showPage = function(page, param, query) {
+  // Handle extra pages not in original page-X divs
+  if (['about','contact','privacy','terms','newsletter','saved','market'].includes(page)) {
+    renderDynamicPage(page)
+    return
+  }
+  _origShowPage(page, param, query)
+}
+
+function renderDynamicPage(page) {
+  // Hide all static pages
+  document.querySelectorAll('[id^="page-"]').forEach(el => el.style.display = 'none')
+  document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'))
+
+  let content = ''
+  if (page === 'about') content = renderAboutContent()
+  else if (page === 'contact') content = renderContactContent()
+  else if (page === 'privacy') content = renderPrivacyContent()
+  else if (page === 'terms') content = renderTermsContent()
+  else if (page === 'newsletter') content = renderNewsletterContent()
+  else if (page === 'saved') content = renderSavedContent()
+  else if (page === 'market') content = renderMarketContent()
+
+  // Inject into a shared dynamic page container
+  let dynEl = document.getElementById('page-dynamic')
+  if (!dynEl) {
+    dynEl = document.createElement('div')
+    dynEl.id = 'page-dynamic'
+    document.getElementById('siteFooter').before(dynEl)
+  }
+  dynEl.innerHTML = content
+  dynEl.style.display = 'block'
+  window.scrollTo(0, 0)
+
+  // Run post-render logic
+  if (page === 'newsletter') renderNewsletterManager()
+  if (page === 'saved') renderSaved()
+  if (page === 'market') renderMarketDetail()
+  renderFooter()
+}
+
+function renderAboutContent() {
+  return `
+  <div style="background:var(--ink);padding:56px 0">
+    <div class="container" style="max-width:720px">
+      <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:12px">Our story</div>
+      <h1 style="font-size:42px;font-weight:900;color:#fff;line-height:1.1;margin-bottom:16px">We believe good news changes the world</h1>
+      <p style="font-size:16px;color:rgba(255,255,255,.6);line-height:1.7">Inno4te News was built on a simple conviction: the news you consume shapes how you see the world — and most news platforms profit from fear, outrage, and negativity. We chose a different path.</p>
+    </div>
+  </div>
+  <div class="container" style="max-width:720px;padding-top:48px;padding-bottom:56px">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:40px">
+      ${[
+        {icon:'🎯',title:'Our Mission',body:'To become the world\'s leading platform for positive, constructive, and faith-friendly news — aggregating the best stories from thousands of sources and making them discoverable, understandable, and actionable.'},
+        {icon:'🤖',title:'Powered by AI',body:'Every article is analyzed by Claude, Anthropic\'s AI. It generates summaries, assigns a positivity score, identifies key insights, and filters out harmful content — so you only see stories worth your attention.'},
+        {icon:'✝️',title:'Faith Perspective',body:'We honor the faith dimension of human life. Evangelical, charismatic, and broadly Christian news is treated with the same depth and respect as technology, health, or governance news.'},
+        {icon:'📈',title:'Finance for Everyone',body:'The Inno4te Finance Academy was built because financial literacy changes lives. We want every person — regardless of income, background, or education — to have access to world-class financial education.'},
+      ].map(s => `
+        <div class="card" style="padding:20px">
+          <div style="font-size:28px;margin-bottom:10px">${s.icon}</div>
+          <div style="font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:var(--ink);margin-bottom:8px">${s.title}</div>
+          <div style="font-size:13px;color:var(--muted);line-height:1.7">${s.body}</div>
+        </div>
+      `).join('')}
+    </div>
+    <div class="card" style="padding:28px;border-left:4px solid var(--brand);margin-bottom:32px">
+      <blockquote style="font-family:'Playfair Display',serif;font-size:20px;font-style:italic;color:var(--ink);line-height:1.5;margin-bottom:10px">"For I know the plans I have for you," declares the LORD, "plans to prosper you and not to harm you, plans to give you hope and a future."</blockquote>
+      <div style="font-size:12px;color:var(--muted);font-weight:600">— Jeremiah 29:11</div>
+    </div>
+    <div style="margin-bottom:32px">
+      <h2 style="font-size:22px;font-weight:700;color:var(--ink);margin-bottom:16px">Our principles</h2>
+      ${[
+        'We never republish content — every article links to the original source.',
+        'We never accept payment to feature stories or promote products.',
+        'AI analysis is transparent — every score and summary is AI-generated, not editorial.',
+        'We apply the same editorial standards across all categories and viewpoints.',
+        'We believe in the dignity and potential of every human being on earth.',
+      ].map((p,i) => `
+        <div style="display:flex;gap:12px;margin-bottom:12px;align-items:flex-start">
+          <span style="width:24px;height:24px;border-radius:50%;background:var(--brand-light);color:var(--brand);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px">${i+1}</span>
+          <span style="font-size:14px;color:var(--ink2);line-height:1.6">${p}</span>
+        </div>
+      `).join('')}
+    </div>
+    <div style="text-align:center;padding:28px;background:var(--brand-light);border-radius:var(--radius)">
+      <div style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--ink);margin-bottom:8px">Ready to discover good news?</div>
+      <div style="font-size:13px;color:var(--muted);margin-bottom:16px">Join thousands of readers who start their day with Inno4te News.</div>
+      <button class="btn-primary" style="font-size:14px;padding:10px 24px" onclick="showPage('home')">Explore now →</button>
+    </div>
+  </div>`
+}
+
+function renderContactContent() {
+  return `
+  <div style="background:var(--ink);padding:48px 0">
+    <div class="container" style="text-align:center">
+      <h1 style="font-size:36px;font-weight:900;color:#fff;margin-bottom:8px">Get in touch</h1>
+      <p style="font-size:14px;color:rgba(255,255,255,.5)">We'd love to hear from you — questions, partnerships, source suggestions.</p>
+    </div>
+  </div>
+  <div class="container" style="padding-top:40px;padding-bottom:56px">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;max-width:840px;margin:0 auto">
+      <div class="card" style="padding:28px">
+        <h2 style="font-size:18px;font-weight:700;color:var(--ink);margin-bottom:20px">Send us a message</h2>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div>
+            <label style="font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;display:block;margin-bottom:5px">Name</label>
+            <input id="cName" type="text" placeholder="Your full name"
+              style="width:100%;padding:9px 12px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:13px;font-family:'DM Sans',sans-serif;outline:none;color:var(--ink)"
+              onfocus="this.style.borderColor='var(--brand)'" onblur="this.style.borderColor='var(--border)'"/>
+          </div>
+          <div>
+            <label style="font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;display:block;margin-bottom:5px">Email</label>
+            <input id="cEmail" type="email" placeholder="you@example.com"
+              style="width:100%;padding:9px 12px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:13px;font-family:'DM Sans',sans-serif;outline:none;color:var(--ink)"
+              onfocus="this.style.borderColor='var(--brand)'" onblur="this.style.borderColor='var(--border)'"/>
+          </div>
+          <div>
+            <label style="font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;display:block;margin-bottom:5px">Subject</label>
+            <select id="cSubject" style="width:100%;padding:9px 12px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:13px;font-family:'DM Sans',sans-serif;outline:none;color:var(--ink);background:var(--card)">
+              <option>General inquiry</option>
+              <option>Source suggestion</option>
+              <option>Partnership / sponsorship</option>
+              <option>Press / media</option>
+              <option>Technical issue</option>
+              <option>Premium subscription</option>
+            </select>
+          </div>
+          <div>
+            <label style="font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;display:block;margin-bottom:5px">Message</label>
+            <textarea id="cMsg" rows="5" placeholder="How can we help you?"
+              style="width:100%;padding:9px 12px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:13px;font-family:'DM Sans',sans-serif;outline:none;color:var(--ink);resize:none"
+              onfocus="this.style.borderColor='var(--brand)'" onblur="this.style.borderColor='var(--border)'"></textarea>
+          </div>
+          <button class="btn-primary" style="justify-content:center;font-size:14px;padding:11px" onclick="submitContact()">Send message</button>
+        </div>
+      </div>
+      <div>
+        ${[
+          {icon:'📧',title:'Email us',body:'hello@inno4te.news',sub:'We reply within 24 hours'},
+          {icon:'📡',title:'Suggest a source',body:'sources@inno4te.news',sub:'We review all submissions'},
+          {icon:'🤝',title:'Partnerships',body:'partnerships@inno4te.news',sub:'Sponsorships & integrations'},
+          {icon:'📰',title:'Press & media',body:'press@inno4te.news',sub:'Media kit available on request'},
+        ].map(c => `
+          <div class="card" style="padding:16px;margin-bottom:10px;display:flex;gap:12px;align-items:flex-start">
+            <span style="font-size:22px">${c.icon}</span>
+            <div>
+              <div style="font-size:13px;font-weight:600;color:var(--ink);margin-bottom:2px">${c.title}</div>
+              <div style="font-size:12px;color:var(--brand);font-weight:500">${c.body}</div>
+              <div style="font-size:11px;color:var(--muted);margin-top:1px">${c.sub}</div>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  </div>`
+}
+
+function renderPrivacyContent() {
+  const sections = [
+    {title:'Information We Collect',body:'We collect information you provide when creating an account (name, email), your reading preferences and saved articles, newsletter subscription choices, and payment information (processed securely by Stripe — we never store card numbers). We also collect usage data (pages visited, articles read) to improve your experience.'},
+    {title:'How We Use Your Information',body:'We use your information to provide and improve our services, send newsletters you\'ve subscribed to, process Premium subscription payments, personalize your news feed based on your category preferences, and communicate service updates. We do not sell your personal data to third parties.'},
+    {title:'AI Processing',body:'Articles are processed by Claude (Anthropic\'s AI) to generate summaries and positivity scores. This processing uses only the public article text — no personal user data is sent to the AI. AI-generated content is clearly labeled throughout the platform.'},
+    {title:'Data Retention',body:'Account data is retained for as long as your account is active. You may request deletion of your account and all associated data at any time by emailing privacy@inno4te.news. Newsletter subscription data is deleted immediately upon unsubscribing.'},
+    {title:'Cookies',body:'We use essential cookies for authentication and session management, and optional analytics cookies (you can opt out). We do not use advertising cookies or third-party tracking pixels.'},
+    {title:'Your Rights',body:'You have the right to access, correct, or delete your personal data. EU residents have additional rights under GDPR. To exercise any of these rights, contact us at privacy@inno4te.news.'},
+  ]
+  return `
+  <div style="background:var(--ink);padding:48px 0"><div class="container" style="text-align:center">
+    <h1 style="font-size:36px;font-weight:900;color:#fff;margin-bottom:8px">Privacy Policy</h1>
+    <p style="font-size:13px;color:rgba(255,255,255,.4)">Last updated: January 2025</p>
+  </div></div>
+  <div class="container" style="max-width:720px;padding-top:40px;padding-bottom:56px">
+    <div class="card" style="padding:28px;margin-bottom:16px;background:var(--brand-light);border-color:rgba(20,106,46,.2)">
+      <div style="font-size:14px;color:var(--brand-dark);line-height:1.7"><strong>Summary:</strong> We collect only what's necessary to provide our service, never sell your data, and you can delete your account at any time. We're committed to being a trustworthy platform.</div>
+    </div>
+    ${sections.map(s => `
+      <div style="margin-bottom:24px">
+        <h2 style="font-size:17px;font-weight:700;color:var(--ink);margin-bottom:8px">${s.title}</h2>
+        <p style="font-size:14px;color:var(--ink2);line-height:1.75">${s.body}</p>
+      </div>
+    `).join('<hr style="border:none;border-top:1px solid var(--border);margin-bottom:24px"/>')}
+    <div style="text-align:center;padding:20px;background:var(--surface);border-radius:var(--radius);margin-top:16px">
+      <div style="font-size:13px;color:var(--muted)">Questions about our privacy practices?</div>
+      <button class="btn-ghost" style="margin-top:10px;font-size:13px" onclick="showPage('contact')">Contact us →</button>
+    </div>
+  </div>`
+}
+
+function renderTermsContent() {
+  const sections = [
+    {title:'Acceptance of Terms',body:'By accessing or using Inno4te News, you agree to be bound by these Terms of Service. If you disagree with any part of these terms, you may not access the service.'},
+    {title:'Description of Service',body:'Inno4te News is a news aggregation platform that collects articles from third-party sources, generates AI-powered summaries, and provides educational financial content. We are not a news publisher — all articles link to original sources. We do not reproduce full article content.'},
+    {title:'User Accounts',body:'You are responsible for maintaining the confidentiality of your account credentials. You agree to notify us immediately of any unauthorized access. You must be 13 years or older to create an account. You are responsible for all activity under your account.'},
+    {title:'Premium Subscriptions',body:'Premium subscriptions are billed monthly or annually. You may cancel at any time. Cancellation takes effect at the end of the current billing period — no partial refunds are provided. Prices may change with 30 days\' notice.'},
+    {title:'Intellectual Property',body:'The Inno4te News platform, design, AI-generated summaries, and educational content are owned by Inno4te News. Article titles and original content remain the property of their respective publishers. AI-generated summaries are created under fair use principles.'},
+    {title:'Prohibited Uses',body:'You may not use our service to harvest data for commercial purposes, distribute malware or spam, impersonate other users or our staff, attempt to circumvent our security systems, or use the Finance Academy content as professional financial advice.'},
+    {title:'Disclaimer',body:'Finance Academy content is educational only — it is not financial advice. Always consult a qualified financial advisor before making investment decisions. Past performance does not guarantee future results. Investing involves risk, including loss of principal.'},
+  ]
+  return `
+  <div style="background:var(--ink);padding:48px 0"><div class="container" style="text-align:center">
+    <h1 style="font-size:36px;font-weight:900;color:#fff;margin-bottom:8px">Terms of Service</h1>
+    <p style="font-size:13px;color:rgba(255,255,255,.4)">Last updated: January 2025</p>
+  </div></div>
+  <div class="container" style="max-width:720px;padding-top:40px;padding-bottom:56px">
+    ${sections.map(s => `
+      <div style="margin-bottom:24px">
+        <h2 style="font-size:17px;font-weight:700;color:var(--ink);margin-bottom:8px">${s.title}</h2>
+        <p style="font-size:14px;color:var(--ink2);line-height:1.75">${s.body}</p>
+      </div>
+      <hr style="border:none;border-top:1px solid var(--border);margin-bottom:24px"/>
+    `).join('')}
+  </div>`
+}
+
+function renderNewsletterContent() {
+  return `
+  <div style="background:var(--ink);padding:48px 0"><div class="container" style="text-align:center">
+    <h1 style="font-size:36px;font-weight:900;color:#fff;margin-bottom:8px">Newsletter Manager</h1>
+    <p style="font-size:14px;color:rgba(255,255,255,.5)">Choose which newsletters you'd like to receive.</p>
+  </div></div>
+  <div class="container" style="max-width:640px;padding-top:36px;padding-bottom:56px">
+    <div id="nlManagerList"></div>
+    <div class="card" style="padding:20px;margin-top:16px;background:var(--brand-light);border-color:rgba(20,106,46,.2)">
+      <div style="font-size:13px;color:var(--brand-dark);line-height:1.7">
+        📬 <strong>Confirmation emails:</strong> When you subscribe, you'll receive a confirmation email. Click the link to activate your subscription. Check your spam folder if you don't see it within a few minutes.
+      </div>
+    </div>
+  </div>`
+}
+
+function renderSavedContent() {
+  return `
+  <div style="background:var(--brand-light);border-bottom:1px solid var(--border);padding:32px 0">
+    <div class="container" style="display:flex;align-items:center;gap:12px">
+      <span style="font-size:28px">🔖</span>
+      <div>
+        <h1 style="font-size:24px;font-weight:900;color:var(--ink)">Saved Articles</h1>
+        <p style="font-size:13px;color:var(--muted)">${savedArticles.length} article${savedArticles.length!==1?'s':''} saved</p>
+      </div>
+    </div>
+  </div>
+  <div class="container" style="padding-top:28px;padding-bottom:48px">
+    <div class="art-grid" id="savedGrid"></div>
+  </div>`
+}
+
+function renderMarketContent() {
+  return `
+  <div style="background:var(--ink);padding:48px 0">
+    <div class="container">
+      <h1 style="font-size:36px;font-weight:900;color:#fff;margin-bottom:4px">Market Overview</h1>
+      <p style="font-size:14px;color:rgba(255,255,255,.5)">Live prices, key events, and market insights</p>
+    </div>
+  </div>
+  <div class="container" style="padding-top:28px;padding-bottom:48px">
+    <div id="marketDetailContent"></div>
+  </div>`
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   UPDATE NAVBAR with extra links
+═══════════════════════════════════════════════════════════════════════ */
+function updateNavbar() {
+  const navLinks = document.querySelector('.nav-links')
+  if (!navLinks) return
+
+  // Add Market and Saved links
+  const extraLinks = [
+    {label:'Markets', page:'market'},
+    {label:'Saved', page:'saved'},
+  ]
+
+  extraLinks.forEach(({ label, page }) => {
+    if (!document.querySelector(`.nav-link[data-page="${page}"]`)) {
+      const span = document.createElement('span')
+      span.className = 'nav-link'
+      span.dataset.page = page
+      span.textContent = label
+      span.onclick = () => showPage(page)
+      navLinks.appendChild(span)
+    }
+  })
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   UPDATE FOOTER with extra links
+═══════════════════════════════════════════════════════════════════════ */
+function updateFooterLinks() {
+  // Update the About/Privacy/Terms/Contact links in footer
+  document.querySelectorAll('.footer-links a').forEach(a => {
+    const text = a.textContent.trim()
+    if (text === 'About') a.onclick = () => showPage('about')
+    if (text === 'Privacy Policy') a.onclick = () => showPage('privacy')
+    if (text === 'Terms of Service') a.onclick = () => showPage('terms')
+    if (text === 'Contact') a.onclick = () => showPage('contact')
+  })
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   KEYBOARD SHORTCUTS
+═══════════════════════════════════════════════════════════════════════ */
+document.addEventListener('keydown', e => {
+  if (e.key === '/' && !['INPUT','TEXTAREA'].includes(document.activeElement.tagName)) {
+    e.preventDefault()
+    document.getElementById('navSearch')?.focus()
+  }
+  if (e.key === 'Escape') {
+    const input = document.getElementById('navSearch')
+    if (input === document.activeElement) input.blur()
+  }
+})
+
+/* ═══════════════════════════════════════════════════════════════════
+   RE-INIT (replaces original init)
+═══════════════════════════════════════════════════════════════════════ */
+document.addEventListener('DOMContentLoaded', () => {
+  renderTicker()
+  updateNavbar()
+  showPage('home')
+  // Defer footer link wiring until after first render
+  setTimeout(updateFooterLinks, 200)
+  // Fetch real headlines and market quotes in the background; the page
+  // stays usable with sample data until they arrive (or if unreachable)
+  loadLiveNews()
+  loadLiveMarkets()
+})
+</script>
+</body>
+</html>

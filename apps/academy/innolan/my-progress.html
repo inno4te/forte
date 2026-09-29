@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>My Progress · inno4te Networking Academy</title>
+<link rel="stylesheet" href="css/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%231F6FEB'/><text x='50' y='68' font-size='44' text-anchor='middle' fill='white' font-weight='bold'>i4</text></svg>">
+</head>
+<body>
+<header class="site-header">
+  <nav class="wrap nav">
+    <a class="brand" href="index.html"><span class="brand-mark">i4</span>
+      <span class="brand-name">inno<em>4</em>te Networking Academy</span></a>
+    <button class="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="exams.html">Exams</a></li>
+      <li><a href="my-progress.html" class="active">📊 My Progress</a></li>
+    </ul>
+  </nav>
+</header>
+
+<section class="section">
+<div class="wrap" id="progressWrap">
+  <span class="eyebrow" id="userEyebrow">Your progress</span>
+  <h1 style="font-size:clamp(1.8rem,4vw,2.4rem);margin-bottom:6px" id="pageTitle">Loading…</h1>
+  <p class="lead" id="pageSub"></p>
+
+  <div class="stat-grid mt-8" style="margin-top:22px">
+    <div class="stat"><div class="k">Total logins</div><div class="v" id="sLogins">—</div></div>
+    <div class="stat"><div class="k">Exams taken</div><div class="v" id="sExams">—</div></div>
+    <div class="stat"><div class="k">Exams passed</div><div class="v" id="sPassed">—</div></div>
+    <div class="stat"><div class="k">Labs visited</div><div class="v" id="sLabs">—</div></div>
+  </div>
+
+  <div id="trackCards" class="mt-8" style="margin-top:28px;display:grid;gap:18px"></div>
+
+  <div class="lab-actions mt-8" style="margin-top:24px">
+    <button class="btn btn-ghost btn-sm" id="exportBtn">⬇ Export my data</button>
+    <a href="exams.html" class="btn btn-primary">Take an exam →</a>
+  </div>
+</div>
+</section>
+
+<footer class="site-footer">
+  <div class="footer-bottom">© <span data-year></span> inno4te Networking Academy · Innocent Forteh — Paid All Links Foundation. All rights reserved.</div>
+</footer>
+
+<script src="js/auth.js"></script>
+<script src="js/main.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  var user = Auth.currentUser();
+  if (!user) { window.location.replace("login.html"); return; }
+  if (Auth.isAdmin()) { window.location.replace("admin-progress.html"); return; }
+
+  var d = Auth.loadData(user);
+  document.getElementById("userEyebrow").textContent = "Your progress — " + user;
+  document.getElementById("pageTitle").textContent = "Welcome back, " + user + " 👋";
+  document.getElementById("pageSub").textContent = "Here's everything you've done so far. Keep going — your progress is saved automatically.";
+
+  document.getElementById("sLogins").textContent = d.loginCount || 0;
+  document.getElementById("sExams").textContent = d.exams ? d.exams.length : 0;
+  document.getElementById("sPassed").textContent = d.exams ? d.exams.filter(function(e){return e.passed;}).length : 0;
+  var labTotal = d.labs ? Object.values(d.labs).reduce(function(a,v){return a+v;},0) : 0;
+  document.getElementById("sLabs").textContent = labTotal;
+
+  var PASS = {fundamentals:70, networkplus:72, ccna:82, securityplus:75};
+  var TRACKS = [
+    {id:"fundamentals", name:"Networking Fundamentals", icon:"📡"},
+    {id:"networkplus",  name:"CompTIA Network+", icon:"🌐"},
+    {id:"ccna",         name:"Cisco CCNA 200-301", icon:"🔧"},
+    {id:"securityplus", name:"CompTIA Security+", icon:"🛡️"}
+  ];
+
+  var container = document.getElementById("trackCards");
+  TRACKS.forEach(function(t) {
+    var attempts = d.exams ? d.exams.filter(function(e){return e.track===t.id;}) : [];
+    var best = attempts.length ? attempts.reduce(function(a,b){return b.pct>a.pct?b:a;}) : null;
+    var passScore = PASS[t.id];
+    var statusColor = !best ? "var(--text-3)" : (best.pct >= passScore ? "var(--green)" : "var(--red)");
+
+    var html = '<div class="panel" style="border-top:3px solid '+statusColor+'">'
+      + '<div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:12px">'
+      + '<h3 style="font-size:1.05rem">' + t.icon + ' ' + t.name + '</h3>'
+      + '<span style="font-size:.78rem;font-weight:700;color:var(--text-3)">Pass: ' + passScore + '%</span>'
+      + '</div>';
+
+    if (!attempts.length) {
+      html += '<p style="font-size:.9rem;color:var(--text-3)">No attempts yet. <a href="exams.html">Take this exam →</a></p>';
+    } else {
+      html += '<div style="display:flex;gap:14px;flex-wrap:wrap;margin-bottom:12px">'
+        + '<span>Attempts: <strong>' + attempts.length + '</strong></span>'
+        + '<span>Best: <strong style="color:' + statusColor + '">' + (best?best.pct:0) + '%</strong></span>'
+        + '<span style="color:' + statusColor + '">' + (best && best.pct >= passScore ? "✅ Passed" : "❌ Not yet passed") + '</span>'
+        + '</div>';
+      // recent attempts list
+      var recent = attempts.slice(-5).reverse();
+      html += '<div style="overflow-x:auto"><table style="width:100%;font-size:.82rem;border-collapse:collapse">'
+        + '<thead><tr style="color:var(--text-3)"><th style="text-align:left;padding:4px 8px">Date</th><th style="text-align:left;padding:4px 8px">Score</th><th style="text-align:left;padding:4px 8px">Mode</th></tr></thead><tbody>';
+      recent.forEach(function(e) {
+        var c = e.pct >= passScore ? "var(--green)" : "var(--red)";
+        html += '<tr style="border-top:1px solid var(--border)"><td style="padding:5px 8px;color:var(--text-3)">' + new Date(e.date).toLocaleDateString() + '</td>'
+          + '<td style="padding:5px 8px;font-weight:700;color:' + c + '">' + e.pct + '% (' + e.correct + '/' + e.total + ')</td>'
+          + '<td style="padding:5px 8px">' + (e.mode||"practice") + '</td></tr>';
+      });
+      html += '</tbody></table></div>';
+
+      // domain breakdown for best attempt
+      if (best && best.domains && Object.keys(best.domains).length) {
+        html += '<div style="margin-top:12px"><div style="font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--text-3);margin-bottom:8px">Domain breakdown (best attempt)</div>';
+        Object.keys(best.domains).forEach(function(dom) {
+          var dm = best.domains[dom];
+          var pct = Math.round(dm.c/dm.t*100);
+          var col = pct>=70?"var(--green)":pct>=50?"var(--yellow)":"var(--red)";
+          html += '<div style="display:flex;align-items:center;gap:8px;font-size:.82rem;margin-bottom:5px">'
+            + '<span style="color:var(--text-3);min-width:200px">' + dom + '</span>'
+            + '<div style="flex:1;height:8px;background:var(--surface-3);border-radius:999px;overflow:hidden"><i style="display:block;height:100%;width:'+pct+'%;background:'+col+';border-radius:999px"></i></div>'
+            + '<span style="color:'+col+';font-weight:800;min-width:36px">'+pct+'%</span></div>';
+        });
+        html += '</div>';
+      }
+    }
+    html += '</div>';
+    container.innerHTML += html;
+  });
+
+  document.getElementById("exportBtn").addEventListener("click", function(){ Auth.exportJSON(); });
+});
+</script>
+</body>
+</html>

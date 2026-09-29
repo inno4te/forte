@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>ForTe Notes — S Pen Notebook</title>
+<style>
+  :root{
+    --ink-dark:#20232b;
+    --chrome:#2b2f38;
+    --chrome-2:#363b46;
+    --accent:#c98a4b;
+    --accent-soft:#e8b98a;
+    --text-light:#eef0f3;
+    --text-dim:#9aa0ac;
+    --danger:#c25b4a;
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+  html,body{
+    margin:0; padding:0; width:100%; height:100%;
+    overflow:hidden; background:var(--ink-dark);
+    font-family:'Segoe UI', Roboto, system-ui, sans-serif;
+    color:var(--text-light);
+    user-select:none;
+  }
+  #app{ display:flex; flex-direction:column; height:100vh; height:100dvh; width:100vw; }
+
+  /* ---------- TOP BAR ---------- */
+  #topbar{
+    display:flex; align-items:center; gap:6px;
+    background:var(--chrome); padding:8px 10px;
+    border-bottom:1px solid #1a1c22;
+    flex-shrink:0; overflow-x:auto;
+  }
+  .brand{ font-weight:700; letter-spacing:.5px; font-size:15px; color:var(--accent-soft); margin-right:auto; white-space:nowrap;}
+  .brand small{ display:block; font-size:9px; color:var(--text-dim); font-weight:400; letter-spacing:1px;}
+  #pageIndicator{ font-size:13px; color:var(--text-dim); min-width:52px; text-align:center; }
+  .iconbtn{
+    background:var(--chrome-2); border:none; color:var(--text-light);
+    border-radius:8px; padding:7px 10px; font-size:13px;
+    display:flex; align-items:center; gap:4px; cursor:pointer; flex-shrink:0; white-space:nowrap;
+  }
+  .iconbtn:active{ background:var(--accent); color:#1a1a1a; }
+  .iconbtn.small{ padding:7px 8px; }
+  .iconbtn:disabled{ opacity:.35; }
+
+  /* ---------- CANVAS AREA ---------- */
+  #canvasWrap{
+    flex:1; display:flex; align-items:center; justify-content:center;
+    background:#171a20; position:relative; overflow:hidden;
+    touch-action:none;
+  }
+  #pageShadow{
+    box-shadow:0 8px 30px rgba(0,0,0,.55);
+    border-radius:3px;
+    position:relative;
+  }
+  canvas{
+    display:block; border-radius:3px; touch-action:none;
+  }
+
+  /* ---------- BOTTOM TOOLBAR ---------- */
+  #toolbar{
+    display:flex; align-items:center; gap:8px;
+    background:var(--chrome); padding:9px 10px;
+    border-top:1px solid #1a1c22;
+    flex-shrink:0; overflow-x:auto;
+  }
+  .tool{
+    background:var(--chrome-2); border:none; color:var(--text-dim);
+    border-radius:10px; padding:9px 11px; font-size:18px;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    min-width:46px; cursor:pointer; position:relative; flex-shrink:0;
+  }
+  .tool span.lbl{ font-size:8.5px; margin-top:2px; letter-spacing:.3px; text-transform:uppercase;}
+  .tool.active{ background:var(--accent); color:#1a1a1a; }
+  .tool.active .lbl{ color:#1a1a1a; }
+  .sep{ width:1px; align-self:stretch; background:#1a1c22; margin:0 2px; flex-shrink:0;}
+  #inkColorDot{
+    width:38px; height:38px; border-radius:10px; border:2px solid var(--chrome-2);
+    cursor:pointer; flex-shrink:0; background:#1c1e26;
+  }
+  #sizeSlider{ width:70px; accent-color:var(--accent); flex-shrink:0; }
+  #quickSwatches{ display:flex; gap:6px; flex-shrink:0; }
+  #quickSwatches .qs{
+    width:26px; height:26px; border-radius:50%; border:2px solid transparent; cursor:pointer; flex-shrink:0;
+  }
+  #quickSwatches .qs.selected{ border-color:var(--accent); transform:scale(1.1); }
+
+  /* ---------- POPOVER PANELS ---------- */
+  .panel{
+    position:absolute; bottom:64px; left:10px; right:10px;
+    background:var(--chrome-2); border-radius:12px; padding:14px;
+    box-shadow:0 10px 30px rgba(0,0,0,.5); z-index:50;
+    display:none; max-height:64vh; overflow-y:auto;
+  }
+  .panel.open{ display:block; }
+  .panel h4{ margin:0 0 10px; font-size:12px; color:var(--text-dim); text-transform:uppercase; letter-spacing:.5px;}
+  .swatchrow{ display:flex; gap:10px; flex-wrap:wrap; margin-bottom:10px;}
+  .swatch{
+    width:38px; height:38px; border-radius:8px; border:2px solid transparent; cursor:pointer; flex-shrink:0;
+  }
+  .swatch.selected{ border-color:var(--accent); }
+  .panel .row{ display:flex; align-items:center; justify-content:space-between; margin-top:8px; gap:10px;}
+  .panel button.confirm{
+    margin-top:12px; width:100%; background:var(--accent); color:#1a1a1a; border:none;
+    padding:11px; border-radius:8px; font-weight:600; font-size:14px;
+  }
+  .toggle{
+    display:flex; align-items:center; justify-content:space-between;
+    background:var(--chrome); padding:10px 12px; border-radius:8px; margin-top:6px;
+  }
+  .toggle button{
+    background:#171a20; border:none; color:var(--text-light); padding:6px 12px; border-radius:6px; font-size:12px;
+  }
+  .toggle button.on{ background:var(--accent); color:#1a1a1a; }
+  input[type=color]{ width:38px; height:38px; border:none; border-radius:8px; padding:0; background:none; cursor:pointer; }
+
+  /* ---------- THUMBNAIL GRID ---------- */
+  #thumbGrid{ display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+  .thumb{
+    position:relative; border-radius:8px; overflow:hidden; border:2px solid transparent;
+    cursor:pointer; aspect-ratio: 850/1100; background:#fff;
+  }
+  .thumb.current{ border-color:var(--accent); }
+  .thumb img{ width:100%; height:100%; display:block; object-fit:cover; }
+  .thumb .num{
+    position:absolute; bottom:3px; left:5px; font-size:10px; background:rgba(0,0,0,.55);
+    padding:1px 6px; border-radius:8px; color:#fff;
+  }
+  .thumb .del{
+    position:absolute; top:3px; right:3px; width:20px; height:20px; border-radius:50%;
+    background:rgba(0,0,0,.6); color:#fff; font-size:12px; display:flex; align-items:center; justify-content:center;
+  }
+  .thumb.add{
+    display:flex; align-items:center; justify-content:center; background:var(--chrome);
+    color:var(--accent-soft); font-size:26px; border:2px dashed #4a4f5c;
+  }
+
+  #toast{
+    position:absolute; top:56px; left:50%; transform:translateX(-50%);
+    background:rgba(20,22,27,.95); color:var(--text-light); padding:10px 18px;
+    border-radius:20px; font-size:13px; z-index:100; opacity:0; pointer-events:none;
+    transition:opacity .25s;
+  }
+  #toast.show{ opacity:1; }
+</style>
+</head>
+<body>
+<div id="app">
+
+  <div id="topbar">
+    <div class="brand">ForTe Notes<small>S PEN NOTEBOOK</small></div>
+    <button class="iconbtn small" id="prevPage">‹</button>
+    <div id="pageIndicator">1 / 1</div>
+    <button class="iconbtn small" id="nextPage">›</button>
+    <button class="iconbtn small" id="fullscreenBtn" title="Toggle fullscreen">⛶</button>
+    <button class="iconbtn" id="saveBtn" title="Save notebook as RTF">💾 Save</button>
+    <button class="iconbtn" id="menuBtn">⋯ Menu</button>
+  </div>
+
+  <div id="canvasWrap">
+    <div id="pageShadow">
+      <canvas id="board"></canvas>
+    </div>
+    <div id="toast"></div>
+  </div>
+
+  <div id="toolbar">
+    <button class="tool active" data-tool="pen">✎<span class="lbl">Pen</span></button>
+    <button class="tool" data-tool="bold">✏️<span class="lbl">Bold</span></button>
+    <button class="tool" data-tool="highlighter">▮<span class="lbl">Highlight</span></button>
+    <button class="tool" data-tool="underline">▁<span class="lbl">Underline</span></button>
+    <button class="tool" data-tool="eraser">▧<span class="lbl">Erase</span></button>
+    <div class="sep"></div>
+    <button id="inkColorDot" title="More colors"></button>
+    <div id="quickSwatches"></div>
+    <input type="range" id="sizeSlider" min="1" max="45" value="3">
+    <div class="sep"></div>
+    <button class="tool" id="undoBtn">↺<span class="lbl">Undo</span></button>
+    <button class="tool" id="redoBtn">↻<span class="lbl">Redo</span></button>
+    <div class="sep"></div>
+    <button class="tool" id="pagePanelBtn">▭<span class="lbl">Page</span></button>
+    <button class="tool" id="thumbPanelBtn">▤<span class="lbl">Pages</span></button>
+    <button class="tool" id="exportPanelBtn">⇩<span class="lbl">Export</span></button>
+  </div>
+
+  <!-- INK COLOR PANEL -->
+  <div class="panel" id="inkPanel">
+    <h4>Ink color</h4>
+    <div class="swatchrow" id="inkSwatches"></div>
+    <div class="row">
+      <span style="font-size:12px; color:var(--text-dim);">Custom</span>
+      <input type="color" id="inkColorPicker" value="#1c1e26">
+    </div>
+  </div>
+
+  <!-- PAGE SETTINGS PANEL -->
+  <div class="panel" id="pagePanel">
+    <h4>Page color</h4>
+    <div class="swatchrow" id="bgSwatches"></div>
+    <div class="toggle">
+      <span>Ruled lines</span>
+      <button id="linedToggle">Off</button>
+    </div>
+    <div class="row" style="margin-top:14px; gap:10px;">
+      <button class="iconbtn" id="addPageBtn" style="flex:1;">+ New page</button>
+      <button class="iconbtn" id="delPageBtn" style="flex:1; background:var(--danger); color:#fff;">Delete page</button>
+    </div>
+    <button class="iconbtn" id="clearPageBtn" style="width:100%; margin-top:10px; background:var(--danger); color:#fff;">Clear this page</button>
+  </div>
+
+  <!-- THUMBNAILS / PAGE OVERVIEW PANEL -->
+  <div class="panel" id="thumbPanel">
+    <h4>All pages</h4>
+    <div id="thumbGrid"></div>
+  </div>
+
+  <!-- SAVE AS PANEL -->
+  <div class="panel" id="savePanel">
+    <h4>Save notebook</h4>
+    <input type="text" id="saveFilename" value="fortenotes"
+      style="width:100%; padding:11px; border-radius:8px; border:none; background:#171a20; color:#fff; font-size:14px;">
+    <button class="confirm" id="saveConfirmBtn">Choose location &amp; save</button>
+    <p style="font-size:12px; color:var(--text-dim); margin-top:10px; line-height:1.5;">
+      On Chrome/Samsung Internet this opens your device's file picker so you can pick the folder or drive and the file name.
+      If your browser doesn't support that, it downloads the .rtf using this name to your default Downloads location instead.
+    </p>
+  </div>
+
+  <!-- EXPORT PANEL -->
+  <div class="panel" id="exportPanel">
+    <h4>Export notebook</h4>
+    <button class="confirm" id="exportRtfBtn">Save all pages as RTF (Word)</button>
+    <button class="confirm" id="exportPngBtn" style="background:var(--chrome); color:var(--text-light);">Save current page as PNG</button>
+    <p style="font-size:12px; color:var(--text-dim); margin-top:12px; line-height:1.5;">
+      RTF embeds every page as an image inside a Word-compatible document — pages become individual pages in the doc.
+      This session isn't saved automatically, so export before you close the tab.
+    </p>
+  </div>
+
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  // ---------- CONFIG ----------
+  const PAGE_W = 850, PAGE_H = 1100; // fixed logical "paper" size, keeps proportions identical in any rotation
+  const BG_COLORS = ["#ffffff","#fbf3df","#eef6ff","#fdeef2","#eafaf0","#f1eefc","#e9e9e9","#20232b"];
+  const INK_COLORS = ["#1c1e26","#1d4ed8","#c2261d","#15803d","#a855f7","#ea580c","#0d9488","#ffffff"];
+
+  let pages = [ newPage() ];
+  let current = 0;
+  let tool = "pen";
+  let toolWidths = { pen:3, bold:9, highlighter:22, eraser:26, underline:3 };
+  let inkColor = "#1c1e26";
+
+  function newPage(){
+    return { bg:"#ffffff", lined:false, strokes:[], redo:[] };
+  }
+
+  // ---------- CANVAS SETUP ----------
+  const canvas = document.getElementById('board');
+  const ctx = canvas.getContext('2d');
+  const wrap = document.getElementById('canvasWrap');
+  let scale = 1;
+  let dpr = window.devicePixelRatio || 1;
+
+  function fitCanvas(){
+    dpr = window.devicePixelRatio || 1;
+    const availW = wrap.clientWidth - 20;
+    const availH = wrap.clientHeight - 20;
+    scale = Math.min(availW / PAGE_W, availH / PAGE_H);
+    const cssW = PAGE_W * scale, cssH = PAGE_H * scale;
+    canvas.style.width = cssW + "px";
+    canvas.style.height = cssH + "px";
+    canvas.width = Math.round(cssW * dpr);
+    canvas.height = Math.round(cssH * dpr);
+    ctx.setTransform(dpr*scale, 0, 0, dpr*scale, 0, 0);
+    redraw();
+    updateHistoryButtons();
+  }
+  window.addEventListener('resize', fitCanvas);
+  window.addEventListener('orientationchange', () => setTimeout(fitCanvas, 50));
+
+  // ---------- RENDERING ----------
+  function drawRuled(page){
+    if(!page.lined) return;
+    ctx.save();
+    ctx.strokeStyle = isDark(page.bg) ? "rgba(255,255,255,.10)" : "rgba(30,40,60,.14)";
+    ctx.lineWidth = 1 / scale;
+    const step = 42;
+    for(let y = 90; y < PAGE_H; y += step){
+      ctx.beginPath();
+      ctx.moveTo(30, y);
+      ctx.lineTo(PAGE_W - 30, y);
+      ctx.stroke();
+    }
+    ctx.restore();
+  }
+
+  function isDark(hex){
+    const r = parseInt(hex.substr(1,2),16), g = parseInt(hex.substr(3,2),16), b = parseInt(hex.substr(5,2),16);
+    return (r*0.299 + g*0.587 + b*0.114) < 128;
+  }
+
+  function drawStroke(s){
+    if(s.points.length < 1) return;
+    ctx.save();
+    ctx.lineCap = "round";
+    ctx.lineJoin = "round";
+    ctx.globalCompositeOperation = s.tool === "eraser" ? "destination-out" : "source-over";
+    ctx.globalAlpha = s.tool === "highlighter" ? 0.38 : 1;
+    if(s.tool === "highlighter") ctx.globalCompositeOperation = "multiply";
+    ctx.strokeStyle = s.color;
+
+    if(s.points.length === 1){
+      const p = s.points[0];
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, (p.w||s.width)/2, 0, Math.PI*2);
+      ctx.fillStyle = s.color;
+      ctx.fill();
+      ctx.restore();
+      return;
+    }
+    for(let i=1;i<s.points.length;i++){
+      const a = s.points[i-1], b = s.points[i];
+      ctx.beginPath();
+      ctx.lineWidth = ((a.w||s.width) + (b.w||s.width)) / 2;
+      ctx.moveTo(a.x, a.y);
+      ctx.lineTo(b.x, b.y);
+      ctx.stroke();
+    }
+    ctx.restore();
+  }
+
+  function redraw(){
+    const page = pages[current];
+    ctx.clearRect(0,0,PAGE_W,PAGE_H);
+    drawRuled(page);
+    for(const s of page.strokes) drawStroke(s);
+    document.getElementById('pageShadow').style.background = page.bg;
+    document.getElementById('pageIndicator').textContent = (current+1) + " / " + pages.length;
+  }
+
+  function updateHistoryButtons(){
+    document.getElementById('undoBtn').disabled = pages[current].strokes.length === 0;
+    document.getElementById('redoBtn').disabled = pages[current].redo.length === 0;
+  }
+
+  // ---------- DRAWING INPUT ----------
+  let activeStroke = null;
+  let swipeStartX = null, swipeStartY = null;
+
+  function logicalPoint(e){
+    const rect = canvas.getBoundingClientRect();
+    return {
+      x: (e.clientX - rect.left) / scale,
+      y: (e.clientY - rect.top) / scale,
+      w: pressureWidth(e)
+    };
+  }
+
+  function pressureWidth(e){
+    const base = toolWidths[tool] || 3;
+    if(tool === "eraser" || tool === "underline") return base;
+    let p = e.pressure;
+    if(p === undefined || p === 0) p = 0.5;
+    return Math.max(1, base * (0.4 + p*1.2));
+  }
+
+  canvas.addEventListener('pointerdown', (e) => {
+    if(e.pointerType === 'touch'){
+      swipeStartX = e.clientX; swipeStartY = e.clientY;
+      return;
+    }
+    canvas.setPointerCapture(e.pointerId);
+    const pt = logicalPoint(e);
+    activeStroke = {
+      tool: tool,
+      color: tool === "eraser" ? "#000000" : inkColor,
+      width: toolWidths[tool] || 3,
+      startX: pt.x, startY: pt.y,
+      points: [pt]
+    };
+  });
+
+  canvas.addEventListener('pointermove', (e) => {
+    if(!activeStroke || e.pointerType === 'touch') return;
+    const pt = logicalPoint(e);
+    if(tool === "underline"){
+      pt.y = activeStroke.startY;
+      activeStroke.points = [ {x:activeStroke.startX, y:activeStroke.startY, w:activeStroke.width}, pt ];
+    } else {
+      activeStroke.points.push(pt);
+    }
+    redraw();
+    drawStroke(activeStroke);
+  });
+
+  function endStroke(e){
+    if(e && e.pointerType === 'touch'){
+      if(swipeStartX !== null){
+        const dx = e.clientX - swipeStartX, dy = e.clientY - swipeStartY;
+        if(Math.abs(dx) > 65 && Math.abs(dx) > Math.abs(dy)){
+          if(dx < 0) goPage(1); else goPage(-1);
+        }
+      }
+      swipeStartX = null; swipeStartY = null;
+      return;
+    }
+    if(!activeStroke) return;
+    if(activeStroke.points.length > 0){
+      pages[current].strokes.push(activeStroke);
+      pages[current].redo = []; // new action clears redo history
+    }
+    activeStroke = null;
+    redraw();
+    updateHistoryButtons();
+  }
+  canvas.addEventListener('pointerup', endStroke);
+  canvas.addEventListener('pointercancel', endStroke);
+  canvas.addEventListener('pointerleave', (e) => { if(e.pointerType!=='touch') endStroke(e); });
+
+  // ---------- TOOLBAR ----------
+  document.querySelectorAll('.tool[data-tool]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tool[data-tool]').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      tool = btn.dataset.tool;
+      document.getElementById('sizeSlider').value = toolWidths[tool];
+    });
+  });
+
+  document.getElementById('sizeSlider').addEventListener('input', (e) => { toolWidths[tool] = parseFloat(e.target.value); });
+
+  document.getElementById('undoBtn').addEventListener('click', () => {
+    const p = pages[current];
+    if(p.strokes.length === 0) return;
+    p.redo.push(p.strokes.pop());
+    redraw();
+    updateHistoryButtons();
+    refreshThumbsIfOpen();
+  });
+  document.getElementById('redoBtn').addEventListener('click', () => {
+    const p = pages[current];
+    if(p.redo.length === 0) return;
+    p.strokes.push(p.redo.pop());
+    redraw();
+    updateHistoryButtons();
+    refreshThumbsIfOpen();
+  });
+
+  function goPage(delta){
+    const n = current + delta;
+    if(n < 0 || n >= pages.length){ flashToast(delta>0 ? "Last page" : "First page"); return; }
+    current = n;
+    fitCanvas();
+  }
+  document.getElementById('prevPage').addEventListener('click', () => goPage(-1));
+  document.getElementById('nextPage').addEventListener('click', () => goPage(1));
+
+  // ---------- FULLSCREEN TOGGLE ----------
+  const fsBtn = document.getElementById('fullscreenBtn');
+  function isFullscreen(){
+    return !!(document.fullscreenElement || document.webkitFullscreenElement);
+  }
+  function updateFsIcon(){
+    fsBtn.textContent = isFullscreen() ? "⤢" : "⛶";
+  }
+  fsBtn.addEventListener('click', () => {
+    const el = document.documentElement;
+    if(!isFullscreen()){
+      const req = el.requestFullscreen || el.webkitRequestFullscreen;
+      if(req){
+        req.call(el).catch(() => flashToast("Fullscreen isn't supported here"));
+      } else {
+        flashToast("Fullscreen isn't supported here");
+      }
+    } else {
+      const exit = document.exitFullscreen || document.webkitExitFullscreen;
+      if(exit) exit.call(document);
+    }
+  });
+  document.addEventListener('fullscreenchange', () => { updateFsIcon(); setTimeout(fitCanvas, 60); });
+  document.addEventListener('webkitfullscreenchange', () => { updateFsIcon(); setTimeout(fitCanvas, 60); });
+
+  // ---------- PANELS ----------
+  const inkPanel = document.getElementById('inkPanel');
+  const pagePanel = document.getElementById('pagePanel');
+  const thumbPanel = document.getElementById('thumbPanel');
+  const savePanel = document.getElementById('savePanel');
+  const exportPanel = document.getElementById('exportPanel');
+  const allPanels = [inkPanel, pagePanel, thumbPanel, savePanel, exportPanel];
+  function togglePanel(p){
+    const wasOpen = p.classList.contains('open');
+    allPanels.forEach(x=>x.classList.remove('open'));
+    if(!wasOpen) p.classList.add('open');
+  }
+  document.getElementById('inkColorDot').addEventListener('click', () => { renderInkSwatches(); togglePanel(inkPanel); });
+  document.getElementById('pagePanelBtn').addEventListener('click', () => { renderBgSwatches(); togglePanel(pagePanel); });
+  document.getElementById('thumbPanelBtn').addEventListener('click', () => { renderThumbs(); togglePanel(thumbPanel); });
+  document.getElementById('exportPanelBtn').addEventListener('click', () => togglePanel(exportPanel));
+  document.getElementById('menuBtn').addEventListener('click', () => { renderBgSwatches(); togglePanel(pagePanel); });
+
+  function setInkColor(c){
+    inkColor = c;
+    document.getElementById('inkColorDot').style.background = c;
+    document.getElementById('inkColorPicker').value = (c[0]==='#' && c.length===7) ? c : "#1c1e26";
+    renderInkSwatches();
+    renderQuickSwatches();
+  }
+  function renderQuickSwatches(){
+    const row = document.getElementById('quickSwatches');
+    row.innerHTML = "";
+    INK_COLORS.forEach(c => {
+      const sw = document.createElement('div');
+      sw.className = 'qs' + (inkColor === c ? ' selected' : '');
+      sw.style.background = c;
+      if(c === "#ffffff") sw.style.border = (inkColor===c ? "2px solid var(--accent)" : "2px solid #666");
+      sw.addEventListener('click', () => setInkColor(c));
+      row.appendChild(sw);
+    });
+  }
+  function renderInkSwatches(){
+    const row = document.getElementById('inkSwatches');
+    row.innerHTML = "";
+    INK_COLORS.forEach(c => {
+      const sw = document.createElement('div');
+      sw.className = 'swatch' + (inkColor === c ? ' selected' : '');
+      sw.style.background = c;
+      if(c === "#ffffff") sw.style.border = (inkColor===c?"2px solid var(--accent)":"2px solid #666");
+      sw.addEventListener('click', () => setInkColor(c));
+      row.appendChild(sw);
+    });
+  }
+  document.getElementById('inkColorPicker').addEventListener('input', (e) => setInkColor(e.target.value));
+  setInkColor(inkColor);
+
+  function renderBgSwatches(){
+    const row = document.getElementById('bgSwatches');
+    row.innerHTML = "";
+    BG_COLORS.forEach(c => {
+      const sw = document.createElement('div');
+      sw.className = 'swatch' + (pages[current].bg === c ? ' selected' : '');
+      sw.style.background = c;
+      if(c === "#ffffff") sw.style.border = (pages[current].bg===c?"2px solid var(--accent)":"2px solid #666");
+      sw.addEventListener('click', () => {
+        pages[current].bg = c;
+        renderBgSwatches();
+        redraw();
+      });
+      row.appendChild(sw);
+    });
+    document.getElementById('linedToggle').textContent = pages[current].lined ? "On" : "Off";
+    document.getElementById('linedToggle').className = pages[current].lined ? "on" : "";
+  }
+
+  document.getElementById('linedToggle').addEventListener('click', () => {
+    pages[current].lined = !pages[current].lined;
+    renderBgSwatches();
+    redraw();
+  });
+
+  document.getElementById('addPageBtn').addEventListener('click', () => {
+    pages.splice(current+1, 0, newPage());
+    current++;
+    fitCanvas();
+    renderBgSwatches();
+  });
+  document.getElementById('delPageBtn').addEventListener('click', () => {
+    if(pages.length === 1){ flashToast("Can't delete your only page"); return; }
+    pages.splice(current,1);
+    current = Math.max(0, current-1);
+    fitCanvas();
+    renderBgSwatches();
+  });
+  document.getElementById('clearPageBtn').addEventListener('click', () => {
+    const p = pages[current];
+    p.redo = p.redo.concat(p.strokes.slice().reverse());
+    p.strokes = [];
+    redraw();
+    updateHistoryButtons();
+  });
+
+  // ---------- THUMBNAILS ----------
+  function refreshThumbsIfOpen(){
+    if(thumbPanel.classList.contains('open')) renderThumbs();
+  }
+  function renderThumbs(){
+    const grid = document.getElementById('thumbGrid');
+    grid.innerHTML = "";
+    pages.forEach((page, i) => {
+      const cell = document.createElement('div');
+      cell.className = 'thumb' + (i === current ? ' current' : '');
+      const { dataUrl } = renderPageToDataURL(page, 0.35);
+      const img = document.createElement('img');
+      img.src = dataUrl;
+      cell.appendChild(img);
+      const num = document.createElement('div');
+      num.className = 'num'; num.textContent = (i+1);
+      cell.appendChild(num);
+      if(pages.length > 1){
+        const del = document.createElement('div');
+        del.className = 'del'; del.textContent = "×";
+        del.addEventListener('click', (ev) => {
+          ev.stopPropagation();
+          pages.splice(i,1);
+          if(current >= pages.length) current = pages.length - 1;
+          else if(i < current) current--;
+          fitCanvas();
+          renderThumbs();
+        });
+        cell.appendChild(del);
+      }
+      cell.addEventListener('click', () => {
+        current = i;
+        fitCanvas();
+        renderThumbs();
+      });
+      grid.appendChild(cell);
+    });
+    const addCell = document.createElement('div');
+    addCell.className = 'thumb add';
+    addCell.textContent = "+";
+    addCell.addEventListener('click', () => {
+      pages.splice(current+1, 0, newPage());
+      current++;
+      fitCanvas();
+      renderThumbs();
+    });
+    grid.appendChild(addCell);
+  }
+
+  function flashToast(msg){
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(t._h);
+    t._h = setTimeout(()=>t.classList.remove('show'), 1400);
+  }
+
+  // ---------- EXPORT / THUMBNAIL RENDERING ----------
+  const EXPORT_SCALE = 1.6;
+
+  function renderPageToDataURL(page, scaleOverride){
+    const s = scaleOverride || EXPORT_SCALE;
+    const w = Math.round(PAGE_W*s), h = Math.round(PAGE_H*s);
+    const off = document.createElement('canvas');
+    off.width = w; off.height = h;
+    const octx = off.getContext('2d');
+    octx.fillStyle = page.bg;
+    octx.fillRect(0,0,w,h);
+    octx.setTransform(s,0,0,s,0,0);
+    if(page.lined){
+      octx.save();
+      octx.strokeStyle = isDark(page.bg) ? "rgba(255,255,255,.10)" : "rgba(30,40,60,.14)";
+      octx.lineWidth = 1;
+      for(let y=90;y<PAGE_H;y+=42){
+        octx.beginPath(); octx.moveTo(30,y); octx.lineTo(PAGE_W-30,y); octx.stroke();
+      }
+      octx.restore();
+    }
+    for(const st of page.strokes){
+      octx.save();
+      octx.lineCap="round"; octx.lineJoin="round";
+      octx.globalCompositeOperation = st.tool==="eraser" ? "destination-out" : (st.tool==="highlighter" ? "multiply" : "source-over");
+      octx.globalAlpha = st.tool==="highlighter" ? 0.38 : 1;
+      octx.strokeStyle = st.color;
+      if(st.points.length===1){
+        const p=st.points[0];
+        octx.beginPath(); octx.arc(p.x,p.y,(p.w||st.width)/2,0,Math.PI*2); octx.fillStyle=st.color; octx.fill();
+      } else {
+        for(let i=1;i<st.points.length;i++){
+          const a=st.points[i-1], b=st.points[i];
+          octx.beginPath();
+          octx.lineWidth = ((a.w||st.width)+(b.w||st.width))/2;
+          octx.moveTo(a.x,a.y); octx.lineTo(b.x,b.y); octx.stroke();
+        }
+      }
+      octx.restore();
+    }
+    return { dataUrl: off.toDataURL('image/png'), w, h };
+  }
+
+  function downloadBlob(blob, filename){
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = filename;
+    document.body.appendChild(a); a.click();
+    setTimeout(()=>{ document.body.removeChild(a); URL.revokeObjectURL(url); }, 500);
+  }
+
+  document.getElementById('exportPngBtn').addEventListener('click', () => {
+    const { dataUrl } = renderPageToDataURL(pages[current]);
+    fetch(dataUrl).then(r=>r.blob()).then(blob => {
+      downloadBlob(blob, "fortenotes-page-" + (current+1) + ".png");
+      flashToast("Page saved as PNG");
+    });
+  });
+
+  function base64ToHex(base64){
+    const binary = atob(base64);
+    let hex = "";
+    for(let i=0;i<binary.length;i++){
+      hex += binary.charCodeAt(i).toString(16).padStart(2,'0');
+    }
+    return hex;
+  }
+
+  function buildRtfBlob(){
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        const goalW = 9000;
+        const goalH = Math.round(goalW * PAGE_H / PAGE_W);
+        let body = "";
+        pages.forEach((page, idx) => {
+          const { dataUrl, w, h } = renderPageToDataURL(page);
+          const base64 = dataUrl.split(',')[1];
+          const hex = base64ToHex(base64);
+          body += "{\\pard\\qc {\\pict\\pngblip\\picw" + w + "\\pich" + h +
+                  "\\picwgoal" + goalW + "\\pichgoal" + goalH + " " + hex + "}\\par}";
+          if(idx < pages.length-1) body += "\\page ";
+        });
+        const rtf = "{\\rtf1\\ansi\\deff0{\\fonttbl{\\f0 Calibri;}}\\f0\\fs24 " + body + "}";
+        resolve(new Blob([rtf], { type: "application/rtf" }));
+      }, 30);
+    });
+  }
+
+  function sanitizeFilename(name){
+    name = (name || "").trim() || "fortenotes";
+    name = name.replace(/[\\/:*?"<>|]/g, "_");
+    if(!/\.rtf$/i.test(name)) name += ".rtf";
+    return name;
+  }
+
+  async function performSaveAs(rawName){
+    const filename = sanitizeFilename(rawName);
+    flashToast("Building RTF…");
+    const blob = await buildRtfBlob();
+    let savedViaPicker = false;
+    if(window.showSaveFilePicker){
+      try{
+        const handle = await window.showSaveFilePicker({
+          suggestedName: filename,
+          types: [{ description: 'Rich Text Format', accept: {'application/rtf': ['.rtf']} }]
+        });
+        const writable = await handle.createWritable();
+        await writable.write(blob);
+        await writable.close();
+        savedViaPicker = true;
+      } catch(err){
+        if(err && err.name === 'AbortError'){ flashToast("Save cancelled"); return; }
+        // any other error: fall through to plain download
+      }
+    }
+    if(!savedViaPicker){
+      downloadBlob(blob, filename);
+    }
+    flashToast(savedViaPicker ? "Saved to chosen location" : "Notebook downloaded as " + filename);
+  }
+
+  function openSavePanel(){
+    togglePanel(savePanel);
+    const input = document.getElementById('saveFilename');
+    setTimeout(() => { input.focus(); input.select(); }, 50);
+  }
+  document.getElementById('saveConfirmBtn').addEventListener('click', () => {
+    const name = document.getElementById('saveFilename').value;
+    togglePanel(savePanel); // close
+    performSaveAs(name);
+  });
+  document.getElementById('exportRtfBtn').addEventListener('click', openSavePanel);
+  document.getElementById('saveBtn').addEventListener('click', openSavePanel);
+
+  // ---------- INIT ----------
+  renderBgSwatches();
+  renderInkSwatches();
+  fitCanvas();
+
+})();
+</script>
+</body>
+</html>

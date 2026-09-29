@@ -1,0 +1,1714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Team21 Academy · AI Builder Level 2 — Learning Portal</title>
+<style>
+  :root{
+    --navy:#0A1B33; --navy2:#0F2340; --navy-dark:#060F1F;
+    --orange:#E85D2C; --orange-dk:#C64A1F;
+    --gold:#C9A84C; --green:#1F7A4D; --green-bg:#E4F1E9;
+    --red:#B23A48; --red-bg:#FBE7E9;
+    --cream:#F7F5F0; --panel:#FFFFFF; --line:#E6E1D6;
+    --ink:#1E222A; --muted:#6B7280; --muted2:#9AA3B2;
+    --side-w:272px; --head-h:64px;
+    --serif: Georgia, 'Times New Roman', serif;
+    --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:var(--sans); color:var(--ink); background:var(--cream);
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;text-decoration:none;}
+  button{font-family:inherit; cursor:pointer;}
+  ::selection{background:var(--gold); color:#20240F;}
+
+  /* ===== Login gate ===== */
+  #gate{
+    position:fixed; inset:0; background:linear-gradient(160deg,var(--navy-dark),var(--navy) 60%);
+    display:flex; align-items:center; justify-content:center; z-index:500;
+  }
+  .gate-card{
+    background:var(--panel); width:380px; max-width:90vw; border-radius:14px; padding:36px 32px;
+    box-shadow:0 30px 60px rgba(0,0,0,.4);
+  }
+  .gate-brand{color:var(--orange); font-weight:800; letter-spacing:.14em; font-size:12px; margin-bottom:6px;}
+  .gate-card h1{font-family:var(--serif); font-size:26px; margin:0 0 4px; color:var(--navy);}
+  .gate-card p{color:var(--muted); font-size:14px; margin:0 0 22px; line-height:1.5;}
+  .gate-card input{
+    width:100%; padding:12px 14px; border:1.5px solid var(--line); border-radius:8px; font-size:15px;
+    margin-bottom:14px; font-family:inherit;
+  }
+  .gate-card input:focus{outline:2px solid var(--orange); outline-offset:1px; border-color:var(--orange);}
+  .gate-card button{
+    width:100%; background:var(--orange); color:#fff; border:none; padding:13px; border-radius:8px;
+    font-weight:700; font-size:15px; letter-spacing:.02em;
+  }
+  .gate-card button:hover{background:var(--orange-dk);}
+  .gate-foot{margin-top:16px; font-size:12px; color:var(--muted2); text-align:center;}
+  .gate-sync{margin:-6px 0 14px; font-size:12px; color:var(--gold); text-align:center;}
+  .gate-admin{margin-top:12px; text-align:center; font-size:12.5px;}
+  .gate-admin a{color:#B9C0CE; text-decoration:underline;}
+  .gate-admin a:hover{color:#fff;}
+
+  /* ===== Header ===== */
+  #app{display:none;}
+  header{
+    position:fixed; top:0; left:0; right:0; height:var(--head-h); background:var(--navy);
+    display:flex; align-items:center; justify-content:space-between; padding:0 22px; z-index:200;
+    border-bottom:1px solid #16294a;
+  }
+  .head-left{display:flex; align-items:center; gap:14px;}
+  #hamburger{display:none; background:none; border:none; color:#fff; font-size:20px; padding:4px 8px;}
+  .brandmark{display:flex; flex-direction:column; line-height:1.1;}
+  .brandmark b{color:var(--orange); font-size:13px; letter-spacing:.12em; font-weight:800;}
+  .brandmark span{color:#B9C0CE; font-size:11px; letter-spacing:.06em;}
+  .head-course{
+    color:#fff; font-family:var(--serif); font-size:16px; padding-left:16px; margin-left:16px;
+    border-left:1px solid #223357;
+  }
+  .head-right{display:flex; align-items:center; gap:16px;}
+  .head-user{display:flex; align-items:center; gap:9px; color:#E7EAF0; font-size:13.5px;}
+  .avatar{
+    width:30px; height:30px; border-radius:50%; background:var(--orange); color:#fff;
+    display:flex; align-items:center; justify-content:center; font-weight:700; font-size:13px;
+  }
+  .head-progress{display:flex; align-items:center; gap:8px; color:#B9C0CE; font-size:12px;}
+  .head-progress .bar{width:90px; height:6px; background:#1a2d51; border-radius:4px; overflow:hidden;}
+  .head-progress .bar > i{display:block; height:100%; background:var(--gold);}
+
+  /* ===== Sidebar ===== */
+  nav#sidebar{
+    position:fixed; top:var(--head-h); bottom:0; left:0; width:var(--side-w);
+    background:var(--navy2); overflow-y:auto; z-index:150; padding:18px 0 40px;
+    border-right:1px solid #16294a;
+  }
+  .side-section{padding:6px 22px; color:#7C89A3; font-size:10.5px; letter-spacing:.14em; font-weight:700; margin-top:16px;}
+  .side-link{
+    display:flex; align-items:center; gap:10px; padding:11px 22px; color:#D3D8E2; font-size:14px;
+    border-left:3px solid transparent; cursor:pointer;
+  }
+  .side-link:hover{background:#132747; color:#fff;}
+  .side-link.active{background:#132747; color:#fff; border-left-color:var(--orange); font-weight:600;}
+  .side-link .ic{width:18px; text-align:center; opacity:.9;}
+  .side-mod{padding:10px 22px 10px 40px; font-size:13px; color:#AFB8C8; cursor:pointer; display:flex; justify-content:space-between; align-items:center;}
+  .side-mod:hover{color:#fff;}
+  .side-mod.active{color:var(--gold); font-weight:600;}
+  .side-mod .chk{font-size:11px; color:var(--green);}
+  .side-mod .chk.pending{color:#57607a;}
+  .lock-ic{font-size:10px; margin-left:4px; opacity:.8;}
+  .admin-nav{display:none;}
+  body.admin-mode .admin-nav{display:flex;}
+  body.admin-mode .student-nav{display:none;}
+  body.admin-mode .head-progress{display:none;}
+
+  /* ===== Main ===== */
+  main{
+    margin-left:var(--side-w); margin-top:var(--head-h); padding:32px 40px 80px; min-height:calc(100vh - var(--head-h));
+  }
+  .crumb{font-size:12px; color:var(--muted2); margin-bottom:10px; letter-spacing:.02em;}
+  .crumb b{color:var(--orange);}
+  h1.page-title{font-family:var(--serif); font-size:30px; color:var(--navy); margin:0 0 6px;}
+  .page-sub{color:var(--muted); font-size:14.5px; margin:0 0 26px; max-width:760px; line-height:1.55;}
+
+  /* Dashboard */
+  .cards-row{display:flex; gap:18px; flex-wrap:wrap; margin-bottom:30px;}
+  .stat-card{
+    background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:20px 22px;
+    min-width:190px; flex:1;
+  }
+  .stat-card .num{font-family:var(--serif); font-size:32px; color:var(--navy);}
+  .stat-card .lbl{font-size:12.5px; color:var(--muted); margin-top:4px;}
+  .stat-card.accent{background:var(--navy); color:#fff;}
+  .stat-card.accent .num{color:var(--gold);}
+  .stat-card.accent .lbl{color:#B9C0CE;}
+
+  .panel{background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:24px 26px; margin-bottom:22px;}
+  .panel h2{font-family:var(--serif); color:var(--navy); font-size:19px; margin:0 0 16px;}
+
+  .continue-row{display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;}
+  .continue-row .info b{display:block; font-size:16px; color:var(--navy); margin-bottom:3px;}
+  .continue-row .info span{font-size:13px; color:var(--muted);}
+  .btn{
+    display:inline-flex; align-items:center; gap:7px; background:var(--orange); color:#fff; border:none;
+    padding:11px 20px; border-radius:8px; font-weight:700; font-size:13.5px; white-space:nowrap;
+  }
+  .btn:hover{background:var(--orange-dk);}
+  .btn.ghost{background:transparent; color:var(--navy); border:1.5px solid var(--line);}
+  .btn.ghost:hover{border-color:var(--orange); color:var(--orange);}
+  .btn.navy{background:var(--navy);}
+  .btn.navy:hover{background:#132747;}
+  .btn.sm{padding:8px 14px; font-size:12.5px;}
+  .btn[disabled]{opacity:.5; cursor:not-allowed;}
+
+  .module-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:16px;}
+  .mod-card{
+    background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:18px 18px 16px;
+    cursor:pointer; transition:box-shadow .15s, transform .15s; position:relative; overflow:hidden;
+  }
+  .mod-card:hover{box-shadow:0 8px 22px rgba(10,27,51,.10); transform:translateY(-2px);}
+  .mod-card .tag{font-size:10.5px; font-weight:800; letter-spacing:.1em; color:var(--orange);}
+  .mod-card h3{font-family:var(--serif); font-size:17px; margin:6px 0 8px; color:var(--navy);}
+  .mod-card p{font-size:12.5px; color:var(--muted); margin:0 0 14px; line-height:1.5; min-height:36px;}
+  .mini-bar{height:6px; background:#EEEAE0; border-radius:4px; overflow:hidden; margin-bottom:8px;}
+  .mini-bar > i{display:block; height:100%; background:var(--green);}
+  .mod-card .pct{font-size:11px; color:var(--muted2);}
+  .mod-card .done-badge{position:absolute; top:14px; right:14px; font-size:16px;}
+
+  /* Module detail */
+  .tabbar{display:flex; gap:4px; border-bottom:2px solid var(--line); margin-bottom:24px;}
+  .tabbar button{
+    background:none; border:none; padding:11px 18px; font-size:14px; font-weight:600; color:var(--muted);
+    border-bottom:3px solid transparent; margin-bottom:-2px;
+  }
+  .tabbar button.active{color:var(--navy); border-bottom-color:var(--orange);}
+  .tabbar button:hover{color:var(--orange);}
+
+  .lesson-list{display:flex; flex-direction:column; gap:10px;}
+  .lesson-item{border:1px solid var(--line); border-radius:10px; background:var(--panel); overflow:hidden;}
+  .lesson-head{display:flex; align-items:center; justify-content:space-between; padding:15px 18px; cursor:pointer;}
+  .lesson-head:hover{background:#FBFAF7;}
+  .lesson-head .lt{display:flex; align-items:center; gap:12px;}
+  .lesson-num{
+    width:26px; height:26px; border-radius:50%; background:var(--cream); border:1.5px solid var(--line);
+    display:flex; align-items:center; justify-content:center; font-size:11.5px; font-weight:700; color:var(--muted);
+    flex-shrink:0;
+  }
+  .lesson-item.read .lesson-num{background:var(--green); border-color:var(--green); color:#fff;}
+  .lesson-title{font-size:14.5px; font-weight:600; color:var(--ink);}
+  .lesson-meta{font-size:11.5px; color:var(--muted2);}
+  .chev{color:var(--muted2); font-size:13px; transition:transform .15s;}
+  .lesson-item.open .chev{transform:rotate(90deg);}
+  .lesson-body{display:none; padding:4px 22px 22px 58px; font-size:14px; line-height:1.65; color:#33363F;}
+  .lesson-item.open .lesson-body{display:block;}
+  .lesson-body h4{font-family:var(--serif); color:var(--navy); font-size:15.5px; margin:16px 0 8px;}
+  .lesson-body h4:first-child{margin-top:2px;}
+  .lesson-body p{margin:0 0 10px;}
+  .lesson-body ul, .lesson-body ol{margin:0 0 12px; padding-left:20px;}
+  .lesson-body li{margin-bottom:5px;}
+  .ltable{width:100%; border-collapse:collapse; margin:12px 0 16px; font-size:13px;}
+  .ltable th{background:var(--navy); color:#fff; text-align:left; padding:8px 10px; font-size:11.5px;}
+  .ltable td{padding:8px 10px; border-bottom:1px solid var(--line); vertical-align:top;}
+  .ltable tr:nth-child(even) td{background:#FAF8F3;}
+  .callout{border-radius:8px; padding:12px 15px; margin:14px 0; font-size:13px; border-left:4px solid;}
+  .callout b{display:block; font-size:11px; letter-spacing:.05em; margin-bottom:4px; text-transform:uppercase;}
+  .callout.tip{background:#FBF3E0; border-color:var(--gold); color:#5C4A18;}
+  .callout.warn{background:var(--red-bg); border-color:var(--red); color:#7A2732;}
+  .callout.info{background:#EAEEF6; border-color:var(--navy); color:#1B2A45;}
+  .callout.ok{background:var(--green-bg); border-color:var(--green); color:#124B2C;}
+  .mark-btn{margin-top:8px;}
+
+  /* Quiz */
+  .quiz-intro{text-align:center; padding:30px 10px;}
+  .quiz-intro .ic{font-size:40px; margin-bottom:10px;}
+  .quiz-meta-row{display:flex; justify-content:center; gap:26px; margin:18px 0 24px; flex-wrap:wrap;}
+  .qm{text-align:center;}
+  .qm b{display:block; font-family:var(--serif); font-size:22px; color:var(--navy);}
+  .qm span{font-size:11.5px; color:var(--muted);}
+  .q-block{border:1px solid var(--line); background:var(--panel); border-radius:10px; padding:20px 22px; margin-bottom:14px;}
+  .q-num{font-size:11px; font-weight:800; color:var(--orange); letter-spacing:.06em; margin-bottom:6px;}
+  .q-text{font-size:15px; font-weight:600; color:var(--ink); margin-bottom:14px; line-height:1.5;}
+  .opt{
+    display:flex; align-items:flex-start; gap:10px; padding:10px 12px; border:1.5px solid var(--line);
+    border-radius:8px; margin-bottom:8px; cursor:pointer; font-size:13.8px; line-height:1.45;
+  }
+  .opt:hover{border-color:var(--orange);}
+  .opt input{margin-top:2px;}
+  .opt.chosen{border-color:var(--orange); background:#FFF4EF;}
+  .q-block.graded .opt{cursor:default;}
+  .q-block.graded .opt:hover{border-color:var(--line);}
+  .q-block.graded .opt.correct{border-color:var(--green); background:var(--green-bg);}
+  .q-block.graded .opt.incorrect{border-color:var(--red); background:var(--red-bg);}
+  .q-block.graded .opt.chosen.correct{font-weight:700;}
+  .explain{margin-top:12px; padding:11px 14px; border-radius:8px; font-size:13px; background:#F1F4F9; border-left:4px solid var(--navy); color:#242C3E;}
+  .explain b{color:var(--navy);}
+  .quiz-actions{display:flex; justify-content:space-between; align-items:center; margin-top:20px; flex-wrap:wrap; gap:12px;}
+  .score-banner{
+    border-radius:10px; padding:20px 24px; margin-bottom:20px; display:flex; align-items:center; justify-content:space-between;
+    flex-wrap:wrap; gap:14px;
+  }
+  .score-banner.pass{background:var(--green-bg); border:1px solid #B7DEC4;}
+  .score-banner.fail{background:var(--red-bg); border:1px solid #EFC0C6;}
+  .score-banner .big{font-family:var(--serif); font-size:30px;}
+  .score-banner.pass .big{color:var(--green);}
+  .score-banner.fail .big{color:var(--red);}
+  .score-banner .lbl{font-size:12.5px; color:var(--muted);}
+  .exam-header{display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;}
+  .exam-timer{
+    font-family:var(--serif); font-size:26px; font-weight:700; color:var(--navy); background:var(--panel);
+    border:2px solid var(--line); border-radius:10px; padding:6px 18px; min-width:100px; text-align:center;
+  }
+  .exam-timer.low{color:var(--red); border-color:var(--red); animation:pulse 1s infinite;}
+  @keyframes pulse{0%,100%{opacity:1;} 50%{opacity:.5;}}
+
+  /* Grades page */
+  table.grades{width:100%; border-collapse:collapse; font-size:13.5px;}
+  table.grades th{
+    background:var(--navy); color:#fff; text-align:left; padding:12px 14px; font-size:11.5px;
+    letter-spacing:.04em; text-transform:uppercase;
+  }
+  table.grades td{padding:13px 14px; border-bottom:1px solid var(--line);}
+  table.grades tr:hover td{background:#FBFAF7;}
+  table.grades tr.total-row td{background:var(--navy); color:#fff; font-weight:700; font-size:14.5px;}
+  .pill{padding:4px 10px; border-radius:20px; font-size:11.5px; font-weight:700;}
+  .pill.green{background:var(--green-bg); color:var(--green);}
+  .pill.grey{background:#EEECE5; color:var(--muted);}
+  .pill.gold{background:#FBF3E0; color:#8A6C1B;}
+  .gr-bar{width:80px; height:6px; background:#EEEAE0; border-radius:4px; overflow:hidden;}
+  .gr-bar>i{display:block; height:100%; background:var(--green);}
+
+  /* Resources */
+  .res-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:16px;}
+  .res-card{background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:18px;}
+  .res-card h4{font-family:var(--serif); color:var(--navy); margin:0 0 8px; font-size:15.5px;}
+  .res-card ul{margin:0; padding-left:18px; font-size:13px; color:#33363F; line-height:1.6;}
+
+  footer.pagefoot{margin-top:40px; padding-top:18px; border-top:1px solid var(--line); font-size:11.5px; color:var(--muted2); text-align:center;}
+
+  @media (max-width:900px){
+    :root{--side-w:240px;}
+    #hamburger{display:block;}
+    nav#sidebar{transform:translateX(-100%); transition:transform .2s; box-shadow:10px 0 30px rgba(0,0,0,.2);}
+    nav#sidebar.open{transform:translateX(0);}
+    main{margin-left:0; padding:24px 18px 60px;}
+    .head-course{display:none;}
+    .head-progress{display:none;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ===================== LOGIN GATE ===================== -->
+<div id="gate">
+  <div class="gate-card">
+    <div class="gate-brand">TEAM21 ACADEMY</div>
+    <h1>AI Builder — Level 2</h1>
+    <p>Sign in to your learning portal to access modules, lessons, quizzes and your gradebook.</p>
+    <input id="nameInput" placeholder="Your full name" autocomplete="off">
+    <input id="idInput" placeholder="Student ID or email (used to sync your progress)" autocomplete="off">
+    <button onclick="signIn()">Enter Course</button>
+    <div class="gate-sync" id="gateSyncMsg" style="display:none;">Syncing your progress…</div>
+    <div class="gate-foot">© Innocent Forteh · Team21 Academy · 2026</div>
+    <div class="gate-admin"><a href="javascript:void(0)" onclick="openAdminGate()">Instructor / Admin sign in</a></div>
+  </div>
+
+  <div class="gate-card admin-card" id="adminGate" style="display:none;">
+    <div class="gate-brand">TEAM21 ACADEMY</div>
+    <h1>Instructor Access</h1>
+    <p>Enter the instructor passcode to view all learners' progress and certificates.</p>
+    <input id="adminPass" type="password" placeholder="Instructor passcode" autocomplete="off">
+    <button onclick="adminSignIn()">View Learner Progress</button>
+    <div class="gate-admin"><a href="javascript:void(0)" onclick="closeAdminGate()">← Back to student sign-in</a></div>
+  </div>
+</div>
+
+<!-- ===================== APP SHELL ===================== -->
+<div id="app">
+  <header>
+    <div class="head-left">
+      <button id="hamburger" onclick="toggleSidebar()">☰</button>
+      <div class="brandmark"><b>TEAM21 ACADEMY</b><span>AI LITERACY PROGRAMME</span></div>
+      <div class="head-course">AI Builder — Level 2: BUILD</div>
+    </div>
+    <div class="head-right">
+      <div class="head-progress">
+        <span id="hdrPct">0%</span> complete
+        <div class="bar"><i id="hdrBar" style="width:0%"></i></div>
+      </div>
+      <div class="head-user">
+        <div class="avatar" id="avatarInit">S</div>
+        <span id="hdrName">Student</span>
+      </div>
+    </div>
+  </header>
+
+  <nav id="sidebar">
+    <div class="side-link student-nav" data-nav="dashboard" onclick="go('dashboard')"><span class="ic">🏠</span> Dashboard</div>
+    <div class="side-link student-nav" data-nav="course" onclick="go('course')"><span class="ic">📚</span> Course Content</div>
+    <div id="sideModules" class="student-nav"></div>
+    <div class="side-link student-nav" data-nav="exam" onclick="go('exam')"><span class="ic">🎓</span> Certification Exam <span id="examLockIcon" class="lock-ic">🔒</span></div>
+    <div class="side-link student-nav" data-nav="grades" onclick="go('grades')"><span class="ic">📊</span> Grades</div>
+    <div class="side-link student-nav" data-nav="resources" onclick="go('resources')"><span class="ic">🔗</span> Resources</div>
+    <div class="side-section student-nav">SUPPORT</div>
+    <div class="side-link student-nav" onclick="alert('WhatsApp your mentor, or email team21online@gmail.com')"><span class="ic">💬</span> Ask a Mentor</div>
+    <div class="side-link admin-nav" data-nav="admin" onclick="go('admin')"><span class="ic">🧑‍🏫</span> Learner Progress</div>
+  </nav>
+
+  <main id="main"></main>
+</div>
+
+<script>
+/* =========================================================
+   TEAM21 ACADEMY — AI BUILDER LEVEL 2 — LEARNING PORTAL
+   Single-file LMS: modules, lessons, quizzes, gradebook.
+   Data persists to localStorage on this device/browser.
+   ========================================================= */
+
+/* ---------- small content-builder helpers ---------- */
+function T(html){return html;}
+function tbl(headers, rows){
+  var h = '<table class="ltable"><thead><tr>' + headers.map(function(x){return '<th>'+x+'</th>';}).join('') + '</tr></thead><tbody>';
+  rows.forEach(function(r){ h += '<tr>' + r.map(function(c){return '<td>'+c+'</td>';}).join('') + '</tr>'; });
+  h += '</tbody></table>';
+  return h;
+}
+function callout(kind, label, text){
+  return '<div class="callout '+kind+'"><b>'+label+'</b>'+text+'</div>';
+}
+function ul(items){ return '<ul>' + items.map(function(i){return '<li>'+i+'</li>';}).join('') + '</ul>'; }
+function ol(items){ return '<ol>' + items.map(function(i){return '<li>'+i+'</li>';}).join('') + '</ol>'; }
+
+/* =========================================================
+   COURSE DATA
+   ========================================================= */
+var COURSE = {
+  title: "AI Builder — Level 2: BUILD",
+  modules: [
+
+  /* ================= MODULE 1 ================= */
+  {
+    id:"m1", code:"Week 1", title:"Think Smarter", subtitle:"Advanced AI Mastery", weight:15,
+    blurb:"Upgrade how you think, prompt and interact with AI at a strategic level.",
+    lessons:[
+      { title:"The Paradigm Shift — Why Vibe Coding Changes Everything", body:
+        '<h4>Old World vs New World</h4>' +
+        '<p>The world of building software has changed. For decades, building anything digital meant learning to code for years, hiring expensive developers, and waiting months to launch.</p>' +
+        tbl(["❌ Old World","✅ New World"],[
+          ["Learn to code for years","Describe your idea in plain language"],
+          ["Hire expensive developers","Use AI as your co-developer"],
+          ["Wait months to launch","Ship in hours"],
+          ["Perfection before release","Build fast, improve later"],
+          ["Code is the bottleneck","THINKING is the skill"]
+        ]) +
+        callout("info","Key Insight","AI is the builder. You are the director. Clarity of thought is the new competitive advantage.") +
+        '<h4>Your AI Tool Stack</h4>' +
+        tbl(["Tool","Role","Best Use"],[
+          ["ChatGPT","Brainstorm","Ideas and ideation"],
+          ["Claude","Architect","Planning, logic, long-context workflows"],
+          ["Google AI Studio (Gemini)","Research &amp; Build","Market data; generates full HTML projects"],
+          ["Replit","Build","AI-powered coding environment"],
+          ["Cursor / Lovable","Build &amp; Prototype","Full apps and fast UI"]
+        ])
+      },
+      { title:"The 5 Layers of a Precision Prompt", body:
+        '<p>Most people get weak results from AI because they write weak prompts. A precision prompt has five layers.</p>' +
+        '<h4>1 — ROLE</h4><p>Assign the AI an expert identity.</p>' +
+        callout("tip","Example","\u201cYou are a senior product manager with 10 years of experience building SaaS products for African markets.\u201d") +
+        '<h4>2 — CONTEXT</h4><p>Paint the picture — your users, market, constraints.</p>' +
+        callout("tip","Example","\u201cI'm building a WhatsApp booking app for hairdressers in Ya\u0151und\u00e9. My users are women aged 25\u201345 who want quick bookings and price transparency.\u201d") +
+        '<h4>3 — TASK</h4><p>Be specific about format, length and perspective.</p>' +
+        callout("tip","Example","\u201cWrite a 150-word product description. Format: headline (10 words) + pain point (2 sentences) + 4 benefit bullets + CTA (10 words).\u201d") +
+        '<h4>4 — CONSTRAINT</h4><p>Tell it what NOT to do.</p>' +
+        callout("tip","Example","\u201cDo NOT use buzzwords like world-class. Do NOT include pricing. Do NOT use technical jargon.\u201d") +
+        '<h4>5 — CHAIN</h4><p>Tell the AI what comes next, turning one answer into a workflow.</p>' +
+        callout("tip","Example","\u201cAfter writing this, suggest 3 product names, then a tagline for each.\u201d")
+      },
+      { title:"The 4-Stage Prompt Chain", body:
+        '<p>Stop typing \u201cbuild me an app.\u201d Professional builders use a system: PLAN \u2192 CRITIQUE \u2192 BUILD \u2192 IMPROVE.</p>' +
+        tbl(["Stage","Prompt Template"],[
+          ["1 · PLAN","\u201cCreate a detailed plan for [app] for [WHO] that solves [PAIN]. Include features, user flow, and main screens.\u201d"],
+          ["2 · CRITIQUE","\u201cReview this plan. Ask me 5 questions that make it better and more realistic for the Cameroonian market.\u201d"],
+          ["3 · BUILD","\u201cNow build this step-by-step. Start with the database, then the main screen, then the core action.\u201d"],
+          ["4 · IMPROVE","\u201cI am getting this error: [paste]. It happens when [action]. Fix it and explain what caused it.\u201d"]
+        ])
+      },
+      { title:"Finding Real Problems Worth Solving — WHO · PAIN · RESULT", body:
+        '<p>Before you build anything, know exactly who you are building for.</p>' +
+        tbl(["WHO","PAIN","RESULT"],[["Who exactly is your user? Be specific — a real person, not \u2018everyone.\u2019","What frustrating problem do they have? A feeling, not a feature.","What does life look like after? The outcome, not the feature."]]) +
+        callout("ok","Worked Example","Ya\u0151und\u00e9 hairdresser (WHO) \u2192 loses clients due to no booking system (PAIN) \u2192 WhatsApp booking tool, full calendar (RESULT)") +
+        tbl(["WHO","PAIN","APP RESULT"],[
+          ["Ya\u0151und\u00e9 hairdresser","No booking system \u2192 lost clients","WhatsApp booking tool"],
+          ["Primary school parent","3 kids' fees tracked on paper","Digital fee tracker app"],
+          ["Small restaurant owner","Orders across 5 WhatsApp chats","Unified order manager"],
+          ["Church administrator","Attendance in exercise books","Digital attendance tracker"]
+        ])
+      },
+      { title:"Step-by-Step: Build &amp; Publish Your First Website", body:
+        '<p>Claude and Google AI Studio can build complete, production-ready web apps as a single self-contained HTML file.</p>' +
+        '<h4>Weak Prompt vs Strong Prompt</h4>' +
+        tbl(["Weak","Strong"],[
+          ["Write me a web app","Build a web platform for 10 client organisations to complete an 8-module assessment with scoring, radar charts, and an admin portal to export CSV reports"],
+          ["Make it look nice","Dark navy background #0A1628, gold accents #C9A84C, card-based layout, professional executive feel"]
+        ]) +
+        '<h4>GitHub Pages Checklist</h4>' +
+        ol([
+          "Repository name: [yourname].github.io — check spelling 3 times",
+          "Repository is PUBLIC",
+          "Uploaded index.html file",
+          "Enabled GitHub Pages in Settings",
+          "Website live at https://[yourname].github.io",
+          "Link posted in the WhatsApp group"
+        ]) +
+        callout("tip","Pro Tip","Save each version with a different filename — app_v1.html, app_v2.html — so you can roll back if a change breaks something.")
+      }
+    ],
+    quiz:{
+      passPct:70,
+      questions:[
+        { q:"According to the paradigm shift lesson, what is the new competitive advantage in the AI-builder world?",
+          options:["Knowing a programming language","Clarity of thought / thinking","Owning expensive hardware","Working faster than AI"], correct:1,
+          explain:"AI is the builder; you are the director. Clarity of thought — not code fluency — is now the bottleneck skill." },
+        { q:"Which layer of a precision prompt tells the AI what NOT to do?",
+          options:["Role","Context","Constraint","Chain"], correct:2,
+          explain:"The Constraint layer filters out generic AI-sounding output by stating what to avoid." },
+        { q:"In the 4-stage prompt chain, what comes immediately after PLAN?",
+          options:["BUILD","IMPROVE","CRITIQUE","CHAIN"], correct:2,
+          explain:"The order is PLAN → CRITIQUE → BUILD → IMPROVE — critique the plan before you build it." },
+        { q:"In WHO–PAIN–RESULT, \u201closes clients due to no booking system\u201d is an example of which element?",
+          options:["WHO","PAIN","RESULT","ROLE"], correct:1,
+          explain:"PAIN is the frustrating problem the user feels daily — a feeling, not a feature." },
+        { q:"For GitHub Pages to correctly serve your site as the homepage, what must your main file be named?",
+          options:["home.html","main.html","index.html","site.html"], correct:2,
+          explain:"index.html is the only filename GitHub Pages (and Vercel) auto-serve without extra configuration." },
+        { q:"Which of these is a 'strong' prompt according to the lesson?",
+          options:["\u201cMake it look nice\u201d","\u201cWrite me a web app\u201d","\u201cDark navy #0A1628 background, gold #C9A84C accents, card-based layout, executive feel\u201d","\u201cAdd a save feature\u201d"], correct:2,
+          explain:"Strong prompts specify exact colours, layout style and mood — vague requests produce vague, generic results." }
+      ]
+    }
+  },
+
+  /* ================= MODULE 2 ================= */
+  {
+    id:"m2", code:"Week 2", title:"Build Your System", subtitle:"Deploy &amp; Cloud Sync", weight:15,
+    blurb:"Turn AI outputs into real, deployable systems shared live across every device.",
+    lessons:[
+      { title:"The Free Deployment Stack — GitHub + Vercel", body:
+        tbl(["Service","What It Does","URL Format"],[
+          ["GitHub","Stores your HTML file as your version-controlled source of truth","github.com/you/project"],
+          ["Vercel","Reads your GitHub file and publishes it live automatically","project.vercel.app"]
+        ]) +
+        '<h4>Setting Up GitHub</h4>' +
+        ol(["Sign up at github.com and verify your email","Click + \u2192 New repository, name it, set to Public","Create a new file named exactly index.html","Paste your HTML content","Click Commit new file"]) +
+        '<h4>Setting Up Vercel</h4>' +
+        ol(["Sign up at vercel.com \u2192 Continue with GitHub","Click Add New Project \u2192 Import your repository","Leave defaults \u2192 click Deploy","Copy your live .vercel.app URL and share it"]) +
+        callout("tip","Pro Tip","Want a custom domain? Vercel \u2192 Project \u2192 Settings \u2192 Domains. Free SSL (https) is automatic.")
+      },
+      { title:"Updating Your Live Site", body:
+        ol(["Copy the updated HTML from your AI tool","Open index.html on GitHub and click Edit","Ctrl+A, Delete, then paste the new HTML","Click Commit changes — Vercel redeploys in under 30 seconds"])
+      },
+      { title:"The Problem With Local Storage &amp; Why Cloud Sync Matters", body:
+        '<p>By default, AI-built apps save data in the browser\u2019s localStorage — private to one browser, one device.</p>' +
+        ul(["A user who saves on Laptop A cannot see it from Laptop B","Two users on the same computer overwrite each other's data","Clearing browser history deletes all data permanently"]) +
+        callout("info","The Fix","Replace localStorage with a live database on Google Apps Script. Every save goes to Google instantly; every load fetches the latest shared data.")
+      },
+      { title:"Step-by-Step: Setting Up the Cloud Sync Backend", body:
+        ol([
+          "Go to script.google.com and sign in",
+          "New Project \u2192 rename it \u201cCloud Sync\u201d",
+          "Delete the default code, paste your Apps Script backend code",
+          "Save (Ctrl+S)",
+          "Deploy \u2192 New Deployment \u2192 type: Web App",
+          "Execute as: Me. Who has access: Anyone. Click Deploy",
+          "Authorise access with your Google account",
+          "Copy the Web App URL (ends in /exec)",
+          "Paste that URL into your HTML file, replacing the placeholder",
+          "Re-upload the updated HTML to GitHub"
+        ]) +
+        callout("warn","Common Mistake","After changing Apps Script code, you must redeploy: Deploy → Manage Deployments → pencil → New Version → Deploy. Skipping this means your changes never go live.") +
+        '<h4>How the CORS Bypass Works</h4>' +
+        ul(["Loading data (GET): a &lt;script&gt; tag with a JSONP callback — browsers never block script tags","Saving data (POST): fetch() with mode:\u2018no-cors\u2019 bypasses the CORS preflight check"])
+      }
+    ],
+    quiz:{
+      passPct:70,
+      questions:[
+        { q:"What must your primary deployable HTML file be named to avoid a Vercel/GitHub Pages 404?", options:["site.html","index.html","app.html","home.html"], correct:1, explain:"Only index.html is automatically served as the homepage." },
+        { q:"Why does localStorage fail teams?", options:["It's too slow","It only exists on one browser/device","It costs money","It requires internet"], correct:1, explain:"localStorage is private to a single browser on a single device, so devices never share data." },
+        { q:"Which free Google service is used as the cloud database backend?", options:["Google Sheets API","Firebase","Google Apps Script","Google Cloud Functions"], correct:2, explain:"Apps Script is free, needs no server, and uses the account you already have." },
+        { q:"What must you do after editing your Apps Script code for the changes to take effect?", options:["Nothing, it auto-updates","Refresh the browser","Deploy a New Version","Clear localStorage"], correct:2, explain:"Apps Script requires an explicit new deployment version — the URL stays the same, but a redeploy is mandatory." },
+        { q:"Which technique allows loading data across domains without a CORS error?", options:["Basic Auth","JSONP via a script tag","FTP","WebSockets"], correct:1, explain:"A <script> tag pointing at the Apps Script URL with a callback bypasses the browser's CORS restriction entirely." },
+        { q:"What does Vercel do in the free deployment stack?", options:["Stores your source code permanently","Publishes your GitHub file live and redeploys on every change","Hosts your cloud database","Sends confirmation emails"], correct:1, explain:"Vercel reads from GitHub and republishes automatically — GitHub is the source of truth, Vercel is the live host." }
+      ]
+    }
+  },
+
+  /* ================= MODULE 3 ================= */
+  {
+    id:"m3", code:"Week 3", title:"Automate Your Workflows", subtitle:"Zapier, Make &amp; NotebookLM", weight:15,
+    blurb:"Eliminate repetitive work by building intelligent automation systems.",
+    lessons:[
+      { title:"Automation Vocabulary", body:
+        tbl(["Term","Meaning"],[
+          ["Scenario / Zap","A visual workflow connecting apps — one complete automation"],
+          ["Trigger","The event that starts the automation"],
+          ["Action","The task a module executes automatically"],
+          ["Module","A building block that performs an action or processes data"]
+        ])
+      },
+      { title:"How Zapier Works", body:
+        '<p>Zapier is a free, no-code automation tool connecting 7,000+ apps via API technology.</p>' +
+        tbl(["Tool","What It Does"],[
+          ["Zaps","One automation — watches for a trigger, then performs an action in another app"],
+          ["Tables","A smart, automated spreadsheet living inside Zapier"],
+          ["Interfaces","No-code forms/websites that trigger a Zap on submission"],
+          ["Chatbots","A 24/7 automated chat assistant"]
+        ]) +
+        '<h4>Automate Your Email Replies — Step by Step</h4>' +
+        ol([
+          "Create a new Zap → Trigger box → search Gmail → select New Email",
+          "Test the trigger, then click Continue",
+          "Set the Action → Gmail → Send Email",
+          "Write a warm, personal reply using the sender's name",
+          "Click Publish Zap and toggle it ON"
+        ]) +
+        callout("ok","Case Study — Liberty Consultancy","A client emails asking about services → Zapier detects it (trigger) → reads the sender's name → sends a warm confirmation email automatically (action). Result: no lead is ever missed, and it works forever once set up.")
+      },
+      { title:"How Make Works", body:
+        '<p>Make (formerly Integromat) is a visual automation platform connecting apps through <b>scenarios</b> — a trigger linked to modules that process data and perform actions.</p>' +
+        '<h4>Build a Simple Scenario</h4>' +
+        ol(["Add your trigger — a form submission","Add a Google Sheets module to save each entry","Add an email module to notify the user","Map fields clearly and test each module"]) +
+        callout("ok","Case Study — Zoe Clean","A customer submits an order via Google Forms → Make saves it to Sheets, emails the customer, and notifies the team internally. Outcome: faster order handling, fewer manual errors.")
+      },
+      { title:"Introduction to NotebookLM", body:
+        '<p>NotebookLM is Google\u2019s research and knowledge companion. Upload your own documents and it becomes a source-grounded assistant that summarises, answers questions, and generates study or briefing material strictly from what you gave it.</p>' +
+        ul(["Summarise long PDFs into clear briefings","Build a searchable knowledge base for a client","Generate an audio overview or study guide from source documents"])
+      }
+    ],
+    quiz:{
+      passPct:70,
+      questions:[
+        { q:"In Zapier, what starts a Zap?", options:["The Action","The Trigger","The Table","The Chatbot"], correct:1, explain:"A Trigger is the event — a new email, a form submission — that begins the automation." },
+        { q:"What is a 'scenario' in Make?", options:["A backup plan","A single email template","A visual workflow linking a trigger to processing modules and an action","A type of chatbot"], correct:2, explain:"A scenario is Make's term for one complete end-to-end automated workflow." },
+        { q:"In the Liberty Consultancy case study, what was the Zap's action?", options:["Deleting the email","Auto-sending a confirmation email","Posting to Instagram","Blocking the sender"], correct:1, explain:"The action was sending a warm, automatic confirmation reply to the client." },
+        { q:"Which Zapier tool lets you build a simple no-code form that triggers a Zap on submission?", options:["Tables","Interfaces","Chatbots","Zaps"], correct:1, explain:"Interfaces builds simple websites/forms without coding, and a submission triggers a Zap automatically." },
+        { q:"What does NotebookLM primarily do?", options:["Sends automated emails","A source-grounded research and knowledge assistant","A video editing tool","A payment processor"], correct:1, explain:"NotebookLM answers and summarises strictly from the documents you upload to it." },
+        { q:"Which is NOT one of Zapier's 4 popular tools covered in this lesson?", options:["Zaps","Tables","Workflows","Chatbots"], correct:2, explain:"The four are Zaps, Tables, Interfaces, and Chatbots — \u2018Workflows\u2019 is Make's language, not Zapier's." }
+      ]
+    }
+  },
+
+  /* ================= MODULE 4 ================= */
+  {
+    id:"m4", code:"Week 4", title:"Build Your Media Studio", subtitle:"Design, Storyboarding &amp; Video", weight:15,
+    blurb:"Master design principles, elite AI prompting, and a full FAN-framework video workflow.",
+    lessons:[
+      { title:"The Four Questions Every Creative Director Asks", body:
+        '<p>Your target audience determines everything: colour palette, typography, imagery, mood.</p>' +
+        tbl(["Audience","Design Direction"],[
+          ["Luxury buyers","Deep colours, serif fonts, generous white space, gold accents"],
+          ["Young professionals","Bold sans-serif, high energy, vibrant colours"],
+          ["Corporate executives","Clean, minimal, trust-building, strong alignment"],
+          ["Children","Bright primary colours, rounded shapes, playful fonts"]
+        ])
+      },
+      { title:"The 12 Principles of Design (Condensed)", body:
+        tbl(["#","Principle","In Short"],[
+          ["1","Balance","Visual weight distributed intentionally — symmetrical=formal, asymmetrical=dynamic"],
+          ["2","Contrast","Light vs dark, large vs small — the most powerful attention tool"],
+          ["3","Hierarchy","A clear first, second, third thing to notice"],
+          ["4","Alignment","Nothing floats randomly — if it can be aligned, align it"],
+          ["5","Repetition","Repeating fonts/colours/shapes builds brand recognition"],
+          ["6","Proximity","Related items grouped close; unrelated items spaced apart"],
+          ["7","White Space","Breathing room signals confidence and prestige"],
+          ["8","Emphasis","One dominant focal point per design"],
+          ["9","Movement","Diagonal lines / gaze / flow guide the eye"],
+          ["10","Unity","All elements feel like one world"],
+          ["11","Scale &amp; Proportion","Dramatic size relationships create cinematic impact"],
+          ["12","Rhythm","Repeated patterns create visual flow"]
+        ]) +
+        '<h4>9 Design Mistakes to Avoid</h4>' +
+        ul(["Too many fonts","Weak or absent contrast","Crowded, cluttered layout","No clear focal point","Random colour choices","Poor alignment","Too many visual effects","Ignoring context and format","Describing objects instead of feelings"])
+      },
+      { title:"Elite AI Prompting For Design", body:
+        tbl(["\u2717 Amateur","\u2713 Elite"],[
+          ["Make a business flyer","Premium consulting firm flyer. Navy and gold palette. Modern minimalist layout. Clean typography. Corporate luxury aesthetic. High-converting CTA."],
+          ["Book cover","Psychological thriller book cover. Cinematic shadows. Mysterious silhouette. Red and black palette. Bold editorial typography. Bestseller quality."]
+        ]) +
+        callout("tip","Team21 Secret Combo — Make It Look Expensive","Luxury · Premium · Refined · Matte finish · Elegant lighting · Minimalist composition") +
+        callout("info","Golden Rule","Never describe objects — describe feelings. AI responds to atmosphere, not inventory.")
+      },
+      { title:"Principles of Storyboarding — The FAN Framework", body:
+        '<p>A storyboard maps your video scene by scene before you touch an editing tool — the specification document you feed the AI generator.</p>' +
+        tbl(["Letter","Element","Question"],[
+          ["F","FRAME — what the viewer sees","What is in the shot? Where are characters placed?"],
+          ["A","ACTION — what is happening","What are characters doing? What emotion do we feel?"],
+          ["N","NOTES — dialogue, sound, camera","What do we hear? What does the camera do?"]
+        ]) +
+        '<h4>The 6-Frame Formula</h4>' +
+        ol(["Hook — grab attention in 3 seconds","Context / World — establish setting","Problem / Challenge — the emotional engine","Solution / Journey — the longest section","Result / Transformation — the payoff","Call to Action / Close"])
+      },
+      { title:"AI Character Consistency &amp; Producing in Google Vids", body:
+        callout("info","The Two-Part Prompt Formula","Part A (always identical): full character description. Part B (per scene): action + setting + lighting + camera framing + style keywords.") +
+        ul(["Paste Part A at the top of every prompt — never retype it from memory","Always specify 16:9 aspect ratio and photorealistic, 4K, sharp focus","Save images with consistent filenames: Scene_01_Hook.png etc."]) +
+        '<h4>Google Vids Production Flow</h4>' +
+        ol(["Set up project, 16:9 canvas","Add opening scene, animate with Veo using camera-direction language","Add title text — lower third, never dead centre","Build scenes 2\u20135 with consistent transitions","Add a closing scene with CTA and credit line","Mix audio: music 20\u201330%, effects 60\u201380%, voiceover 100%","Export 1080p MP4, H.264, 30fps"])
+      }
+    ],
+    quiz:{
+      passPct:70,
+      questions:[
+        { q:"Which design principle means grouping related items close together?", options:["Contrast","Proximity","Hierarchy","Rhythm"], correct:1, explain:"Proximity groups related items and spaces unrelated ones apart, reducing cognitive load." },
+        { q:"In the FAN framework, what does 'N' stand for?", options:["Narrative","Notes","Number","New scene"], correct:1, explain:"N = Notes: dialogue, sound, and camera direction." },
+        { q:"What is 'Part A' in the two-part AI image prompt formula?", options:["The setting","The fixed character description","The lighting style","The camera angle"], correct:1, explain:"Part A is your fixed, unchanging character reference — pasted identically into every scene prompt." },
+        { q:"According to the design lessons, what should you describe instead of objects?", options:["Prices","Feelings / atmosphere","Dimensions","Brand names"], correct:1, explain:"AI responds to atmosphere and feeling, not a literal inventory of objects." },
+        { q:"What aspect ratio should all storyboard scene images use for video?", options:["1:1","4:3","16:9","9:16"], correct:2, explain:"16:9 is the widescreen standard used throughout the Team21 video workflow." },
+        { q:"Which of these is one of the '9 Design Mistakes to Avoid'?", options:["Using consistent fonts","Too many fonts","Clear focal point","Generous white space"], correct:1, explain:"Too many fonts is a listed mistake — professional design uses a restrained, consistent type system." }
+      ]
+    }
+  },
+
+  /* ================= MODULE 5 ================= */
+  {
+    id:"m5", code:"Week 4+", title:"Build Your Income", subtitle:"Selar, Fiverr &amp; Monetisation", weight:15,
+    blurb:"Convert your new skills into real, immediate revenue streams.",
+    lessons:[
+      { title:"3 Monetisation Models", body:
+        tbl(["Model","Typical Price","How It Works"],[
+          ["Service-Based","50,000\u2013150,000 FCFA","Build the app FOR a business — setup fee + monthly maintenance"],
+          ["Subscription","2,000\u201310,000 FCFA/mo","App runs on a server; users pay monthly to access it"],
+          ["Digital Product","10,000\u201330,000 FCFA","Sell the app template or prompt kit itself, not the running app"]
+        ])
+      },
+      { title:"Selling Digital Products on Selar", body:
+        ol(["Prepare your digital product file (eBook, template, graphics)","Log in to Selar → Add Product","Fill in Name, Description, Price, upload the file","Add a cover image","Confirm payment setup so you can receive proceeds","Publish and test the buying flow"])
+      },
+      { title:"The Fiverr Marketplace", body:
+        tbl(["Term","Meaning"],[
+          ["Gig","The specific service a seller lists for sale"],
+          ["Escrow","Fiverr holds the buyer's money until work is accepted"],
+          ["Clearance","Funds held 14 days (7 for Top Rated) before withdrawal"],
+          ["Seller Level","New \u2192 Level 1 \u2192 Level 2 \u2192 Top Rated Seller"]
+        ]) +
+        '<h4>Fees — What Sellers Actually Earn</h4>' +
+        tbl(["Gig Price","Fiverr's 20% Commission","Seller Earns"],[["$50","$10.00","$40.00 (80%)"],["$100","$20.00","$80.00 (80%)"]]) +
+        callout("tip","Pro Tip","Set prices AFTER accounting for Fiverr's 20% commission — charge $50 to earn $40.")
+      },
+      { title:"Multi-Platform Strategy &amp; Selling Immediately", body:
+        tbl(["Channel","Best For"],[
+          ["Terawork","African client base, lower competition"],
+          ["LinkedIn","Direct B2B client acquisition"],
+          ["Facebook &amp; WhatsApp","Your existing personal network"]
+        ]) +
+        '<h4>The 5-Step Sell-Immediately Framework</h4>' +
+        ol(["Identify — list 5 local businesses with the problem","Show — open your app on your phone","Explain — \u201cThis solves [their exact pain]\u201d","Offer — \u201cI can set this up for [price], payable via Mobile Money\u201d","Close — \u201cCan I set it up this week? 30 minutes is all I need\u201d"]) +
+        callout("tip","Pro Tip","The demo IS the pitch. You don't need slides — you need a working app and a phone.")
+      }
+    ],
+    quiz:{
+      passPct:70,
+      questions:[
+        { q:"What percentage commission does Fiverr take from sellers?", options:["5%","10%","20%","30%"], correct:2, explain:"Fiverr takes a flat 20% commission — sellers keep 80% of the gig price." },
+        { q:"What is 'escrow' in the Fiverr glossary?", options:["A seller badge","Funds held securely until work is delivered and accepted","A type of gig category","A discount code"], correct:1, explain:"Escrow protects both buyer and seller by holding payment until delivery is accepted." },
+        { q:"Which monetisation model charges a setup fee plus monthly maintenance?", options:["Digital Product","Subscription","Service-Based","Freemium"], correct:2, explain:"Service-Based: you build the app for a business and charge setup + ongoing maintenance." },
+        { q:"What is the standard clearance period for a new Fiverr seller?", options:["24 hours","7 days","14 days","30 days"], correct:2, explain:"New and standard sellers wait 14 days; Top Rated sellers wait only 7." },
+        { q:"Which platform does Team21 recommend for selling digital products priced in FCFA?", options:["Fiverr","Selar","Terawork","LinkedIn"], correct:1, explain:"Selar is built for selling digital products to African audiences with local payment support." },
+        { q:"In the 5-step 'sell immediately' framework, what comes right after 'Show'?", options:["Close","Offer","Explain","Identify"], correct:2, explain:"The order is Identify → Show → Explain → Offer → Close." }
+      ]
+    }
+  },
+
+  /* ================= MODULE 6 — CAPSTONE ================= */
+  {
+    id:"m6", code:"Weeks 5–6", title:"Capstone — Build &amp; Launch", subtitle:"7 Required Deliverables", weight:25,
+    blurb:"Execute real-world projects across every domain covered, producing a launchable portfolio.",
+    lessons:[
+      { title:"The 7 Required Deliverables", body:
+        tbl(["#","Deliverable","Requirement"],[
+          ["1","Digital Products","At least 2 books or digital resources published for sale or distribution"],
+          ["2","Website Development","Personal website + 1 live client website — 2 sites, real pictures, GitHub + Vercel"],
+          ["3","Community Platform","A multilingual website designed for community engagement"],
+          ["4","Professional Portfolio","Online CV/portfolio for yourself + one for a client — 2 total"],
+          ["5","Automation Project","A real repetitive process automated end-to-end"],
+          ["6","Online Course","A structured course with login, modules, and certificate delivery"],
+          ["7","Content Engine","No-Face YouTube (10+ videos) + podcast (5+ episodes) + TikTok (4+ scripted videos)"]
+        ])
+      },
+      { title:"Bonus: Mobile &amp; Desktop Packaging", body:
+        '<p>Any live web deliverable can become an installable Android app or desktop program — the same HTML becomes the app, no rewrite needed.</p>' +
+        tbl(["Goal","Method","Time"],[
+          ["Android, browser-only build","GitHub Actions APK","1\u20132 hrs"],
+          ["Android install, no APK build","PWA — Add to Home Screen","15 min"],
+          ["Android for Play Store","Capacitor + Signing","2\u20133 hrs"],
+          ["Windows .exe / Mac .dmg","Electron + GitHub Actions","1\u20132 hrs"]
+        ])
+      },
+      { title:"Troubleshooting Quick Reference", body:
+        tbl(["Problem","Solution"],[
+          ["Data disappears when browser is cleared","Add Google Apps Script cloud sync"],
+          ["Failed to fetch / CORS error","Use JSONP for GET and no-cors mode for POST"],
+          ["Vercel shows 404","File must be named exactly index.html in the repo root"],
+          ["Windows SmartScreen warning","Click More info → Run anyway"]
+        ])
+      }
+    ],
+    quiz:{
+      passPct:70,
+      questions:[
+        { q:"How many total required deliverables make up the Capstone?", options:["5","6","7","8"], correct:2, explain:"There are exactly 7 required Capstone deliverables." },
+        { q:"What is the minimum number of digital products to publish on Selar for the Capstone?", options:["1","2","3","5"], correct:1, explain:"At least 2 books or digital resources must be published." },
+        { q:"Which Android packaging method requires no APK build at all?", options:["GitHub Actions APK","Capacitor + Signing","PWA (Add to Home Screen)","Electron"], correct:2, explain:"A PWA installs straight from the browser — no build pipeline needed, works on Android and iPhone." },
+        { q:"What is the minimum number of videos required for the No-Face YouTube channel?", options:["5","10","15","20"], correct:1, explain:"The Content Engine deliverable requires a minimum of 10 YouTube videos." },
+        { q:"What must your deployed file be named to avoid a Vercel 404 error?", options:["home.html","default.html","index.html","main.html"], correct:2, explain:"Exactly index.html, in the root of the repository." },
+        { q:"A 'Failed to fetch' CORS error is typically fixed by using which technique?", options:["A VPN","JSONP for GET / no-cors for POST","A paid Google Cloud plan","Switching browsers"], correct:1, explain:"JSONP bypasses GET-request CORS blocks; no-cors mode bypasses the POST preflight check." }
+      ]
+    }
+  }
+  ]
+};
+
+/* =========================================================
+   CLOUD SYNC + CERTIFICATION EXAM CONFIG
+   -----------------------------------------------------------
+   Set APPS_SCRIPT_URL to your deployed Google Apps Script Web
+   App /exec URL (see Team21_L2_Backend.gs, delivered alongside
+   this file) to turn on cross-device progress sync and the
+   admin Learner Progress view. Leave it blank to run fully
+   offline on localStorage only — everything still works, it
+   just won't follow a student across devices.
+   ========================================================= */
+var APPS_SCRIPT_URL = ""; // e.g. "https://script.google.com/macros/s/AKfycb.../exec"
+var ADMIN_PASSCODE = "team21admin"; // change this before deploying
+var EXAM_QUESTION_COUNT = 20;
+var EXAM_TIME_LIMIT_MIN = 40;
+var EXAM_PASS_PCT = 75;
+
+function cloudEnabled(){ return !!APPS_SCRIPT_URL; }
+
+/* =========================================================
+   STATE / PERSISTENCE
+   ========================================================= */
+var STORE_KEY = "t21lms_state_v1";
+function loadState(){
+  try{
+    var raw = localStorage.getItem(STORE_KEY);
+    if(raw) return JSON.parse(raw);
+  }catch(e){}
+  return { name:"", studentId:"", progress:{}, exam:{ status:"not_attempted", score:null, attempts:0, date:null }, cert:{ issued:false, date:null } };
+}
+function saveState(){ localStorage.setItem(STORE_KEY, JSON.stringify(STATE)); }
+var STATE = loadState();
+if(!STATE.exam) STATE.exam = { status:"not_attempted", score:null, attempts:0, date:null };
+if(!STATE.cert) STATE.cert = { issued:false, date:null };
+if(!STATE.studentId) STATE.studentId = "";
+
+function ensureModuleProgress(mid){
+  if(!STATE.progress[mid]) STATE.progress[mid] = { readLessons:[], bestScore:null, bestTotal:null, attempts:0 };
+  return STATE.progress[mid];
+}
+
+function getModule(mid){ return COURSE.modules.filter(function(m){return m.id===mid;})[0]; }
+
+/* =========================================================
+   CLOUD SYNC — JSONP GET, no-cors POST
+   Same pattern used across every Team21 platform: a <script>
+   tag bypasses CORS on the way in; fetch(mode:'no-cors')
+   bypasses the preflight on the way out.
+   ========================================================= */
+function jsonpGet(url, params, cb){
+  var cbName = "t21cb_" + Date.now() + "_" + Math.floor(Math.random()*100000);
+  var timeoutId = setTimeout(function(){ cb(new Error("timeout")); cleanup(); }, 8000);
+  function cleanup(){ delete window[cbName]; if(script.parentNode) script.parentNode.removeChild(script); clearTimeout(timeoutId); }
+  window[cbName] = function(data){ cb(null, data); cleanup(); };
+  var qs = Object.keys(params).map(function(k){ return k+"="+encodeURIComponent(params[k]); }).join("&");
+  var script = document.createElement("script");
+  script.src = url + "?" + qs + "&callback=" + cbName;
+  script.onerror = function(){ cb(new Error("jsonp load failed")); cleanup(); };
+  document.body.appendChild(script);
+}
+
+function currentSyncKey(){ return STATE.studentId || STATE.name; }
+
+// Local progress -> the flat shape the cloud stores
+function snapshotForSync(){
+  var modules = COURSE.modules.map(function(m){
+    var p = ensureModuleProgress(m.id);
+    return { moduleId:m.id, completed: p.bestScore!==null && (p.bestScore/p.bestTotal*100) >= m.quiz.passPct,
+      readLessons:p.readLessons, bestScore:p.bestScore, bestTotal:p.bestTotal, attempts:p.attempts };
+  });
+  return { studentId: currentSyncKey(), name: STATE.name, modules: modules, exam: STATE.exam, cert: STATE.cert };
+}
+
+// Merge a cloud snapshot into local STATE. Whichever side is further along wins,
+// per field — this is what makes it safe to sync from two devices that both
+// made progress before either one reconnected.
+function mergeCloudIntoState(remote){
+  if(!remote) return;
+  (remote.modules||[]).forEach(function(rm){
+    var lp = ensureModuleProgress(rm.moduleId);
+    if((rm.readLessons||[]).length){
+      rm.readLessons.forEach(function(i){ if(lp.readLessons.indexOf(i)===-1) lp.readLessons.push(i); });
+    }
+    if(rm.bestScore!==null && rm.bestScore!==undefined && (lp.bestScore===null || rm.bestScore > lp.bestScore)){
+      lp.bestScore = rm.bestScore; lp.bestTotal = rm.bestTotal;
+    }
+    lp.attempts = Math.max(lp.attempts||0, rm.attempts||0);
+  });
+  // NOTE: the cloud (both the real .gs backend and myprogress response) stores
+  // exam/cert fields FLAT — examStatus/examScore/examAttempts/examDate and
+  // certIssued/certDate — not as nested exam{}/cert{} objects. Read them flat.
+  var remoteExamDate = remote.examDate;
+  var remoteExamNewer = remoteExamDate && (!STATE.exam.date || new Date(remoteExamDate) > new Date(STATE.exam.date));
+  if(remoteExamNewer){
+    STATE.exam = { status: remote.examStatus, score: remote.examScore, attempts: remote.examAttempts, date: remote.examDate };
+  }
+  if(remote.certIssued){
+    STATE.cert = { issued: true, date: remote.certDate };
+  }
+  saveState();
+}
+
+function pullProgressAtLogin(onDone){
+  if(!cloudEnabled()){ onDone&&onDone(); return; }
+  var msg = document.getElementById("gateSyncMsg");
+  if(msg) msg.style.display = "block";
+  jsonpGet(APPS_SCRIPT_URL, { fn:"myprogress", studentId: currentSyncKey() }, function(err, res){
+    if(msg) msg.style.display = "none";
+    if(!err && res && res.found) mergeCloudIntoState(res.progress);
+    onDone && onDone();
+  });
+}
+
+function pushProgressToCloud(){
+  if(!cloudEnabled()) return;
+  fetch(APPS_SCRIPT_URL, {
+    method:"POST", mode:"no-cors", headers:{ "Content-Type":"text/plain" },
+    body: JSON.stringify({ action:"progress_state", payload: snapshotForSync() })
+  }).catch(function(){ /* offline — local copy is already saved; next sync point will retry */ });
+}
+
+// Call this after ANY event that should follow the student across devices:
+// finishing a lesson, submitting a module quiz, submitting the exam.
+function syncProgress(){ saveState(); pushProgressToCloud(); }
+
+/* =========================================================
+   ROUTER
+   ========================================================= */
+var ROUTE = { view:"dashboard", mid:null, tab:"lessons" };
+
+function go(view, mid, tab){
+  ROUTE = { view:view, mid:mid||null, tab:tab||"lessons" };
+  var hash = "#/" + view + (mid ? "/" + mid : "") + (tab && tab!=="lessons" ? "/" + tab : "");
+  if(location.hash !== hash) location.hash = hash; else render();
+  closeSidebarMobile();
+}
+window.addEventListener("hashchange", function(){
+  var parts = location.hash.replace("#/","").split("/").filter(Boolean);
+  ROUTE = { view: parts[0]||"dashboard", mid: parts[1]||null, tab: parts[2]||"lessons" };
+  render();
+});
+
+/* =========================================================
+   SIGN IN
+   ========================================================= */
+function signIn(){
+  var v = document.getElementById("nameInput").value.trim();
+  var idv = document.getElementById("idInput").value.trim();
+  if(!v){ v = "Student"; }
+  STATE.name = v;
+  STATE.studentId = idv || v; // falls back to name if no ID given, but a real ID is what makes sync reliable
+  saveState();
+  document.getElementById("gate").style.display = "none";
+  document.getElementById("app").style.display = "block";
+  document.getElementById("hdrName").textContent = v;
+  document.getElementById("avatarInit").textContent = v.charAt(0).toUpperCase();
+  buildSidebarModules();
+  var parts = location.hash.replace("#/","").split("/").filter(Boolean);
+  ROUTE = { view: parts[0]||"dashboard", mid: parts[1]||null, tab: parts[2]||"lessons" };
+  pullProgressAtLogin(function(){
+    buildSidebarModules();
+    render();
+  });
+  render(); // fast paint with local data while the cloud pull is in flight
+}
+document.getElementById("nameInput").addEventListener("keydown", function(e){ if(e.key==="Enter") signIn(); });
+document.getElementById("idInput").addEventListener("keydown", function(e){ if(e.key==="Enter") signIn(); });
+
+function openAdminGate(){
+  document.querySelector("#gate .gate-card:not(.admin-card)").style.display = "none";
+  document.getElementById("adminGate").style.display = "block";
+}
+function closeAdminGate(){
+  document.getElementById("adminGate").style.display = "none";
+  document.querySelector("#gate .gate-card:not(.admin-card)").style.display = "block";
+}
+function adminSignIn(){
+  var v = document.getElementById("adminPass").value;
+  if(v !== ADMIN_PASSCODE){ alert("Incorrect passcode."); return; }
+  document.getElementById("gate").style.display = "none";
+  document.getElementById("app").style.display = "block";
+  document.getElementById("hdrName").textContent = "Instructor";
+  document.getElementById("avatarInit").textContent = "A";
+  document.body.classList.add("admin-mode");
+  buildSidebarModules();
+  go("admin");
+}
+
+function toggleSidebar(){ document.getElementById("sidebar").classList.toggle("open"); }
+function closeSidebarMobile(){ if(window.innerWidth<=900) document.getElementById("sidebar").classList.remove("open"); }
+
+/* =========================================================
+   PROGRESS CALCULATIONS
+   ========================================================= */
+function moduleQuizPct(m){
+  var p = ensureModuleProgress(m.id);
+  if(p.bestScore===null) return null;
+  return Math.round((p.bestScore/p.bestTotal)*100);
+}
+function moduleCompletionPct(m){
+  var p = ensureModuleProgress(m.id);
+  var lessonPct = m.lessons.length ? (p.readLessons.length/m.lessons.length) : 1;
+  var quizDone = p.bestScore!==null ? 1 : 0;
+  return Math.round(((lessonPct*0.5) + (quizDone*0.5)) * 100);
+}
+function overallCoursePct(){
+  var total=0;
+  COURSE.modules.forEach(function(m){ total += moduleCompletionPct(m); });
+  return Math.round(total/COURSE.modules.length);
+}
+function overallWeightedGrade(){
+  var totalWeight=0, earned=0, anyGraded=false;
+  COURSE.modules.forEach(function(m){
+    var pct = moduleQuizPct(m);
+    totalWeight += m.weight;
+    if(pct!==null){ earned += (pct/100)*m.weight; anyGraded=true; }
+  });
+  if(!anyGraded) return null;
+  return Math.round((earned/totalWeight)*100);
+}
+function letterGrade(pct){
+  if(pct===null) return "—";
+  if(pct>=90) return "A";
+  if(pct>=80) return "B";
+  if(pct>=70) return "C";
+  if(pct>=60) return "D";
+  return "F";
+}
+
+/* =========================================================
+   CERTIFICATION EXAM
+   20 questions, sampled evenly across every module's quiz
+   bank; 40-minute countdown; 75% to pass; unlocks only once
+   every module has been individually passed.
+   ========================================================= */
+function modulePassed(m){
+  var pct = moduleQuizPct(m);
+  return pct!==null && pct >= m.quiz.passPct;
+}
+function isCertExamUnlocked(){
+  return COURSE.modules.every(modulePassed);
+}
+function shuffleArr(arr){
+  for(var i=arr.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=arr[i]; arr[i]=arr[j]; arr[j]=t; }
+  return arr;
+}
+function sampleExamQuestions(){
+  var mods = COURSE.modules;
+  var n = mods.length;
+  var base = Math.floor(EXAM_QUESTION_COUNT / n);
+  var remainder = EXAM_QUESTION_COUNT % n;
+  var picked = [];
+  var order = shuffleArr(mods.map(function(_,i){return i;})); // randomise which modules get the +1 remainder question
+  mods.forEach(function(m, idx){
+    var quota = base + (order.indexOf(idx) < remainder ? 1 : 0);
+    var pool = shuffleArr(m.quiz.questions.slice());
+    pool.slice(0, Math.min(quota, pool.length)).forEach(function(q){
+      picked.push({ q:q.q, options:q.options, correct:q.correct, explain:q.explain, sourceModule: m.code+" · "+m.title });
+    });
+  });
+  return shuffleArr(picked);
+}
+
+var EXAM_STATE = null; // { questions, answers, deadline, timerHandle }
+var EXAM_ANSWERS = {};
+var EXAM_GRADED = false;
+
+function startCertExam(){
+  if(!isCertExamUnlocked()){ return; }
+  EXAM_STATE = { questions: sampleExamQuestions(), deadline: Date.now() + EXAM_TIME_LIMIT_MIN*60*1000 };
+  EXAM_ANSWERS = {};
+  EXAM_GRADED = false;
+  document.getElementById("main").innerHTML = examFormHtml();
+  if(EXAM_STATE.timerHandle) clearInterval(EXAM_STATE.timerHandle);
+  EXAM_STATE.timerHandle = setInterval(tickExamTimer, 1000);
+  tickExamTimer();
+  window.scrollTo(0,0);
+}
+
+function tickExamTimer(){
+  if(!EXAM_STATE) return;
+  var remaining = EXAM_STATE.deadline - Date.now();
+  var el = document.getElementById("examTimer");
+  if(remaining <= 0){
+    clearInterval(EXAM_STATE.timerHandle);
+    if(el) el.textContent = "00:00";
+    if(!EXAM_GRADED) submitCertExam(true);
+    return;
+  }
+  var mins = Math.floor(remaining/60000);
+  var secs = Math.floor((remaining%60000)/1000);
+  if(el){
+    el.textContent = (mins<10?"0":"")+mins+":"+(secs<10?"0":"")+secs;
+    el.className = "exam-timer" + (remaining < 5*60000 ? " low" : "");
+  }
+}
+
+function examChooseAnswer(qi, oi){
+  if(EXAM_GRADED) return;
+  EXAM_ANSWERS[qi] = oi;
+  EXAM_STATE.questions[qi].options.forEach(function(_, o){
+    var el = document.getElementById('examopt-'+qi+'-'+o);
+    if(el) el.classList.toggle('chosen', o===oi);
+  });
+  var el2 = document.getElementById('examAnsweredCount');
+  if(el2) el2.textContent = Object.keys(EXAM_ANSWERS).length + ' of ' + EXAM_STATE.questions.length + ' answered';
+}
+
+function submitCertExam(auto){
+  if(!EXAM_STATE || EXAM_GRADED) return;
+  if(!auto){
+    var answered = Object.keys(EXAM_ANSWERS).length;
+    var total0 = EXAM_STATE.questions.length;
+    if(answered < total0 && !confirm('You have only answered '+answered+' of '+total0+' questions. Submit anyway?')) return;
+  }
+  EXAM_GRADED = true;
+  clearInterval(EXAM_STATE.timerHandle);
+  var total = EXAM_STATE.questions.length;
+  var score = 0;
+  EXAM_STATE.questions.forEach(function(q, qi){ if(EXAM_ANSWERS[qi]===q.correct) score++; });
+  var pct = Math.round((score/total)*100);
+  var pass = pct >= EXAM_PASS_PCT;
+
+  STATE.exam = { status: pass?"passed":"failed", score: pct, attempts: (STATE.exam.attempts||0)+1, date: new Date().toISOString() };
+  if(pass) STATE.cert = { issued:true, date: new Date().toISOString() };
+  syncProgress();
+
+  document.getElementById("main").innerHTML = examResultHtml(score, total, pct, pass, auto);
+  window.scrollTo(0,0);
+}
+
+/* ---------- CERTIFICATE ---------- */
+function printCertCore(rec){
+  // rec: { name, courseTitle, score, date }
+  var dateStr = rec.date ? new Date(rec.date).toLocaleDateString(undefined,{year:'numeric',month:'long',day:'numeric'}) : "";
+  var w = window.open("", "_blank");
+  w.document.write(
+    '<html><head><meta charset="UTF-8"><title>Certificate — '+esc(rec.name)+'</title><style>'+
+    'body{font-family:Georgia,serif;background:#0A1B33;margin:0;padding:60px;display:flex;align-items:center;justify-content:center;}'+
+    '.cert{background:#fff;width:900px;max-width:92vw;padding:70px 60px;text-align:center;border:10px solid #0A1B33;box-shadow:0 30px 80px rgba(0,0,0,.5);position:relative;}'+
+    '.cert:before{content:"";position:absolute;inset:14px;border:1.5px solid #C9A84C;}'+
+    '.eyebrow{color:#E85D2C;letter-spacing:.2em;font-size:13px;font-weight:700;font-family:Arial,sans-serif;}'+
+    'h1{color:#0A1B33;font-size:38px;margin:14px 0 6px;}'+
+    '.sub{color:#6B7280;font-family:Arial,sans-serif;font-size:14px;margin-bottom:34px;}'+
+    '.name{font-size:32px;color:#0A1B33;border-bottom:2px solid #C9A84C;display:inline-block;padding:0 20px 10px;margin-bottom:22px;}'+
+    '.course{font-size:20px;color:#1F7A4D;margin-bottom:8px;}'+
+    '.score{font-family:Arial,sans-serif;color:#6B7280;font-size:13px;margin-bottom:40px;}'+
+    '.sign{display:flex;justify-content:space-between;margin-top:50px;font-family:Arial,sans-serif;font-size:12px;color:#6B7280;}'+
+    '.sign b{display:block;color:#0A1B33;font-family:Georgia,serif;font-size:16px;margin-bottom:4px;}'+
+    '.scripture{margin-top:30px;font-size:11.5px;color:#9AA3B2;font-style:italic;font-family:Arial,sans-serif;}'+
+    '@media print{ body{background:#fff;padding:0;} .cert{box-shadow:none;} }'+
+    '</style></head><body><div class="cert">'+
+    '<div class="eyebrow">TEAM21 ACADEMY · CERTIFICATE OF COMPLETION</div>'+
+    '<h1>AI Builder — Level 2: BUILD</h1>'+
+    '<div class="sub">Professional AI Training Series</div>'+
+    '<div>This certifies that</div>'+
+    '<div class="name">'+esc(rec.name)+'</div>'+
+    '<div class="course">has successfully completed the full programme and passed the Certification Exam</div>'+
+    '<div class="score">Certification Exam Score: '+rec.score+'%  ·  Issued: '+dateStr+'</div>'+
+    '<div class="sign">'+
+      '<div><b>Innocent Forteh</b>Founder &amp; Instructor, Team21 Academy</div>'+
+      '<div style="text-align:right;"><b>'+dateStr+'</b>Date Issued</div>'+
+    '</div>'+
+    '<div class="scripture">\u201cThose who wait on the LORD shall renew their strength; they shall mount up with wings as eagles.\u201d — Isaiah 40:31</div>'+
+    '</div><script>setTimeout(function(){window.print&&window.print();},400);<\/script></body></html>'
+  );
+  w.document.close();
+}
+function printMyCertificate(){
+  if(!STATE.cert.issued){ alert("No certificate on file yet — pass the Certification Exam first."); return; }
+  printCertCore({ name: STATE.name, courseTitle: COURSE.title, score: STATE.exam.score, date: STATE.cert.date });
+}
+
+/* =========================================================
+   RENDER: SHELL BITS
+   ========================================================= */
+function buildSidebarModules(){
+  var el = document.getElementById("sideModules");
+  var html = '<div class="side-section">MODULES</div>';
+  COURSE.modules.forEach(function(m){
+    var p = ensureModuleProgress(m.id);
+    var done = p.bestScore!==null;
+    html += '<div class="side-mod" onclick="go(\'module\',\''+m.id+'\')" data-mid="'+m.id+'">' +
+              '<span>'+m.code+' · '+m.title+'</span>' +
+              '<span class="chk '+(done?'':'pending')+'">'+(done?'✓':'○')+'</span>' +
+            '</div>';
+  });
+  el.innerHTML = html;
+}
+function refreshHeaderProgress(){
+  var pct = overallCoursePct();
+  document.getElementById("hdrPct").textContent = pct + "%";
+  document.getElementById("hdrBar").style.width = pct + "%";
+  var lockEl = document.getElementById("examLockIcon");
+  if(lockEl){
+    if(STATE.cert.issued){ lockEl.textContent = "🎓"; }
+    else if(isCertExamUnlocked()){ lockEl.textContent = "🔓"; }
+    else { lockEl.textContent = "🔒"; }
+  }
+}
+function highlightSidebar(){
+  document.querySelectorAll(".side-link").forEach(function(el){ el.classList.remove("active"); });
+  document.querySelectorAll(".side-mod").forEach(function(el){ el.classList.remove("active"); });
+  if(ROUTE.view==="module"){
+    var el = document.querySelector('.side-mod[data-mid="'+ROUTE.mid+'"]');
+    if(el) el.classList.add("active");
+  } else {
+    var el2 = document.querySelector('.side-link[data-nav="'+ROUTE.view+'"]');
+    if(el2) el2.classList.add("active");
+  }
+}
+
+/* =========================================================
+   MAIN RENDER DISPATCH
+   ========================================================= */
+function render(){
+  refreshHeaderProgress();
+  buildSidebarModules();
+  highlightSidebar();
+  var main = document.getElementById("main");
+  if(ROUTE.view==="dashboard") main.innerHTML = renderDashboard();
+  else if(ROUTE.view==="course") main.innerHTML = renderCourse();
+  else if(ROUTE.view==="module") main.innerHTML = renderModule(ROUTE.mid, ROUTE.tab);
+  else if(ROUTE.view==="exam") main.innerHTML = renderExamLanding();
+  else if(ROUTE.view==="grades") main.innerHTML = renderGrades();
+  else if(ROUTE.view==="resources") main.innerHTML = renderResources();
+  else if(ROUTE.view==="admin") renderAdmin(main);
+  else main.innerHTML = renderDashboard();
+  window.scrollTo(0,0);
+  highlightSidebar();
+}
+
+/* ---------- DASHBOARD ---------- */
+function renderDashboard(){
+  var pct = overallCoursePct();
+  var nextMod = COURSE.modules.filter(function(m){ return moduleCompletionPct(m) < 100; })[0] || COURSE.modules[COURSE.modules.length-1];
+  var grade = overallWeightedGrade();
+  var quizzesTaken = COURSE.modules.filter(function(m){ return ensureModuleProgress(m.id).bestScore!==null; }).length;
+
+  var html = '';
+  html += '<div class="crumb">Portal <b>/</b> Dashboard</div>';
+  html += '<h1 class="page-title">Welcome back, '+esc(STATE.name)+'.</h1>';
+  html += '<p class="page-sub">Here\u2019s where you stand in AI Builder — Level 2: BUILD. Pick up where you left off, or jump to any module below.</p>';
+
+  var certLbl = STATE.cert.issued ? "🎓 Earned" : (isCertExamUnlocked() ? "Exam Unlocked" : "Locked");
+
+  html += '<div class="cards-row">' +
+    '<div class="stat-card accent"><div class="num">'+pct+'%</div><div class="lbl">Course Progress</div></div>' +
+    '<div class="stat-card"><div class="num">'+quizzesTaken+' / '+COURSE.modules.length+'</div><div class="lbl">Quizzes Completed</div></div>' +
+    '<div class="stat-card"><div class="num">'+(grade===null?'—':grade+'%')+'</div><div class="lbl">Overall Weighted Grade ('+letterGrade(grade)+')</div></div>' +
+    '<div class="stat-card"><div class="num" style="font-size:22px;">'+certLbl+'</div><div class="lbl">Full Programme Certificate</div></div>' +
+  '</div>';
+
+  if(STATE.cert.issued){
+    html += '<div class="panel"><div class="continue-row"><div class="info"><b>🎓 Congratulations, '+esc(STATE.name)+'.</b><span>You\u2019ve earned the full AI Builder Level 2 certificate.</span></div><button class="btn navy" onclick="printMyCertificate()">Print Certificate</button></div></div>';
+  } else if(isCertExamUnlocked()){
+    html += '<div class="panel"><div class="continue-row"><div class="info"><b>🎓 Certification Exam Unlocked</b><span>Every module is passed — take the exam to earn your certificate.</span></div><button class="btn" onclick="go(\'exam\')">Take the Exam →</button></div></div>';
+  } else {
+    html += '<div class="panel"><h2>Continue Learning</h2><div class="continue-row">' +
+      '<div class="info"><b>'+nextMod.code+' · '+nextMod.title+'</b><span>'+nextMod.blurb+'</span></div>' +
+      '<button class="btn" onclick="go(\'module\',\''+nextMod.id+'\')">Resume Module →</button>' +
+    '</div></div>';
+  }
+
+  html += '<div class="panel"><h2>All Modules</h2><div class="module-grid">';
+  COURSE.modules.forEach(function(m){
+    var mp = moduleCompletionPct(m);
+    html += moduleCardHtml(m, mp);
+  });
+  html += '</div></div>';
+
+  html += pageFoot();
+  return html;
+}
+
+function moduleCardHtml(m, mp){
+  var done = mp>=100;
+  return '<div class="mod-card" onclick="go(\'module\',\''+m.id+'\')">' +
+    (done ? '<div class="done-badge">✅</div>' : '') +
+    '<div class="tag">'+m.code+'</div>' +
+    '<h3>'+m.title+'</h3>' +
+    '<p>'+m.subtitle+'</p>' +
+    '<div class="mini-bar"><i style="width:'+mp+'%"></i></div>' +
+    '<div class="pct">'+mp+'% complete · weight '+m.weight+'%</div>' +
+  '</div>';
+}
+
+/* ---------- COURSE CONTENT ---------- */
+function renderCourse(){
+  var html = '';
+  html += '<div class="crumb">Portal <b>/</b> Course Content</div>';
+  html += '<h1 class="page-title">Course Content</h1>';
+  html += '<p class="page-sub">'+COURSE.title+' — six modules, chronologically sequenced. Complete each module\u2019s lessons, then take its quiz.</p>';
+  html += '<div class="module-grid">';
+  COURSE.modules.forEach(function(m){ html += moduleCardHtml(m, moduleCompletionPct(m)); });
+  html += '</div>';
+  html += pageFoot();
+  return html;
+}
+
+/* ---------- MODULE DETAIL ---------- */
+function renderModule(mid, tab){
+  var m = getModule(mid);
+  if(!m) return renderDashboard();
+  var p = ensureModuleProgress(m.id);
+
+  var html = '';
+  html += '<div class="crumb">Portal <b>/</b> Course Content <b>/</b> '+m.code+'</div>';
+  html += '<h1 class="page-title">'+m.code+' — '+m.title+'</h1>';
+  html += '<p class="page-sub">'+m.blurb+'</p>';
+
+  html += '<div class="tabbar">' +
+    '<button class="'+(tab==="lessons"?"active":"")+'" onclick="go(\'module\',\''+m.id+'\',\'lessons\')">📖 Lessons ('+p.readLessons.length+'/'+m.lessons.length+')</button>' +
+    '<button class="'+(tab==="quiz"?"active":"")+'" onclick="go(\'module\',\''+m.id+'\',\'quiz\')">📝 Quiz</button>' +
+  '</div>';
+
+  if(tab==="quiz") html += renderQuizTab(m);
+  else html += renderLessonsTab(m);
+
+  html += pageFoot();
+  return html;
+}
+
+function renderLessonsTab(m){
+  var p = ensureModuleProgress(m.id);
+  var html = '<div class="lesson-list">';
+  m.lessons.forEach(function(l, idx){
+    var read = p.readLessons.indexOf(idx) !== -1;
+    html += '<div class="lesson-item '+(read?'read':'')+'" id="less-'+m.id+'-'+idx+'">' +
+      '<div class="lesson-head" onclick="toggleLesson(\''+m.id+'\','+idx+')">' +
+        '<div class="lt"><div class="lesson-num">'+(read?'✓':(idx+1))+'</div>' +
+        '<div><div class="lesson-title">'+l.title+'</div><div class="lesson-meta">'+(read?'Completed':'Lesson '+(idx+1)+' of '+m.lessons.length)+'</div></div></div>' +
+        '<div class="chev">▶</div>' +
+      '</div>' +
+      '<div class="lesson-body">' + l.body +
+        (read ? '' : '<button class="btn sm mark-btn" onclick="markRead(\''+m.id+'\','+idx+')">Mark as Complete</button>') +
+      '</div>' +
+    '</div>';
+  });
+  html += '</div>';
+  return html;
+}
+
+function toggleLesson(mid, idx){
+  var el = document.getElementById('less-'+mid+'-'+idx);
+  el.classList.toggle('open');
+}
+function markRead(mid, idx){
+  var p = ensureModuleProgress(mid);
+  if(p.readLessons.indexOf(idx)===-1) p.readLessons.push(idx);
+  syncProgress();
+  render();
+  go('module', mid, 'lessons');
+  setTimeout(function(){ var el=document.getElementById('less-'+mid+'-'+idx); if(el) el.classList.add('open'); }, 30);
+}
+
+/* ---------- CERTIFICATION EXAM VIEWS ---------- */
+function renderExamLanding(){
+  var html = '<div class="crumb">Portal <b>/</b> Certification Exam</div>';
+  html += '<h1 class="page-title">Certification Exam</h1>';
+  html += '<p class="page-sub">One final, comprehensive exam covering every module — pass it to earn your full programme certificate.</p>';
+
+  if(STATE.cert.issued){
+    html += '<div class="score-banner pass"><div><div class="big">🎓 Certified</div><div class="lbl">You passed the Certification Exam at '+STATE.exam.score+'% on '+new Date(STATE.cert.date).toLocaleDateString()+'.</div></div>' +
+      '<div style="display:flex;gap:10px;"><button class="btn navy" onclick="printMyCertificate()">Print Certificate</button><button class="btn ghost" onclick="go(\'exam\')" style="display:none;"></button></div></div>';
+    html += '<div class="panel"><h2>Want to try again for a higher score?</h2><p class="page-sub" style="margin-bottom:14px;">Retaking will replace your exam score if it\u2019s higher — your certificate stays issued either way.</p><button class="btn" onclick="startCertExam()">Retake Exam</button></div>';
+    html += pageFoot();
+    return html;
+  }
+
+  if(!isCertExamUnlocked()){
+    html += '<div class="panel"><h2>🔒 Locked</h2><p style="color:var(--muted);font-size:14px;line-height:1.6;">Pass every module\u2019s quiz to unlock the Certification Exam. Here\u2019s where you stand:</p>';
+    html += '<table class="grades" style="margin-top:14px;"><thead><tr><th>Module</th><th>Status</th></tr></thead><tbody>';
+    COURSE.modules.forEach(function(m){
+      var passed = modulePassed(m);
+      html += '<tr><td>'+m.code+' — '+m.title+'</td><td>'+(passed?'<span class="pill green">Passed</span>':'<span class="pill grey">Not yet passed</span>')+'</td></tr>';
+    });
+    html += '</tbody></table></div>';
+    html += pageFoot();
+    return html;
+  }
+
+  var attempts = STATE.exam.attempts||0;
+  html += '<div class="panel"><div class="quiz-intro">' +
+    '<div class="ic">🎓</div>' +
+    '<h2 style="font-family:Georgia;color:var(--navy);margin:4px 0 8px;">You\u2019re ready for the Certification Exam</h2>' +
+    '<p style="color:var(--muted);max-width:520px;margin:0 auto 6px;">Every module is passed. This exam samples questions evenly across all of them — pass it to earn the full AI Builder Level 2 certificate.</p>' +
+    '<div class="quiz-meta-row">' +
+      '<div class="qm"><b>'+EXAM_QUESTION_COUNT+'</b><span>Questions</span></div>' +
+      '<div class="qm"><b>'+EXAM_TIME_LIMIT_MIN+' min</b><span>Time Limit</span></div>' +
+      '<div class="qm"><b>'+EXAM_PASS_PCT+'%</b><span>Pass Mark</span></div>' +
+      '<div class="qm"><b>'+attempts+'</b><span>Attempts So Far</span></div>' +
+    '</div>' +
+    (STATE.exam.status==="failed" ? '<div class="callout warn" style="text-align:left;max-width:520px;margin:0 auto 18px;">Your last attempt scored '+STATE.exam.score+'% — below the '+EXAM_PASS_PCT+'% pass mark. Review any weak modules, then retake when ready.</div>' : '') +
+    '<button class="btn" onclick="startCertExam()">'+(attempts>0?'Retake Exam':'Start Certification Exam')+'</button>' +
+  '</div></div>';
+  html += pageFoot();
+  return html;
+}
+
+function examFormHtml(){
+  var html = '<div class="crumb">Certification Exam</div>';
+  html += '<div class="exam-header"><h1 class="page-title" style="margin-bottom:0;">Certification Exam</h1><div id="examTimer" class="exam-timer">'+EXAM_TIME_LIMIT_MIN+':00</div></div>';
+  html += '<p class="page-sub">Answer every question, then submit. The exam auto-submits when the timer reaches zero.</p>';
+  html += '<form onsubmit="return false;">';
+  EXAM_STATE.questions.forEach(function(q, qi){
+    html += '<div class="q-block" id="examqb-'+qi+'">';
+    html += '<div class="q-num">QUESTION '+(qi+1)+' OF '+EXAM_STATE.questions.length+' &middot; '+q.sourceModule+'</div>';
+    html += '<div class="q-text">'+q.q+'</div>';
+    q.options.forEach(function(opt, oi){
+      html += '<label class="opt" id="examopt-'+qi+'-'+oi+'" onclick="examChooseAnswer('+qi+','+oi+')">' +
+        '<input type="radio" name="examq'+qi+'" style="pointer-events:none;"><span>'+opt+'</span></label>';
+    });
+    html += '<div class="explain-slot" id="examexp-'+qi+'"></div>';
+    html += '</div>';
+  });
+  html += '<div class="quiz-actions"><span style="font-size:12.5px;color:var(--muted2);" id="examAnsweredCount">0 of '+EXAM_STATE.questions.length+' answered</span>' +
+    '<button type="button" class="btn" onclick="submitCertExam(false)">Submit Exam</button></div>';
+  html += '</form>';
+  return html;
+}
+
+function examResultHtml(score, total, pct, pass, auto){
+  var html = '<div class="crumb">Certification Exam</div><h1 class="page-title">Exam Result</h1>';
+  html += '<div class="score-banner '+(pass?'pass':'fail')+'">' +
+    '<div><div class="big">'+pct+'%</div><div class="lbl">'+(auto?'Time expired — auto-submitted. ':'')+'You scored '+score+' / '+total+' — '+(pass?'Passed! Your certificate has been generated.':'Below the '+EXAM_PASS_PCT+'% pass mark. You can retake the exam.')+'</div></div>' +
+    (pass ? '<button class="btn navy" onclick="printMyCertificate()">🎓 Print Certificate</button>' : '<button class="btn ghost" onclick="go(\'exam\')">Back to Exam</button>') +
+  '</div>';
+  html += '<div class="panel"><h2>Review</h2><div class="lesson-list">';
+  EXAM_STATE.questions.forEach(function(q, qi){
+    var chosen = EXAM_ANSWERS[qi];
+    var correct = chosen === q.correct;
+    html += '<div class="q-block graded" style="margin-bottom:12px;"><div class="q-num">QUESTION '+(qi+1)+' &middot; '+q.sourceModule+'</div><div class="q-text">'+q.q+'</div>';
+    q.options.forEach(function(opt, oi){
+      var cls = 'opt';
+      if(oi===q.correct) cls += ' correct'; else if(oi===chosen) cls += ' incorrect';
+      html += '<div class="'+cls+'"><span>'+opt+'</span></div>';
+    });
+    html += '<div class="explain"><b>'+(correct?'✅ Correct. ':'❌ Not quite. ')+'</b>'+q.explain+'</div></div>';
+  });
+  html += '</div>';
+  html += pageFoot();
+  return html;
+}
+
+/* ---------- ADMIN: LEARNER PROGRESS ---------- */
+var ADMIN_ROWS_CACHE = null;
+function renderAdmin(main){
+  main.innerHTML = '<div class="crumb">Instructor Portal <b>/</b> Learner Progress</div>' +
+    '<h1 class="page-title">Learner Progress</h1>' +
+    '<p class="page-sub">Every student who has synced progress for '+COURSE.title+', pulled live from the cloud.</p>' +
+    (cloudEnabled() ? '<div id="adminArea"><p style="color:var(--muted);">Loading learner progress…</p></div>' :
+      '<div class="callout warn">Cloud sync is not configured (APPS_SCRIPT_URL is empty), so there is no shared data to show yet. Set APPS_SCRIPT_URL near the top of the script once the backend is deployed.</div>');
+  if(!cloudEnabled()) return;
+
+  jsonpGet(APPS_SCRIPT_URL, { fn:"allprogress", passcode: ADMIN_PASSCODE }, function(err, res){
+    var area = document.getElementById("adminArea");
+    if(!area) return; // navigated away before the response came back
+    if(err || !res || res.status!=="ok"){
+      area.innerHTML = '<div class="callout warn">Could not load learner progress from the cloud. Check that the Apps Script backend is deployed and APPS_SCRIPT_URL is correct.</div>';
+      return;
+    }
+    ADMIN_ROWS_CACHE = res.rows || [];
+    drawAdminTable("");
+  });
+}
+function drawAdminTable(search){
+  var area = document.getElementById("adminArea");
+  if(!area || !ADMIN_ROWS_CACHE) return;
+  var rows = ADMIN_ROWS_CACHE.filter(function(r){
+    return !search || (r.name+" "+r.studentId).toLowerCase().indexOf(search.toLowerCase())!==-1;
+  });
+  var certCount = ADMIN_ROWS_CACHE.filter(function(r){ return r.certIssued; }).length;
+
+  var html = '<div class="cards-row"><div class="stat-card accent"><div class="num">'+ADMIN_ROWS_CACHE.length+'</div><div class="lbl">Registered Learners</div></div>' +
+    '<div class="stat-card"><div class="num">'+certCount+'</div><div class="lbl">Full Certificates Issued</div></div></div>';
+  html += '<input type="text" placeholder="Search by name or student ID…" value="'+esc(search)+'" oninput="drawAdminTable(this.value)" style="width:320px;padding:10px 12px;border:1.5px solid var(--line);border-radius:8px;margin-bottom:14px;font-size:13.5px;">';
+  html += '<div class="panel" style="padding:0;overflow:hidden;"><table class="grades"><thead><tr><th>Student</th><th>Modules Passed</th><th>Avg Score</th><th>Exam Status</th><th>Certificate</th></tr></thead><tbody>';
+  rows.forEach(function(r){
+    var examLabel = r.examStatus==="not_attempted" ? '<span class="pill grey">Not attempted</span>'
+      : r.examStatus==="failed" ? '<span class="pill gold">Failed at '+r.examScore+'%</span>'
+      : '<span class="pill green">Passed at '+r.examScore+'% on '+(r.examDate?new Date(r.examDate).toLocaleDateString():'')+'</span>';
+    html += '<tr><td><b>'+esc(r.name)+'</b><br><span style="color:var(--muted2);font-size:11.5px;">'+esc(r.studentId)+'</span></td>' +
+      '<td>'+r.modulesPassed+' / '+r.modulesTotal+'</td>' +
+      '<td>'+(r.avgScore===null?'—':r.avgScore+'%')+'</td>' +
+      '<td>'+examLabel+'</td>' +
+      '<td>'+(r.certIssued ? '<button class="btn sm ghost" onclick="adminViewCert(\''+esc(r.studentId)+'\')">🎓 View certificate</button>' : '—')+'</td></tr>';
+  });
+  if(!rows.length) html += '<tr><td colspan="5" style="text-align:center;color:var(--muted2);padding:30px;">No matching learners.</td></tr>';
+  html += '</tbody></table></div>';
+  area.innerHTML = html;
+}
+function adminViewCert(studentId){
+  var row = (ADMIN_ROWS_CACHE||[]).filter(function(r){ return r.studentId===studentId; })[0];
+  if(!row) return;
+  printCertCore({ name: row.name, courseTitle: COURSE.title, score: row.examScore, date: row.examDate });
+}
+
+/* ---------- QUIZ ---------- */
+var QUIZ_ANSWERS = {}; // in-memory during an attempt: {qIndex: optionIndex}
+var QUIZ_GRADED = false;
+
+function renderQuizTab(m){
+  var p = ensureModuleProgress(m.id);
+  QUIZ_ANSWERS = {};
+  QUIZ_GRADED = false;
+
+  var html = '';
+  if(p.bestScore!==null){
+    var pct = Math.round((p.bestScore/p.bestTotal)*100);
+    var pass = pct >= m.quiz.passPct;
+    html += '<div class="score-banner '+(pass?'pass':'fail')+'">' +
+      '<div><div class="big">'+pct+'%</div><div class="lbl">Best score — '+p.bestScore+' / '+p.bestTotal+' correct · '+(pass?'Passed':'Below pass mark of '+m.quiz.passPct+'%')+'</div></div>' +
+      '<button class="btn ghost" onclick="startQuiz(\''+m.id+'\')">Retake Quiz</button>' +
+    '</div>';
+  }
+
+  html += '<div id="quizArea">' + startQuizHtml(m) + '</div>';
+  return html;
+}
+
+function startQuizHtml(m){
+  var p = ensureModuleProgress(m.id);
+  var html = '<div class="quiz-intro">';
+  html += '<div class="ic">📝</div>';
+  html += '<h2 style="font-family:Georgia;color:var(--navy);margin:4px 0 8px;">'+m.title+' — Module Quiz</h2>';
+  html += '<p style="color:var(--muted);max-width:520px;margin:0 auto 6px;">Test what you\u2019ve learned in this module. You can retake the quiz as many times as you like — your best score is saved to the gradebook.</p>';
+  html += '<div class="quiz-meta-row">' +
+    '<div class="qm"><b>'+m.quiz.questions.length+'</b><span>Questions</span></div>' +
+    '<div class="qm"><b>'+m.quiz.passPct+'%</b><span>Pass Mark</span></div>' +
+    '<div class="qm"><b>'+p.attempts+'</b><span>Attempts So Far</span></div>' +
+  '</div>';
+  html += '<button class="btn" onclick="startQuiz(\''+m.id+'\')">'+(p.attempts>0?'Retake Quiz':'Start Quiz')+'</button>';
+  html += '</div>';
+  return html;
+}
+
+function startQuiz(mid){
+  var m = getModule(mid);
+  QUIZ_ANSWERS = {};
+  QUIZ_GRADED = false;
+  document.getElementById('quizArea').innerHTML = renderQuizForm(m);
+  window.scrollTo(0,0);
+}
+
+function renderQuizForm(m){
+  var html = '<form onsubmit="return false;">';
+  m.quiz.questions.forEach(function(q, qi){
+    html += '<div class="q-block" id="qb-'+qi+'">';
+    html += '<div class="q-num">QUESTION '+(qi+1)+' OF '+m.quiz.questions.length+'</div>';
+    html += '<div class="q-text">'+q.q+'</div>';
+    q.options.forEach(function(opt, oi){
+      html += '<label class="opt" id="opt-'+qi+'-'+oi+'" onclick="chooseAnswer(\''+m.id+'\','+qi+','+oi+')">' +
+        '<input type="radio" name="q'+qi+'" style="pointer-events:none;">' +
+        '<span>'+opt+'</span>' +
+      '</label>';
+    });
+    html += '<div class="explain-slot" id="exp-'+qi+'"></div>';
+    html += '</div>';
+  });
+  html += '<div class="quiz-actions">' +
+    '<span style="font-size:12.5px;color:var(--muted2);" id="answeredCount">0 of '+m.quiz.questions.length+' answered</span>' +
+    '<button type="button" class="btn" onclick="submitQuiz(\''+m.id+'\')">Submit Quiz</button>' +
+  '</div>';
+  html += '</form>';
+  return html;
+}
+
+function chooseAnswer(mid, qi, oi){
+  if(QUIZ_GRADED) return;
+  QUIZ_ANSWERS[qi] = oi;
+  var m = getModule(mid);
+  m.quiz.questions[qi].options.forEach(function(_, o){
+    var el = document.getElementById('opt-'+qi+'-'+o);
+    if(el) el.classList.toggle('chosen', o===oi);
+  });
+  var answered = Object.keys(QUIZ_ANSWERS).length;
+  var el2 = document.getElementById('answeredCount');
+  if(el2) el2.textContent = answered + ' of ' + m.quiz.questions.length + ' answered';
+}
+
+function submitQuiz(mid){
+  var m = getModule(mid);
+  var total = m.quiz.questions.length;
+  var answered = Object.keys(QUIZ_ANSWERS).length;
+  if(answered < total){
+    if(!confirm('You have only answered '+answered+' of '+total+' questions. Submit anyway? Unanswered questions will be marked incorrect.')) return;
+  }
+  QUIZ_GRADED = true;
+  var score = 0;
+  m.quiz.questions.forEach(function(q, qi){
+    var chosen = QUIZ_ANSWERS.hasOwnProperty(qi) ? QUIZ_ANSWERS[qi] : -1;
+    var correct = chosen === q.correct;
+    if(correct) score++;
+    var block = document.getElementById('qb-'+qi);
+    block.classList.add('graded');
+    q.options.forEach(function(_, oi){
+      var el = document.getElementById('opt-'+qi+'-'+oi);
+      if(!el) return;
+      if(oi === q.correct) el.classList.add('correct');
+      else if(oi === chosen) el.classList.add('incorrect');
+    });
+    document.getElementById('exp-'+qi).innerHTML =
+      '<div class="explain"><b>'+(correct?'✅ Correct. ':'❌ Not quite. ')+'</b>'+q.explain+'</div>';
+  });
+
+  var p = ensureModuleProgress(mid);
+  p.attempts += 1;
+  if(p.bestScore===null || score > p.bestScore){ p.bestScore = score; p.bestTotal = total; }
+  syncProgress();
+  refreshHeaderProgress();
+  buildSidebarModules();
+  highlightSidebar();
+
+  var pct = Math.round((score/total)*100);
+  var pass = pct >= m.quiz.passPct;
+  var examNowUnlocked = pass && isCertExamUnlocked();
+  var banner = '<div class="score-banner '+(pass?'pass':'fail')+'" style="margin-top:22px;">' +
+    '<div><div class="big">'+pct+'%</div><div class="lbl">You scored '+score+' / '+total+' — '+(pass?'Passed!':'Below the '+m.quiz.passPct+'% pass mark — review the lessons and retake.')+'</div></div>' +
+    '<button class="btn ghost" onclick="startQuiz(\''+mid+'\')">Retake Quiz</button>' +
+  '</div>';
+  if(examNowUnlocked){
+    banner += '<div class="callout ok" style="margin-top:14px;">🎓 <b>Certification Exam Unlocked</b>You\u2019ve now passed every module in this course. <a href="javascript:void(0)" onclick="go(\'exam\')" style="color:var(--green);font-weight:700;">Take the Certification Exam →</a></div>';
+  }
+  document.querySelector('.quiz-actions').outerHTML = '<div class="quiz-actions"><span></span></div>' ;
+  document.getElementById('quizArea').insertAdjacentHTML('beforeend', banner);
+  window.scrollTo({top: document.body.scrollHeight, behavior:'smooth'});
+}
+
+/* ---------- GRADES ---------- */
+function renderGrades(){
+  var html = '';
+  html += '<div class="crumb">Portal <b>/</b> Grades</div>';
+  html += '<h1 class="page-title">My Grades</h1>';
+  html += '<p class="page-sub">Your best quiz score in each module, weighted into your overall Level 2 grade — updated automatically as you complete quizzes.</p>';
+
+  html += '<div class="panel"><table class="grades"><thead><tr>' +
+    '<th>Module</th><th>Weight</th><th>Best Score</th><th>Percentage</th><th>Status</th>' +
+  '</tr></thead><tbody>';
+
+  var totalWeight=0, earnedWeighted=0, anyGraded=false;
+  COURSE.modules.forEach(function(m){
+    var p = ensureModuleProgress(m.id);
+    var pct = moduleQuizPct(m);
+    totalWeight += m.weight;
+    var pill, scoreTxt, barPct;
+    if(pct===null){
+      pill = '<span class="pill grey">Not attempted</span>';
+      scoreTxt = '—';
+      barPct = 0;
+    } else {
+      anyGraded = true;
+      earnedWeighted += (pct/100)*m.weight;
+      barPct = pct;
+      scoreTxt = p.bestScore+' / '+p.bestTotal;
+      pill = pct>=m.quiz.passPct ? '<span class="pill green">Passed</span>' : '<span class="pill gold">Needs Retake</span>';
+    }
+    html += '<tr>' +
+      '<td><b>'+m.code+'</b> — '+m.title+'</td>' +
+      '<td>'+m.weight+'%</td>' +
+      '<td>'+scoreTxt+'</td>' +
+      '<td><div style="display:flex;align-items:center;gap:8px;">'+(pct===null?'—':pct+'%')+' <div class="gr-bar"><i style="width:'+barPct+'%"></i></div></div></td>' +
+      '<td>'+pill+'</td>' +
+    '</tr>';
+  });
+
+  var overall = anyGraded ? Math.round((earnedWeighted/totalWeight)*100) : null;
+  html += '<tr class="total-row"><td>Overall Weighted Grade</td><td>'+totalWeight+'%</td><td>—</td>' +
+    '<td>'+(overall===null?'—':overall+'%')+'</td><td>'+letterGrade(overall)+'</td></tr>';
+
+  var examPill = STATE.exam.status==="not_attempted" ? '<span class="pill grey">'+(isCertExamUnlocked()?'Not attempted':'Locked')+'</span>'
+    : STATE.exam.status==="failed" ? '<span class="pill gold">Failed — Retake Available</span>'
+    : '<span class="pill green">Passed</span>';
+  html += '<tr><td><b>Certification Exam</b> — full programme</td><td>Pass/Fail</td>' +
+    '<td>'+(STATE.exam.score===null?'—':STATE.exam.score+'%')+'</td>' +
+    '<td>'+(STATE.exam.score===null?'—':STATE.exam.score+'%')+' <span style="color:var(--muted2);font-size:11.5px;">(need '+EXAM_PASS_PCT+'%)</span></td>' +
+    '<td>'+examPill+'</td></tr>';
+  html += '<tr><td colspan="4"><b>Full Programme Certificate</b></td><td>'+(STATE.cert.issued ? '<span class="pill green">🎓 Issued</span><br><button class="btn sm ghost" style="margin-top:6px;" onclick="printMyCertificate()">Print</button>' : '<span class="pill grey">Not yet earned</span>')+'</td></tr>';
+  html += '</tbody></table></div>';
+
+  html += '<div class="panel"><h2>How Grading Works</h2>' +
+    '<p style="font-size:13.5px;color:#33363F;line-height:1.6;">Each module\u2019s quiz is worth its listed weight toward your overall Level 2 grade. Your <b>best</b> attempt counts — retake any quiz as many times as you like. A module needs '+COURSE.modules[0].quiz.passPct+'%+ to be marked Passed. Once every module is passed, the '+EXAM_QUESTION_COUNT+'-question, '+EXAM_TIME_LIMIT_MIN+'-minute <b>Certification Exam</b> unlocks — questions are sampled evenly across all modules, and '+EXAM_PASS_PCT+'%+ is required to pass. <b>Passing the exam, not the module average, is what earns your full programme certificate.</b> Module quiz scores still count toward your Overall Weighted Grade above.</p></div>';
+
+  html += pageFoot();
+  return html;
+}
+
+/* ---------- RESOURCES ---------- */
+function renderResources(){
+  var html = '';
+  html += '<div class="crumb">Portal <b>/</b> Resources</div>';
+  html += '<h1 class="page-title">Resources &amp; Prompt Library</h1>';
+  html += '<p class="page-sub">Every tool and reusable prompt from the programme in one place.</p>';
+
+  html += '<div class="res-grid">';
+  html += '<div class="res-card"><h4>🛠 All Services You Need</h4><ul>' +
+    '<li>Claude AI — claude.ai</li><li>Google AI Studio — aistudio.google.com</li>' +
+    '<li>GitHub — github.com</li><li>Vercel — vercel.com</li>' +
+    '<li>Google Apps Script — script.google.com</li><li>Zapier — zapier.com</li>' +
+    '<li>Make — make.com</li><li>NotebookLM — notebooklm.google.com</li>' +
+    '<li>Google Vids — vids.google.com</li><li>Selar — selar.co</li>' +
+    '<li>Fiverr — fiverr.com</li><li>Imgur — imgur.com</li>' +
+  '</ul></div>';
+
+  html += '<div class="res-card"><h4>🧠 The 5 Layers of a Precision Prompt</h4><ul>' +
+    '<li><b>ROLE</b> — \u201cYou are a [expert identity].\u201d</li>' +
+    '<li><b>CONTEXT</b> — \u201cI\u2019m building [what] for [who].\u201d</li>' +
+    '<li><b>TASK</b> — \u201cWrite/build [format], [length].\u201d</li>' +
+    '<li><b>CONSTRAINT</b> — \u201cDo NOT [thing to avoid].\u201d</li>' +
+    '<li><b>CHAIN</b> — \u201cAfter this, do [next step].\u201d</li>' +
+  '</ul></div>';
+
+  html += '<div class="res-card"><h4>🔁 The 4-Stage Prompt Chain</h4><ul>' +
+    '<li><b>PLAN</b> — detailed plan for your app</li>' +
+    '<li><b>CRITIQUE</b> — ask 5 improving questions</li>' +
+    '<li><b>BUILD</b> — step-by-step build</li>' +
+    '<li><b>IMPROVE</b> — fix the error, explain the cause</li>' +
+  '</ul></div>';
+
+  html += '<div class="res-card"><h4>🎯 WHO · PAIN · RESULT</h4><ul>' +
+    '<li>[Specific user] (WHO)</li><li>→ [daily frustration] (PAIN)</li><li>→ [the outcome they get] (RESULT)</li>' +
+  '</ul></div>';
+
+  html += '<div class="res-card"><h4>🎬 Two-Part AI Image Prompt</h4><ul>' +
+    '<li><b>Part A</b> (fixed): full character description</li>' +
+    '<li><b>Part B</b> (per scene): action + setting + lighting + camera + style</li>' +
+  '</ul></div>';
+
+  html += '<div class="res-card"><h4>📖 Scripture</h4><ul>' +
+    '<li>\u201cThose who wait on the LORD shall renew their strength; they shall mount up with wings as eagles.\u201d — Isaiah 40:31</li>' +
+  '</ul></div>';
+  html += '</div>';
+
+  html += pageFoot();
+  return html;
+}
+
+function pageFoot(){
+  return '<footer class="pagefoot">© Innocent Forteh · Team21 Academy · 2026 · AI Builder Level 2: BUILD Learning Portal</footer>';
+}
+
+function esc(s){ var d=document.createElement('div'); d.textContent=s; return d.innerHTML; }
+
+/* =========================================================
+   BOOT
+   ========================================================= */
+(function boot(){
+  if(STATE.name){
+    document.getElementById("gate").style.display = "none";
+    document.getElementById("app").style.display = "block";
+    document.getElementById("hdrName").textContent = STATE.name;
+    document.getElementById("avatarInit").textContent = STATE.name.charAt(0).toUpperCase();
+    buildSidebarModules();
+    var parts = location.hash.replace("#/","").split("/").filter(Boolean);
+    ROUTE = { view: parts[0]||"dashboard", mid: parts[1]||null, tab: parts[2]||"lessons" };
+    render(); // fast paint from local cache immediately
+    pullProgressAtLogin(function(){ buildSidebarModules(); render(); }); // then reconcile with the cloud
+  } else {
+    document.getElementById("nameInput").focus();
+  }
+})();
+</script>
+</body>
+</html>

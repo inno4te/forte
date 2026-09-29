@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chad NPHI Procurement Specialist - Quick Reference Card</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: Arial, sans-serif; background: #f0f4f8; color: #1a1a2e; font-size: 12px; }
+  .page { max-width: 1200px; margin: 0 auto; padding: 16px; }
+  .header { background: linear-gradient(135deg, #1F4E79 0%, #2E75B6 100%); color: white; padding: 20px 24px; border-radius: 8px; margin-bottom: 16px; }
+  .header h1 { font-size: 20px; font-weight: 700; letter-spacing: 0.5px; }
+  .header h2 { font-size: 14px; color: #F0A500; margin-top: 4px; }
+  .header .meta { font-size: 11px; color: #BDD7EE; margin-top: 8px; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .grid4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .card { background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.08); }
+  .card-header { padding: 10px 14px; font-weight: 700; font-size: 12px; color: white; }
+  .card-header .fr { font-size: 10px; color: rgba(255,255,255,0.8); font-weight: 400; display: block; }
+  .card-body { padding: 12px 14px; }
+  .navy { background: #1F4E79; }
+  .blue { background: #2E75B6; }
+  .gold { background: #F0A500; }
+  .green { background: #70AD47; }
+  .orange { background: #ED7D31; }
+  .red { background: #C00000; }
+  .teal { background: #00897B; }
+  .phase { display: flex; align-items: flex-start; padding: 6px 0; border-bottom: 1px solid #f0f0f0; }
+  .phase:last-child { border-bottom: none; }
+  .phase-num { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px; color: white; flex-shrink: 0; margin-right: 10px; margin-top: 2px; }
+  .phase-content { flex: 1; }
+  .phase-title { font-weight: 700; font-size: 12px; color: #1F4E79; }
+  .phase-fr { font-size: 10px; color: #F0A500; font-style: italic; }
+  .phase-desc { font-size: 11px; color: #444; margin-top: 2px; line-height: 1.4; }
+  .phase-del { font-size: 10px; color: #2E75B6; font-weight: 600; margin-top: 3px; }
+  table { width: 100%; border-collapse: collapse; }
+  th { background: #1F4E79; color: white; padding: 6px 8px; text-align: left; font-size: 11px; }
+  td { padding: 5px 8px; border-bottom: 1px solid #eee; font-size: 11px; vertical-align: top; }
+  tr:nth-child(even) td { background: #f5f9ff; }
+  tr:last-child td { border-bottom: none; }
+  .raci-r { background: #BDD7EE; font-weight: 700; text-align: center; border-radius: 3px; }
+  .raci-a { background: #F0A500; font-weight: 700; text-align: center; border-radius: 3px; }
+  .raci-c { background: #E2EFDA; font-weight: 700; text-align: center; border-radius: 3px; }
+  .raci-i { background: #F2F2F2; font-weight: 700; text-align: center; border-radius: 3px; }
+  .raci-n { text-align: center; color: #ccc; }
+  .chip { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 10px; font-weight: 700; margin: 1px; }
+  .chip-red { background: #FFDAD5; color: #C00000; }
+  .chip-orange { background: #FCE4D6; color: #8B4000; }
+  .chip-green { background: #E2EFDA; color: #375623; }
+  .kpi-row { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 4px; padding: 5px 0; border-bottom: 1px solid #f0f0f0; align-items: center; }
+  .kpi-row:last-child { border-bottom: none; }
+  .kpi-name { font-size: 11px; font-weight: 600; }
+  .kpi-fr { font-size: 9px; color: #888; font-style: italic; }
+  .kpi-target { font-size: 11px; font-weight: 700; color: #1F4E79; text-align: center; }
+  .kpi-badge { font-size: 10px; background: #D6E4F0; color: #1F4E79; padding: 2px 6px; border-radius: 10px; text-align: center; }
+  .checklist { list-style: none; }
+  .checklist li { padding: 4px 0; border-bottom: 1px solid #f5f5f5; font-size: 11px; display: flex; align-items: flex-start; gap: 6px; line-height: 1.4; }
+  .checklist li:last-child { border-bottom: none; }
+  .check-box { width: 14px; height: 14px; border: 2px solid #2E75B6; border-radius: 2px; flex-shrink: 0; margin-top: 1px; }
+  .tactic { padding: 5px 0; border-bottom: 1px solid #f0f0f0; }
+  .tactic:last-child { border-bottom: none; }
+  .tactic-num { color: #F0A500; font-weight: 700; }
+  .tactic-en { font-size: 11px; font-weight: 600; color: #1F4E79; }
+  .tactic-fr { font-size: 10px; color: #888; font-style: italic; }
+  .warning { background: #FFF3CD; border-left: 4px solid #F0A500; padding: 8px 12px; border-radius: 0 6px 6px 0; margin-bottom: 8px; font-size: 11px; }
+  .footer { text-align: center; color: #888; font-size: 10px; padding: 16px; }
+  @media print { body { background: white; } .page { padding: 0; } .card { box-shadow: none; border: 1px solid #ddd; } }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <h1>CHAD NPHI PROCUREMENT SPECIALIST — QUICK REFERENCE CARD</h1>
+    <h2>CARTE DE RÉFÉRENCE RAPIDE — SPÉCIALISTE APPROVISIONNEMENT INSP TCHAD</h2>
+    <div class="meta">AVoHC Kofi Annan Scholars Program | Africa CDC | 5-Month Deployment | Déploiement de 5 mois | N'Djamena, Chad 2026</div>
+  </div>
+
+  <!-- ROW 1: 5-Month Plan Overview -->
+  <div class="grid4">
+    <div class="card">
+      <div class="card-header navy">MONTH 1: ASSESS & STABILIZE<span class="fr">MOIS 1 : ÉVALUER ET STABILISER</span></div>
+      <div class="card-body">
+        <div class="phase"><div class="phase-num" style="background:#1F4E79">W1</div><div class="phase-content"><div class="phase-title">Orientation & Stakeholder Map</div><div class="phase-fr">Orientation & Cartographie</div><div class="phase-desc">Meet Director, Finance, Lab, Procurement leads. Collect all documents.</div><div class="phase-del">→ Stakeholder Map + Doc Log</div></div></div>
+        <div class="phase"><div class="phase-num" style="background:#2E75B6">W2</div><div class="phase-content"><div class="phase-title">Document Deep-Dive + Donor Map</div><div class="phase-fr">Analyse documentaire + Bailleurs</div><div class="phase-desc">Last 12mo POs, approval workflows, donor rules.</div><div class="phase-del">→ Workflow Map + Donor Matrix</div></div></div>
+        <div class="phase"><div class="phase-num" style="background:#4472C4">W3</div><div class="phase-content"><div class="phase-title">Rapid Diagnostic (Annex A)</div><div class="phase-fr">Diagnostic Rapide (Annexe A)</div><div class="phase-desc">Score top 10 commodities. Identify systemic gaps.</div><div class="phase-del">→ Diagnostic Report (6 pages)</div></div></div>
+        <div class="phase"><div class="phase-num" style="background:#70AD47">W4</div><div class="phase-content"><div class="phase-title">Implement Quick Wins</div><div class="phase-fr">Victoires Rapides</div><div class="phase-desc">Service clause templates. Stop-gap for near-stockouts.</div><div class="phase-del">→ Quick Win Register + Presentation</div></div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header blue">MONTH 2: STRENGTHEN & STANDARDIZE<span class="fr">MOIS 2 : RENFORCER ET STANDARDISER</span></div>
+      <div class="card-body">
+        <div class="phase"><div class="phase-num" style="background:#1F4E79">W5</div><div class="phase-content"><div class="phase-title">Draft SOPs (min. 3)</div><div class="phase-fr">Rédiger les SOP (min. 3)</div><div class="phase-desc">Spec writing, supplier evaluation, tender SOPs. Adapt to local law.</div><div class="phase-del">→ Draft SOPs (EN+FR)</div></div></div>
+        <div class="phase"><div class="phase-num" style="background:#2E75B6">W6</div><div class="phase-content"><div class="phase-title">Contract Clause Library</div><div class="phase-fr">Bibliothèque de clauses</div><div class="phase-desc">Warranty, SLA, spare parts, training clauses. Redline 3 existing contracts.</div><div class="phase-del">→ Clause Library + Vendor Checklist</div></div></div>
+        <div class="phase"><div class="phase-num" style="background:#4472C4">W7</div><div class="phase-content"><div class="phase-title">KPI Dashboard + Calendar</div><div class="phase-fr">Tableau de bord KPI + Calendrier</div><div class="phase-desc">8 KPIs. Train 2 data owners. 12-month procurement calendar.</div><div class="phase-del">→ KPI Dashboard (Excel)</div></div></div>
+        <div class="phase"><div class="phase-num" style="background:#70AD47">W8</div><div class="phase-content"><div class="phase-title">Capacity Workshop 1 (full day)</div><div class="phase-fr">Atelier 1 (journée complète)</div><div class="phase-desc">Specifications, vendor eval, contract mgmt, TCO. In French. Invite donors.</div><div class="phase-del">→ Workshop Report + Attendance</div></div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header teal">MONTH 3: INSTITUTIONALIZE & PARTNER<span class="fr">MOIS 3 : INSTITUTIONNALISER</span></div>
+      <div class="card-body">
+        <div class="phase"><div class="phase-num" style="background:#1F4E79">W9</div><div class="phase-content"><div class="phase-title">Validate RACI Matrix</div><div class="phase-fr">Valider la Matrice RACI</div><div class="phase-desc">One Accountable per activity. Align thresholds with Décret N°648.</div><div class="phase-del">→ Approved RACI (EN+FR)</div></div></div>
+        <div class="phase"><div class="phase-num" style="background:#2E75B6">W10</div><div class="phase-content"><div class="phase-title">Donor Harmonization Round-Table</div><div class="phase-fr">Table Ronde Harmonisation</div><div class="phase-desc">WHO, UNICEF, GF, USAID. Pooled procurement proposal. MoU template.</div><div class="phase-del">→ Meeting Notes + Draft MoU</div></div></div>
+        <div class="phase"><div class="phase-num" style="background:#4472C4">W11</div><div class="phase-content"><div class="phase-title">Update Procurement Manual</div><div class="phase-fr">Manuel d'Approvisionnement</div><div class="phase-desc">Integrate SOPs, RACI, templates, KPIs. French with English summary.</div><div class="phase-del">→ Updated Manual (Draft)</div></div></div>
+        <div class="phase"><div class="phase-num" style="background:#70AD47">W12</div><div class="phase-content"><div class="phase-title">AfCFTA/APPM Alignment</div><div class="phase-fr">Alignement AfCFTA/APPM</div><div class="phase-desc">Africa CDC pooled procurement mechanisms. Briefing for Director.</div><div class="phase-del">→ AfCFTA Briefing Note</div></div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header green">MONTH 4: PILOT, MONITOR & EMBED<span class="fr">MOIS 4 : PILOTER ET ANCRER</span></div>
+      <div class="card-body">
+        <div class="phase"><div class="phase-num" style="background:#1F4E79">W13</div><div class="phase-content"><div class="phase-title">Pilot 3 Live Procurement Cases</div><div class="phase-fr">Piloter 3 Dossiers Réels</div><div class="phase-desc">1 equipment + 1 reagent + 1 consumable. Track vs KPIs.</div><div class="phase-del">→ 3 Pilot Case Reports</div></div></div>
+        <div class="phase"><div class="phase-num" style="background:#2E75B6">W14</div><div class="phase-content"><div class="phase-title">KPI Mid-Point Review</div><div class="phase-fr">Revue des KPI mi-parcours</div><div class="phase-desc">Analyse 2 months of data. Adjust targets. Present to Director.</div><div class="phase-del">→ KPI Review Report</div></div></div>
+        <div class="phase"><div class="phase-num" style="background:#4472C4">W15</div><div class="phase-content"><div class="phase-title">Capacity Workshop 2 (half day)</div><div class="phase-fr">Atelier 2 (demi-journée)</div><div class="phase-desc">KPI tracking, contract mgmt in practice. Use real pilot data.</div><div class="phase-del">→ Workshop 2 Report + Attendance</div></div></div>
+        <div class="phase"><div class="phase-num" style="background:#70AD47">W16</div><div class="phase-content"><div class="phase-title">Finalize Handover Package</div><div class="phase-fr">Finaliser le Dossier de Passation</div><div class="phase-desc">Complete manual, SOPs, RACI, dashboard with 4mo data. Brief champion.</div><div class="phase-del">→ Complete Handover Package</div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ROW 2: Month 5 + KPIs + Quick Wins Checklist -->
+  <div class="grid">
+    <div class="card">
+      <div class="card-header red">MONTH 5: REPORTING & CLOSEOUT<span class="fr">MOIS 5 : RAPPORT ET CLÔTURE</span></div>
+      <div class="card-body">
+        <div class="phase"><div class="phase-num" style="background:#C00000">W17</div><div class="phase-content"><div class="phase-title">Draft Final Report (bilingual)</div><div class="phase-fr">Rapport final (bilingue)</div><div class="phase-desc">Executive summary, findings, outcomes vs objectives, KPI trends, recommendations. 15-20 pages.</div><div class="phase-del">→ Draft Final Report EN+FR</div></div></div>
+        <div class="phase"><div class="phase-num" style="background:#ED7D31">W18</div><div class="phase-content"><div class="phase-title">Remote Follow-Up Plan</div><div class="phase-fr">Plan de Suivi à Distance</div><div class="phase-desc">5 priority indicators. Quarterly check-in agenda. Share with Africa CDC.</div><div class="phase-del">→ 6-Month Follow-Up Plan</div></div></div>
+        <div class="phase"><div class="phase-num" style="background:#F0A500">W19</div><div class="phase-content"><div class="phase-title">Formal Handover Ceremony</div><div class="phase-fr">Cérémonie de Passation</div><div class="phase-desc">Present to NPHI leadership, MOH, key donors. Obtain sign-off.</div><div class="phase-del">→ Signed Handover Certificate</div></div></div>
+        <div class="phase"><div class="phase-num" style="background:#70AD47">W20</div><div class="phase-content"><div class="phase-title">Submit to Africa CDC</div><div class="phase-fr">Soumission Africa CDC</div><div class="phase-desc">Final report to AVoHC secretariat. Archive all files. Personal debrief.</div><div class="phase-del">→ Submitted Final Report</div></div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header navy">8 PROCUREMENT KPIs | 8 INDICATEURS CLÉS</div>
+      <div class="card-body">
+        <div class="kpi-row"><div><div class="kpi-name">Procure-to-Pay Lead Time</div><div class="kpi-fr">Délai Approvisionnement-Paiement</div></div><div class="kpi-target">≤60 days</div><div class="kpi-badge">Monthly</div></div>
+        <div class="kpi-row"><div><div class="kpi-name">Tender Cycle Time</div><div class="kpi-fr">Durée Cycle Appel d'Offres</div></div><div class="kpi-target">≤30 days</div><div class="kpi-badge">Monthly</div></div>
+        <div class="kpi-row"><div><div class="kpi-name">% POs with Service Contract</div><div class="kpi-fr">% BC avec Contrat de Service</div></div><div class="kpi-target">≥90%</div><div class="kpi-badge">Monthly</div></div>
+        <div class="kpi-row"><div><div class="kpi-name">Days of Stock — Critical Items</div><div class="kpi-fr">Jours de Stock — Articles Critiques</div></div><div class="kpi-target">≥60 days</div><div class="kpi-badge">Monthly</div></div>
+        <div class="kpi-row"><div><div class="kpi-name">% POs with Approved Spec</div><div class="kpi-fr">% BC avec Spécifications Approuvées</div></div><div class="kpi-target">≥95%</div><div class="kpi-badge">Monthly</div></div>
+        <div class="kpi-row"><div><div class="kpi-name">Emergency Purchases % of Spend</div><div class="kpi-fr">Achats d'Urgence % des Dépenses</div></div><div class="kpi-target">≤10%</div><div class="kpi-badge">Monthly</div></div>
+        <div class="kpi-row"><div><div class="kpi-name">Vendor Performance Score (Avg)</div><div class="kpi-fr">Score Performance Fournisseur</div></div><div class="kpi-target">≥75/100</div><div class="kpi-badge">Quarterly</div></div>
+        <div class="kpi-row"><div><div class="kpi-name">Savings vs Budget/Prior Price</div><div class="kpi-fr">Économies vs Budget/Prix Précédent</div></div><div class="kpi-target">≥5%/yr</div><div class="kpi-badge">Quarterly</div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header gold">DAY 1 CHECKLIST | LISTE JOUR 1</div>
+      <div class="card-body">
+        <ul class="checklist">
+          <li><div class="check-box"></div><strong>Register with home embassy | S'inscrire à l'ambassade</strong></li>
+          <li><div class="check-box"></div>Request meeting with NPHI Director — Day 1 | Réunion DG INSP — Jour 1</li>
+          <li><div class="check-box"></div>Request: Procurement manual, organogram, approval matrix | Manuel achats, organigramme</li>
+          <li><div class="check-box"></div>Request: Last 12mo PO register + all active contracts | Registre BC 12 mois + contrats</li>
+          <li><div class="check-box"></div>Request: Recent audit reports or donor reviews | Rapports d'audit récents</li>
+          <li><div class="check-box"></div>Request: List of active donors + their procurement rules | Liste bailleurs + règles</li>
+          <li><div class="check-box"></div>Request: High-value equipment inventory + service contracts | Inventaire équipements + contrats</li>
+          <li><div class="check-box"></div>Identify cold chain assets and maintenance status | Actifs chaîne du froid</li>
+          <li><div class="check-box"></div>Meet Procurement Officer — build relationship | Construire la relation</li>
+          <li><div class="check-box"></div>Start Stakeholder Map (names, roles, contact info) | Commencer la cartographie</li>
+          <li><div class="check-box"></div>Open KPI Dashboard file — set reporting month | Ouvrir le tableau de bord KPI</li>
+          <li><div class="check-box"></div>Identify 3 near-stockout items for immediate attention | 3 articles proches de rupture</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ROW 3: Key Risks + Buy-In Tactics + RACI mini -->
+  <div class="grid">
+    <div class="card">
+      <div class="card-header red">TOP 8 RISKS | 8 RISQUES PRINCIPAUX</div>
+      <div class="card-body">
+        <table>
+          <tr><th>Risk / Risque</th><th>P</th><th>I</th><th>Score</th></tr>
+          <tr><td>Staff turnover / Rotation personnel</td><td><span class="chip chip-red">H</span></td><td><span class="chip chip-red">H</span></td><td><span class="chip chip-red">HIGH</span></td></tr>
+          <tr><td>Funding freeze / Gel financements</td><td><span class="chip chip-orange">M</span></td><td><span class="chip chip-red">H</span></td><td><span class="chip chip-red">HIGH</span></td></tr>
+          <tr><td>Cold chain failure / Panne chaîne froid</td><td><span class="chip chip-orange">M</span></td><td><span class="chip chip-red">H</span></td><td><span class="chip chip-red">HIGH</span></td></tr>
+          <tr><td>No equipment maintenance contracts</td><td><span class="chip chip-red">H</span></td><td><span class="chip chip-red">H</span></td><td><span class="chip chip-red">HIGH</span></td></tr>
+          <tr><td>Resistance to change / Résistance</td><td><span class="chip chip-red">H</span></td><td><span class="chip chip-orange">M</span></td><td><span class="chip chip-orange">MED</span></td></tr>
+          <tr><td>Law vs SOP conflicts / Conflits juridiques</td><td><span class="chip chip-orange">M</span></td><td><span class="chip chip-orange">M</span></td><td><span class="chip chip-orange">MED</span></td></tr>
+          <tr><td>Donor duplication / Doublons bailleurs</td><td><span class="chip chip-orange">M</span></td><td><span class="chip chip-orange">M</span></td><td><span class="chip chip-orange">MED</span></td></tr>
+          <tr><td>Security / Sécurité</td><td><span class="chip chip-orange">M</span></td><td><span class="chip chip-red">H</span></td><td><span class="chip chip-red">HIGH</span></td></tr>
+        </table>
+        <div style="margin-top:8px; padding:6px; background:#FFF3CD; border-radius:4px; font-size:10px;">
+          <strong>⚠ ACTION:</strong> Review Décret N°648 Week 1 | Register with embassy Day 1 | Map cold chain Week 1
+          <br><em>ACTION : Revoir le Décret N°648 Semaine 1 | S'inscrire à l'ambassade Jour 1</em>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header gold">10 BUY-IN TACTICS | 10 TACTIQUES D'ADHÉSION</div>
+      <div class="card-body">
+        <div class="tactic"><span class="tactic-num">1</span> <span class="tactic-en">Show early wins visibly — post KPI results on the wall</span> <div class="tactic-fr">Montrer les victoires tôt — afficher les KPI</div></div>
+        <div class="tactic"><span class="tactic-num">2</span> <span class="tactic-en">Use "health sovereignty" language with the Director</span> <div class="tactic-fr">Parler de "souveraineté sanitaire" avec le DG</div></div>
+        <div class="tactic"><span class="tactic-num">3</span> <span class="tactic-en">Name 1-2 internal champions — let them lead workshops</span> <div class="tactic-fr">Nommer des champions internes</div></div>
+        <div class="tactic"><span class="tactic-num">4</span> <span class="tactic-en">NEVER blame individuals — frame gaps as system problems</span> <div class="tactic-fr">Ne jamais blâmer les individus</div></div>
+        <div class="tactic"><span class="tactic-num">5</span> <span class="tactic-en">Co-create SOPs — invite staff to review drafts, not just receive</span> <div class="tactic-fr">Co-créer les SOP avec le personnel</div></div>
+        <div class="tactic"><span class="tactic-num">6</span> <span class="tactic-en">Frame training as privilege: "You were selected for this"</span> <div class="tactic-fr">Formation = privilège, pas remédiation</div></div>
+        <div class="tactic"><span class="tactic-num">7</span> <span class="tactic-en">Link to career development in Africa CDC ecosystem</span> <div class="tactic-fr">Lier au développement de carrière</div></div>
+        <div class="tactic"><span class="tactic-num">8</span> <span class="tactic-en">Quantify problem cost: "3 stockout days = X patients missed"</span> <div class="tactic-fr">Quantifier le coût des problèmes actuels</div></div>
+        <div class="tactic"><span class="tactic-num">9</span> <span class="tactic-en">Celebrate milestones formally — brief ceremony when manual signed</span> <div class="tactic-fr">Célébrer les jalons formellement</div></div>
+        <div class="tactic"><span class="tactic-num">10</span> <span class="tactic-en">Start with the willing — results bring resistant stakeholders along</span> <div class="tactic-fr">Commencer avec les personnes ouvertes</div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header navy">RACI QUICK GUIDE | GUIDE RAPIDE RACI</div>
+      <div class="card-body">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px;">
+          <div style="padding:6px;background:#BDD7EE;border-radius:4px;text-align:center;"><strong>R — Responsible</strong><br><span style="font-size:10px;">Does the work / Fait le travail</span></div>
+          <div style="padding:6px;background:#F0A500;border-radius:4px;text-align:center;"><strong>A — Accountable</strong><br><span style="font-size:10px;">ONE per row / UN par ligne</span></div>
+          <div style="padding:6px;background:#E2EFDA;border-radius:4px;text-align:center;"><strong>C — Consulted</strong><br><span style="font-size:10px;">Input before / Avis avant</span></div>
+          <div style="padding:6px;background:#F2F2F2;border-radius:4px;text-align:center;"><strong>I — Informed</strong><br><span style="font-size:10px;">Updated after / Informe après</span></div>
+        </div>
+        <table>
+          <tr><th style="font-size:10px;">Activity</th><th style="font-size:9px;">EU</th><th style="font-size:9px;">Lab</th><th style="font-size:9px;">Proc</th><th style="font-size:9px;">P.Mgr</th><th style="font-size:9px;">Fin</th><th style="font-size:9px;">Dir</th></tr>
+          <tr><td style="font-size:10px;">Needs ID</td><td class="raci-a">A</td><td class="raci-c">C</td><td class="raci-c">C</td><td class="raci-i">I</td><td class="raci-c">C</td><td class="raci-i">I</td></tr>
+          <tr><td style="font-size:10px;">Tech Spec</td><td class="raci-a">A</td><td class="raci-r">R</td><td class="raci-r">R</td><td class="raci-i">I</td><td class="raci-c">C</td><td class="raci-i">I</td></tr>
+          <tr><td style="font-size:10px;">RFQ Issue</td><td class="raci-i">I</td><td class="raci-c">C</td><td class="raci-r">R</td><td class="raci-a">A</td><td class="raci-i">I</td><td class="raci-i">I</td></tr>
+          <tr><td style="font-size:10px;">Tech Eval</td><td class="raci-c">C</td><td class="raci-r">R</td><td class="raci-r">R</td><td class="raci-a">A</td><td class="raci-i">I</td><td class="raci-i">I</td></tr>
+          <tr><td style="font-size:10px;">Award</td><td class="raci-i">I</td><td class="raci-c">C</td><td class="raci-r">R</td><td class="raci-a">A</td><td class="raci-c">C</td><td class="raci-a" style="font-size:9px;">A*</td></tr>
+          <tr><td style="font-size:10px;">Payment</td><td class="raci-i">I</td><td class="raci-n">—</td><td class="raci-c">C</td><td class="raci-i">I</td><td class="raci-a">A</td><td class="raci-a" style="font-size:9px;">A*</td></tr>
+          <tr><td style="font-size:10px;">Delivery</td><td class="raci-a">A</td><td class="raci-r">R</td><td class="raci-c">C</td><td class="raci-i">I</td><td class="raci-i">I</td><td class="raci-i">I</td></tr>
+        </table>
+        <div style="margin-top:6px;font-size:9px;color:#888;">*A = Director above financial threshold (Décret N°648)<br>EU=End User | Lab=Lab Tech | Proc=Procurement | P.Mgr=Proc Manager | Fin=Finance | Dir=Director</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ROW 4: Vendor Scorecard mini + Contract clauses must-have + Context -->
+  <div class="grid">
+    <div class="card">
+      <div class="card-header blue">VENDOR SCORECARD SUMMARY | ÉVALUATION FOURNISSEURS</div>
+      <div class="card-body">
+        <table>
+          <tr><th>Criterion / Critère</th><th>Weight</th><th>Must-Have?</th></tr>
+          <tr><td>Technical compliance / Conformité technique</td><td style="text-align:center;font-weight:700;color:#1F4E79;">30%</td><td style="text-align:center;"><span class="chip chip-red">YES</span></td></tr>
+          <tr><td>Warranty & service / Garantie & service</td><td style="text-align:center;font-weight:700;color:#1F4E79;">20%</td><td style="text-align:center;"><span class="chip chip-red">YES</span></td></tr>
+          <tr><td>Total Cost of Ownership (3yr) / TCO</td><td style="text-align:center;font-weight:700;color:#1F4E79;">20%</td><td style="text-align:center;"><span class="chip chip-green">NO</span></td></tr>
+          <tr><td>Delivery lead time / Délai livraison</td><td style="text-align:center;font-weight:700;color:#1F4E79;">10%</td><td style="text-align:center;"><span class="chip chip-green">NO</span></td></tr>
+          <tr><td>Track record & references</td><td style="text-align:center;font-weight:700;color:#1F4E79;">10%</td><td style="text-align:center;"><span class="chip chip-green">NO</span></td></tr>
+          <tr><td>Local presence / Présence locale</td><td style="text-align:center;font-weight:700;color:#1F4E79;">5%</td><td style="text-align:center;"><span class="chip chip-green">NO</span></td></tr>
+          <tr><td>Regulatory approvals / CE, WHO PQ</td><td style="text-align:center;font-weight:700;color:#1F4E79;">5%</td><td style="text-align:center;"><span class="chip chip-red">YES</span></td></tr>
+          <tr><td colspan="3" style="text-align:center;font-weight:700;color:#1F4E79;background:#D6E4F0;">Minimum to qualify: 60/100 | Must-Have = 0 → DISQUALIFY</td></tr>
+        </table>
+        <div style="margin-top:6px;font-size:10px;color:#888;">Tie-breaker: shortest service response time + strongest local engineer presence</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header orange">10 MUST-HAVE CONTRACT CLAUSES | CLAUSES OBLIGATOIRES</div>
+      <div class="card-body">
+        <ul class="checklist">
+          <li><div class="check-box"></div><strong>Delivery timeline with liquidated damages / Délai + pénalités</strong></li>
+          <li><div class="check-box"></div><strong>Warranty min. 24 months, parts & labour / Garantie 24 mois</strong></li>
+          <li><div class="check-box"></div><strong>Preventive maintenance schedule / Maintenance préventive</strong></li>
+          <li><div class="check-box"></div><strong>Service Level Agreement (response times) / SLA</strong></li>
+          <li><div class="check-box"></div><strong>Spare parts availability 5 years / Pièces détachées 5 ans</strong></li>
+          <li><div class="check-box"></div><strong>Onsite training in French / Formation sur site en français</strong></li>
+          <li><div class="check-box"></div><strong>Payment milestones (30/50/20) / Jalons de paiement</strong></li>
+          <li><div class="check-box"></div><strong>Acceptance testing criteria / Critères d'acceptation</strong></li>
+          <li><div class="check-box"></div><strong>Anti-corruption warranty / Clause anti-corruption</strong></li>
+          <li><div class="check-box"></div><strong>Data confidentiality / Confidentialité des données</strong></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header teal">CHAD CONTEXT REMINDERS | RAPPELS CONTEXTE TCHAD</div>
+      <div class="card-body">
+        <div class="warning">⚖️ <strong>Legal:</strong> Review Décret N°648 on public procurement in Week 1. All SOPs must comply. / Revoir le Décret N°648 la Semaine 1.</div>
+        <div class="warning">🌍 <strong>Language:</strong> Official language = French. Arabic widely spoken. All deliverables bilingual EN+FR. / Tous les livrables bilingues.</div>
+        <div class="warning">⚡ <strong>Power:</strong> Voltage 220V/50Hz. Specify stabilizers in equipment specs. / Stabilisateur requis dans les spécifications.</div>
+        <div class="warning">🌡️ <strong>Climate:</strong> Hot/humid. Specify environmental ranges in all equipment specs (15-35°C, 80% RH). / Préciser les plages environnementales.</div>
+        <div class="warning">🚁 <strong>Logistics:</strong> Limited local suppliers. Budget 8-20 week lead times for imports. Plan 60+ day stock buffers. / Délais 8-20 semaines pour les importations.</div>
+        <div class="warning">🔒 <strong>Security:</strong> Register with embassy Day 1. Check UN security alerts daily. Have contingency comms plan. / S'inscrire à l'ambassade Jour 1.</div>
+        <div class="warning">🤝 <strong>Donors:</strong> WHO, UNICEF, Global Fund, USAID likely present. Each has separate procurement rules. Map in Week 2. / Cartographier les règles des bailleurs Semaine 2.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    AVoHC Kofi Annan Scholars Program | Africa CDC | Chad NPHI Procurement Intervention Package 2026<br>
+    Programme des Érudits Kofi Annan AVoHC | Africa CDC | Package d'Intervention Approvisionnement INSP Tchad 2026<br>
+    <em>For full detail see: (1) Main Word Document  (2) KPI Dashboard Excel  (3) RACI+Stakeholder+Risk Excel</em>
+  </div>
+
+</div>
+</body>
+</html>

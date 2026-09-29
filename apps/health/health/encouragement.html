@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Faith &amp; Encouragement — Team21 Health Platform</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700;9..144,800&family=Inter+Tight:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<style>
+  .faith-bg{position:relative;padding-top:0}
+  .scripture-themes{display:grid;grid-template-columns:1fr;gap:36px;margin:32px 0}
+  .theme-card{background:var(--bg-2);border:1px solid var(--bg-3);padding:36px;border-radius:4px;position:relative;overflow:hidden}
+  .theme-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg, var(--accent), transparent)}
+  .theme-head{display:flex;align-items:center;gap:18px;margin-bottom:14px;flex-wrap:wrap}
+  .theme-icon{font-size:42px;line-height:1;filter:saturate(0.7)}
+  .theme-card h3{font-family:'Fraunces',serif;font-weight:500;font-size:28px;line-height:1.2;color:var(--ink);margin:0;font-style:italic}
+  .theme-card h3 em{color:var(--accent);font-style:normal}
+  .theme-intro{color:var(--mute);font-size:15.5px;line-height:1.7;margin:8px 0 24px;max-width:75ch;font-style:italic}
+  .verses{display:grid;gap:18px;margin:20px 0}
+  .verse{padding:18px 22px;background:var(--bg);border-left:3px solid var(--accent);border-radius:0 4px 4px 0}
+  .verse-ref{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:600;margin-bottom:8px}
+  .verse-text{font-family:'Fraunces',serif;font-size:17.5px;font-weight:300;line-height:1.65;color:var(--ink);font-style:italic}
+  .verse-text::before{content:'"';font-size:36px;line-height:0;vertical-align:-12px;color:var(--accent);margin-right:4px;font-weight:600}
+  .verse-text::after{content:'"';font-size:36px;line-height:0;vertical-align:-14px;color:var(--accent);margin-left:2px;font-weight:600}
+  .reflection{margin-top:22px;padding:18px 22px;background:rgba(232,168,124,0.06);border-radius:4px;border:1px solid rgba(232,168,124,0.18)}
+  .reflection h5{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin:0 0 10px;font-weight:600}
+  .reflection p{font-size:15px;line-height:1.7;color:var(--ink);margin:0}
+  .toc{background:var(--bg-2);border:1px solid var(--bg-3);padding:24px 28px;border-radius:4px;margin:24px 0 32px}
+  .toc h4{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin:0 0 14px;font-weight:600}
+  .toc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px}
+  .toc-link{padding:10px 14px;background:var(--bg);border:1px solid var(--bg-3);border-radius:3px;color:var(--ink);text-decoration:none;font-size:13.5px;transition:all .15s;display:flex;align-items:center;gap:10px}
+  .toc-link:hover{border-color:var(--accent);color:var(--accent);transform:translateX(2px)}
+  .toc-link .toc-icon{font-size:18px;flex-shrink:0}
+  .pull-quote{margin:48px auto;padding:36px;max-width:80ch;text-align:center;border-top:1px solid var(--bg-3);border-bottom:1px solid var(--bg-3)}
+  .pull-quote blockquote{font-family:'Fraunces',serif;font-style:italic;font-weight:300;font-size:24px;line-height:1.5;color:var(--ink);margin:0 0 12px}
+  .pull-quote cite{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-style:normal}
+  @media(min-width:900px){
+    .scripture-themes{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="brand">
+      <div class="brand-mark">T21</div>
+      <div>
+        <div class="brand-name">Team21 Health Platform</div>
+        <div class="brand-sub">Preventive Intelligence</div>
+      </div>
+    </a>
+    <div class="nav-cta" id="navCta"></div>
+  </div>
+</nav>
+
+<main class="page">
+  <header class="page-head">
+    <div>
+      <div class="eyebrow">Faith &amp; Wellbeing · Scripture for the journey</div>
+      <h1>Encouragement for <em>hard seasons</em>.</h1>
+      <p class="intro">Health is not only of the body. The Christian scriptures have carried generations through grief, fear, exhaustion and uncertainty — and modern psychology now confirms what believers have always known: gratitude, hope, community, rest, and trust in something larger than ourselves are foundational to wellbeing. This page collects passages of Scripture for the seasons of life where strength must come from outside us. It is offered as encouragement, not prescription. If you hold a different faith or no faith, take what is useful and leave what is not.</p>
+    </div>
+    <div class="meta">
+      8 LIFE SITUATIONS<br>
+      40+ VERSES<br>
+      REFLECTIONS &amp; PRACTICES
+    </div>
+  </header>
+
+  <div class="toc">
+    <h4>Find what you need</h4>
+    <div class="toc-grid" id="tocGrid"></div>
+  </div>
+
+  <div class="pull-quote">
+    <blockquote>"The Lord is close to the brokenhearted and saves those who are crushed in spirit."</blockquote>
+    <cite>— Psalm 34:18</cite>
+  </div>
+
+  <section class="band">
+    <h2>Scripture for the <em>seasons of life</em></h2>
+    <div class="scripture-themes" id="themesWrap"></div>
+  </section>
+
+  <section class="band">
+    <h2>Practical <em>spiritual disciplines</em> for wellbeing</h2>
+    <div class="info-grid">
+      <div class="info-card">
+        <h4 style="color:var(--accent)">Daily prayer or meditation</h4>
+        <p>Even 5 minutes of quiet attention each morning reshapes the day. Pray for the people on your mind; thank God for three specific things; sit in silence. Brain imaging shows measurable changes in attention and emotional regulation within weeks of regular practice.</p>
+      </div>
+      <div class="info-card">
+        <h4 style="color:var(--accent)">Sabbath rhythm</h4>
+        <p>One day in seven without work, without striving. This is not a productivity hack — it is a declaration that you are not what you produce. Modern research strongly supports the wellbeing benefits of a weekly day of true rest.</p>
+      </div>
+      <div class="info-card">
+        <h4 style="color:var(--accent)">Community &amp; worship together</h4>
+        <p>Regular gathering with a faith community is associated with longer life, lower depression rates, and better recovery from illness in multiple large cohort studies. Don't isolate when life gets hard — that is precisely when community matters most.</p>
+      </div>
+      <div class="info-card">
+        <h4 style="color:var(--accent)">Scripture reading</h4>
+        <p>A small daily passage, read slowly and prayerfully, builds resilience over years. The Psalms in particular give language to every human emotion — including the difficult ones. Read them when you don't know what to feel.</p>
+      </div>
+      <div class="info-card">
+        <h4 style="color:var(--accent)">Confession &amp; forgiveness</h4>
+        <p>Carrying unconfessed wrongs or unforgiven hurts is a physical burden — measurably elevated cortisol, worse sleep, more inflammation. The spiritual practice of confession and forgiveness has medical correlates that are hard to ignore.</p>
+      </div>
+      <div class="info-card">
+        <h4 style="color:var(--accent)">Service to others</h4>
+        <p>Helping someone else is the most reliable antidote to despair. It is also the clearest expression of love that Jesus modelled. When you feel stuck, look outward — visit the sick, share food, write to someone who needs to hear from you.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="band">
+    <h2>When faith and <em>medical care</em> work together</h2>
+    <p style="font-size:17px;line-height:1.7;max-width:80ch;color:var(--ink)">There is a long, beautiful history of Christian hospitals, clinics, and compassionate care — from Mother Teresa's homes to the Mayo brothers' faith-driven medical practice. Faith and medicine are partners, not rivals. Pray for healing <em>and</em> see your doctor. Take your medication <em>and</em> trust God with the outcome. Honour the body God gave you by sleeping, eating well, moving, resting. Honour your soul by worship, scripture, and community. Both belong. Both matter.</p>
+    <p style="font-size:16px;line-height:1.7;max-width:80ch;color:var(--mute);font-style:italic;margin-top:18px">"Beloved, I pray that all may go well with you and that you may be in good health, as it goes well with your soul." — 3 John 1:2</p>
+  </section>
+
+  <section class="band band-cta">
+    <h2>Continue your <em>journey</em></h2>
+    <div class="ctas">
+      <a class="btn btn-primary" href="tracker.html">Open the daily tracker →</a>
+      <a class="btn" href="community.html">Share an encouragement →</a>
+      <a class="btn" href="brain.html">Brain &amp; mental health →</a>
+    </div>
+  </section>
+</main>
+
+<script src="data.js"></script>
+<script src="data-ext.js"></script>
+<script src="lang-data.js"></script>
+<script src="lang.js"></script>
+<script src="shared.js"></script>
+<script>
+T21.boot('encouragement.html');
+
+// Build table of contents and theme cards from SCRIPTURES data
+const toc = document.getElementById('tocGrid');
+const wrap = document.getElementById('themesWrap');
+
+toc.innerHTML = SCRIPTURES.map((s, i)=>`
+  <a class="toc-link" href="#theme-${i}">
+    <span class="toc-icon">${s.icon}</span>
+    <span>${s.theme}</span>
+  </a>
+`).join('');
+
+wrap.innerHTML = SCRIPTURES.map((s, i)=>`
+  <article class="theme-card" id="theme-${i}">
+    <div class="theme-head">
+      <div class="theme-icon">${s.icon}</div>
+      <h3>${s.theme.replace(/(\w+)$/, '<em>$1</em>')}</h3>
+    </div>
+    <p class="theme-intro">${s.intro}</p>
+    <div class="verses">
+      ${s.verses.map(v=>`
+        <div class="verse">
+          <div class="verse-ref">${v.ref}</div>
+          <div class="verse-text">${v.text}</div>
+        </div>
+      `).join('')}
+    </div>
+    <div class="reflection">
+      <h5>A practice to try</h5>
+      <p>${s.reflection}</p>
+    </div>
+  </article>
+`).join('');
+
+// Smooth scroll for TOC
+toc.addEventListener('click', e=>{
+  const link = e.target.closest('a');
+  if(!link) return;
+  e.preventDefault();
+  const target = document.querySelector(link.getAttribute('href'));
+  if(target) target.scrollIntoView({behavior:'smooth', block:'start'});
+});
+</script>
+</body>
+</html>

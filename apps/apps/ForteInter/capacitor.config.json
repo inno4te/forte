@@ -1,0 +1,9 @@
+{
+  "appId": "com.forteh.forteinter",
+  "appName": "ForTeInter",
+  "webDir": "www",
+  "bundledWebRuntime": false,
+  "server": {
+    "androidScheme": "https"
+  }
+}

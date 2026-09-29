@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Network Lab Simulator · inno4te Networking Academy</title>
+<link rel="stylesheet" href="css/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%231F6FEB'/><text x='50' y='68' font-size='44' text-anchor='middle' fill='white' font-weight='bold'>i4</text></svg>">
+</head>
+<body>
+<header class="site-header">
+  <nav class="wrap nav">
+    <a class="brand" href="index.html"><span class="brand-mark">i4</span><span class="brand-name">inno<em>4</em>te Networking Academy</span></a>
+    <button class="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li><li><a href="simulator.html" class="active">Simulator</a></li>
+      <li><a href="exams.html">Exams</a></li><li><a href="cli.html">CLI</a></li><li><a href="subnetting.html">Subnetting</a></li>
+    </ul>
+  </nav>
+</header>
+
+<div style="background:var(--surface);border-bottom:1px solid var(--border);padding:10px 0;">
+  <div class="wrap" style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+    <span style="font-weight:700;color:var(--text-2);font-size:.88rem">Lab:</span>
+    <select id="challengeSelect" class="inp" style="width:auto;padding:7px 12px;font-size:.86rem">
+      <option value="0">— Free build (blank canvas) —</option>
+      <option value="1">Challenge 1: Build a Simple LAN</option>
+      <option value="2">Challenge 2: Inter-VLAN Routing</option>
+      <option value="3">Challenge 3: DMZ Architecture</option>
+    </select>
+    <div style="margin-left:auto;display:flex;gap:8px;flex-wrap:wrap">
+      <input id="pingSrc" class="inp inp-mono" placeholder="Ping from IP" style="width:140px;padding:7px 10px;font-size:.84rem">
+      <input id="pingDst" class="inp inp-mono" placeholder="Ping to IP"   style="width:140px;padding:7px 10px;font-size:.84rem">
+      <button id="btnPing" class="btn btn-green btn-sm">📡 Ping</button>
+      <button id="btnDisconnect" class="btn btn-ghost btn-sm">✂ Disconnect</button>
+      <button id="btnDelete" class="btn btn-ghost btn-sm" style="color:var(--red);border-color:var(--red)">🗑 Delete</button>
+      <button id="btnClear" class="btn btn-ghost btn-sm">↺ Clear</button>
+    </div>
+  </div>
+</div>
+
+<div class="sim-wrap" style="height:calc(100vh - 110px)">
+  <!-- Left: device palette -->
+  <div class="sim-sidebar">
+    <h4>Add device</h4>
+    <button class="device-btn" data-device="router"><span class="d-ico">📶</span>Router</button>
+    <button class="device-btn" data-device="switch"><span class="d-ico">🔀</span>Switch</button>
+    <button class="device-btn" data-device="pc"><span class="d-ico">💻</span>PC / Host</button>
+    <button class="device-btn" data-device="server"><span class="d-ico">🖥️</span>Server</button>
+    <button class="device-btn" data-device="firewall"><span class="d-ico">🔥</span>Firewall</button>
+    <button class="device-btn" data-device="ap"><span class="d-ico">📡</span>Wi-Fi AP</button>
+    <button class="device-btn" data-device="cloud"><span class="d-ico">☁️</span>Internet</button>
+    <hr style="border:none;border-top:1px solid var(--border);margin:10px 0">
+    <h4>Cable legend</h4>
+    <div style="font-size:.76rem;color:var(--text-3);display:grid;gap:5px">
+      <span><span style="color:var(--green)">──</span> Straight-through</span>
+      <span><span style="color:var(--orange)">╌╌</span> Crossover</span>
+      <span><span style="color:var(--cyan)">──</span> Fiber</span>
+      <span><span style="color:var(--purple)">╌╌</span> Serial</span>
+    </div>
+    <hr style="border:none;border-top:1px solid var(--border);margin:10px 0">
+    <h4>Instructions</h4>
+    <div style="font-size:.76rem;color:var(--text-3);line-height:1.6">
+      <b>Add:</b> Click a device button<br>
+      <b>Connect:</b> Click device A → click device B<br>
+      <b>Move:</b> Drag a device<br>
+      <b>Config:</b> Click to select → edit right panel<br>
+      <b>Ping:</b> Set IPs, enter source/dest, click Ping
+    </div>
+  </div>
+
+  <!-- Center: canvas -->
+  <div class="sim-canvas" id="simCanvas">
+    <svg id="simWires"></svg>
+    <div id="connectMode" style="display:none;position:absolute;top:10px;left:50%;transform:translateX(-50%);background:var(--accent);color:#fff;padding:6px 16px;border-radius:999px;font-size:.8rem;font-weight:700;pointer-events:none">
+      Select a device to connect to…
+    </div>
+    <div style="position:absolute;bottom:0;left:0;right:0;background:var(--surface);border-top:1px solid var(--border);padding:8px 12px;max-height:140px;overflow-y:auto;" id="simLog">
+      <div class="out-dim" style="font-size:.78rem;font-family:var(--mono)">Network Lab ready. Add devices from the left panel.</div>
+    </div>
+  </div>
+
+  <!-- Right: config -->
+  <div class="sim-config" id="configPanel">
+    <p style="color:var(--text-3);font-size:.88rem;text-align:center;margin-top:24px">Select a device to configure it.</p>
+  </div>
+</div>
+
+<script src="js/simulator.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/main.js"></script>
+<footer class="site-footer"><div class="footer-bottom">&copy; <span data-year></span> inno4te Networking Academy &middot; Innocent Forteh &mdash; Paid All Links Foundation. All rights reserved.</div></footer>
+</body>
+</html>

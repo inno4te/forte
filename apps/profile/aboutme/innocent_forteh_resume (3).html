@@ -1,0 +1,1527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Innocent Forteh — Universal Profile</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0a1628;
+    --navy-mid: #132040;
+    --navy-light: #1e3560;
+    --gold: #c9a84c;
+    --gold-light: #e8c97a;
+    --gold-pale: #f5e9c8;
+    --ivory: #faf8f3;
+    --white: #ffffff;
+    --text-dark: #0a1628;
+    --text-mid: #334466;
+    --text-light: #667799;
+    --border: #d0dae8;
+    --tag-bg: #eaf0f8;
+    --shadow: 0 4px 24px rgba(10,22,40,0.10);
+    --shadow-lg: 0 12px 48px rgba(10,22,40,0.16);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--ivory);
+    color: var(--text-dark);
+    line-height: 1.65;
+    font-size: 15px;
+  }
+
+  /* ---- SEARCH BAR (sticky top) ---- */
+  #search-bar {
+    position: sticky;
+    top: 0;
+    z-index: 999;
+    background: var(--navy);
+    padding: 10px 24px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+  }
+  #search-bar .search-wrap {
+    flex: 1;
+    position: relative;
+    max-width: 520px;
+  }
+  #search-bar input {
+    width: 100%;
+    padding: 9px 16px 9px 40px;
+    border-radius: 8px;
+    border: 1.5px solid var(--navy-light);
+    background: rgba(255,255,255,0.07);
+    color: #fff;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  #search-bar input::placeholder { color: rgba(255,255,255,0.4); }
+  #search-bar input:focus { border-color: var(--gold); background: rgba(255,255,255,0.12); }
+  #search-bar .search-icon {
+    position: absolute;
+    left: 12px; top: 50%;
+    transform: translateY(-50%);
+    color: rgba(255,255,255,0.45);
+    font-size: 16px;
+    pointer-events: none;
+  }
+  #search-bar .search-count {
+    font-size: 12px;
+    color: var(--gold-light);
+    white-space: nowrap;
+  }
+
+  /* ---- LANGUAGE SWITCHER ---- */
+  .lang-switcher {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: auto;
+    background: rgba(255,255,255,0.08);
+    border-radius: 10px;
+    padding: 5px 10px;
+    cursor: pointer;
+    border: 1.5px solid rgba(201,168,76,0.3);
+    transition: border-color 0.2s;
+    user-select: none;
+  }
+  .lang-switcher:hover { border-color: var(--gold); }
+  .lang-switcher .flag { font-size: 20px; }
+  .lang-switcher .lang-label { font-size: 13px; color: #fff; font-weight: 500; }
+  .lang-switcher .chevron { font-size: 10px; color: var(--gold-light); }
+
+  /* ---- HERO HEADER ---- */
+  #hero {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 55%, var(--navy-light) 100%);
+    color: #fff;
+    padding: 64px 40px 56px;
+    position: relative;
+    overflow: hidden;
+  }
+  #hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c9a84c' fill-opacity='0.04'%3E%3Cpath d='M50 50c0-5.523 4.477-10 10-10s10 4.477 10 10-4.477 10-10 10c0 5.523-4.477 10-10 10s-10-4.477-10-10 4.477-10 10-10zM10 10c0-5.523 4.477-10 10-10s10 4.477 10 10-4.477 10-10 10c0 5.523-4.477 10-10 10S0 25.523 0 20s4.477-10 10-10z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    pointer-events: none;
+  }
+  #hero .hero-inner { max-width: 900px; margin: 0 auto; position: relative; }
+  #hero .name {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(38px, 6vw, 62px);
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    line-height: 1.08;
+    margin-bottom: 10px;
+  }
+  #hero .name span { color: var(--gold); }
+  #hero .title-tag {
+    display: inline-block;
+    background: rgba(201,168,76,0.15);
+    border: 1px solid rgba(201,168,76,0.4);
+    color: var(--gold-light);
+    font-size: 13px;
+    font-weight: 500;
+    padding: 5px 14px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+    letter-spacing: 0.4px;
+  }
+  #hero .tagline {
+    font-size: 16px;
+    color: rgba(255,255,255,0.72);
+    max-width: 640px;
+    margin-bottom: 32px;
+    font-weight: 300;
+    line-height: 1.7;
+  }
+  .stat-row {
+    display: flex;
+    gap: 32px;
+    flex-wrap: wrap;
+    margin-bottom: 32px;
+  }
+  .stat-item { text-align: center; }
+  .stat-item .num {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--gold);
+    line-height: 1;
+  }
+  .stat-item .lbl {
+    font-size: 11px;
+    color: rgba(255,255,255,0.55);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-top: 2px;
+  }
+  .hero-contact {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px;
+  }
+  .hero-contact a {
+    color: rgba(255,255,255,0.7);
+    text-decoration: none;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: color 0.2s;
+  }
+  .hero-contact a:hover { color: var(--gold-light); }
+  .hero-contact .dot {
+    color: rgba(255,255,255,0.2);
+    font-size: 10px;
+  }
+
+  /* ---- MAIN LAYOUT ---- */
+  .container { max-width: 980px; margin: 0 auto; padding: 0 24px; }
+  #main-content { padding: 48px 0; }
+
+  /* ---- NAV TABS ---- */
+  .section-nav {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+    margin-bottom: 40px;
+    border-bottom: 2px solid var(--border);
+    padding-bottom: 0;
+  }
+  .section-nav button {
+    padding: 10px 20px;
+    border: none;
+    background: none;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-light);
+    cursor: pointer;
+    border-bottom: 2.5px solid transparent;
+    margin-bottom: -2px;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .section-nav button.active, .section-nav button:hover {
+    color: var(--navy);
+    border-bottom-color: var(--gold);
+  }
+  .section-nav button.active { font-weight: 600; }
+
+  /* ---- SECTION PANELS ---- */
+  .panel { display: none; }
+  .panel.active { display: block; animation: fadeUp 0.35s ease; }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ---- SECTION TITLE ---- */
+  .sec-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 6px;
+  }
+  .sec-divider {
+    width: 40px; height: 3px;
+    background: linear-gradient(90deg, var(--gold), var(--gold-light));
+    border-radius: 2px;
+    margin-bottom: 28px;
+  }
+
+  /* ---- ABOUT ---- */
+  .about-text {
+    font-size: 15.5px;
+    color: var(--text-mid);
+    line-height: 1.8;
+    max-width: 720px;
+    margin-bottom: 32px;
+  }
+  .impact-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+  .impact-card {
+    background: var(--white);
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    transition: box-shadow 0.2s, border-color 0.2s;
+  }
+  .impact-card:hover { box-shadow: var(--shadow); border-color: var(--gold); }
+  .impact-card .ic-icon { font-size: 26px; margin-bottom: 10px; }
+  .impact-card .ic-value {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--navy);
+  }
+  .impact-card .ic-label { font-size: 12px; color: var(--text-light); margin-top: 2px; }
+
+  /* ---- EXPERIENCE ---- */
+  .timeline { position: relative; padding-left: 28px; }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 6px; top: 8px; bottom: 8px;
+    width: 2px;
+    background: linear-gradient(180deg, var(--gold), var(--border));
+  }
+  .tl-item {
+    position: relative;
+    margin-bottom: 40px;
+    background: var(--white);
+    border: 1.5px solid var(--border);
+    border-radius: 14px;
+    padding: 24px 24px 22px;
+    transition: box-shadow 0.2s, border-color 0.2s;
+  }
+  .tl-item:hover { box-shadow: var(--shadow); border-color: rgba(201,168,76,0.5); }
+  .tl-item::before {
+    content: '';
+    position: absolute;
+    left: -22px; top: 26px;
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    background: var(--gold);
+    border: 2.5px solid var(--ivory);
+    box-shadow: 0 0 0 2px var(--gold);
+  }
+  .tl-org {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 4px;
+  }
+  .tl-role {
+    font-family: 'Playfair Display', serif;
+    font-size: 19px;
+    font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 4px;
+  }
+  .tl-meta {
+    font-size: 12px;
+    color: var(--text-light);
+    margin-bottom: 14px;
+    display: flex; gap: 14px; flex-wrap: wrap;
+  }
+  .tl-meta .badge {
+    background: var(--tag-bg);
+    border-radius: 6px;
+    padding: 2px 10px;
+    font-size: 11px;
+    color: var(--text-mid);
+  }
+  .tl-desc {
+    font-size: 14px;
+    color: var(--text-mid);
+    line-height: 1.75;
+  }
+  .tl-bullets {
+    margin-top: 10px;
+    padding-left: 18px;
+  }
+  .tl-bullets li {
+    font-size: 13.5px;
+    color: var(--text-mid);
+    margin-bottom: 6px;
+    line-height: 1.65;
+  }
+  .tl-skills {
+    margin-top: 14px;
+    display: flex; flex-wrap: wrap; gap: 6px;
+  }
+  .skill-tag {
+    background: var(--tag-bg);
+    color: var(--text-mid);
+    font-size: 11.5px;
+    padding: 3px 11px;
+    border-radius: 20px;
+    font-weight: 500;
+    border: 1px solid transparent;
+    transition: background 0.2s, border-color 0.2s;
+  }
+  .skill-tag:hover { background: var(--gold-pale); border-color: var(--gold); }
+
+  /* ---- EDUCATION ---- */
+  .edu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 18px; }
+  .edu-card {
+    background: var(--white);
+    border: 1.5px solid var(--border);
+    border-radius: 14px;
+    padding: 22px;
+    transition: box-shadow 0.2s, border-color 0.2s;
+  }
+  .edu-card:hover { box-shadow: var(--shadow); border-color: rgba(201,168,76,0.5); }
+  .edu-card .ec-inst {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 6px;
+  }
+  .edu-card .ec-degree {
+    font-family: 'Playfair Display', serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 4px;
+  }
+  .edu-card .ec-field { font-size: 13px; color: var(--text-mid); margin-bottom: 6px; }
+  .edu-card .ec-year { font-size: 12px; color: var(--text-light); }
+
+  /* ---- CERTIFICATIONS ---- */
+  .cert-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; }
+  .cert-card {
+    background: var(--white);
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
+    transition: box-shadow 0.2s, border-color 0.2s;
+  }
+  .cert-card:hover { box-shadow: var(--shadow); border-color: rgba(201,168,76,0.5); }
+  .cert-card .cc-icon {
+    width: 38px; height: 38px; border-radius: 8px;
+    background: linear-gradient(135deg, var(--navy), var(--navy-light));
+    color: var(--gold);
+    font-size: 18px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .cert-card .cc-name { font-size: 13px; font-weight: 600; color: var(--navy); margin-bottom: 3px; }
+  .cert-card .cc-issuer { font-size: 11.5px; color: var(--text-light); }
+  .cert-card .cc-date { font-size: 11px; color: var(--gold); margin-top: 3px; }
+
+  /* ---- SKILLS ---- */
+  .skills-section .skill-cat { margin-bottom: 32px; }
+  .skill-cat-title {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-light);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .skill-cat-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+  .skills-cloud { display: flex; flex-wrap: wrap; gap: 8px; }
+  .skill-pill {
+    background: var(--white);
+    border: 1.5px solid var(--border);
+    border-radius: 24px;
+    padding: 6px 16px;
+    font-size: 13px;
+    color: var(--text-dark);
+    font-weight: 500;
+    transition: all 0.2s;
+    cursor: default;
+  }
+  .skill-pill:hover { background: var(--navy); color: var(--gold-light); border-color: var(--navy); }
+  .skill-pill.gold { border-color: var(--gold); color: var(--navy); background: var(--gold-pale); }
+
+  /* ---- AWARDS ---- */
+  .awards-list { list-style: none; }
+  .awards-list li {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .awards-list li:last-child { border-bottom: none; }
+  .award-medal {
+    width: 36px; height: 36px;
+    background: linear-gradient(135deg, var(--gold), var(--gold-light));
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; flex-shrink: 0;
+    box-shadow: 0 2px 8px rgba(201,168,76,0.3);
+  }
+  .award-text .award-title { font-size: 14px; font-weight: 600; color: var(--navy); }
+  .award-text .award-meta { font-size: 12px; color: var(--text-light); margin-top: 2px; }
+
+  /* ---- RECOMMENDATIONS ---- */
+  .rec-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; }
+  .rec-card {
+    background: var(--white);
+    border: 1.5px solid var(--border);
+    border-radius: 14px;
+    padding: 24px;
+    transition: box-shadow 0.2s;
+  }
+  .rec-card:hover { box-shadow: var(--shadow); }
+  .rec-quote {
+    font-size: 28px;
+    color: var(--gold);
+    line-height: 1;
+    margin-bottom: 10px;
+    font-family: 'Playfair Display', serif;
+  }
+  .rec-text {
+    font-size: 13.5px;
+    color: var(--text-mid);
+    line-height: 1.75;
+    margin-bottom: 16px;
+    font-style: italic;
+  }
+  .rec-author { display: flex; gap: 12px; align-items: center; }
+  .rec-avatar {
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--navy), var(--navy-light));
+    color: var(--gold-light);
+    font-size: 15px;
+    font-weight: 600;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    font-family: 'Playfair Display', serif;
+  }
+  .rec-author-name { font-size: 13px; font-weight: 600; color: var(--navy); }
+  .rec-author-role { font-size: 11.5px; color: var(--text-light); }
+
+  /* ---- PUBLICATIONS ---- */
+  .pub-list { display: flex; flex-direction: column; gap: 16px; }
+  .pub-item {
+    background: var(--white);
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 18px 20px;
+    display: flex; gap: 16px; align-items: flex-start;
+    transition: box-shadow 0.2s;
+  }
+  .pub-item:hover { box-shadow: var(--shadow); border-color: rgba(201,168,76,0.4); }
+  .pub-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--gold);
+    min-width: 30px;
+    line-height: 1;
+    margin-top: 2px;
+  }
+  .pub-title { font-size: 14px; font-weight: 600; color: var(--navy); margin-bottom: 4px; }
+  .pub-desc { font-size: 13px; color: var(--text-mid); }
+
+  /* ---- VOLUNTEERING ---- */
+  .vol-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+  .vol-card {
+    background: var(--white);
+    border: 1.5px solid var(--border);
+    border-radius: 14px;
+    padding: 20px;
+    transition: box-shadow 0.2s;
+  }
+  .vol-card:hover { box-shadow: var(--shadow); }
+  .vol-card .vc-role {
+    font-family: 'Playfair Display', serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 4px;
+  }
+  .vol-card .vc-org { font-size: 12px; font-weight: 700; color: var(--gold); text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 6px; }
+  .vol-card .vc-period { font-size: 12px; color: var(--text-light); margin-bottom: 10px; }
+  .vol-card .vc-desc { font-size: 13px; color: var(--text-mid); line-height: 1.7; }
+
+  /* ---- SEARCH HIGHLIGHTS ---- */
+  mark {
+    background: rgba(201,168,76,0.35);
+    color: inherit;
+    border-radius: 2px;
+    padding: 0 1px;
+  }
+  .no-results {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--text-light);
+    font-size: 15px;
+  }
+  .no-results .nr-icon { font-size: 48px; margin-bottom: 12px; }
+
+  /* ---- RESPONSIVE ---- */
+  @media (max-width: 640px) {
+    #hero { padding: 40px 20px; }
+    .container { padding: 0 16px; }
+    .stat-row { gap: 20px; }
+    .section-nav button { padding: 8px 14px; font-size: 13px; }
+    .tl-item { padding: 18px 16px; }
+    #search-bar { padding: 10px 14px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- SEARCH + LANG BAR -->
+<div id="search-bar">
+  <div class="search-wrap">
+    <span class="search-icon">🔍</span>
+    <input type="text" id="searchInput" placeholder="Search skills, experience, certifications…" oninput="handleSearch(this.value)">
+  </div>
+  <span class="search-count" id="searchCount"></span>
+  <div class="lang-switcher" onclick="toggleLang()" title="Translate to French / Traduire en anglais">
+    <span class="flag" id="flagIcon">🇬🇧</span>
+    <span class="lang-label" id="langLabel">EN</span>
+    <span class="chevron">▼</span>
+  </div>
+</div>
+
+<!-- HERO -->
+<header id="hero">
+  <div class="hero-inner">
+    <div class="title-tag" data-en="Servant Leader · PMP® · AI Enthusiast · Author" data-fr="Leader Serviteur · PMP® · Passionné d'IA · Auteur">
+      Servant Leader · PMP® · AI Enthusiast · Author
+    </div>
+    <h1 class="name">Innocent <span>Forteh</span></h1>
+    <p class="tagline" data-en="PMP® Certified Acquisition & Assistance Specialist, Leadership Development Expert, and Artificial Intelligence Enthusiast with 20+ years of experience across U.S. Government missions, British High Commission, NGOs, and international development — driving $200M+ in programs while ending AI poverty."
+       data-fr="Spécialiste certifié PMP® en Acquisition et Assistance, Expert en Développement du Leadership et Passionné d'Intelligence Artificielle avec plus de 20 ans d'expérience au sein de missions du gouvernement américain, du Haut-Commissariat britannique, d'ONG et du développement international — gérant plus de 200 M$ en programmes tout en luttant contre la pauvreté numérique.">
+      PMP® Certified Acquisition & Assistance Specialist, Leadership Development Expert, and Artificial Intelligence Enthusiast with <strong>24 years</strong> of experience across U.S. Government missions, British High Commission, NGOs, and international development — driving $200M+ in programs while ending AI poverty.
+    </p>
+    <div class="stat-row">
+      <div class="stat-item"><div class="num">24</div><div class="lbl" data-en="Years Experience" data-fr="Ans d'expérience">Years Experience</div></div>
+      <div class="stat-item"><div class="num">$200M+</div><div class="lbl" data-en="Programs Managed" data-fr="Programmes gérés">Programs Managed</div></div>
+      <div class="stat-item"><div class="num">1,000+</div><div class="lbl" data-en="Leaders Trained" data-fr="Leaders formés">Leaders Trained</div></div>
+      <div class="stat-item"><div class="num">14.7</div><div class="lbl" data-en="Years · US Embassy" data-fr="Ans · Ambassade US">Years · US Embassy</div></div>
+      <div class="stat-item"><div class="num">2.3</div><div class="lbl" data-en="Years · USAID" data-fr="Ans · USAID">Years · USAID</div></div>
+      <div class="stat-item"><div class="num">30+</div><div class="lbl" data-en="Certifications" data-fr="Certifications">Certifications</div></div>
+    </div>
+    <div class="hero-contact">
+      <a href="#">📍 <span data-en="Yaoundé, Cameroon" data-fr="Yaoundé, Cameroun">Yaoundé, Cameroon</span></a>
+      <span class="dot">•</span>
+      <a href="mailto:forteh@gmail.com">✉️ forteh@gmail.com</a>
+      <span class="dot">•</span>
+      <a href="tel:+237694294406">📞 +237 694 294 406</a>
+      <span class="dot">•</span>
+      <a href="https://www.linkedin.com/in/innocent-forteh-24aa7a20/" target="_blank">🔗 LinkedIn Profile</a>
+      <span class="dot">•</span>
+      <a href="#">🌐 <span data-en="English · French · Pidgin · German" data-fr="Anglais · Français · Pidgin · Allemand">English · French · Pidgin · German</span></a>
+    </div>
+  </div>
+</header>
+
+<!-- MAIN -->
+<div class="container" id="main-content">
+
+  <!-- TABS -->
+  <nav class="section-nav" role="tablist">
+    <button class="active" onclick="showPanel('about')" data-en="About" data-fr="À propos">About</button>
+    <button onclick="showPanel('experience')" data-en="Experience" data-fr="Expérience">Experience</button>
+    <button onclick="showPanel('education')" data-en="Education" data-fr="Formation">Education</button>
+    <button onclick="showPanel('certifications')" data-en="Certifications" data-fr="Certifications">Certifications</button>
+    <button onclick="showPanel('skills')" data-en="Skills" data-fr="Compétences">Skills</button>
+    <button onclick="showPanel('awards')" data-en="Awards" data-fr="Récompenses">Awards</button>
+    <button onclick="showPanel('volunteering')" data-en="Volunteering" data-fr="Bénévolat">Volunteering</button>
+    <button onclick="showPanel('publications')" data-en="Publications" data-fr="Publications">Publications</button>
+    <button onclick="showPanel('recommendations')" data-en="References" data-fr="Références">References</button>
+  </nav>
+
+  <!-- ====== ABOUT ====== -->
+  <div class="panel active" id="panel-about">
+    <h2 class="sec-title" data-en="Professional Summary" data-fr="Résumé Professionnel">Professional Summary</h2>
+    <div class="sec-divider"></div>
+    <p class="about-text" data-en="I am a PMP® Certified Acquisition & Assistance Specialist, Leadership Development Expert, and Artificial Intelligence Enthusiast with 24 years of cross-sector experience spanning U.S. Government, British High Commission, NGOs, and international development. I help institutions streamline systems, ensure compliance, and build sustainable capacity — while equipping leaders with the tools to thrive in complex environments. My career blends deep technical expertise in procurement, contracting, and IT systems with human-centered leadership training rooted in servant leadership principles. As Co-Founder of Team21 Academy, I have trained 1,000+ leaders and am driven by a mission to end AI poverty across Africa and beyond."
+       data-fr="Je suis un Spécialiste certifié PMP® en Acquisition et Assistance, Expert en Développement du Leadership et Passionné d'Intelligence Artificielle avec 24 ans d'expérience intersectorielle couvrant le gouvernement américain, le Haut-Commissariat britannique, des ONG et le développement international. J'aide les institutions à rationaliser leurs systèmes, à assurer la conformité et à renforcer les capacités durables — tout en dotant les leaders des outils nécessaires pour prospérer dans des environnements complexes. Mon parcours allie une expertise technique approfondie en matière d'approvisionnement, de contrats et de systèmes informatiques à une formation au leadership centré sur l'humain, fondée sur les principes du leadership serviteur. En tant que co-fondateur de Team21 Academy, j'ai formé plus de 1 000 leaders et je suis animé par la mission de mettre fin à la pauvreté de l'IA en Afrique et au-delà.">
+      I am a PMP® Certified Acquisition & Assistance Specialist, Leadership Development Expert, and Artificial Intelligence Enthusiast with 24 years of cross-sector experience spanning U.S. Government, British High Commission, NGOs, and international development. I help institutions streamline systems, ensure compliance, and build sustainable capacity — while equipping leaders with the tools to thrive in complex environments. My career blends deep technical expertise in procurement, contracting, and IT systems with human-centered leadership training rooted in servant leadership principles. As Co-Founder of Team21 Academy, I have trained 1,000+ leaders and am driven by a mission to end AI poverty across Africa and beyond.
+    </p>
+    <div class="impact-grid">
+      <div class="impact-card">
+        <div class="ic-icon">🏛️</div>
+        <div class="ic-value" data-en="$200M+" data-fr="200M$+">$200M+</div>
+        <div class="ic-label" data-en="in bilateral programs managed at USAID & US Embassy" data-fr="en programmes bilatéraux gérés à l'USAID et à l'ambassade">in bilateral programs managed at USAID & US Embassy</div>
+      </div>
+      <div class="impact-card">
+        <div class="ic-icon">🎓</div>
+        <div class="ic-value">1,000+</div>
+        <div class="ic-label" data-en="Leaders trained in Servant Leadership & AI" data-fr="Leaders formés en Leadership Serviteur et IA">Leaders trained in Servant Leadership & AI</div>
+      </div>
+      <div class="impact-card">
+        <div class="ic-icon">🌍</div>
+        <div class="ic-value">15+</div>
+        <div class="ic-label" data-en="Countries: Cameroon, Namibia, Gabon, DRC, Iraq, Angola, Guinea Conakry, Haiti, USA, Senegal, Kenya, Tanzania, South Africa, Ghana, UK" data-fr="Pays : Cameroun, Namibie, Gabon, RDC, Irak, Angola, Guinée Conakry, Haïti, USA, Sénégal, Kenya, Tanzanie, Afrique du Sud, Ghana, Royaume-Uni">15 Countries across Africa, Middle East, Americas & Europe</div>
+      </div>
+      <div class="impact-card">
+        <div class="ic-icon">🏆</div>
+        <div class="ic-value">14</div>
+        <div class="ic-label" data-en="Consecutive years of 'Excellent' performance ratings" data-fr="Années consécutives d'évaluation 'Excellent'">Consecutive years of 'Excellent' performance ratings</div>
+      </div>
+      <div class="impact-card">
+        <div class="ic-icon">✍️</div>
+        <div class="ic-value">9+8</div>
+        <div class="ic-label" data-en="Published Articles (9) & Books (8) on AI, Leadership & Faith" data-fr="Articles Publiés (9) et Livres (8) sur l'IA, le Leadership et la Foi">Published Articles (9) & Books (8) on AI, Leadership & Faith</div>
+      </div>
+      <div class="impact-card">
+        <div class="ic-icon">🤖</div>
+        <div class="ic-value">30+</div>
+        <div class="ic-label" data-en="Certifications in AI, Cybersecurity, Project Management & Procurement" data-fr="Certifications en IA, Cybersécurité, Gestion de Projet et Approvisionnement">Certifications in AI, Cyber, PM & Procurement</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== EXPERIENCE ====== -->
+  <div class="panel" id="panel-experience">
+    <h2 class="sec-title" data-en="Professional Experience" data-fr="Expérience Professionnelle">Professional Experience</h2>
+    <div class="sec-divider"></div>
+    <div class="timeline">
+
+      <div class="tl-item">
+        <div class="tl-org">USAID</div>
+        <div class="tl-role" data-en="Acquisition & Assistance Specialist — West Africa" data-fr="Spécialiste en Acquisition et Assistance — Afrique de l'Ouest">Acquisition & Assistance Specialist — West Africa</div>
+        <div class="tl-meta">
+          <span>Apr 2023 – Aug 2025</span>
+          <span class="badge" data-en="Full-time · On-site" data-fr="Temps plein · Présentiel">Full-time · On-site</span>
+        </div>
+        <div class="tl-desc" data-en="Experienced Acquisition and Assistance (A&A) Specialist advancing USAID's mission through strategic contract and grant management. Spearheaded and managed a portfolio of 9 USG-funded bilateral assistance programs valued above $200 million. Skilled in planning, evaluating, and executing complex procurement processes to maximize impact in health, economic development, and disaster relief." data-fr="Spécialiste expérimenté en Acquisition et Assistance (A&A) faisant avancer la mission de l'USAID. Dirigé un portefeuille de 9 programmes d'assistance bilatérale financés par le gouvernement américain d'une valeur supérieure à 200 millions de dollars. Compétent dans la planification, l'évaluation et l'exécution de processus d'approvisionnement complexes pour maximiser l'impact dans la santé, le développement économique et les secours d'urgence.">Experienced A&A Specialist advancing USAID's mission. Spearheaded and managed a portfolio of <strong>9 USG-funded bilateral programs valued above $200 million</strong>. Skilled in planning, evaluating, and executing complex procurement processes across health, economic development, and disaster relief.</div>
+        <ul class="tl-bullets">
+          <li data-en="Designed and executed the Summit on Cameroon's Economic Landscape, a landmark platform convening government officials, U.S. agencies, and private sector leaders." data-fr="Conçu et organisé le Sommet sur le Paysage Économique du Cameroun, une plateforme de référence réunissant des responsables gouvernementaux, des agences américaines et des chefs d'entreprise.">Designed and executed the Summit on Cameroon's Economic Landscape, a landmark platform convening government officials, U.S. agencies, and private sector leaders.</li>
+          <li data-en="Spearheaded multiple bilingual (French-English) Pre- and Post-Award Conferences training awardees, partners, and contractors on compliance." data-fr="Dirigé plusieurs conférences bilingues (français-anglais) pré et post-attribution formant les bénéficiaires, partenaires et contractants sur la conformité.">Spearheaded multiple bilingual (French-English) Pre- and Post-Award Conferences training awardees, partners, and contractors on compliance.</li>
+          <li data-en="Led 'USAID 101' training in Dakar, Senegal for West African local research institutions, advancing the Agency's localization agenda." data-fr="Dirigé la formation 'USAID 101' à Dakar, Sénégal pour les institutions de recherche locales d'Afrique de l'Ouest, faisant avancer l'agenda de localisation de l'Agence.">Led "USAID 101" training in Dakar, Senegal for West African local research institutions, advancing the Agency's localization agenda.</li>
+          <li data-en="Led full lifecycle A&A actions — from pre-award planning to post-award administration and final closeout across contracts, grants, and cooperative agreements." data-fr="Dirigé le cycle de vie complet des actions A&A — de la planification pré-attribution à l'administration post-attribution et la clôture finale pour les contrats, subventions et accords coopératifs.">Led full lifecycle A&A actions — from pre-award planning to post-award administration and final closeout across contracts, grants, and cooperative agreements.</li>
+          <li data-en="Conducted research on non-programmatic benefits of OVC award highlighting correlations with socioeconomic indicators (employment, gender equity, skills development)." data-fr="Mené des recherches sur les avantages non programmatiques de la subvention OVC, mettant en évidence les corrélations avec les indicateurs socio-économiques clés.">Conducted research on non-programmatic benefits of OVC award highlighting correlations with socioeconomic indicators (employment, gender equity, skills development).</li>
+        </ul>
+        <div class="tl-skills">
+          <span class="skill-tag">Data Analysis</span><span class="skill-tag">Contract Management</span><span class="skill-tag">Contract Negotiation</span><span class="skill-tag">Grant Administration</span><span class="skill-tag">Federal Grants Management</span><span class="skill-tag">Artificial Intelligence (AI)</span><span class="skill-tag">Prompt Engineering</span><span class="skill-tag">Internal Controls</span>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-org">U.S. Department of State</div>
+        <div class="tl-role" data-en="Procurement Supervisor" data-fr="Superviseur des Achats">Procurement Supervisor</div>
+        <div class="tl-meta">
+          <span>Oct 2008 – Apr 2023 · 14 yrs 7 mos</span>
+          <span class="badge" data-en="Full-time · On-site" data-fr="Temps plein · Présentiel">Full-time · On-site</span>
+        </div>
+        <div class="tl-desc" data-en="Managed end-to-end procurement processes — from strategic planning and SOW design to compliance and contract closeouts — ensuring adherence to Federal Acquisition Regulations (FAR) and Department of State Acquisition Regulations (DOSAR) across Sub-Saharan Africa. Consistently rated 'Excellent' for 14 years while mentoring multicultural teams." data-fr="Géré les processus d'approvisionnement de bout en bout — de la planification stratégique et la conception des SOW à la conformité et la clôture des contrats — assurant le respect des réglementations fédérales d'acquisition (FAR) et des réglementations d'acquisition du Département d'État (DOSAR) en Afrique subsaharienne. Constamment noté 'Excellent' pendant 14 ans tout en encadrant des équipes multiculturelles.">Managed end-to-end procurement processes from strategic planning and SOW design to compliance and contract closeouts. Ensured adherence to FAR and DOSAR across Sub-Saharan Africa. Consistently rated 'Excellent' for 14 years while mentoring multicultural teams.</div>
+        <ul class="tl-bullets">
+          <li data-en="Led full procurement cycle: bid evaluations, contract negotiations, compliance, and best-value contracts for the US Mission in Cameroon." data-fr="Dirigé le cycle complet d'approvisionnement : évaluations des offres, négociations de contrats, conformité et contrats à meilleure valeur pour la Mission américaine au Cameroun.">Led full procurement cycle: bid evaluations, contract negotiations, compliance, and best-value contracts for the US Mission in Cameroon.</li>
+          <li data-en="Sub-Saharan Africa Executive Corps: provided on-site training and procurement capacity building in Namibia, Gabon, DRC, Iraq, Angola, Guinea Conakry, Haiti, Kenya, Tanzania, South Africa, Ghana, and the UK." data-fr="Corps exécutif d'Afrique subsaharienne : fourni une formation sur site et un renforcement des capacités en approvisionnement en Namibie, Gabon, RDC, Irak, Angola, Guinée Conakry, Haïti, Kenya, Tanzanie, Afrique du Sud, Ghana et Royaume-Uni.">Sub-Saharan Africa Executive Corps: provided on-site training and procurement capacity building across Namibia, Gabon, DRC, Iraq, Angola, Guinea Conakry, Haiti, Kenya, Tanzania, South Africa, Ghana, and the UK.</li>
+          <li data-en="Advisory and Mentorship: advised the Government of Cameroon on US Government procurement standards to inform public contracting reforms." data-fr="Conseil et Mentorat : conseillé le gouvernement du Cameroun sur les normes d'approvisionnement du gouvernement américain pour éclairer les réformes des marchés publics.">Advisory role: advised the Government of Cameroon on US Government procurement standards to inform public contracting reforms.</li>
+        </ul>
+        <div class="tl-skills">
+          <span class="skill-tag">Organizational Leadership</span><span class="skill-tag">Supply Management</span><span class="skill-tag">Data Analysis</span><span class="skill-tag">Acquisitions</span><span class="skill-tag">Team Leadership</span><span class="skill-tag">Employee Training</span>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-org">Foreign and Commonwealth Office (British High Commission)</div>
+        <div class="tl-role" data-en="IT Systems Administrator & Administrative Management Officer" data-fr="Administrateur Systèmes IT & Responsable Administratif">IT Systems Administrator & Administrative Management Officer</div>
+        <div class="tl-meta">
+          <span>Sep 2003 – Oct 2008 · 5 yrs 2 mos</span>
+          <span class="badge">Yaoundé</span>
+        </div>
+        <div class="tl-desc" data-en="Multi-disciplinary role combining IT administration, financial management, transport logistics, estate operations, and procurement for the British High Commission in Cameroon." data-fr="Rôle multidisciplinaire combinant l'administration IT, la gestion financière, la logistique de transport, la gestion immobilière et les achats pour le Haut-Commissariat britannique au Cameroun.">Multi-disciplinary role combining IT administration, financial management, transport logistics, estate operations, and procurement for the British High Commission in Cameroon.</div>
+        <ul class="tl-bullets">
+          <li data-en="IT Administration: Managed networks, IT security, satellite equipment, telecom usage reports, and contingency plans." data-fr="Administration IT : Géré les réseaux, la sécurité informatique, les équipements satellite, les rapports d'utilisation télécom et les plans de contingence.">IT Administration: Managed networks, IT security, satellite equipment, telecom usage reports, and contingency plans.</li>
+          <li data-en="Accounting: Processed financial records via edynamics and PRISM; spearheaded transition to web-based accounting platform." data-fr="Comptabilité : Traitement des dossiers financiers via edynamics et PRISM ; pionnier de la transition vers une plateforme comptable basée sur le web.">Accounting: Processed financial records via edynamics and PRISM; spearheaded transition to web-based accounting platform.</li>
+          <li data-en="Estates & Procurement: Ensured upkeep of leased BHC properties; executed procurement for goods/services locally and offshore." data-fr="Immobilier et Achats : Assuré l'entretien des propriétés BHC louées ; exécuté l'approvisionnement en biens/services localement et à l'étranger.">Estates & Procurement: Ensured upkeep of leased BHC properties; executed procurement for goods/services locally and offshore.</li>
+        </ul>
+        <div class="tl-skills">
+          <span class="skill-tag">System Administration</span><span class="skill-tag">Computer Networking</span><span class="skill-tag">Inventory Management</span><span class="skill-tag">Procurement</span><span class="skill-tag">Accounting</span><span class="skill-tag">Contract Management</span>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-org">British Council</div>
+        <div class="tl-role" data-en="IT Administrator & Self Access Centre Assistant" data-fr="Administrateur IT & Assistant du Centre d'Auto-Accès">IT Administrator & Self Access Centre Assistant</div>
+        <div class="tl-meta">
+          <span>Feb 2002 – Sep 2003 · 1 yr 8 mos</span>
+          <span class="badge">Douala · On-site</span>
+        </div>
+        <div class="tl-desc" data-en="Led British Council computer network operations in Douala; organized IT training workshops for internal teams and external clients; designed and implemented the IT Country and Contingency Plan for British Council Cameroon; managed a Self Access Center using multimedia tools for language learning." data-fr="Dirigé les opérations du réseau informatique du British Council à Douala ; organisé des ateliers de formation informatique pour les équipes internes et les clients externes ; conçu et mis en œuvre le Plan IT Pays et de Contingence pour le British Council Cameroun ; géré un Centre d'Auto-Accès utilisant des outils multimédia pour l'apprentissage des langues.">Led British Council computer network operations in Douala; organized IT training workshops; designed IT Country and Contingency Plan; managed Self Access Center using multimedia tools for language learning.</div>
+        <div class="tl-skills">
+          <span class="skill-tag">Computer Networking</span><span class="skill-tag">Training</span><span class="skill-tag">Employee Training</span><span class="skill-tag">Leadership</span><span class="skill-tag">Accounting</span>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-org">ADCOME Buea</div>
+        <div class="tl-role" data-en="IT Trainer, Network Manager & Assistant Manager" data-fr="Formateur IT, Gestionnaire Réseau & Directeur Adjoint">IT Trainer, Network Manager & Assistant Manager</div>
+        <div class="tl-meta">
+          <span>Feb 2001 – Jan 2002 · 1 yr</span>
+          <span class="badge">Buea · On-site</span>
+        </div>
+        <div class="tl-desc" data-en="Designed software and hardware training programs for staff, university students, and the public. Installed and managed a Windows 2000 network. Created custom database system for student and financial records management. Oversaw financial and administrative operations." data-fr="Conçu des programmes de formation logicielle et matérielle pour le personnel, les étudiants universitaires et le grand public. Installé et géré un réseau Windows 2000. Créé un système de base de données personnalisé pour la gestion des dossiers étudiants et financiers. Supervisé les opérations financières et administratives.">Designed software and hardware training programs for staff, university students, and the public. Installed and managed Windows 2000 network. Created custom database system for student and financial records. Oversaw financial and administrative operations.</div>
+        <div class="tl-skills">
+          <span class="skill-tag">Database Design</span><span class="skill-tag">Networking</span><span class="skill-tag">Training Delivery</span><span class="skill-tag">Financial Management</span><span class="skill-tag">Administration</span>
+        </div>
+      </div>
+
+      <div class="tl-item" style="border-color: rgba(201,168,76,0.4); background: linear-gradient(135deg, #faf8f3, #fff9ec);">
+        <div class="tl-org" style="color: var(--text-mid);">Team21 Academy</div>
+        <div class="tl-role" data-en="Co-Founder · Program Manager · Trainer" data-fr="Co-Fondateur · Directeur de Programme · Formateur">Co-Founder · Program Manager · Trainer</div>
+        <div class="tl-meta">
+          <span>Jan 2006 – Present · 19+ years</span>
+          <span class="badge" data-en="Part-time · Hybrid" data-fr="Temps partiel · Hybride">Part-time · Hybrid</span>
+        </div>
+        <div class="tl-desc" data-en="Co-founded and lead a 21-week Servant Leadership and AI training academy that has trained 1,000+ leaders across diverse backgrounds and careers. Design training content aligned with servant leadership principles and AI ethics. Build capacity among mentors and trainers. Spearhead Team21's strategic direction and long-term sustainability." data-fr="Co-fondé et dirigé une académie de formation de 21 semaines en Leadership Serviteur et IA qui a formé plus de 1 000 leaders aux parcours divers. Conception de contenu de formation aligné sur les principes du leadership serviteur et l'éthique de l'IA. Renforcement des capacités des mentors et formateurs. Impulsion de la direction stratégique et de la durabilité à long terme de Team21.">Co-founded and lead a 21-week Servant Leadership and AI training academy that has trained 1,000+ leaders across diverse backgrounds. Design training content aligned with servant leadership principles and AI ethics.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ====== EDUCATION ====== -->
+  <div class="panel" id="panel-education">
+    <h2 class="sec-title" data-en="Education & Academic Training" data-fr="Formation et Enseignement Académique">Education & Academic Training</h2>
+    <div class="sec-divider"></div>
+    <div class="edu-grid">
+      <div class="edu-card">
+        <div class="ec-inst">Project Management Institute</div>
+        <div class="ec-degree" data-en="Project Management Professional (PMP)®" data-fr="Professionnel en Gestion de Projet (PMP)®">Project Management Professional (PMP)®</div>
+        <div class="ec-field" data-en="Project Management · Oct 2025 – Nov 2028" data-fr="Gestion de Projet · Oct 2025 – Nov 2028">Project Management · Oct 2025 – Nov 2028</div>
+        <div class="ec-year">🏅 Active Certification</div>
+      </div>
+      <div class="edu-card">
+        <div class="ec-inst">FATEB (Faculté de Théologie Évangélique de Bangui)</div>
+        <div class="ec-degree" data-en="Master of Arts in Organizational Leadership" data-fr="Master en Leadership Organisationnel">Master of Arts in Organizational Leadership</div>
+        <div class="ec-field" data-en="Organizational Leadership · Servant Leadership" data-fr="Leadership Organisationnel · Leadership Serviteur">Organizational Leadership · Servant Leadership</div>
+        <div class="ec-year">2013 – 2016</div>
+      </div>
+      <div class="edu-card">
+        <div class="ec-inst">University of the People (Pasadena, CA)</div>
+        <div class="ec-degree" data-en="Bachelor's Degree — Health Sciences" data-fr="Licence — Sciences de la Santé">Bachelor's Degree — Health Sciences</div>
+        <div class="ec-field" data-en="Health Professions & Clinical Sciences" data-fr="Professions de Santé et Sciences Cliniques">Health Professions & Clinical Sciences</div>
+        <div class="ec-year">2018 – 2020</div>
+      </div>
+      <div class="edu-card">
+        <div class="ec-inst">IMSR</div>
+        <div class="ec-degree" data-en="Executive MBA — Logistics Management" data-fr="MBA Exécutif — Gestion Logistique">Executive MBA — Logistics Management</div>
+        <div class="ec-field" data-en="Logistics & Supply Chain" data-fr="Logistique et Chaîne d'Approvisionnement">Logistics & Supply Chain</div>
+        <div class="ec-year">2012</div>
+      </div>
+      <div class="edu-card">
+        <div class="ec-inst">Haggai International</div>
+        <div class="ec-degree" data-en="Advanced Diploma in Leadership" data-fr="Diplôme Avancé en Leadership">Advanced Diploma in Leadership</div>
+        <div class="ec-field" data-en="Mid Pacific Center, Maui, Hawaii" data-fr="Centre du Pacifique Central, Maui, Hawaï">Mid Pacific Center, Maui, Hawaii</div>
+        <div class="ec-year">2008</div>
+      </div>
+      <div class="edu-card">
+        <div class="ec-inst">CRAT-Bamenda</div>
+        <div class="ec-degree" data-en="Diploma in Computer Sciences" data-fr="Diplôme en Informatique">Diploma in Computer Sciences</div>
+        <div class="ec-field" data-en="Computer Science & IT" data-fr="Informatique et Technologies de l'Information">Computer Science & IT</div>
+        <div class="ec-year">2000 – 2001</div>
+      </div>
+      <div class="edu-card">
+        <div class="ec-inst">CCAST Bambili</div>
+        <div class="ec-degree" data-en="Advanced Level Certificate (GCE A-Levels)" data-fr="Certificat de Niveau Avancé (GCE A-Levels)">Advanced Level Certificate (GCE A-Levels)</div>
+        <div class="ec-field" data-en="Physics · Further Maths · Mathematics · Chemistry" data-fr="Physique · Mathématiques Approfondies · Mathématiques · Chimie">Physics · Further Maths · Mathematics · Chemistry</div>
+        <div class="ec-year">1995 – 1997</div>
+      </div>
+      <div class="edu-card">
+        <div class="ec-inst">Sacred Heart College, Bamenda</div>
+        <div class="ec-degree" data-en="GCE O-Levels — 10 Subjects" data-fr="GCE O-Levels — 10 Matières">GCE O-Levels — 10 Subjects</div>
+        <div class="ec-field" data-en="Maths · Physics · Chemistry · Biology · Human Biology · French · English · Economics · Geography · Additional Maths" data-fr="Maths · Physique · Chimie · Biologie · Biologie Humaine · Français · Anglais · Économie · Géographie · Maths Complémentaires">Maths · Physics · Chemistry · Biology · French · English · Economics · Geography + more</div>
+        <div class="ec-year">1990 – 1995</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== CERTIFICATIONS ====== -->
+  <div class="panel" id="panel-certifications">
+    <h2 class="sec-title" data-en="Licenses & Certifications" data-fr="Licences et Certifications">Licenses & Certifications</h2>
+    <div class="sec-divider"></div>
+    <div class="cert-grid">
+      <div class="cert-card"><div class="cc-icon">📋</div><div><div class="cc-name" data-en="PMP® — Project Management Professional" data-fr="PMP® — Professionnel en Gestion de Projet">PMP® — Project Management Professional</div><div class="cc-issuer">Project Management Institute</div><div class="cc-date">Oct 2025 – Oct 2028</div></div></div>
+      <div class="cert-card"><div class="cc-icon">🔒</div><div><div class="cc-name" data-en="Google Cybersecurity Professional Certificate" data-fr="Certificat Professionnel Google en Cybersécurité">Google Cybersecurity Professional Certificate</div><div class="cc-issuer">Google</div><div class="cc-date">Apr 2025</div></div></div>
+      <div class="cert-card"><div class="cc-icon">📊</div><div><div class="cc-name" data-en="Google Project Management Certificate" data-fr="Certificat Google en Gestion de Projet">Google Project Management Certificate</div><div class="cc-issuer">Google</div><div class="cc-date">Jun 2025</div></div></div>
+      <div class="cert-card"><div class="cc-icon">🤖</div><div><div class="cc-name" data-en="Generative AI for Executives" data-fr="IA Générative pour Cadres Dirigeants">Generative AI for Executives</div><div class="cc-issuer">Amazon Web Services (AWS)</div><div class="cc-date">Apr 2025</div></div></div>
+      <div class="cert-card"><div class="cc-icon">🛡️</div><div><div class="cc-name" data-en="Security, Compliance & Governance for AI Solutions" data-fr="Sécurité, Conformité et Gouvernance pour Solutions IA">Security, Compliance & Governance for AI Solutions</div><div class="cc-issuer">Amazon Web Services (AWS)</div><div class="cc-date">Apr 2025</div></div></div>
+      <div class="cert-card"><div class="cc-icon">💬</div><div><div class="cc-name" data-en="Google Prompting Essentials" data-fr="Essentiels du Prompt Google">Google Prompting Essentials</div><div class="cc-issuer">Google</div><div class="cc-date">Mar 2025</div></div></div>
+      <div class="cert-card"><div class="cc-icon">🧠</div><div><div class="cc-name" data-en="Advanced Prompt Engineering for Everyone" data-fr="Ingénierie de Prompt Avancée pour Tous">Advanced Prompt Engineering for Everyone</div><div class="cc-issuer">Vanderbilt University</div><div class="cc-date">Nov 2024</div></div></div>
+      <div class="cert-card"><div class="cc-icon">🤖</div><div><div class="cc-name" data-en="Prompt Engineering for ChatGPT" data-fr="Ingénierie de Prompt pour ChatGPT">Prompt Engineering for ChatGPT</div><div class="cc-issuer">Vanderbilt University</div><div class="cc-date">Nov 2024</div></div></div>
+      <div class="cert-card"><div class="cc-icon">🏛️</div><div><div class="cc-name" data-en="GSA AI Training Series 2024" data-fr="Série de Formation IA GSA 2024">GSA AI Training Series 2024</div><div class="cc-issuer">GSA + Stanford HAI + GWU Law + Princeton CITP</div><div class="cc-date">Nov 2024</div></div></div>
+      <div class="cert-card"><div class="cc-icon">📈</div><div><div class="cc-name" data-en="Generative AI for Business Leaders" data-fr="IA Générative pour Dirigeants d'Entreprise">Generative AI for Business Leaders</div><div class="cc-issuer">LinkedIn</div><div class="cc-date">Sep 2024</div></div></div>
+      <div class="cert-card"><div class="cc-icon">🌐</div><div><div class="cc-name" data-en="USAID AI Certification" data-fr="Certification USAID en IA">USAID AI Certification</div><div class="cc-issuer">USAID</div><div class="cc-date">2024</div></div></div>
+      <div class="cert-card"><div class="cc-icon">📡</div><div><div class="cc-name" data-en="USAID Data Informed Development Cert." data-fr="Certification USAID en Développement Basé sur les Données">USAID Data Informed Development Cert.</div><div class="cc-issuer">USAID</div><div class="cc-date">2024</div></div></div>
+      <div class="cert-card"><div class="cc-icon">📑</div><div><div class="cc-name" data-en="FAC COR Level 1 Certified" data-fr="Certification FAC COR Niveau 1">FAC COR Level 1 Certified</div><div class="cc-issuer">Federal Acquisition Certification</div><div class="cc-date">2025</div></div></div>
+      <div class="cert-card"><div class="cc-icon">⏳</div><div><div class="cc-name" data-en="FAC-C Professional Certification — In Progress (all prerequisites CON 1100V–1400V completed)" data-fr="Certification Professionnelle FAC-C — En cours (tous les prérequis CON 1100V–1400V complétés)">FAC-C Professional Certification — In Progress</div><div class="cc-issuer">Federal Acquisition Certification · Prerequisites completed</div><div class="cc-date">Expected 2025</div></div></div>
+      <div class="cert-card"><div class="cc-icon">🧩</div><div><div class="cc-name" data-en="CFEN 001 AI Prompt Engineering Credential" data-fr="Attestation d'Ingénierie de Prompt IA CFEN 001">CFEN 001 AI Prompt Engineering Credential</div><div class="cc-issuer">Certified Credential</div><div class="cc-date">2024</div></div></div>
+      <div class="cert-card"><div class="cc-icon">📋</div><div><div class="cc-name" data-en="Ariba Contracts" data-fr="Contrats Ariba">Ariba Contracts</div><div class="cc-issuer">Foreign Service Institute (FSI) · Virginia, USA</div><div class="cc-date">2012</div></div></div>
+      <div class="cert-card"><div class="cc-icon">🖥️</div><div><div class="cc-name" data-en="Web.PASS Procurement System Training" data-fr="Formation au Système de Passation des Marchés Web.PASS">Web.PASS Procurement System Training</div><div class="cc-issuer">Foreign Service Institute (FSI)</div><div class="cc-date">2009</div></div></div>
+      <div class="cert-card"><div class="cc-icon">📐</div><div><div class="cc-name" data-en="Managing Projects at State" data-fr="Gestion de Projets au Département d'État">Managing Projects at State</div><div class="cc-issuer">Shultz Center, Washington DC</div><div class="cc-date">2018</div></div></div>
+      <div class="cert-card"><div class="cc-icon">🌿</div><div><div class="cc-name" data-en="Advanced A&A Environmental Compliance & Environmentally Sound Design" data-fr="Conformité Environnementale Avancée A&A et Conception Écologique">Advanced A&A Environmental Compliance & Environmentally Sound Design</div><div class="cc-issuer">USAID</div><div class="cc-date">2023</div></div></div>
+      <div class="cert-card"><div class="cc-icon">📊</div><div><div class="cc-name" data-en="Field Grant Management" data-fr="Gestion de Subventions sur le Terrain">Field Grant Management</div><div class="cc-issuer">Save The Children</div><div class="cc-date">2022</div></div></div>
+      <div class="cert-card"><div class="cc-icon">🔑</div><div><div class="cc-name" data-en="Attestation in Determining Profit and Loss in Business" data-fr="Attestation en Détermination des Profits et Pertes en Entreprise">Attestation — Determining Profit and Loss in Business</div><div class="cc-issuer">CABTEC</div><div class="cc-date">2001</div></div></div>
+      <div class="cert-card"><div class="cc-icon">🇩🇪</div><div><div class="cc-name" data-en="German Language Attestation" data-fr="Attestation de Langue Allemande">German Language Attestation</div><div class="cc-issuer">School of Foreign Languages, Yaoundé</div><div class="cc-date">1998–1999</div></div></div>
+      <div class="cert-card"><div class="cc-icon">🩺</div><div><div class="cc-name" data-en="Contracting Officer's Representative (COR) Training" data-fr="Formation de Représentant de l'Officier Contractant (COR)">Contracting Officer's Representative (COR) Training</div><div class="cc-issuer">Foreign Service Institute (FSI)</div><div class="cc-date">2022</div></div></div>
+      <div class="cert-card"><div class="cc-icon">🚢</div><div><div class="cc-name" data-en="Procurement and Logistics Certificate" data-fr="Certificat en Approvisionnement et Logistique">Procurement and Logistics Certificate</div><div class="cc-issuer">CILT</div><div class="cc-date">2022</div></div></div>
+      <div class="cert-card"><div class="cc-icon">🔐</div><div><div class="cc-name" data-en="Tools of the Trade: Linux and SQL" data-fr="Outils du Métier : Linux et SQL">Tools of the Trade: Linux and SQL</div><div class="cc-issuer">Google</div><div class="cc-date">Apr 2025</div></div></div>
+      <div class="cert-card"><div class="cc-icon">🛡️</div><div><div class="cc-name" data-en="Connect & Protect: Networks and Network Security" data-fr="Connecter et Protéger : Réseaux et Sécurité Réseau">Connect & Protect: Networks and Network Security</div><div class="cc-issuer">Google</div><div class="cc-date">Apr 2025</div></div></div>
+      <div class="cert-card"><div class="cc-icon">🐍</div><div><div class="cc-name" data-en="Automate Cybersecurity Tasks with Python" data-fr="Automatiser les Tâches de Cybersécurité avec Python">Automate Cybersecurity Tasks with Python</div><div class="cc-issuer">Google</div><div class="cc-date">Apr 2025</div></div></div>
+    </div>
+  </div>
+
+  <!-- ====== SKILLS ====== -->
+  <div class="panel" id="panel-skills">
+    <h2 class="sec-title" data-en="Skills & Competencies" data-fr="Compétences et Aptitudes">Skills & Competencies</h2>
+    <div class="sec-divider"></div>
+    <div class="skills-section">
+      <div class="skill-cat">
+        <div class="skill-cat-title" data-en="Procurement & Contracts" data-fr="Approvisionnement et Contrats">Procurement & Contracts</div>
+        <div class="skills-cloud">
+          <span class="skill-pill gold">Contract Management</span>
+          <span class="skill-pill gold">Contract Negotiation</span>
+          <span class="skill-pill gold">Acquisitions</span>
+          <span class="skill-pill gold">Federal Grants Management</span>
+          <span class="skill-pill">Grant Preparation</span>
+          <span class="skill-pill">Grant Administration</span>
+          <span class="skill-pill">Government Procurement</span>
+          <span class="skill-pill">Purchasing Processes</span>
+          <span class="skill-pill">Internal Controls</span>
+          <span class="skill-pill">FAR / DOSAR</span>
+          <span class="skill-pill">Pre & Post-Award Management</span>
+          <span class="skill-pill">Bid Evaluation</span>
+          <span class="skill-pill">IT Procurement</span>
+          <span class="skill-pill">Supply Management</span>
+          <span class="skill-pill">Procurement Integrity</span>
+        </div>
+      </div>
+      <div class="skill-cat">
+        <div class="skill-cat-title" data-en="Artificial Intelligence & Technology" data-fr="Intelligence Artificielle et Technologie">Artificial Intelligence & Technology</div>
+        <div class="skills-cloud">
+          <span class="skill-pill gold">Prompt Engineering</span>
+          <span class="skill-pill gold">Generative AI</span>
+          <span class="skill-pill gold">AI Agent Design</span>
+          <span class="skill-pill">Large Language Models (LLM)</span>
+          <span class="skill-pill">Multimodal Prompting</span>
+          <span class="skill-pill">Retrieval Augmented Generation (RAG)</span>
+          <span class="skill-pill">Responsible AI</span>
+          <span class="skill-pill">Natural Language Processing (NLP)</span>
+          <span class="skill-pill">ChatGPT · Anthropic Claude</span>
+          <span class="skill-pill">AI for Business</span>
+          <span class="skill-pill">AI Policy & Governance</span>
+        </div>
+      </div>
+      <div class="skill-cat">
+        <div class="skill-cat-title" data-en="Cybersecurity" data-fr="Cybersécurité">Cybersecurity</div>
+        <div class="skills-cloud">
+          <span class="skill-pill gold">Cybersecurity Assessment</span>
+          <span class="skill-pill">NIST Cybersecurity Framework</span>
+          <span class="skill-pill">Risk Management Framework</span>
+          <span class="skill-pill">SIEM Tools</span>
+          <span class="skill-pill">Intrusion Detection (IDS)</span>
+          <span class="skill-pill">Network Security</span>
+          <span class="skill-pill">Vulnerability Assessment</span>
+          <span class="skill-pill">Security Audits</span>
+          <span class="skill-pill">Linux · SQL · Python</span>
+          <span class="skill-pill">Cloud Computing</span>
+          <span class="skill-pill">TCP/IP</span>
+          <span class="skill-pill">Cryptography</span>
+        </div>
+      </div>
+      <div class="skill-cat">
+        <div class="skill-cat-title" data-en="Leadership & Management" data-fr="Leadership et Management">Leadership & Management</div>
+        <div class="skills-cloud">
+          <span class="skill-pill gold">Servant Leadership</span>
+          <span class="skill-pill gold">Organizational Leadership</span>
+          <span class="skill-pill gold">Strategic Leadership</span>
+          <span class="skill-pill">Change Management</span>
+          <span class="skill-pill">Team Building</span>
+          <span class="skill-pill">Employee Training</span>
+          <span class="skill-pill">Coaching & Mentoring</span>
+          <span class="skill-pill">Leadership Development</span>
+          <span class="skill-pill">Strategic Planning</span>
+          <span class="skill-pill">Public Speaking</span>
+          <span class="skill-pill">Negotiation</span>
+          <span class="skill-pill">Conflict Resolution</span>
+        </div>
+      </div>
+      <div class="skill-cat">
+        <div class="skill-cat-title" data-en="Project Management" data-fr="Gestion de Projet">Project Management</div>
+        <div class="skills-cloud">
+          <span class="skill-pill gold">PMP® Certified</span>
+          <span class="skill-pill">Agile Project Management</span>
+          <span class="skill-pill">Project Planning</span>
+          <span class="skill-pill">Risk Management</span>
+          <span class="skill-pill">Quality Assurance</span>
+          <span class="skill-pill">Scope Management</span>
+          <span class="skill-pill">Budget Management</span>
+          <span class="skill-pill">Stakeholder Management</span>
+        </div>
+      </div>
+      <div class="skill-cat">
+        <div class="skill-cat-title" data-en="IT & Systems" data-fr="Informatique et Systèmes">IT & Systems</div>
+        <div class="skills-cloud">
+          <span class="skill-pill">System Administration</span>
+          <span class="skill-pill">Computer Networking</span>
+          <span class="skill-pill">Database Design</span>
+          <span class="skill-pill">Network Architecture</span>
+          <span class="skill-pill">ERP Systems (PRISM, edynamics)</span>
+          <span class="skill-pill">Inventory Management</span>
+          <span class="skill-pill">Telecom Management</span>
+          <span class="skill-pill">IT Security</span>
+        </div>
+      </div>
+      <div class="skill-cat">
+        <div class="skill-cat-title" data-en="Finance & Analytics" data-fr="Finance et Analytique">Finance & Analytics</div>
+        <div class="skills-cloud">
+          <span class="skill-pill">Financial Management</span>
+          <span class="skill-pill">Financial Reporting</span>
+          <span class="skill-pill">Budgets & Auditing</span>
+          <span class="skill-pill">Data Analysis</span>
+          <span class="skill-pill">Financial Analysis</span>
+          <span class="skill-pill">Payroll</span>
+          <span class="skill-pill">Accounting</span>
+          <span class="skill-pill">Microsoft Excel · Word · PowerPoint</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== AWARDS ====== -->
+  <div class="panel" id="panel-awards">
+    <h2 class="sec-title" data-en="Awards & Recognition" data-fr="Récompenses et Reconnaissance">Awards & Recognition</h2>
+    <div class="sec-divider"></div>
+    <ul class="awards-list">
+      <li>
+        <div class="award-medal">🏅</div>
+        <div class="award-text">
+          <div class="award-title" data-en="Mission Honor Award — Exceptional Performance in Procurement & Contract Management" data-fr="Prix d'Honneur de Mission — Performance Exceptionnelle en Approvisionnement et Gestion des Contrats">Mission Honor Award — Exceptional Performance in Procurement & Contract Management</div>
+          <div class="award-meta">U.S. Department of State · 2022</div>
+        </div>
+      </li>
+      <li>
+        <div class="award-medal">⭐</div>
+        <div class="award-text">
+          <div class="award-title" data-en="Mission Honor Award — Superior Performance" data-fr="Prix d'Honneur de Mission — Performance Supérieure">Mission Honor Award — Superior Performance</div>
+          <div class="award-meta">U.S. Department of State · 2019</div>
+        </div>
+      </li>
+      <li>
+        <div class="award-medal">🌟</div>
+        <div class="award-text">
+          <div class="award-title" data-en="Mission Honor Award — Services to Embassy & Department of State" data-fr="Prix d'Honneur de Mission — Services à l'Ambassade et au Département d'État">Mission Honor Award — Services to Embassy & Department of State</div>
+          <div class="award-meta">U.S. Department of State · 2017</div>
+        </div>
+      </li>
+      <li>
+        <div class="award-medal">🏆</div>
+        <div class="award-text">
+          <div class="award-title" data-en="Mission Honor Award — Leadership & Professionalism" data-fr="Prix d'Honneur de Mission — Leadership et Professionnalisme">Mission Honor Award — Leadership & Professionalism</div>
+          <div class="award-meta">U.S. Department of State · 2014</div>
+        </div>
+      </li>
+      <li>
+        <div class="award-medal">🎖️</div>
+        <div class="award-text">
+          <div class="award-title" data-en="Meritorious Honor Award — Embassy Port-Au-Prince for Retraining Procurement Section & Leadership Training" data-fr="Prix Méritoire d'Honneur — Ambassade de Port-au-Prince pour la Reformation de la Section Approvisionnement et Formation en Leadership">Meritorious Honor Award — Embassy Port-Au-Prince · Retraining Procurement Section & Leadership Training</div>
+          <div class="award-meta">U.S. Department of State · 2022</div>
+        </div>
+      </li>
+      <li>
+        <div class="award-medal">🦅</div>
+        <div class="award-text">
+          <div class="award-title" data-en="Eagle Award — Mission-wide program success and accountability" data-fr="Prix Eagle — Succès et responsabilité des programmes à l'échelle de la mission">Eagle Award — Mission-wide program success and accountability</div>
+          <div class="award-meta">USAID · 2023–2025</div>
+        </div>
+      </li>
+      <li>
+        <div class="award-medal">📜</div>
+        <div class="award-text">
+          <div class="award-title" data-en="Certificate of Appreciation — Embassy Kinshasa for Procurement/Contracting Crisis Support" data-fr="Certificat d'Appréciation — Ambassade de Kinshasa pour le Soutien en Crise d'Approvisionnement/Contrats">Certificate of Appreciation — Embassy Kinshasa for Procurement/Contracting Crisis Support</div>
+          <div class="award-meta">U.S. Department of State · 2016</div>
+        </div>
+      </li>
+      <li>
+        <div class="award-medal">✅</div>
+        <div class="award-text">
+          <div class="award-title" data-en="'Excellent' Performance Rating — 14 Consecutive Years (2009–2023)" data-fr="Note de Performance 'Excellent' — 14 Années Consécutives (2009–2023)">'Excellent' Performance Rating — 14 Consecutive Years (2009–2023)</div>
+          <div class="award-meta">U.S. Embassy Yaoundé · Consistent Top Score</div>
+        </div>
+      </li>
+      <li>
+        <div class="award-medal">🌐</div>
+        <div class="award-text">
+          <div class="award-title" data-en="Interactive Marketing Award — Multimedia Marketing Institute UK (Manchester Metropolitan University)" data-fr="Prix de Marketing Interactif — Institut de Marketing Multimédia UK (Université Métropolitaine de Manchester)">Interactive Marketing Award — Multimedia Marketing Institute UK (Manchester Metropolitan University)</div>
+          <div class="award-meta">British Council · 2002–2003</div>
+        </div>
+      </li>
+      <li>
+        <div class="award-medal">💵</div>
+        <div class="award-text">
+          <div class="award-title" data-en="Cash Performance Award — Sustained high-level performance" data-fr="Prix de Performance en Espèces — Performance de haut niveau soutenue">Cash Performance Award — Sustained high-level performance</div>
+          <div class="award-meta">British High Commission / U.S. Embassy · 2008</div>
+        </div>
+      </li>
+      <li>
+        <div class="award-medal">🌟</div>
+        <div class="award-text">
+          <div class="award-title" data-en="Franklin Award — Outstanding Customer Service and Extraordinary Effort" data-fr="Prix Franklin — Service Client Exceptionnel et Effort Extraordinaire">Franklin Award — Outstanding Customer Service and Extraordinary Effort</div>
+          <div class="award-meta">U.S. Department of State · 2011</div>
+        </div>
+      </li>
+      <li>
+        <div class="award-medal">🦅</div>
+        <div class="award-text">
+          <div class="award-title" data-en="Mission Eagle Award — Outstanding, sustained performance, customer services and drive towards achieving savings" data-fr="Prix Eagle de Mission — Performance soutenue, service client et réalisation d'économies">Mission Eagle Award — Outstanding, sustained performance, customer services and drive towards achieving savings</div>
+          <div class="award-meta">U.S. Department of State · 2012</div>
+        </div>
+      </li>
+      <li>
+        <div class="award-medal">😊</div>
+        <div class="award-text">
+          <div class="award-title" data-en="Customer Service Award — Outstanding professional and personal dedication" data-fr="Prix du Service Client — Dévouement professionnel et personnel exceptionnel">Customer Service Award — Outstanding professional and personal dedication</div>
+          <div class="award-meta">U.S. Department of State · 2012</div>
+        </div>
+      </li>
+      <li>
+        <div class="award-medal">➕</div>
+        <div class="award-text">
+          <div class="award-title" data-en="Extra Mile Award — Timely and exemplary work outside assigned duties (translated a lease into French)" data-fr="Prix Extra Mile — Travail exemplaire en dehors des fonctions assignées (traduction d'un bail en français)">Extra Mile Award — Timely and exemplary work outside assigned duties (incl. lease translation into French)</div>
+          <div class="award-meta">U.S. Department of State · 2012</div>
+        </div>
+      </li>
+      <li>
+        <div class="award-medal">🏅</div>
+        <div class="award-text">
+          <div class="award-title" data-en="Mission Honor Award — Leadership & Professionalism" data-fr="Prix d'Honneur de Mission — Leadership et Professionnalisme">Mission Honor Award — Selflessness, unrelenting professionalism, knowledge sharing and inspirational leadership</div>
+          <div class="award-meta">U.S. Department of State · 2014</div>
+        </div>
+      </li>
+      <li>
+        <div class="award-medal">🌍</div>
+        <div class="award-text">
+          <div class="award-title" data-en="Certificate of Appreciation — Bureau of African Affairs, for outstanding services as member of the Executive Corps and contributions to management services in Sub-Saharan Africa" data-fr="Certificat d'Appréciation — Bureau des Affaires Africaines, pour services exceptionnels en tant que membre du Corps Exécutif et contributions aux services de gestion en Afrique subsaharienne">Certificate of Appreciation — Bureau of African Affairs · Outstanding services as Executive Corps member & contributions to management across Sub-Saharan Africa</div>
+          <div class="award-meta">U.S. Department of State · 2014</div>
+        </div>
+      </li>
+      <li>
+        <div class="award-medal">🦅</div>
+        <div class="award-text">
+          <div class="award-title" data-en="Mission Eagle Award — Outstanding customer services and leadership provided to the embassy community" data-fr="Prix Eagle de Mission — Service client exceptionnel et leadership fourni à la communauté de l'ambassade">Mission Eagle Award — Outstanding customer services and leadership provided to the embassy community</div>
+          <div class="award-meta">U.S. Department of State · 2014</div>
+        </div>
+      </li>
+      <li>
+        <div class="award-medal">🦅</div>
+        <div class="award-text">
+          <div class="award-title" data-en="Mission Eagle Award — Outstanding teamwork" data-fr="Prix Eagle de Mission — Travail d'équipe exceptionnel">Mission Eagle Award — Outstanding teamwork</div>
+          <div class="award-meta">U.S. Department of State · 2016</div>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <!-- ====== VOLUNTEERING ====== -->
+  <div class="panel" id="panel-volunteering">
+    <h2 class="sec-title" data-en="Volunteering & Community Leadership" data-fr="Bénévolat et Leadership Communautaire">Volunteering & Community Leadership</h2>
+    <div class="sec-divider"></div>
+    <div class="vol-grid">
+      <div class="vol-card">
+        <div class="vc-org">Team21 Servant Leadership Academy</div>
+        <div class="vc-role" data-en="Mentor & Co-Founder" data-fr="Mentor et Co-Fondateur">Mentor & Co-Founder</div>
+        <div class="vc-period">Jan 2016 – Present · 9+ years · Education</div>
+        <div class="vc-desc" data-en="Co-founder of the 21-week Servant Leadership and AI training program. Lead content development, mentor training, and strategic direction of the academy." data-fr="Co-fondateur du programme de formation de 21 semaines en Leadership Serviteur et IA. Direction du développement de contenu, de la formation des mentors et de la direction stratégique de l'académie.">Co-founder of 21-week Servant Leadership & AI program. Lead content development, mentor training, and strategic direction.</div>
+      </div>
+      <div class="vol-card">
+        <div class="vc-org">Practical CIG</div>
+        <div class="vc-role" data-en="Chief Executive Officer" data-fr="Directeur Général">Chief Executive Officer</div>
+        <div class="vc-period">Jan 2010 – Present · 15+ years · Social Services</div>
+        <div class="vc-desc" data-en="Equipping youth with servant leadership skills, engaging street children and IDPs, training the next generation on AI, and providing strategic direction to the organization." data-fr="Équipement des jeunes en compétences de leadership serviteur, engagement auprès des enfants des rues et des PDI, formation de la prochaine génération sur l'IA, et direction stratégique de l'organisation.">Equipping youth with servant leadership skills. Outreach to street children and IDPs. AI training for next generation.</div>
+      </div>
+      <div class="vol-card">
+        <div class="vc-org">Team21 & Haggai Institute</div>
+        <div class="vc-role" data-en="Trainer — AI, Critical Soft Skills & Servant Leadership" data-fr="Formateur — IA, Compétences Douces et Leadership Serviteur">Trainer — AI, Critical Soft Skills & Servant Leadership</div>
+        <div class="vc-period">Sep 2006 – Present · 19+ years · Economic Empowerment</div>
+        <div class="vc-desc" data-en="Training leaders in AI fundamentals, emotional intelligence, communication, and servant leadership principles." data-fr="Formation des leaders aux fondamentaux de l'IA, à l'intelligence émotionnelle, à la communication et aux principes du leadership serviteur.">Training leaders in AI fundamentals, emotional intelligence, communication, and servant leadership.</div>
+      </div>
+      <div class="vol-card">
+        <div class="vc-org">Fire Bible Institute Cameroon</div>
+        <div class="vc-role" data-en="Management & Leadership Trainer" data-fr="Formateur en Management et Leadership">Management & Leadership Trainer</div>
+        <div class="vc-period">Aug 2017 – Present · 8+ years · Social Services</div>
+        <div class="vc-desc" data-en="Training students in Leadership, Management, Communication, Relationship building, and effective use of media." data-fr="Formation des étudiants en Leadership, Management, Communication, Construction de relations et utilisation efficace des médias.">Training students in Leadership, Management, Communication, and effective media use.</div>
+      </div>
+      <div class="vol-card">
+        <div class="vc-org">YIC</div>
+        <div class="vc-role" data-en="Mentor" data-fr="Mentor">Mentor</div>
+        <div class="vc-period">Sep 2006 – May 2024 · 17+ years · Children</div>
+        <div class="vc-desc" data-en="Provided mentorship, spiritual guidance, and leadership training to teens and young adults." data-fr="Fourni du mentorat, des conseils spirituels et une formation en leadership aux adolescents et jeunes adultes.">Mentorship, spiritual guidance, and leadership training to teens and young adults.</div>
+      </div>
+      <div class="vol-card">
+        <div class="vc-org">Bread For Life</div>
+        <div class="vc-role" data-en="Guest House Manager" data-fr="Responsable de la Maison d'Hôtes">Guest House Manager</div>
+        <div class="vc-period">Jan 2008 – Jan 2010 · Poverty Alleviation</div>
+        <div class="vc-desc" data-en="Managed guest house operations in service to poverty alleviation mission." data-fr="Géré les opérations d'une maison d'hôtes au service de la mission de lutte contre la pauvreté.">Managed guest house operations in service to poverty alleviation mission.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== PUBLICATIONS ====== -->
+  <div class="panel" id="panel-publications">
+    <h2 class="sec-title" data-en="Articles, Books & Publications" data-fr="Articles, Livres et Publications">Articles, Books & Publications</h2>
+    <div class="sec-divider"></div>
+
+    <!-- ARTICLES -->
+    <div style="margin-bottom:10px;">
+      <div class="skill-cat-title" data-en="📝 Articles (9 Published)" data-fr="📝 Articles (9 Publiés)">📝 Articles (9 Published)</div>
+    </div>
+    <div class="pub-list" style="margin-bottom:40px;">
+      <div class="pub-item">
+        <div class="pub-num">01</div>
+        <div>
+          <div class="pub-title" data-en="Governance & Leadership: What My Work Teaches Me About Empowering Women" data-fr="Gouvernance et Leadership : Ce que Mon Travail M'Apprend sur l'Autonomisation des Femmes">Governance & Leadership: What My Work Teaches Me About Empowering Women</div>
+          <div class="pub-desc" data-en="Lessons from years working with organizations on leadership, governance, and women's empowerment. · 6 min read" data-fr="Leçons tirées d'années de travail avec des organisations sur le leadership, la gouvernance et l'autonomisation des femmes. · 6 min de lecture">Lessons from years working with organizations on leadership, governance, and women's empowerment. · 6 min read</div>
+        </div>
+      </div>
+      <div class="pub-item">
+        <div class="pub-num">02</div>
+        <div>
+          <div class="pub-title" data-en="Are you a 'Digital Luddite?' Fear of New Technologies: A Historical Comparison" data-fr="Êtes-vous un 'Luddite Numérique'? La Peur des Nouvelles Technologies : Une Comparaison Historique">Are you a "Digital Luddite?" Fear of New Technologies: A Historical Comparison</div>
+          <div class="pub-desc" data-en="Exploring historical parallels between resistance to technology and present-day AI anxiety. · 14 min read" data-fr="Explorer les parallèles historiques entre la résistance à la technologie et l'anxiété actuelle face à l'IA. · 14 min de lecture">Exploring historical parallels between resistance to technology and present-day AI anxiety. · 14 min read</div>
+        </div>
+      </div>
+      <div class="pub-item">
+        <div class="pub-num">03</div>
+        <div>
+          <div class="pub-title" data-en="Jobs at Risk, AI-Proof Roles: The Future of Work in Africa" data-fr="Emplois à Risque, Rôles Résistants à l'IA : L'Avenir du Travail en Afrique">Jobs at Risk, AI-Proof Roles: The Future of Work in Africa</div>
+          <div class="pub-desc" data-en="Analysis of AI-driven job displacement, resilient careers, and the skills Africans need to thrive. · 10 min read" data-fr="Analyse du déplacement d'emplois par l'IA, des carrières résilientes et des compétences dont les Africains ont besoin pour prospérer. · 10 min de lecture">Analysis of AI-driven job displacement, resilient careers, and the skills Africans need to thrive. · 10 min read</div>
+        </div>
+      </div>
+      <div class="pub-item">
+        <div class="pub-num">04</div>
+        <div>
+          <div class="pub-title" data-en="Fake Debate, Real Issue!" data-fr="Faux Débat, Vrai Problème!">Fake Debate, Real Issue!</div>
+          <div class="pub-desc" data-en="Challenging misleading social media narratives about African vs. Asian education and economic development. · 5 min read" data-fr="Contester les récits trompeurs des médias sociaux sur l'éducation africaine vs asiatique et le développement économique. · 5 min de lecture">Challenging misleading social media narratives about African vs. Asian education and economic development. · 5 min read</div>
+        </div>
+      </div>
+      <div class="pub-item">
+        <div class="pub-num">05</div>
+        <div>
+          <div class="pub-title" data-en="The Future of Work in an AI-Driven World: A Cameroonian Perspective" data-fr="L'Avenir du Travail dans un Monde Dirigé par l'IA : Une Perspective Camerounaise">The Future of Work in an AI-Driven World: A Cameroonian Perspective</div>
+          <div class="pub-desc" data-en="AI's reshaping of Cameroonian industries and the workforce transformation underway. · 3 min read" data-fr="La transformation des industries camerounaises par l'IA et la mutation de la main-d'œuvre en cours. · 3 min de lecture">AI's reshaping of Cameroonian industries and the workforce transformation underway. · 3 min read</div>
+        </div>
+      </div>
+      <div class="pub-item">
+        <div class="pub-num">06</div>
+        <div>
+          <div class="pub-title" data-en="Logic and Compassion — General Reflections" data-fr="Logique et Compassion — Réflexions Générales">Logic and Compassion — General Reflections</div>
+          <div class="pub-desc" data-en="Reflections on how thoughts and values shape leadership, integrity, and human service. · 3 min read" data-fr="Réflexions sur la façon dont les pensées et les valeurs façonnent le leadership, l'intégrité et le service humain. · 3 min de lecture">Reflections on how thoughts and values shape leadership, integrity, and human service. · 3 min read</div>
+        </div>
+      </div>
+      <div class="pub-item">
+        <div class="pub-num">07</div>
+        <div>
+          <div class="pub-title" data-en="Revisiting That 2014 Article… Servant Leadership as a Catalyst for Combating Corruption and Amplifying Growth" data-fr="Revisiter l'Article de 2014… Le Leadership Serviteur comme Catalyseur de la Lutte contre la Corruption">Revisiting That 2014 Article… Servant Leadership as a Catalyst for Combating Corruption and Amplifying Growth</div>
+          <div class="pub-desc" data-en="How servant leadership principles can reform governance and institutional integrity in Africa. · 2 min read" data-fr="Comment les principes du leadership serviteur peuvent réformer la gouvernance et l'intégrité institutionnelle en Afrique. · 2 min de lecture">How servant leadership principles can reform governance and institutional integrity in Africa. · 2 min read</div>
+        </div>
+      </div>
+      <div class="pub-item">
+        <div class="pub-num">08</div>
+        <div>
+          <div class="pub-title" data-en="Cameroon — A Call for Servant Leadership" data-fr="Cameroun — Un Appel au Leadership Serviteur">Cameroon — A Call for Servant Leadership</div>
+          <div class="pub-desc" data-en="A call for transformational, servant-centered governance amid Cameroon's sociopolitical challenges. · 4 min read" data-fr="Un appel à une gouvernance transformationnelle et centrée sur le service au milieu des défis sociopolitiques du Cameroun. · 4 min de lecture">A call for transformational, servant-centered governance amid Cameroon's sociopolitical challenges. · 4 min read</div>
+        </div>
+      </div>
+      <div class="pub-item">
+        <div class="pub-num">09</div>
+        <div>
+          <div class="pub-title" data-en="Servant Leadership as a Tool for Fighting Corruption and Multiplying Growth" data-fr="Le Leadership Serviteur comme Outil de Lutte contre la Corruption et de Multiplication de la Croissance">Servant Leadership as a Tool for Fighting Corruption and Multiplying Growth</div>
+          <div class="pub-desc" data-en="How corruption costs the EU economy €120bn+ and how servant leadership offers a transformative remedy. · 8 min read" data-fr="Comment la corruption coûte à l'économie de l'UE plus de 120 milliards d'euros et comment le leadership serviteur offre un remède transformateur. · 8 min de lecture">How corruption costs the EU economy €120bn+ and how servant leadership offers a transformative remedy. · 8 min read</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BOOKS -->
+    <div style="margin-bottom:10px;">
+      <div class="skill-cat-title" data-en="📚 Books (8 Published)" data-fr="📚 Livres (8 Publiés)">📚 Books (8 Published)</div>
+    </div>
+    <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(260px,1fr)); gap:14px;">
+      <div class="impact-card" style="display:flex;gap:14px;align-items:flex-start;">
+        <div style="font-size:28px;flex-shrink:0;">🤖</div>
+        <div>
+          <div style="font-weight:600;color:var(--navy);font-size:13.5px;" data-en="AI Unlocked: Smart, Simple and Useful Solutions for Everyone" data-fr="L'IA Débloquée : Des Solutions Intelligentes, Simples et Utiles pour Tous">AI Unlocked: Smart, Simple and Useful Solutions for Everyone</div>
+          <div style="font-size:12px;color:var(--text-light);margin-top:4px;" data-en="Artificial Intelligence · Technology" data-fr="Intelligence Artificielle · Technologie">Artificial Intelligence · Technology</div>
+        </div>
+      </div>
+      <div class="impact-card" style="display:flex;gap:14px;align-items:flex-start;">
+        <div style="font-size:28px;flex-shrink:0;">✝️</div>
+        <div>
+          <div style="font-weight:600;color:var(--navy);font-size:13.5px;" data-en="Answering the 'Big' Questions About Christianity" data-fr="Répondre aux 'Grandes' Questions sur le Christianisme">Answering the "Big" Questions About Christianity</div>
+          <div style="font-size:12px;color:var(--text-light);margin-top:4px;" data-en="Faith · Apologetics" data-fr="Foi · Apologétique">Faith · Apologetics</div>
+        </div>
+      </div>
+      <div class="impact-card" style="display:flex;gap:14px;align-items:flex-start;">
+        <div style="font-size:28px;flex-shrink:0;">🇫🇷</div>
+        <div>
+          <div style="font-weight:600;color:var(--navy);font-size:13.5px;" data-en="DRAFTED: Vos outils pour un succès pratique et une croissance durable" data-fr="DRAFTED: Vos outils pour un succès pratique et une croissance durable">DRAFTED: Vos outils pour un succès pratique et une croissance durable</div>
+          <div style="font-size:12px;color:var(--text-light);margin-top:4px;" data-en="Leadership · Self-Development (French)" data-fr="Leadership · Développement Personnel (Français)">Leadership · Self-Development (French)</div>
+        </div>
+      </div>
+      <div class="impact-card" style="display:flex;gap:14px;align-items:flex-start;">
+        <div style="font-size:28px;flex-shrink:0;">🇬🇧</div>
+        <div>
+          <div style="font-weight:600;color:var(--navy);font-size:13.5px;" data-en="DRAFTED: Your Tools for Practical Success and Sustainable Growth" data-fr="DRAFTED : Vos Outils pour le Succès Pratique et la Croissance Durable">DRAFTED: Your Tools for Practical Success and Sustainable Growth</div>
+          <div style="font-size:12px;color:var(--text-light);margin-top:4px;" data-en="Leadership · Self-Development (English)" data-fr="Leadership · Développement Personnel (Anglais)">Leadership · Self-Development (English)</div>
+        </div>
+      </div>
+      <div class="impact-card" style="display:flex;gap:14px;align-items:flex-start;">
+        <div style="font-size:28px;flex-shrink:0;">🏆</div>
+        <div>
+          <div style="font-weight:600;color:var(--navy);font-size:13.5px;" data-en="Executive Leadership: Unlock your potential, build successful teams and achieve impact" data-fr="Leadership Exécutif : Libérez votre potentiel, construisez des équipes performantes et obtenez un impact">Executive Leadership: Unlock your potential, build successful teams and achieve impact</div>
+          <div style="font-size:12px;color:var(--text-light);margin-top:4px;" data-en="Leadership · Executive Development" data-fr="Leadership · Développement Exécutif">Leadership · Executive Development</div>
+        </div>
+      </div>
+      <div class="impact-card" style="display:flex;gap:14px;align-items:flex-start;">
+        <div style="font-size:28px;flex-shrink:0;">🎯</div>
+        <div>
+          <div style="font-weight:600;color:var(--navy);font-size:13.5px;" data-en="Sans Distraction" data-fr="Sans Distraction">Sans Distraction</div>
+          <div style="font-size:12px;color:var(--text-light);margin-top:4px;" data-en="Focus · Youth Development (French)" data-fr="Concentration · Développement des Jeunes (Français)">Focus · Youth Development (French)</div>
+        </div>
+      </div>
+      <div class="impact-card" style="display:flex;gap:14px;align-items:flex-start;">
+        <div style="font-size:28px;flex-shrink:0;">🕊️</div>
+        <div>
+          <div style="font-weight:600;color:var(--navy);font-size:13.5px;" data-en="Suis-moi: Être un disciple fidèle dans un monde en mutation" data-fr="Suis-moi : Être un disciple fidèle dans un monde en mutation">Suis-moi: Être un disciple fidèle dans un monde en mutation</div>
+          <div style="font-size:12px;color:var(--text-light);margin-top:4px;" data-en="Faith · Discipleship (French)" data-fr="Foi · Vie de Disciple (Français)">Faith · Discipleship (French)</div>
+        </div>
+      </div>
+      <div class="impact-card" style="display:flex;gap:14px;align-items:flex-start;">
+        <div style="font-size:28px;flex-shrink:0;">🌟</div>
+        <div>
+          <div style="font-weight:600;color:var(--navy);font-size:13.5px;" data-en="Undistracted: Giving youths the tools to survive an increasingly complicated world" data-fr="Sans Distraction : Donner aux jeunes les outils pour survivre dans un monde de plus en plus complexe">Undistracted: Giving youths the tools to survive an increasingly complicated world</div>
+          <div style="font-size:12px;color:var(--text-light);margin-top:4px;" data-en="Youth Development · Life Skills" data-fr="Développement des Jeunes · Compétences de Vie">Youth Development · Life Skills</div>
+        </div>
+      </div>
+      <div class="impact-card" style="display:flex;gap:14px;align-items:flex-start;">
+        <div style="font-size:28px;flex-shrink:0;">🚀</div>
+        <div>
+          <div style="font-weight:600;color:var(--navy);font-size:13.5px;" data-en="Viser Plus Haut, Aller Plus Loin" data-fr="Viser Plus Haut, Aller Plus Loin">Viser Plus Haut, Aller Plus Loin</div>
+          <div style="font-size:12px;color:var(--text-light);margin-top:4px;" data-en="Ambition · Personal Growth (French)" data-fr="Ambition · Croissance Personnelle (Français)">Ambition · Personal Growth (French)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== RECOMMENDATIONS ====== -->
+  <div class="panel" id="panel-recommendations">
+    <h2 class="sec-title" data-en="Professional References & Recommendations" data-fr="Références et Recommandations Professionnelles">Professional References & Recommendations</h2>
+    <div class="sec-divider"></div>
+
+    <!-- Ambassador highlight banner -->
+    <div style="background:linear-gradient(135deg,var(--navy),var(--navy-light));border-radius:14px;padding:22px 26px;margin-bottom:30px;display:flex;gap:18px;align-items:flex-start;border:1.5px solid rgba(201,168,76,0.4);">
+      <div style="font-size:36px;flex-shrink:0;">🇺🇸</div>
+      <div>
+        <div style="color:var(--gold);font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;" data-en="Ambassador Recognition" data-fr="Reconnaissance Ambassadoriale">Ambassador Recognition</div>
+        <div style="color:#fff;font-family:'Playfair Display',serif;font-size:17px;font-weight:600;margin-bottom:8px;" data-en="Commended by the U.S. Ambassador to Cameroon — Ambassador Lamora" data-fr="Félicité par l'Ambassadeur des États-Unis au Cameroun — Ambassadeur Lamora">Commended by the U.S. Ambassador to Cameroon — Ambassador Lamora</div>
+        <div style="color:rgba(255,255,255,0.72);font-size:13.5px;line-height:1.7;" data-en="Ambassador Lamora personally recognized Innocent Forteh's exceptional contributions to USAID's mission in Cameroon — including his leadership on the Summit on Cameroon's Economic Landscape, bilingual Pre- and Post-Award capacity-building, and his role in advancing U.S. Government procurement standards and sustainable development across West Africa." data-fr="L'Ambassadeur Lamora a personnellement reconnu les contributions exceptionnelles d'Innocent Forteh à la mission de l'USAID au Cameroun — notamment son leadership lors du Sommet sur le Paysage Économique du Cameroun, le renforcement des capacités bilingues pré et post-attribution, et son rôle dans l'avancement des normes d'approvisionnement du gouvernement américain et du développement durable en Afrique de l'Ouest.">Ambassador Lamora personally recognized Innocent Forteh's exceptional contributions to USAID's mission in Cameroon — including his leadership on the Summit on Cameroon's Economic Landscape, bilingual Pre- and Post-Award capacity-building, and his role in advancing U.S. Government procurement standards across West Africa.</div>
+      </div>
+    </div>
+
+    <p style="font-size:13px;color:var(--text-light);margin-bottom:20px;" data-en="All recommendations are publicly verifiable on LinkedIn. Click 'View on LinkedIn' to read the full text." data-fr="Toutes les recommandations sont vérifiables publiquement sur LinkedIn. Cliquez sur 'Voir sur LinkedIn' pour lire le texte complet.">All recommendations are publicly verifiable on LinkedIn. Click "View on LinkedIn" to read the full text.</p>
+
+    <div class="rec-grid">
+
+      <div class="rec-card">
+        <div class="rec-quote">"</div>
+        <p class="rec-text" data-en="Innocent Forteh is not only a highly skilled acquisition professional, but also a strategic thinker, dynamic facilitator, an early adopter of Artificial Intelligence and a trusted leader. I have full confidence in his capacity to thrive in any related role and to continue delivering high-impact results wherever he serves." data-fr="Innocent Forteh n'est pas seulement un professionnel de l'acquisition hautement qualifié, mais aussi un penseur stratégique, un facilitateur dynamique, un précurseur de l'IA et un leader de confiance. J'ai pleine confiance en sa capacité à exceller dans tout rôle connexe.">Innocent Forteh is not only a highly skilled acquisition professional, but also a strategic thinker, dynamic facilitator, an early adopter of AI and a trusted leader. I have full confidence in his capacity to deliver high-impact results wherever he serves.</p>
+        <div class="rec-author">
+          <div class="rec-avatar">PA</div>
+          <div style="flex:1;">
+            <div class="rec-author-name">Philippe Accilien</div>
+            <div class="rec-author-role" data-en="Country Representative, USAID Cameroon — Direct Manager · Apr 2025" data-fr="Représentant Pays, USAID Cameroun — Manager Direct · Avr 2025">Country Representative, USAID Cameroon — Direct Manager · Apr 2025</div>
+            <a href="https://www.linkedin.com/in/innocent-forteh" target="_blank" style="font-size:11px;color:var(--gold);text-decoration:none;margin-top:4px;display:inline-block;">🔗 View on LinkedIn</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="rec-card">
+        <div class="rec-quote">"</div>
+        <p class="rec-text" data-en="I had the privilege of collaborating with Innocent on high-stakes procurement projects. Innocent embodies servant leadership in its truest form. He approaches challenges with composure, integrity, and a strong sense of accountability. No matter the pressure, he delivers on time and maintains a high standard of customer service without compromise." data-fr="J'ai eu le privilège de collaborer avec Innocent sur des projets d'approvisionnement à enjeux élevés. Innocent incarne le leadership serviteur dans sa forme la plus pure. Il aborde les défis avec calme, intégrité et un fort sens des responsabilités. Peu importe la pression, il livre à temps et maintient un standard élevé de service client sans compromis.">I had the privilege of collaborating with Innocent on high-stakes procurement projects. He embodies servant leadership in its truest form — composure, integrity, and accountability. No matter the pressure, he delivers on time without compromise.</p>
+        <div class="rec-author">
+          <div class="rec-avatar">ON</div>
+          <div style="flex:1;">
+            <div class="rec-author-name">Olivia Nowou-Bele</div>
+            <div class="rec-author-role" data-en="Senior Program Manager · ODA & Sovereign Loans ($150M+) — Colleague · Mar 2026" data-fr="Directrice Senior de Programme · APD et Prêts Souverains (150M$+) — Collègue · Mars 2026">Senior Program Manager · ODA & Sovereign Loans ($150M+) — Colleague · Mar 2026</div>
+            <a href="https://www.linkedin.com/in/innocent-forteh" target="_blank" style="font-size:11px;color:var(--gold);text-decoration:none;margin-top:4px;display:inline-block;">🔗 View on LinkedIn</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="rec-card">
+        <div class="rec-quote">"</div>
+        <p class="rec-text" data-en="Innocent is an experienced grant manager, procurement and contract specialist, author and mentor. He is the go-to person when you need understanding of policies and guidance on contract management." data-fr="Innocent est un gestionnaire de subventions expérimenté, spécialiste des marchés et contrats, auteur et mentor. Il est la personne de référence quand vous avez besoin de comprendre les politiques et d'obtenir des conseils en gestion des contrats.">Innocent is an experienced grant manager, procurement and contract specialist, author and mentor. He is the go-to person when you need understanding of policies and guidance on contract management.</p>
+        <div class="rec-author">
+          <div class="rec-avatar">AK</div>
+          <div style="flex:1;">
+            <div class="rec-author-name">Arnold-Aime Ngameleu Kameni, Adm.A.</div>
+            <div class="rec-author-role" data-en="Financial Analyst · Grants Management Specialist — Colleague · Jan 2026" data-fr="Analyste Financier · Spécialiste Gestion des Subventions — Collègue · Jan 2026">Financial Analyst · Grants Management Specialist — Colleague · Jan 2026</div>
+            <a href="https://www.linkedin.com/in/innocent-forteh" target="_blank" style="font-size:11px;color:var(--gold);text-decoration:none;margin-top:4px;display:inline-block;">🔗 View on LinkedIn</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="rec-card">
+        <div class="rec-quote">"</div>
+        <p class="rec-text" data-en="An embodiment of 'quiet effective leadership.' He led the full lifecycle of A&A actions managing over $200 million in contracts, grants, and cooperative agreements. His contributions were honored with Meritorious and Eagle Awards." data-fr="Un exemple de 'leadership effectif et discret.' Il a dirigé le cycle de vie complet des actions A&A gérant plus de 200 millions de dollars. Ses contributions ont été honorées par des Prix Méritoires et Eagle.">An embodiment of 'quiet effective leadership.' He led the full lifecycle of A&A actions managing over $200 million in contracts and grants. His contributions were honored with Meritorious and Eagle Awards.</p>
+        <div class="rec-author">
+          <div class="rec-avatar">JT</div>
+          <div style="flex:1;">
+            <div class="rec-author-name">Jose Tchofa</div>
+            <div class="rec-author-role" data-en="Global Health Security Expert — Senior Colleague, U.S. Embassy · Apr 2025" data-fr="Expert en Sécurité Sanitaire Mondiale — Collègue Senior, Ambassade US · Avr 2025">Global Health Security Expert — Senior Colleague, U.S. Embassy · Apr 2025</div>
+            <a href="https://www.linkedin.com/in/innocent-forteh" target="_blank" style="font-size:11px;color:var(--gold);text-decoration:none;margin-top:4px;display:inline-block;">🔗 View on LinkedIn</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="rec-card">
+        <div class="rec-quote">"</div>
+        <p class="rec-text" data-en="Innocent distinguished himself through exemplary service and profound dedication. He was a highly respected member of staff, a discreet and wise counselor sought out by many. His two decades of diverse professional experience, exceptional leadership skills, and impeccable integrity make him an invaluable asset." data-fr="Innocent s'est distingué par un service exemplaire et un dévouement profond. Il était un membre du personnel très respecté, un conseiller discret et sage recherché par beaucoup. Ses deux décennies d'expérience diverse, ses compétences en leadership et son intégrité irréprochable en font un atout inestimable.">Innocent distinguished himself through exemplary service. A deeply respected member of staff and wise counselor. Two decades of diverse experience, exceptional leadership skills, and impeccable integrity make him an invaluable asset.</p>
+        <div class="rec-author">
+          <div class="rec-avatar">FT</div>
+          <div style="flex:1;">
+            <div class="rec-author-name">Félixe Carole TANGA</div>
+            <div class="rec-author-role" data-en="Senior Business Support Associate, WFP — Colleague · Jul 2025" data-fr="Associée Senior Soutien aux Activités, PAM — Collègue · Juil 2025">Senior Business Support Associate, WFP — Colleague · Jul 2025</div>
+            <a href="https://www.linkedin.com/in/innocent-forteh" target="_blank" style="font-size:11px;color:var(--gold);text-decoration:none;margin-top:4px;display:inline-block;">🔗 View on LinkedIn</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="rec-card">
+        <div class="rec-quote">"</div>
+        <p class="rec-text" data-en="Innocent consistently demonstrates professionalism, integrity, and a strong command of Acquisition and Assistance processes. He approaches complex challenges with clarity and strategic insight, offering practical solutions that drive results. A true team player, focused on impact and sustainability." data-fr="Innocent fait preuve de professionnalisme, d'intégrité et d'une solide maîtrise des processus A&A. Il aborde les défis complexes avec clarté et perspicacité stratégique, offrant des solutions pratiques qui produisent des résultats. Un vrai joueur d'équipe, axé sur l'impact et la durabilité.">Innocent consistently demonstrates professionalism, integrity, and a strong command of A&A processes. He approaches complex challenges with clarity and strategic insight. A true team player, focused on impact and sustainability.</p>
+        <div class="rec-author">
+          <div class="rec-avatar">AT</div>
+          <div style="flex:1;">
+            <div class="rec-author-name">Armelle Tchato, PMP</div>
+            <div class="rec-author-role" data-en="PMP® · Project & Program Management — Colleague · Apr 2025" data-fr="PMP® · Gestion de Projet et Programme — Collègue · Avr 2025">PMP® · Project & Program Management — Colleague · Apr 2025</div>
+            <a href="https://www.linkedin.com/in/innocent-forteh" target="_blank" style="font-size:11px;color:var(--gold);text-decoration:none;margin-top:4px;display:inline-block;">🔗 View on LinkedIn</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="rec-card">
+        <div class="rec-quote">"</div>
+        <p class="rec-text" data-en="I have had the pleasure of being supported by an exceptional mentor for over four years. I learned what it means to be a leader: one who serves, cares, and leads with humility, love and trust. His integrity and deep love for others showed me that men of worth still exist." data-fr="J'ai eu le plaisir d'être soutenue par un mentor exceptionnel pendant plus de quatre ans. J'ai appris ce que signifie être un leader : quelqu'un qui sert, prend soin et dirige avec humilité, amour et confiance. Son intégrité m'a montré que des hommes de valeur existent encore.">Supported by this exceptional mentor for four years. I learned what leadership truly means — serving with humility, love and trust. His integrity and deep love for others showed me that men of worth still exist.</p>
+        <div class="rec-author">
+          <div class="rec-avatar">SN</div>
+          <div style="flex:1;">
+            <div class="rec-author-name">Sara NANA TCHOUPA</div>
+            <div class="rec-author-role" data-en="Content Marketing Strategist · Maxwell Facilitator — Direct Report · Apr 2025" data-fr="Stratège Marketing de Contenu · Facilitatrice Maxwell — Rapport Direct · Avr 2025">Content Marketing Strategist · Maxwell Facilitator — Direct Report · Apr 2025</div>
+            <a href="https://www.linkedin.com/in/innocent-forteh" target="_blank" style="font-size:11px;color:var(--gold);text-decoration:none;margin-top:4px;display:inline-block;">🔗 View on LinkedIn</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="rec-card">
+        <div class="rec-quote">"</div>
+        <p class="rec-text" data-en="Inno Forteh is an astute, compassionate and dedicated leader who serves with purpose. A perfectionist who has mastered the art of detail appreciation. He is also a great author and he doesn't walk alone. Africa will launch further and greater with such men!" data-fr="Inno Forteh est un leader perspicace, compatissant et dévoué qui sert avec purpose. Un perfectionniste qui a maîtrisé l'art de l'appréciation des détails. Il est aussi un grand auteur et il ne marche pas seul. L'Afrique s'élancera plus loin avec de tels hommes!">An astute, compassionate dedicated leader. A perfectionist who has mastered the art of detail, care and resilience. A great author who doesn't walk alone. Africa will launch further and greater with such men!</p>
+        <div class="rec-author">
+          <div class="rec-avatar">LD</div>
+          <div style="flex:1;">
+            <div class="rec-author-name">Loic Bethel Dje</div>
+            <div class="rec-author-role" data-en="Petroleum Engineer · Translator — Mentee & Co-trainer · Apr 2025" data-fr="Ingénieur Pétrolier · Traducteur — Mentoré et Co-formateur · Avr 2025">Petroleum Engineer · Translator — Mentee & Co-trainer · Apr 2025</div>
+            <a href="https://www.linkedin.com/in/innocent-forteh" target="_blank" style="font-size:11px;color:var(--gold);text-decoration:none;margin-top:4px;display:inline-block;">🔗 View on LinkedIn</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="rec-card">
+        <div class="rec-quote">"</div>
+        <p class="rec-text" data-en="Innocent is very trustworthy, dedicated and highly efficient, producing expected results when required. His passion and dedication have led him to the top manager position he holds. If you were ever looking for someone who will revolutionize your management system, he would be a perfect candidate." data-fr="Innocent est très digne de confiance, dévoué et très efficace, produisant les résultats attendus quand requis. Sa passion l'a mené au poste de manager de haut niveau. Il serait le candidat parfait pour révolutionner votre système de management.">Trustworthy, dedicated and highly efficient, producing expected results. His passion has led him to top manager positions. He would be a perfect candidate for anyone looking to revolutionize their management system.</p>
+        <div class="rec-author">
+          <div class="rec-avatar">GT</div>
+          <div style="flex:1;">
+            <div class="rec-author-name">Genesis Tinshu</div>
+            <div class="rec-author-role" data-en="Pastor & Social Entrepreneur — 13+ Years Observation · May 2016" data-fr="Pasteur et Entrepreneur Social — 13+ Années d'Observation · Mai 2016">Pastor & Social Entrepreneur — 13+ Years Observation · May 2016</div>
+            <a href="https://www.linkedin.com/in/innocent-forteh" target="_blank" style="font-size:11px;color:var(--gold);text-decoration:none;margin-top:4px;display:inline-block;">🔗 View on LinkedIn</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div><!-- /container -->
+
+<!-- FOOTER -->
+<footer style="background: var(--navy); color: rgba(255,255,255,0.5); text-align: center; padding: 28px 20px; font-size: 13px; margin-top: 60px;">
+  <div style="color: var(--gold); font-family: 'Playfair Display', serif; font-size: 18px; margin-bottom: 6px;">Innocent Forteh</div>
+  <div data-en="PMP® · Procurement Specialist · Leadership Expert · AI Enthusiast · Author · Yaoundé, Cameroon" data-fr="PMP® · Spécialiste en Approvisionnement · Expert en Leadership · Passionné d'IA · Auteur · Yaoundé, Cameroun">PMP® · Procurement Specialist · Leadership Expert · AI Enthusiast · Author · Yaoundé, Cameroon</div>
+  <div style="margin-top: 10px; font-size: 11px;">
+    <span data-en="Languages: English (Native) · French (Professional) · Pidgin (Professional) · Awing (Elementary) · German (Elementary)" data-fr="Langues : Anglais (Natif) · Français (Professionnel) · Pidgin (Professionnel) · Awing (Élémentaire) · Allemand (Élémentaire)">Languages: English (Native) · French (Professional) · Pidgin (Professional) · Awing (Elementary) · German (Elementary)</div>
+  </div>
+</footer>
+
+<script>
+// ---- PANEL SWITCHING ----
+function showPanel(id) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('panel-' + id).classList.add('active');
+  document.querySelectorAll('.section-nav button').forEach((b, i) => {
+    b.classList.toggle('active', b.getAttribute('onclick').includes(id));
+  });
+}
+
+// ---- LANGUAGE TOGGLE ----
+let currentLang = 'en';
+function toggleLang() {
+  currentLang = currentLang === 'en' ? 'fr' : 'en';
+  document.getElementById('flagIcon').textContent = currentLang === 'en' ? '🇬🇧' : '🇫🇷';
+  document.getElementById('langLabel').textContent = currentLang === 'en' ? 'EN' : 'FR';
+  document.querySelectorAll('[data-en][data-fr]').forEach(el => {
+    const val = el.getAttribute('data-' + currentLang);
+    if (val) el.textContent = val;
+  });
+  document.documentElement.lang = currentLang === 'en' ? 'en' : 'fr';
+}
+
+// ---- SEARCH ----
+let originalHTML = {};
+function handleSearch(query) {
+  const q = query.trim().toLowerCase();
+  const countEl = document.getElementById('searchCount');
+
+  // restore originals first
+  Object.entries(originalHTML).forEach(([id, html]) => {
+    const el = document.getElementById(id);
+    if (el) el.innerHTML = html;
+  });
+
+  if (!q) {
+    countEl.textContent = '';
+    return;
+  }
+
+  let matchCount = 0;
+  const panels = document.querySelectorAll('.panel');
+  panels.forEach(panel => {
+    const walker = document.createTreeWalker(panel, NodeFilter.SHOW_TEXT, null, false);
+    const nodes = [];
+    while (walker.nextNode()) nodes.push(walker.currentNode);
+    nodes.forEach(node => {
+      const text = node.textContent;
+      const lower = text.toLowerCase();
+      if (lower.includes(q) && node.parentElement && node.parentElement.childNodes.length <= 3) {
+        const regex = new RegExp(`(${q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+        const count = (lower.match(regex) || []).length;
+        matchCount += count;
+        const span = document.createElement('span');
+        span.innerHTML = text.replace(regex, '<mark>$1</mark>');
+        node.parentNode.replaceChild(span, node);
+      }
+    });
+  });
+
+  countEl.textContent = matchCount > 0
+    ? `${matchCount} match${matchCount > 1 ? 'es' : ''}`
+    : (currentLang === 'en' ? 'No results' : 'Aucun résultat');
+}
+</script>
+</body>
+</html>

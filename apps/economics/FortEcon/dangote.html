@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Dangote Method — ForTe Economics</title>
+<meta name="description" content="A deep study of Aliko Dangote's backward-integration philosophy, in his own words — and whether it can be replicated.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,450;0,9..144,600;0,9..144,700;1,9..144,450;1,9..144,600&family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#f3efe6; --ink-dim:#b9b3a6; --ink-faint:#7d786e;
+  --bg:#14161a; --bg-raised:#1b1e23; --bg-card:#20242a; --line:#33373d;
+  --cobalt:#5b7fff; --copper:#e0873c; --verdigris:#57a68f; --alert:#e0574c; --gold:#e8b23d;
+  --serif:'Fraunces', Georgia, serif; --sans:'Inter', -apple-system, sans-serif; --mono:'IBM Plex Mono', monospace;
+  --maxw:940px;
+}
+*{box-sizing:border-box; margin:0; padding:0;}
+html{scroll-behavior:scroll;}
+body{background:var(--bg); color:var(--ink); font-family:var(--sans); line-height:1.65; -webkit-font-smoothing:antialiased; overflow-x:hidden;}
+@media (prefers-reduced-motion: reduce){ *{animation-duration:.01ms !important; transition-duration:.01ms !important;} }
+a{color:inherit;}
+.wrap{max-width:var(--maxw); margin:0 auto; padding:0 24px;}
+h1,h2,h3,h4{font-family:var(--serif); font-weight:600; letter-spacing:-0.01em; color:var(--ink);}
+::selection{background:var(--copper); color:#1a0f05;}
+
+.topbar{position:sticky; top:0; z-index:50; background:rgba(20,22,26,0.92); backdrop-filter:blur(10px); border-bottom:1px solid var(--line);}
+.topbar-inner{max-width:var(--maxw); margin:0 auto; padding:12px 20px; display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;}
+.tb-back{font-family:var(--mono); font-size:12px; color:var(--ink-dim); text-decoration:none; white-space:nowrap;}
+.tb-back:hover{color:var(--ink);}
+.tb-brand{font-family:var(--serif); font-weight:700; font-size:15px; white-space:nowrap;}
+.tb-brand .mark{color:var(--copper); font-style:italic;}
+
+.hero{padding:64px 0 52px; border-bottom:1px solid var(--line); position:relative;}
+.hero::before{
+  content:""; position:absolute; inset:0; pointer-events:none;
+  background:radial-gradient(ellipse 640px 380px at 85% -10%, rgba(224,135,60,0.16), transparent 60%);
+}
+.eyebrow{
+  font-family:var(--mono); font-size:12px; letter-spacing:0.14em; text-transform:uppercase;
+  color:var(--copper); display:flex; align-items:center; gap:10px; margin-bottom:18px; position:relative;
+}
+.eyebrow::before{content:""; width:22px; height:1px; background:var(--copper); display:inline-block;}
+.hero h1{font-size:clamp(32px,5vw,54px); line-height:1.04; max-width:16ch; position:relative;}
+.hero h1 em{font-style:italic; color:var(--copper);}
+.hero .sub{color:var(--ink-dim); font-size:17px; max-width:62ch; margin-top:20px; position:relative;}
+.hero-fact-row{display:flex; gap:0; flex-wrap:wrap; margin-top:36px; border-top:1px solid var(--line); padding-top:22px; position:relative;}
+.hf-item{flex:1; min-width:140px; padding-right:18px;}
+.hf-item .v{font-family:var(--mono); font-size:20px; color:var(--gold); font-weight:600;}
+.hf-item .l{font-size:11px; color:var(--ink-faint); text-transform:uppercase; letter-spacing:.05em; margin-top:4px;}
+
+section{padding:64px 0; border-bottom:1px solid var(--line);}
+.section-head{max-width:680px; margin-bottom:36px;}
+.section-head h2{font-size:clamp(26px,3.4vw,36px); line-height:1.12;}
+.section-head p{color:var(--ink-dim); font-size:15.5px; margin-top:14px;}
+
+.quote-block{
+  margin:32px 0; padding:28px 32px; border-left:3px solid var(--copper); background:rgba(224,135,60,0.05);
+  border-radius:0 14px 14px 0;
+}
+.quote-block p{font-family:var(--serif); font-style:italic; font-size:clamp(18px,2.2vw,23px); line-height:1.5; color:var(--ink); margin-bottom:12px;}
+.quote-block .cite{font-family:var(--mono); font-size:12px; color:var(--ink-faint); font-style:normal;}
+
+.prose p{color:var(--ink-dim); font-size:15.5px; margin-bottom:16px;}
+.prose strong{color:var(--ink);}
+
+.timeline{border-left:2px solid var(--line); padding-left:26px; margin:24px 0 8px 6px; display:flex; flex-direction:column; gap:26px;}
+.timeline-item{position:relative;}
+.timeline-item::before{content:""; position:absolute; left:-32px; top:5px; width:9px; height:9px; border-radius:50%; background:var(--copper); border:2px solid var(--bg);}
+.timeline-item .t-year{font-family:var(--mono); font-size:12px; color:var(--copper); margin-bottom:4px;}
+.timeline-item h4{font-size:16px; margin-bottom:6px;}
+.timeline-item p{font-size:14.3px; color:var(--ink-dim);}
+
+.playbook-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:1px; background:var(--line); border:1px solid var(--line); border-radius:16px; overflow:hidden; margin-top:8px;}
+.playbook-card{background:var(--bg-raised); padding:28px 26px;}
+.playbook-card .pc-num{font-family:var(--mono); font-size:12px; color:var(--copper); margin-bottom:14px;}
+.playbook-card h4{font-size:18px; margin-bottom:10px;}
+.playbook-card p{font-size:14.3px; color:var(--ink-dim);}
+@media (max-width:720px){ .playbook-grid{grid-template-columns:1fr;} }
+
+.case-card{
+  border:1px solid var(--line); border-radius:16px; padding:30px 30px 26px; background:var(--bg-raised); margin-bottom:18px;
+}
+.case-card .cc-head{display:flex; align-items:center; gap:14px; margin-bottom:16px;}
+.case-card .cc-icon{font-size:26px;}
+.case-card h3{font-size:21px;}
+.case-card p{color:var(--ink-dim); font-size:14.8px; margin-bottom:14px;}
+.case-stat-row{display:flex; gap:24px; flex-wrap:wrap; margin-top:18px; padding-top:18px; border-top:1px solid var(--line);}
+.cs-item{font-family:var(--mono);}
+.cs-item .v{font-size:17px; color:var(--verdigris); font-weight:600;}
+.cs-item .l{font-size:10.5px; color:var(--ink-faint); text-transform:uppercase; letter-spacing:.05em;}
+
+.map-strip{display:flex; flex-wrap:wrap; gap:10px; margin-top:20px;}
+.map-tag{font-family:var(--mono); font-size:12px; padding:7px 14px; border-radius:100px; border:1px solid var(--line); color:var(--ink-dim); background:var(--bg-card);}
+
+.replication-list{list-style:none; counter-reset:rstep; display:flex; flex-direction:column; gap:18px; margin-top:8px;}
+.replication-list li{counter-increment:rstep; display:flex; gap:18px;}
+.replication-list li::before{
+  content:counter(rstep); font-family:var(--mono); font-size:14px; color:var(--verdigris);
+  border:1px solid rgba(87,166,143,.45); background:rgba(87,166,143,.08); width:34px; height:34px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center; flex-shrink:0;
+}
+.replication-list li div h4{font-size:16px; margin-bottom:5px; color:var(--ink);}
+.replication-list li div p{font-size:14.5px; color:var(--ink-dim);}
+
+.critique-box{
+  background:var(--bg-card); border:1px solid var(--line); border-left:3px solid var(--alert); border-radius:0 14px 14px 0; padding:26px 28px; margin-top:20px;
+}
+.critique-box .cb-label{font-family:var(--mono); font-size:11px; text-transform:uppercase; letter-spacing:.07em; color:var(--alert); margin-bottom:12px; display:block;}
+.critique-box p{color:var(--ink-dim); font-size:14.5px; margin-bottom:12px;}
+.critique-box p:last-child{margin-bottom:0;}
+
+.cta-block{
+  margin-top:12px; padding:36px; border-radius:18px; text-align:center;
+  background:radial-gradient(ellipse 500px 300px at 50% -20%, rgba(224,135,60,0.16), transparent 60%), var(--bg-raised);
+  border:1px solid var(--line);
+}
+.cta-block h3{font-size:23px; margin-bottom:12px;}
+.cta-block p{color:var(--ink-dim); max-width:52ch; margin:0 auto 22px; font-size:14.8px;}
+.btn{
+  font-family:var(--sans); font-weight:600; font-size:14px; text-decoration:none; padding:13px 22px; border-radius:100px;
+  display:inline-flex; align-items:center; gap:8px; transition:transform .18s ease; cursor:pointer; border:1px solid transparent; margin:4px;
+}
+.btn-primary{background:var(--copper); color:#1a0f05;}
+.btn-primary:hover{transform:translateY(-2px);}
+.btn-ghost{border-color:var(--line); color:var(--ink);}
+.btn-ghost:hover{border-color:var(--ink-dim); transform:translateY(-2px);}
+
+footer.d-footer{padding:44px 0; text-align:center;}
+footer.d-footer p{color:var(--ink-faint); font-size:12px; max-width:64ch; margin:0 auto; line-height:1.7;}
+footer.d-footer a{color:var(--ink-dim); text-decoration:underline;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <a href="forte-economics.html#cases" class="tb-back">← Back to main report</a>
+    <span class="tb-brand">ForTe <span class="mark">Economics</span> · Success Study</span>
+  </div>
+</div>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">Success Study — Not A Biography</div>
+    <h1>The one African who <em>decided</em> to stop importing.</h1>
+    <p class="sub">Aliko Dangote's fortune is well documented. Less examined is the specific thinking process behind it — a philosophy he has repeated, almost word for word, in interviews for two decades: stop being a customer of the value chain, and become its owner. This is a study of that method, grounded in his own statements, what it has actually built, and an honest look at what would need to be true for another country — or another entrepreneur — to repeat it.</p>
+    <div class="hero-fact-row">
+      <div class="hf-item"><div class="v">10+</div><div class="l">African countries with Dangote cement plants</div></div>
+      <div class="hf-item"><div class="v">650,000 bpd</div><div class="l">Lagos refinery capacity — Africa's largest</div></div>
+      <div class="hf-item"><div class="v">3M tonnes/yr</div><div class="l">Urea fertiliser, Nigeria's largest single farm-input investment</div></div>
+      <div class="hf-item"><div class="v">1957–</div><div class="l">Born in Kano; started as a cement trader in 1977</div></div>
+    </div>
+  </div>
+</header>
+
+<!-- ORIGINS -->
+<section id="origins">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Where The Thinking Started</div>
+      <h2>A trader who got tired of being someone else's customer</h2>
+      <p>Before he built anything, Dangote sold things — commodities, on thin margins, learning the market by living inside it every day in Lagos, Kano and Onitsha. The turn came when he stopped treating that position as permanent.</p>
+    </div>
+    <div class="prose">
+      <p>Dangote's own account of his career places the pivot at a specific realization, one he has repeated across interviews for over two decades: a trader who buys from a supplier is permanently at that supplier's mercy — their price, their delivery schedule, their margin. The only way out is to stop being the buyer and become the source. Business commentary tracing his career describes the shift plainly: <strong>"He spoke of backward integration. Stop buying from the source. Become the source."</strong> He took the profits from years of commodity trading and reinvested them upstream — into machines, factories and raw-material access, moving past the middlemen and foreign suppliers who had previously stood between him and the product.</p>
+      <p>The industries he chose to control first were not exotic. They were the same commodities he had always traded — cement, sugar, flour — items where Nigeria's entire supply had depended on imports for decades. He simply refused to keep being the importer.</p>
+    </div>
+    <div class="timeline">
+      <div class="timeline-item"><div class="t-year">1977</div><h4>Starts as a commodity trader</h4><p>Begins trading cement and other goods in Lagos with capital borrowed from an uncle — the trading years that taught him the market from the buyer's side.</p></div>
+      <div class="timeline-item"><div class="t-year">1990s–2000s</div><h4>The pivot to backward integration</h4><p>Moves from trading imported cement to building Nigeria's own cement production capacity — the first full application of "become the source."</p></div>
+      <div class="timeline-item"><div class="t-year">2000s–2010s</div><h4>Pan-African cement expansion</h4><p>Replicates the Nigerian cement model across more than ten African countries, applying the same backward-integration logic to each new market.</p></div>
+      <div class="timeline-item"><div class="t-year">2022</div><h4>The $2.5B fertiliser plant opens</h4><p>Africa's largest granulated urea complex begins production in the Lekki Free Trade Zone — Nigeria becomes Africa's leading urea producer within months.</p></div>
+      <div class="timeline-item"><div class="t-year">2024–2026</div><h4>The refinery reaches full capacity</h4><p>The 650,000 bpd Lagos refinery, once dismissed by skeptics as undeliverable, reaches 99%+ utilization — Nigeria records net petrol-exporter status for the first time.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- THE PHILOSOPHY, IN HIS WORDS -->
+<section id="philosophy">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">In His Own Words</div>
+      <h2>The argument, repeated consistently across two decades of interviews</h2>
+      <p>What follows are statements Dangote has made publicly and repeatedly — at the Financial Times Africa Summit, at the African Export-Import Bank's annual meeting, and to journalists covering his refinery and fertiliser projects. Read together, they form a single, consistent thesis.</p>
+    </div>
+
+    <div class="quote-block">
+      <p>"We are not going to import anything any longer. In Nigeria we are learning how to produce the entire value chain."</p>
+      <span class="cite">— Financial Times Africa Summit, London, 2017</span>
+    </div>
+
+    <div class="quote-block">
+      <p>"Don't come and take my cocoa, process it overseas, then come and sell the chocolate to me for 20 times the cost."</p>
+      <span class="cite">— on the core logic of value-chain extraction, widely cited across interviews</span>
+    </div>
+
+    <div class="quote-block">
+      <p>"Once you continue to import, you are importing poverty and exporting jobs out."</p>
+      <span class="cite">— on the employment cost of import dependence</span>
+    </div>
+
+    <div class="quote-block">
+      <p>"We need to understand that we are the only people that can make Africa great. Nobody will do that for us… Africa can only be made great by Africans."</p>
+      <span class="cite">— African Export-Import Bank, 32nd Annual Meeting</span>
+    </div>
+
+    <div class="quote-block">
+      <p>"No country in modern economic history has achieved high-income status without industrialization. Not one."</p>
+      <span class="cite">— 2026 Africa Caucus meeting, addressing finance ministers and trade officials</span>
+    </div>
+
+    <div class="prose">
+      <p>Notice what is <em>not</em> in these statements: no appeal to charity, no argument that Africa needs more aid or more sympathy from wealthier nations. The argument is entirely about ownership and sequencing — who controls the step in the value chain where the money actually gets made, and whether that step happens on the continent or somewhere else. It's the same diagnosis this report has made about cocoa, cobalt, and coffee, arrived at independently by the person who has spent the most capital acting on it.</p>
+    </div>
+  </div>
+</section>
+
+<!-- THE PLAYBOOK -->
+<section id="playbook">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">The Mechanism</div>
+      <h2>Backward integration, broken into its actual steps</h2>
+      <p>"Backward integration" sounds abstract until you see it applied consistently, industry after industry. The pattern is the same each time.</p>
+    </div>
+    <div class="playbook-grid">
+      <div class="playbook-card">
+        <div class="pc-num">Step 01</div>
+        <h4>Identify the biggest import bill</h4>
+        <p>Start with whatever the country is spending the most foreign currency importing — cement, then sugar and flour, then refined fuel, then fertiliser. The size of the import bill is the size of the opportunity.</p>
+      </div>
+      <div class="playbook-card">
+        <div class="pc-num">Step 02</div>
+        <h4>Secure the raw material locally</h4>
+        <p>Cement needs limestone — Nigeria has it. Fertiliser needs natural gas — the Niger Delta has it. Refining needs crude — Nigeria produces more than it can locally process. Every major project starts from a domestic input the country was exporting or leaving unused.</p>
+      </div>
+      <div class="playbook-card">
+        <div class="pc-num">Step 03</div>
+        <h4>Build at a scale nobody expects</h4>
+        <p>The Lagos refinery sits on 2,635 hectares and rests on 200,000 piles — the largest number of piles ever used on a single project globally. Scale isn't vanity here; it's what makes the unit economics work against cheaper imports.</p>
+      </div>
+      <div class="playbook-card">
+        <div class="pc-num">Step 04</div>
+        <h4>Sequence the capital carefully</h4>
+        <p>Cement profits funded the sugar and flour expansion; those profits, plus external financing, funded the refinery and fertiliser complex. Each completed project became the collateral and cash-flow base for the next, larger one.</p>
+      </div>
+      <div class="playbook-card">
+        <div class="pc-num">Step 05</div>
+        <h4>Negotiate the enabling environment directly</h4>
+        <p>Naira-denominated crude purchase agreements with the Nigerian government, gas supply agreements with Shell, regulatory support through the Presidential Enabling Business Environment Council — none of this happened by accident. Dangote has worked policy access as deliberately as he's worked engineering.</p>
+      </div>
+      <div class="playbook-card">
+        <div class="pc-num">Step 06</div>
+        <h4>Export the surplus, not just the product</h4>
+        <p>The fertiliser plant now exports to the US, India, Brazil, Mexico and Argentina. The refinery supplies fuel to West Africa and beyond. The final step converts "we no longer import this" into "the world now imports this from us."</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- THREE CASE STUDIES -->
+<section id="cases">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Three Industries, One Method</div>
+      <h2>What the method actually built</h2>
+    </div>
+
+    <div class="case-card">
+      <div class="cc-head"><span class="cc-icon">🏗️</span><h3>Cement: from world's #2 importer to Africa's #1 producer</h3></div>
+      <p>Nigeria was once one of the largest cement importers on Earth. Dangote Cement's integrated plants — quarry to bagging, entirely domestic — reversed that completely, and the model was then exported (in the industrial sense) to more than ten other African countries. President Buhari, at a plant commissioning, put it plainly: the investment "effectively ended Nigeria's dependence on imported cement products."</p>
+      <div class="case-stat-row">
+        <div class="cs-item"><div class="v">10+</div><div class="l">countries with Dangote Cement operations</div></div>
+        <div class="cs-item"><div class="v">#1</div><div class="l">cement producer in Africa</div></div>
+        <div class="cs-item"><div class="v">Thousands</div><div class="l">of direct jobs across the value chain</div></div>
+      </div>
+    </div>
+
+    <div class="case-card">
+      <div class="cc-head"><span class="cc-icon">⛽</span><h3>Refining: ending the crude-export/fuel-import round trip</h3></div>
+      <p>This report's own Nigeria case study names the exact mechanism the refinery was built to break: Nigeria exported crude and imported the majority of its own refined fuel back, paying a foreign refiner's margin twice. As of 2026, the 650,000 bpd Lagos refinery runs above 99% capacity utilization, and Nigeria has recorded net petrol-exporter status — supplying roughly 80% of domestic demand while exporting the surplus into West Africa and the Atlantic Basin, including cargoes reaching Europe.</p>
+      <div class="case-stat-row">
+        <div class="cs-item"><div class="v">$10B/yr</div><div class="l">estimated FX savings once fully utilized</div></div>
+        <div class="cs-item"><div class="v">100,000</div><div class="l">direct &amp; indirect jobs, by design capacity</div></div>
+        <div class="cs-item"><div class="v">2635 ha</div><div class="l">site size, Lekki Free Trade Zone</div></div>
+      </div>
+    </div>
+
+    <div class="case-card">
+      <div class="cc-head"><span class="cc-icon">🌱</span><h3>Fertiliser: Nigeria becomes a net exporter of a farm input it used to import</h3></div>
+      <p>The $2.5 billion Lekki urea plant made Nigeria self-sufficient in urea — then a net exporter of it, shipping to the US, India, Brazil, Mexico and Argentina within its first years of operation. This is the clearest case of the method compounding: a plant built to solve a domestic supply problem ended up generating hard-currency export revenue, the exact reversal this report's case studies argue every raw-export economy needs.</p>
+      <div class="case-stat-row">
+        <div class="cs-item"><div class="v">3M tonnes/yr</div><div class="l">urea production capacity</div></div>
+        <div class="cs-item"><div class="v">#1</div><div class="l">urea producer in Africa</div></div>
+        <div class="cs-item"><div class="v">~$7M/day</div><div class="l">targeted export revenue from urea alone</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REGIONAL IMPACT -->
+<section id="regional">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Beyond Nigeria</div>
+      <h2>What "sub-region" actually means here</h2>
+      <p>The method didn't stay in one country. Cement plants replicated the model across the continent years ago; the newest expansion applies the exact same logic to energy and fertiliser in East Africa.</p>
+    </div>
+    <div class="prose">
+      <p>A $17 billion, 700,000 bpd refinery is now planned for Lamu, Kenya — explicitly framed as replicating the Lagos success in East Africa, intended to extend energy independence to the wider African Union region rather than Nigeria alone. A parallel 3-million-tonne urea fertiliser plant is under construction in Ethiopia, applying the exact Lekki blueprint to a second country's agricultural input supply. Regional commentary has started calling this pattern <strong>"the Dangotisation of Africa's economic future"</strong> — the idea that one company's backward-integration discipline, replicated market by market, could do at continental scale what individual governments have struggled to coordinate.</p>
+    </div>
+    <div class="map-strip">
+      <span class="map-tag">🇳🇬 Nigeria — cement, refinery, fertiliser, sugar</span>
+      <span class="map-tag">🇨🇲 Cameroon — cement</span>
+      <span class="map-tag">🇿🇲 Zambia — cement</span>
+      <span class="map-tag">🇹🇿 Tanzania — cement</span>
+      <span class="map-tag">🇸🇳 Senegal — cement</span>
+      <span class="map-tag">🇪🇹 Ethiopia — fertiliser (under construction)</span>
+      <span class="map-tag">🇰🇪 Kenya — refinery (planned, $17B)</span>
+      <span class="map-tag">+ 5 more countries — cement operations</span>
+    </div>
+  </div>
+</section>
+
+<!-- REPLICATION FRAMEWORK -->
+<section id="replicate">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Can This Be Repeated?</div>
+      <h2>What would actually need to be true</h2>
+      <p>Dangote himself has told policymakers directly that the answer isn't "wait for another Dangote" — it's building the conditions under which many smaller versions of this method can work. Here's what that requires, distilled from how his own projects were actually financed and built.</p>
+    </div>
+    <ol class="replication-list">
+      <li><div><h4>Start with the biggest, most obvious import bill</h4><p>Every project in this study started from an import Nigeria was visibly, measurably overpaying for. Any country can run this same audit — this report's own Import Substitution section already lists nine candidates per country.</p></div></li>
+      <li><div><h4>Secure patient capital, not just any capital</h4><p>Backward integration takes 5–10 years to pay back. Short-tenor, high-interest commercial loans — the kind several countries in this report rely on for routine liquidity — cannot finance this. Development-bank concessional lines and reinvested trading profits, the actual sources Dangote used, are the realistic financing model.</p></div></li>
+      <li><div><h4>Negotiate the enabling environment as seriously as the engineering</h4><p>The naira-crude agreement, the gas supply contract, the regulatory reforms under PEBEC — none of these were incidental. Any government serious about replicating this needs a named official empowered to fast-track exactly this kind of deal, not a general "ease of doing business" slogan.</p></div></li>
+      <li><div><h4>Sequence from smaller wins to larger ones</h4><p>Cement came before the refinery. Nobody should try to build a $19 billion refinery as a first project — the realistic path is the smaller-scale templates in this report's Business Plan Library, scaled up over years exactly as Dangote scaled from trading to cement to fertiliser to refining.</p></div></li>
+      <li><div><h4>Treat regional scale as the target, not the accident</h4><p>The Kenya refinery and Ethiopia fertiliser plant weren't opportunistic add-ons — they're the same playbook applied deliberately across borders. AfCFTA-enabled regional projects, not just national ones, are where this model compounds fastest.</p></div></li>
+    </ol>
+  </div>
+</section>
+
+<!-- HONEST CRITIQUE -->
+<section id="critique">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">The Honest Part</div>
+      <h2>What a fair account has to include</h2>
+      <p>A success study that only celebrates isn't a study — it's marketing. Several genuine critiques are part of this record and belong here.</p>
+    </div>
+    <div class="critique-box">
+      <span class="cb-label">Concentration &amp; market power</span>
+      <p>Dangote Cement has, at various points, faced criticism and regulatory scrutiny in Nigeria over domestic pricing and market dominance — critics have argued that near-monopoly control of cement supply let prices stay higher than competitive-market conditions would produce, even after import-substitution was achieved. Import substitution solving a foreign-currency problem does not automatically mean consumers see the cheapest possible price.</p>
+    </div>
+    <div class="critique-box">
+      <span class="cb-label">Government-dependent financing terms</span>
+      <p>The refinery's naira-for-crude arrangement, gas supply agreements, and various tax and regulatory concessions were negotiated directly with the Nigerian state — a genuinely available option for a company of Dangote's scale and political access, but not a template every entrepreneur, in every country, can replicate without similarly close government relationships.</p>
+    </div>
+    <div class="critique-box">
+      <span class="cb-label">The refinery's rocky early operating years</span>
+      <p>Despite the 2026 milestone of 99%+ capacity utilization, the refinery spent its first two years struggling to secure sufficient domestic crude supply, at times importing crude despite being built specifically to refine Nigerian oil — a reminder that even a well-financed, well-engineered project depends on domestic supply-chain cooperation (from oil majors and regulators alike) that isn't fully within any single company's control.</p>
+    </div>
+    <div class="critique-box">
+      <span class="cb-label">One company, one family, one point of failure</span>
+      <p>However sound the method, concentrating this much of Nigeria's industrial capacity in a single privately-held group is itself a structural risk this report's broader argument would flag: succession, governance, and ownership diversification matter here just as they matter for state institutions. The lesson this report draws is the <em>method</em> — backward integration, patient capital, negotiated enabling environments — not dependence on any one company or individual to keep executing it.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="cta" style="border-bottom:none; padding-bottom:90px;">
+  <div class="wrap">
+    <div class="cta-block">
+      <h3>The method is public. The application isn't done.</h3>
+      <p>Every one of the ten countries in this report has an import bill big enough to start this same process at a smaller scale. See the specific starting points, and the step-by-step templates to begin.</p>
+      <a href="business-plans.html" target="_blank" rel="noopener" class="btn btn-primary">Open the Business Plan Library →</a>
+      <a href="forte-economics.html#import-sub" target="_blank" rel="noopener" class="btn btn-ghost">See the Import Substitution list</a>
+    </div>
+  </div>
+</section>
+
+<footer class="d-footer">
+  <div class="wrap">
+    <p>Quotes are drawn from Dangote's public interviews and statements — the Financial Times Africa Summit (2017), the African Export-Import Bank's 32nd Annual Meeting, the 2026 Africa Caucus meeting, and reporting from Nairametrics, TheCable, Punch, BusinessDay NG, Afridigest and the Dangote Group's own press materials. Facts on refinery capacity, fertiliser output and job figures are drawn from the same sources and company/government statements as of 2026 — treat operational figures as reported at time of writing, not independently audited by this report. Part of the <a href="forte-economics.html">ForTe Economics</a> report. © Innocent Forteh.</p>
+  </div>
+</footer>
+
+</body>
+</html>

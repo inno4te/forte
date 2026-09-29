@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Lifestyle & Environment — Team21 Health Platform</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700;9..144,800&family=Inter+Tight:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="brand">
+      <div class="brand-mark">T21</div>
+      <div>
+        <div class="brand-name">Team21 Health Platform</div>
+        <div class="brand-sub">Preventive Intelligence</div>
+      </div>
+    </a>
+    <div class="nav-cta" id="navCta"></div>
+  </div>
+</nav>
+
+<main class="page">
+  <header class="page-head">
+    <div>
+      <div class="eyebrow">Part Three · Lifestyle &amp; Environment</div>
+      <h1>The exposures that <em>surround you</em>.</h1>
+      <p class="intro">Body composition, physical activity, sleep, stress, infections, oral health, sun, indoor air and occupational chemicals account for a major share of preventable disease. The evidence below is drawn from IARC monographs, WHO guidelines, NIH reviews and large cohort studies.</p>
+    </div>
+    <div class="meta">
+      3 SUB-SECTIONS<br>
+      ENV · LIFE · OCC<br>
+      SOURCES: IARC · WHO · NIH
+    </div>
+  </header>
+
+  <div class="search-bar">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+    <input type="text" id="lifeSearch" placeholder="Search lifestyle &amp; environment topics — e.g. radon, sleep, stress…" />
+  </div>
+
+  <div class="cat-tabs" id="catTabs">
+    <button class="cat-tab active" data-cat="environment">Environmental &amp; Physical</button>
+    <button class="cat-tab" data-cat="lifestyle">Lifestyle Exposures</button>
+    <button class="cat-tab" data-cat="occupational">Occupational &amp; Chemical</button>
+  </div>
+
+  <div class="cat-panel active" data-panel="environment">
+    <h2 class="sect" style="margin-top:0">Environmental &amp; <em>physical</em> exposures</h2>
+    <p style="max-width:780px;color:var(--ink-soft);margin:0 0 24px">The air you breathe, the radiation you receive, the materials you live among. Most of these you can measure, mitigate or avoid.</p>
+    <div class="topic-grid" id="grid-environment"></div>
+  </div>
+  <div class="cat-panel" data-panel="lifestyle">
+    <h2 class="sect" style="margin-top:0">Lifestyle <em>exposures</em></h2>
+    <p style="max-width:780px;color:var(--ink-soft);margin:0 0 24px">Body weight, movement, sleep, stress, infections and oral health — the highest-leverage personal levers we know of.</p>
+    <div class="topic-grid" id="grid-lifestyle"></div>
+  </div>
+  <div class="cat-panel" data-panel="occupational">
+    <h2 class="sect" style="margin-top:0">Occupational &amp; <em>chemical</em> exposures</h2>
+    <p style="max-width:780px;color:var(--ink-soft);margin:0 0 24px">Hazards encountered at work or through specific products and applications. Many are regulated; vigilance and protective equipment matter most.</p>
+    <div class="topic-grid" id="grid-occupational"></div>
+  </div>
+</main>
+
+<script src="data.js"></script>
+<script src="lang-data.js"></script>
+<script src="lang.js"></script>
+<script src="shared.js"></script>
+<script src="components.js"></script>
+<script>
+T21.boot('lifestyle.html');
+
+['environment','lifestyle','occupational'].forEach(cat=>{
+  const wrap = document.getElementById('grid-'+cat);
+  wrap.innerHTML = TOPICS[cat].map(renderTopic).join('');
+  wireTopicActions(wrap);
+});
+
+document.querySelectorAll('.cat-tab').forEach(tab=>{
+  tab.addEventListener('click', ()=>{
+    document.querySelectorAll('.cat-tab').forEach(t=>t.classList.remove('active'));
+    document.querySelectorAll('.cat-panel').forEach(p=>p.classList.remove('active'));
+    tab.classList.add('active');
+    document.querySelector(`.cat-panel[data-panel="${tab.dataset.cat}"]`).classList.add('active');
+    document.getElementById('lifeSearch').value = '';
+    document.querySelectorAll('.topic').forEach(t=>t.style.display='');
+  });
+});
+
+document.getElementById('lifeSearch').addEventListener('input', e=>{
+  const q = e.target.value.toLowerCase().trim();
+  if(q){
+    document.querySelectorAll('.cat-panel').forEach(p=>p.classList.add('active'));
+  } else {
+    document.querySelectorAll('.cat-panel').forEach(p=>p.classList.remove('active'));
+    document.querySelector('.cat-panel[data-panel="environment"]').classList.add('active');
+  }
+  document.querySelectorAll('.topic').forEach(t=>{
+    const hay = (t.dataset.search || '') + ' ' + t.textContent.toLowerCase();
+    t.style.display = (!q || hay.includes(q)) ? '' : 'none';
+  });
+});
+
+window.onUserAuthChange = ()=>{
+  document.querySelectorAll('.topic-grid').forEach(g=> refreshBookmarkStates(g));
+};
+</script>
+</body>
+</html>

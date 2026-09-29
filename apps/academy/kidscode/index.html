@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Team21 Academy 4 Kids — Learn to Code!</title>
+<link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+
+<!-- =================================================
+     PAGE: LANDING (pre-academy marketing page)
+     ================================================= -->
+<div class="page active" id="page-landing">
+  <nav class="landing-nav">
+    <div class="ln-logo">🚀 TEAM21 <span>ACADEMY 4 KIDS</span></div>
+    <div class="ln-links">
+      <div class="ln-link" onclick="document.getElementById('lp-ages').scrollIntoView({behavior:'smooth'})">Age Groups</div>
+      <div class="ln-link" onclick="document.getElementById('lp-projects').scrollIntoView({behavior:'smooth'})">Projects</div>
+      <div class="ln-link" onclick="document.getElementById('lp-about').scrollIntoView({behavior:'smooth'})">About</div>
+    </div>
+    <div class="ln-right">
+      <button class="btn btn-ghost btn-sm" onclick="APP.go('dashboard')">📊 Dashboard</button>
+      <button class="btn btn-gold btn-sm" onclick="APP.go('cert-input')">🏆 Get Certified</button>
+    </div>
+  </nav>
+
+  <section class="hero-section">
+    <div class="hero-bg"></div>
+    <div class="hero-stars" id="hero-stars"></div>
+    <div style="position:relative;z-index:1">
+      <div class="hero-eyebrow">✨ Team21 Academy 4 Kids · Est. 2024</div>
+      <h1 class="hero-h1">Learn to Code.<br>Build the Future.</h1>
+      <p class="hero-sub">Fun, hands-on coding adventures for kids ages 6–18. Build games, design websites, programme robots, and discover your superpower — one line of code at a time.</p>
+      <div class="hero-cta">
+        <button class="btn btn-primary" onclick="document.getElementById('lp-ages').scrollIntoView({behavior:'smooth'})">🚀 Start Your Adventure</button>
+        <button class="btn btn-ghost" onclick="APP.go('dashboard')">📊 View Dashboard</button>
+      </div>
+      <div id="age-tiles-grid" class="age-tiles"></div>
+    </div>
+  </section>
+
+  <section class="content-pad" style="max-width:1100px;margin:0 auto" id="lp-ages">
+    <div class="section-label">Why Team21</div>
+    <div class="grid-4">
+      <div class="stat-box"><div class="sb-icon">🎮</div><div class="sb-val">12</div><div class="sb-label">Full Courses</div></div>
+      <div class="stat-box"><div class="sb-icon">💻</div><div class="sb-val">7</div><div class="sb-label">Languages & AI</div></div>
+      <div class="stat-box"><div class="sb-icon">🧪</div><div class="sb-val">9</div><div class="sb-label">Interactive Labs</div></div>
+      <div class="stat-box"><div class="sb-icon">🏆</div><div class="sb-val">63</div><div class="sb-label">Certification Questions</div></div>
+    </div>
+  </section>
+
+  <section class="content-pad" style="max-width:1100px;margin:0 auto" id="lp-projects">
+    <div class="section-label">Fun Projects to Build</div>
+    <div class="grid-4" id="lp-projects-grid">
+      <div class="card card-lift" style="padding:1.2rem;text-align:center;cursor:pointer" onclick="APP.selectGroup('builders')">
+        <div style="font-size:2.2rem;margin-bottom:.5rem">🎮</div>
+        <h3 style="font-family:var(--font-display);font-size:.95rem;margin-bottom:.3rem">Design a Game</h3>
+        <p style="font-size:.78rem;color:var(--text2)">Build a full game with scoring & levels</p>
+      </div>
+      <div class="card card-lift" style="padding:1.2rem;text-align:center;cursor:pointer" onclick="APP.selectGroup('creators')">
+        <div style="font-size:2.2rem;margin-bottom:.5rem">🌐</div>
+        <h3 style="font-family:var(--font-display);font-size:.95rem;margin-bottom:.3rem">Build a Website</h3>
+        <p style="font-size:.78rem;color:var(--text2)">Design and launch your own webpage</p>
+      </div>
+      <div class="card card-lift" style="padding:1.2rem;text-align:center;cursor:pointer" onclick="APP.selectGroup('innovators')">
+        <div style="font-size:2.2rem;margin-bottom:.5rem">🤖</div>
+        <h3 style="font-family:var(--font-display);font-size:.95rem;margin-bottom:.3rem">Code a Robot</h3>
+        <p style="font-size:.78rem;color:var(--text2)">Programme real robots with C & Python</p>
+      </div>
+      <div class="card card-lift" style="padding:1.2rem;text-align:center;cursor:pointer;border-color:rgba(168,85,247,.3);background:linear-gradient(135deg,rgba(139,92,246,.08),rgba(79,142,247,.05))" onclick="APP.state.currentGroup = T21.ageGroups.find(g=>g.id==='innovators'); APP.openCourse('ai')">
+        <div style="font-size:2.2rem;margin-bottom:.5rem">✨</div>
+        <h3 style="font-family:var(--font-display);font-size:.95rem;margin-bottom:.3rem">How AI & Claude Think</h3>
+        <p style="font-size:.78rem;color:var(--text2)">Go inside neural networks, LLMs, and prompting</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="content-pad" style="max-width:1100px;margin:0 auto" id="lp-about">
+    <div class="section-label">About Team21</div>
+    <div class="grid-2">
+      <div class="card" style="padding:1.6rem">
+        <h3 style="color:var(--brand);font-family:var(--font-display);font-size:1rem;margin-bottom:.6rem">Our Mission</h3>
+        <p style="color:var(--text2);font-size:.85rem;line-height:1.7">Team21 Academy 4 Kids was founded to make coding accessible, fun, and empowering for every child aged 6–18 — regardless of background or experience. We believe every child has the potential to be a creator of technology, not just a consumer.</p>
+      </div>
+      <div class="card" style="padding:1.6rem">
+        <h3 style="color:#c084fc;font-family:var(--font-display);font-size:1rem;margin-bottom:.6rem">Meet the Director</h3>
+        <div style="display:flex;align-items:center;gap:.8rem;margin-bottom:.6rem">
+          <div style="width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,var(--brand),var(--brand2));display:flex;align-items:center;justify-content:center;font-size:1.1rem;font-weight:800;flex-shrink:0">IF</div>
+          <div>
+            <div style="color:var(--text);font-weight:700;font-size:.9rem">Innocent Forteh</div>
+            <div style="color:var(--text3);font-size:.75rem">Director, Team21 Academy 4 Kids</div>
+          </div>
+        </div>
+        <p style="color:var(--text2);font-size:.82rem;line-height:1.65">Passionate educator and technologist dedicated to bridging the digital skills gap for young learners across Africa and the world.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer style="text-align:center;padding:2rem 1rem;border-top:1px solid var(--border);margin-top:2rem">
+    <p style="color:var(--text3);font-size:.75rem">© 2024 Team21 Academy 4 Kids · Director: Innocent Forteh · Empowering the next generation of coders worldwide 🌍</p>
+  </footer>
+</div>
+
+<!-- =================================================
+     ACADEMY SHELL (sidebar + topbar for all in-app pages)
+     ================================================= -->
+<div class="academy-shell" id="academy-shell" style="display:none">
+
+  <!-- TOP BAR -->
+  <div class="topbar">
+    <button class="hamburger" onclick="toggleSidebar()">☰</button>
+    <div class="topbar-logo" onclick="APP.go('landing'); document.getElementById('academy-shell').style.display='none'">
+      <div class="logo-icon">🚀</div>
+      TEAM21 <span class="logo-t21" style="margin-left:.2rem">ACADEMY</span>
+    </div>
+    <div class="topbar-search">
+      <span class="search-icon">🔍</span>
+      <input type="text" placeholder="Search courses, labs, topics..." onkeyup="APP.searchAcademy(event)">
+    </div>
+    <div class="topbar-right">
+      <button class="topbar-btn gold" onclick="APP.go('cert-input')">🏆 Certify Me</button>
+      <button class="topbar-btn" onclick="APP.go('progress')">📈 Progress</button>
+      <div class="topbar-avatar" id="topbar-avatar-init" onclick="APP.go('dashboard')">ST</div>
+    </div>
+  </div>
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-label">Main</div>
+      <div class="sidebar-item" data-page="dashboard" onclick="APP.go('dashboard')"><span class="si-icon">🏠</span> Dashboard</div>
+      <div class="sidebar-item" data-page="courses" onclick="APP.go('courses')"><span class="si-icon">📚</span> My Courses</div>
+      <div class="sidebar-item" data-page="progress" onclick="APP.go('progress')"><span class="si-icon">📈</span> Progress</div>
+    </div>
+
+    <div class="sidebar-divider"></div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">Age Groups</div>
+      <div class="sidebar-item" onclick="APP.selectGroup('explorers')"><span class="si-icon">🐣</span> Little Explorers</div>
+      <div class="sidebar-item" onclick="APP.selectGroup('builders')"><span class="si-icon">🚀</span> Junior Builders</div>
+      <div class="sidebar-item" onclick="APP.selectGroup('creators')"><span class="si-icon">⚡</span> Code Creators</div>
+      <div class="sidebar-item" onclick="APP.selectGroup('innovators')"><span class="si-icon">🧠</span> Teen Innovators</div>
+    </div>
+
+    <div class="sidebar-divider"></div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">Languages</div>
+      <div class="sidebar-item" onclick="APP.openCourse('scratch')"><span class="si-icon">🐱</span> Scratch</div>
+      <div class="sidebar-item" onclick="APP.openCourse('python1')"><span class="si-icon">🐍</span> Python</div>
+      <div class="sidebar-item" onclick="APP.openCourse('web')"><span class="si-icon">🌐</span> Web Dev</div>
+      <div class="sidebar-item" onclick="APP.openCourse('clang')"><span class="si-icon">⚙️</span> C</div>
+      <div class="sidebar-item" onclick="APP.openCourse('cpp')"><span class="si-icon">🔧</span> C++</div>
+      <div class="sidebar-item" onclick="APP.openCourse('java')"><span class="si-icon">☕</span> Java</div>
+      <div class="sidebar-item" onclick="APP.openCourse('robotics')"><span class="si-icon">🤖</span> Robotics</div>
+      <div class="sidebar-item" onclick="APP.openCourse('ai')"><span class="si-icon">✨</span> AI & Claude<span class="si-badge new">NEW</span></div>
+    </div>
+
+    <div class="sidebar-divider"></div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">Tools</div>
+      <div class="sidebar-item" data-page="lab" onclick="APP.go('lab',{courseId:'python1'})"><span class="si-icon">🧪</span> Code Lab</div>
+      <div class="sidebar-item" data-page="cert-input" onclick="APP.go('cert-input')"><span class="si-icon">🏆</span> Certification</div>
+    </div>
+
+    <div class="sidebar-bottom">
+      <div class="sidebar-user" onclick="APP.go('dashboard')">
+        <div class="su-av" id="sidebar-avatar-init">ST</div>
+        <div>
+          <div class="su-name" id="sidebar-user-name">Student</div>
+          <div class="su-level" id="sidebar-user-xp">0 XP · 🔥 3 day streak</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN CONTENT AREA: contains all in-app pages -->
+  <div class="main-content">
+
+    <!-- PAGE: GLOBE -->
+    <div class="page" id="page-globe">
+      <div class="content-pad" style="max-width:900px;margin:0 auto;text-align:center;padding-top:3rem">
+        <div style="position:relative;width:220px;height:220px;margin:0 auto 2rem" class="float">
+          <div style="width:220px;height:220px;border-radius:50%;background:radial-gradient(circle at 32% 32%,#4f8ef7 0%,#1d4ed8 50%,#0c1830 100%);box-shadow:0 0 60px rgba(79,142,247,.35),inset -22px -22px 45px rgba(0,0,30,.6);position:relative;overflow:hidden">
+            <div style="position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 18px,rgba(150,190,255,.12) 18px,rgba(150,190,255,.12) 19px),repeating-linear-gradient(90deg,transparent,transparent 18px,rgba(150,190,255,.09) 18px,rgba(150,190,255,.09) 19px);border-radius:50%"></div>
+            <div style="position:absolute;top:20px;left:30px;width:60px;height:40px;background:radial-gradient(ellipse,rgba(255,255,255,.3),transparent 70%);border-radius:50%"></div>
+          </div>
+          <div style="position:absolute;inset:-16px;border-radius:50%;border:1.5px solid rgba(120,200,255,.25);animation:orb 5s linear infinite"></div>
+        </div>
+        <h1 id="globe-group-name" style="font-family:var(--font-display);font-size:clamp(1.8rem,5vw,2.6rem);font-weight:900;background:linear-gradient(135deg,#7eb3ff,#c084fc,#fb7185);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:.6rem">Welcome!</h1>
+        <p id="globe-sub" style="color:var(--text2);font-size:1rem;max-width:480px;margin:0 auto 2.2rem;line-height:1.65"></p>
+
+        <div class="grid-4" style="max-width:700px;margin:0 auto 2.2rem">
+          <div class="card" style="padding:1rem .8rem;text-align:center"><div style="font-size:1.7rem;margin-bottom:.4rem">💡</div><h4 style="font-size:.85rem;font-weight:700;margin-bottom:.3rem">Creative Thinking</h4><p style="font-size:.73rem;color:var(--text3);line-height:1.5">Break any problem into steps and find solutions.</p></div>
+          <div class="card" style="padding:1rem .8rem;text-align:center"><div style="font-size:1.7rem;margin-bottom:.4rem">🌍</div><h4 style="font-size:.85rem;font-weight:700;margin-bottom:.3rem">Change the World</h4><p style="font-size:.73rem;color:var(--text3);line-height:1.5">Every app & robot started exactly where you are.</p></div>
+          <div class="card" style="padding:1rem .8rem;text-align:center"><div style="font-size:1.7rem;margin-bottom:.4rem">💼</div><h4 style="font-size:.85rem;font-weight:700;margin-bottom:.3rem">Amazing Careers</h4><p style="font-size:.73rem;color:var(--text3);line-height:1.5">Top future jobs all require coding skills.</p></div>
+          <div class="card" style="padding:1rem .8rem;text-align:center"><div style="font-size:1.7rem;margin-bottom:.4rem">🎮</div><h4 style="font-size:.85rem;font-weight:700;margin-bottom:.3rem">Create Anything</h4><p style="font-size:.73rem;color:var(--text3);line-height:1.5">Games, apps, robots — build what you imagine.</p></div>
+        </div>
+
+        <button class="btn btn-primary" onclick="APP.go('courses')" style="margin-bottom:1rem">🚀 Dive In — Let's Build Something!</button>
+        <br>
+        <button class="btn btn-ghost btn-sm" onclick="APP.go('dashboard')">← Back to Dashboard</button>
+      </div>
+    </div>
+
+    <!-- PAGE: DASHBOARD -->
+    <div class="page" id="page-dashboard">
+      <div class="content-pad">
+        <div class="welcome-banner">
+          <span class="wb-emoji">👋</span>
+          <div class="wb-text">
+            <h2>Welcome back, <span id="wb-user-name">there</span>!</h2>
+            <p>Ready to continue your coding adventure today?</p>
+          </div>
+          <div class="wb-actions">
+            <button class="btn btn-primary btn-sm" onclick="APP.go('courses')">Continue Learning →</button>
+          </div>
+        </div>
+
+        <div class="continue-banner" id="continue-banner" style="display:none">
+          <span class="cb-icon">📖</span>
+          <div class="cb-text">
+            <div class="cb-label">Continue Where You Left Off</div>
+            <div class="cb-title" id="continue-course-title">Course Name</div>
+            <div class="cb-sub" id="continue-step-label">Step 1</div>
+          </div>
+          <span class="cb-arrow">→</span>
+        </div>
+
+        <div class="grid-4" style="margin-bottom:2rem">
+          <div class="stat-box"><div class="sb-icon">⭐</div><div class="sb-val" id="dash-xp">0</div><div class="sb-label">Total XP</div></div>
+          <div class="stat-box"><div class="sb-icon">📚</div><div class="sb-val">12</div><div class="sb-label">Courses Available</div></div>
+          <div class="stat-box"><div class="sb-icon">🔥</div><div class="sb-val" id="dash-streak">1</div><div class="sb-label">Day Streak</div></div>
+          <div class="stat-box"><div class="sb-icon">🏆</div><div class="sb-val" id="dash-certs">0</div><div class="sb-label">Certificates Earned</div></div>
+        </div>
+
+        <div class="section-label">Pick Up Where You Left Off</div>
+        <div class="grid-auto-lg" id="dash-courses-grid" style="margin-bottom:2rem"></div>
+
+        <div class="section-label">Quick Links</div>
+        <div class="grid-4">
+          <div class="card card-lift" style="padding:1.2rem;text-align:center;cursor:pointer" onclick="APP.go('lab',{courseId:'python1'})">
+            <div style="font-size:1.8rem;margin-bottom:.5rem">🧪</div>
+            <h4 style="font-size:.85rem;font-weight:700">Open Code Lab</h4>
+          </div>
+          <div class="card card-lift" style="padding:1.2rem;text-align:center;cursor:pointer" onclick="APP.go('cert-input')">
+            <div style="font-size:1.8rem;margin-bottom:.5rem">🏆</div>
+            <h4 style="font-size:.85rem;font-weight:700">Get Certified</h4>
+          </div>
+          <div class="card card-lift" style="padding:1.2rem;text-align:center;cursor:pointer" onclick="APP.go('progress')">
+            <div style="font-size:1.8rem;margin-bottom:.5rem">📈</div>
+            <h4 style="font-size:.85rem;font-weight:700">View Progress</h4>
+          </div>
+          <div class="card card-lift" style="padding:1.2rem;text-align:center;cursor:pointer" onclick="APP.go('courses')">
+            <div style="font-size:1.8rem;margin-bottom:.5rem">📚</div>
+            <h4 style="font-size:.85rem;font-weight:700">Browse Courses</h4>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE: COURSES -->
+    <div class="page" id="page-courses">
+      <div class="content-pad">
+        <div class="page-header">
+          <div class="eyebrow">Course Catalogue</div>
+          <h1 id="courses-page-title">Choose Your Course</h1>
+          <p id="courses-page-sub">Browse all available courses</p>
+          <div class="ph-actions">
+            <button class="btn btn-ghost btn-sm" onclick="APP.go('dashboard')">← Dashboard</button>
+            <button class="btn btn-ghost btn-sm" onclick="APP.go('globe',{group:APP.state.currentGroup})">🌍 Why Code?</button>
+          </div>
+        </div>
+        <div class="grid-auto-lg" id="courses-main-grid"></div>
+      </div>
+    </div>
+
+    <!-- PAGE: LESSON -->
+    <div class="page" id="page-lesson">
+      <div class="content-pad">
+        <div class="page-header">
+          <div class="eyebrow">📖 Lesson</div>
+          <h1 id="lesson-page-title">Lesson</h1>
+          <p id="lesson-page-sub"></p>
+          <div class="ph-actions">
+            <button class="btn btn-ghost btn-sm" onclick="APP.go('courses')">← All Courses</button>
+          </div>
+        </div>
+        <div class="lesson-layout">
+          <div class="lesson-main" id="lesson-main-content"></div>
+          <div class="lesson-sidebar" id="lesson-sidebar-content"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE: LAB -->
+    <div class="page" id="page-lab">
+      <div class="content-pad">
+        <div class="page-header">
+          <div class="eyebrow">🧪 Hands-on Lab</div>
+          <h1 id="lab-page-title">Code Lab</h1>
+          <p id="lab-page-sub"></p>
+          <div class="ph-actions">
+            <button class="btn btn-ghost btn-sm" onclick="APP.go('courses')">← All Courses</button>
+          </div>
+        </div>
+        <div class="lab-stars-bar">
+          <span class="lsb-label">⭐ Lab Stars Earned</span>
+          <span id="lab-stars-display"></span>
+        </div>
+        <div class="lab-layout">
+          <div>
+            <div class="lab-editor-wrap">
+              <div class="lab-editor-toolbar">
+                <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+                <span class="lab-file-tab" id="lab-file-tab">main.py</span>
+                <button class="lab-run-btn" onclick="APP.runLab()">▶ Run Code</button>
+              </div>
+              <div class="lab-editor" id="lab-editor" contenteditable="true" spellcheck="false"></div>
+              <div class="lab-output" id="lab-output"><div class="lab-output-label">OUTPUT</div><span style="color:var(--text3)">Click "Run Code" to see your output here!</span></div>
+            </div>
+          </div>
+          <div class="lab-panel">
+            <div class="lab-panel-card">
+              <div class="lab-panel-header">🎯 Lab Challenges</div>
+              <div class="lab-panel-body" id="lab-challenge-panel"></div>
+            </div>
+            <div class="lab-panel-card">
+              <div class="lab-panel-header">💡 Tips</div>
+              <div class="lab-panel-body">
+                <div class="lab-hint">This lab simulates simple output. For full code execution, try repl.it or your local IDE!</div>
+                <div class="lab-hint">Click directly in the code editor to edit — just like a real code editor.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE: CERTIFICATION INPUT -->
+    <div class="page" id="page-cert-input">
+      <div class="content-pad" style="max-width:640px;margin:0 auto;text-align:center">
+        <div style="font-size:3rem;margin-bottom:.5rem">🏆</div>
+        <h1 style="font-family:var(--font-display);font-size:1.8rem;font-weight:900;margin-bottom:.4rem">Get Your Certificate!</h1>
+        <p style="color:var(--text2);margin-bottom:1.8rem;font-size:.92rem;line-height:1.6">Complete the short certification test to earn your official <strong style="color:var(--gold)">Team21 Academy 4 Kids</strong> certificate, signed by Director Innocent Forteh!</p>
+
+        <div class="grid-4" style="margin-bottom:1.5rem">
+          <div class="card" style="padding:.9rem;text-align:center"><div style="font-size:1.4rem;margin-bottom:.3rem">📝</div><p style="font-size:.72rem;color:var(--text2)">5 questions per course</p></div>
+          <div class="card" style="padding:.9rem;text-align:center"><div style="font-size:1.4rem;margin-bottom:.3rem">⏱️</div><p style="font-size:.72rem;color:var(--text2)">2 minutes to complete</p></div>
+          <div class="card" style="padding:.9rem;text-align:center"><div style="font-size:1.4rem;margin-bottom:.3rem">✅</div><p style="font-size:.72rem;color:var(--text2)">Pass at 60% or higher</p></div>
+          <div class="card" style="padding:.9rem;text-align:center"><div style="font-size:1.4rem;margin-bottom:.3rem">🖨️</div><p style="font-size:.72rem;color:var(--text2)">Print after passing</p></div>
+        </div>
+
+        <div class="card" style="padding:1.6rem;text-align:left;margin-bottom:1.3rem">
+          <div style="margin-bottom:1rem">
+            <label style="display:block;font-size:.78rem;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.4rem">Your Full Name</label>
+            <input type="text" id="cert-name-input" placeholder="e.g. Amara Forteh" style="width:100%;background:rgba(255,255,255,.06);border:1px solid var(--border);border-radius:.75rem;padding:.7rem 1rem;color:var(--text);font-size:.95rem;outline:none">
+          </div>
+          <div style="margin-bottom:1rem">
+            <label style="display:block;font-size:.78rem;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.4rem">Your Age</label>
+            <input type="number" id="cert-age-input" placeholder="e.g. 12" min="6" max="18" style="width:100%;background:rgba(255,255,255,.06);border:1px solid var(--border);border-radius:.75rem;padding:.7rem 1rem;color:var(--text);font-size:.95rem;outline:none">
+          </div>
+          <div>
+            <label style="display:block;font-size:.78rem;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.4rem">Course Completed</label>
+            <select id="cert-course-select" style="width:100%;background:rgba(255,255,255,.06);border:1px solid var(--border);border-radius:.75rem;padding:.7rem 1rem;color:var(--text);font-size:.95rem;outline:none"></select>
+          </div>
+        </div>
+
+        <button class="btn btn-gold" onclick="APP.startTest()">🎯 Start My Certification Test!</button>
+        <br><br>
+        <button class="btn btn-ghost btn-sm" onclick="APP.go('courses')">← Back to Learning</button>
+      </div>
+    </div>
+
+    <!-- PAGE: TEST -->
+    <div class="page" id="page-test">
+      <div class="content-pad" style="max-width:680px;margin:0 auto">
+        <div class="page-header" style="border-bottom:none">
+          <h1 id="test-page-title" style="font-size:1.5rem">Certification Test</h1>
+          <p id="test-page-sub"></p>
+        </div>
+        <div style="font-size:.78rem;color:var(--text3);text-align:right;margin-bottom:.4rem" id="test-timer-label">⏱️ 2:00 remaining</div>
+        <div class="timer-track"><div class="timer-fill" id="test-timer-fill" style="width:100%"></div></div>
+        <div id="test-questions-wrap"></div>
+        <button class="btn btn-gold" onclick="APP.submitTest()" style="width:100%;margin-top:1rem">✅ Submit My Answers</button>
+      </div>
+    </div>
+
+    <!-- PAGE: CERTIFICATE -->
+    <div class="page" id="page-certificate">
+      <div class="content-pad" style="text-align:center">
+        <div class="no-print" style="display:flex;gap:.8rem;justify-content:center;flex-wrap:wrap;margin-bottom:1.5rem">
+          <button class="btn btn-gold" onclick="window.print()">🖨️ Print Certificate</button>
+          <button class="btn btn-ghost" onclick="APP.go('dashboard')">🏠 Back to Dashboard</button>
+          <button class="btn btn-ghost" onclick="APP.go('courses')">📚 Try Another Course</button>
+        </div>
+        <div class="cert-paper">
+          <div class="cert-watermark">TEAM21</div>
+          <div class="cert-inner-border"></div>
+          <div class="cert-corner tl"></div><div class="cert-corner tr"></div>
+          <div class="cert-corner bl"></div><div class="cert-corner br"></div>
+          <div style="font-size:3rem;margin-bottom:.2rem">🎓</div>
+          <div style="font-size:.78rem;color:#6b5900;font-weight:800;letter-spacing:.14em;text-transform:uppercase">Team21 Academy 4 Kids</div>
+          <div style="font-size:.7rem;color:#9a8000;margin-bottom:.5rem;letter-spacing:.06em">Empowering the Next Generation of Coders · Since 2024</div>
+          <div style="color:#c8a800;font-size:1.1rem;margin:.4rem 0;letter-spacing:.3em">✦ ✦ ✦</div>
+          <div style="font-size:.7rem;color:#8b7000;letter-spacing:.18em;text-transform:uppercase;padding:.3rem 1.5rem;border-top:1px solid rgba(200,168,0,.3);border-bottom:1px solid rgba(200,168,0,.3);display:inline-block;margin:.4rem 0">Certificate of Achievement</div>
+          <div style="font-size:.85rem;color:#9a8000;font-style:italic;margin:1rem 0 .3rem">This is to proudly certify that</div>
+          <div id="cert-student-name" style="font-size:2.3rem;font-weight:900;color:#1a0f00;font-family:Georgia,serif;letter-spacing:.03em;margin:.2rem 0 .5rem">Student Name</div>
+          <div id="cert-score-badge"></div>
+          <div id="cert-body-text" style="font-size:.85rem;color:#4a3800;line-height:1.8;max-width:460px;margin:.8rem auto"></div>
+          <div style="font-size:.78rem;color:#6b5000;margin-bottom:.2rem">Course Successfully Completed:</div>
+          <div id="cert-course-name" style="font-size:1.15rem;font-weight:800;color:#0a3800;margin:.3rem 0 .5rem">Course Name</div>
+          <div style="display:inline-flex;flex-direction:column;align-items:center;justify-content:center;width:92px;height:92px;background:linear-gradient(135deg,#c8a800,#e6c000);border-radius:50%;margin:1rem 0;box-shadow:0 4px 24px rgba(200,168,0,.4)">
+            <span style="font-size:1.9rem">⭐</span><small style="font-size:.46rem;color:#3a2800;font-weight:800;letter-spacing:.06em;text-transform:uppercase">Team21 Certified</small>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:2.5rem;margin-top:1.5rem;padding-top:1.2rem;border-top:1px solid rgba(200,168,0,.25)">
+            <div style="text-align:center">
+              <div style="font-size:1.2rem;font-family:Georgia,serif;color:#2a1800;margin-bottom:.3rem">Innocent Forteh</div>
+              <div style="border-top:1px solid rgba(139,112,0,.5);padding-top:.3rem">
+                <div style="font-size:.8rem;font-weight:700;color:#1a1000">Innocent Forteh</div>
+                <div style="font-size:.68rem;color:#6b5000">Director, Team21 Academy 4 Kids</div>
+              </div>
+            </div>
+            <div style="text-align:center">
+              <div style="font-size:1rem;font-family:Georgia,serif;color:#2a1800;letter-spacing:.08em;margin-bottom:.3rem">TEAM21 ✦</div>
+              <div style="border-top:1px solid rgba(139,112,0,.5);padding-top:.3rem">
+                <div style="font-size:.8rem;font-weight:700;color:#1a1000">Team21 Coding Academy</div>
+                <div style="font-size:.68rem;color:#6b5000">Official Certification Authority</div>
+              </div>
+            </div>
+          </div>
+          <div id="cert-date-id" style="font-size:.7rem;color:#9a8000;margin-top:.8rem;letter-spacing:.04em"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE: PROGRESS -->
+    <div class="page" id="page-progress">
+      <div class="content-pad">
+        <div class="page-header">
+          <div class="eyebrow">📈 My Journey</div>
+          <h1>Your Progress</h1>
+          <p>Track your achievements across the academy</p>
+        </div>
+        <div class="grid-4" style="margin-bottom:2rem">
+          <div class="stat-box"><div class="sb-icon">⭐</div><div class="sb-val" id="prog-xp-total">0 XP</div><div class="sb-label">Total Experience</div></div>
+          <div class="stat-box"><div class="sb-icon">🌟</div><div class="sb-val" id="prog-stars-total">0 ⭐</div><div class="sb-label">Lab Stars Earned</div></div>
+          <div class="stat-box"><div class="sb-icon">🔥</div><div class="sb-val">1</div><div class="sb-label">Day Streak</div></div>
+          <div class="stat-box"><div class="sb-icon">🏆</div><div class="sb-val" id="prog-certs-count">0</div><div class="sb-label">Certificates Earned</div></div>
+        </div>
+        <div class="card" style="padding:1.5rem;margin-bottom:1.5rem">
+          <div style="display:flex;justify-content:space-between;margin-bottom:.6rem">
+            <span style="font-size:.9rem;font-weight:700">Overall Academy Progress</span>
+            <span id="prog-overall-label" style="font-size:.82rem;color:var(--text2)">0 of 12 courses completed</span>
+          </div>
+          <div class="progress-track"><div class="progress-fill gold" id="prog-overall-bar" style="width:0%"></div></div>
+        </div>
+        <div class="section-label">Course-by-Course Breakdown</div>
+        <div class="card" style="padding:1.2rem 1.5rem;margin-bottom:2rem" id="prog-course-breakdown"></div>
+        <div class="section-label">Badges & Milestones</div>
+        <div class="grid-4">
+          <div class="card" style="padding:1.2rem;text-align:center"><div style="font-size:1.8rem;margin-bottom:.4rem">🎯</div><h4 style="font-size:.82rem;font-weight:700">First Steps</h4><p style="font-size:.7rem;color:var(--text3)">Complete your first lesson</p></div>
+          <div class="card" style="padding:1.2rem;text-align:center"><div style="font-size:1.8rem;margin-bottom:.4rem">🔥</div><h4 style="font-size:.82rem;font-weight:700">On Fire</h4><p style="font-size:.7rem;color:var(--text3)">3-day learning streak</p></div>
+          <div class="card" style="padding:1.2rem;text-align:center"><div style="font-size:1.8rem;margin-bottom:.4rem">🏆</div><h4 style="font-size:.82rem;font-weight:700">Certified</h4><p style="font-size:.7rem;color:var(--text3)">Earn your first certificate</p></div>
+          <div class="card" style="padding:1.2rem;text-align:center;opacity:.4"><div style="font-size:1.8rem;margin-bottom:.4rem">👑</div><h4 style="font-size:.82rem;font-weight:700">Master Coder</h4><p style="font-size:.7rem;color:var(--text3)">Complete all 12 courses</p></div>
+        </div>
+      </div>
+    </div>
+
+  </div> <!-- /main-content -->
+</div> <!-- /academy-shell -->
+
+<script src="js/data-catalog.js"></script>
+<script src="js/data-history.js"></script>
+<script src="js/lab-data.js"></script>
+<script src="js/test-data.js"></script>
+<script src="js/lessons-ai.js"></script>
+<script src="js/lessons-python1.js"></script>
+<script src="js/lessons-python-extra.js"></script>
+<script src="js/lessons-web.js"></script>
+<script src="js/lessons-clang.js"></script>
+<script src="js/lessons-java.js"></script>
+<script src="js/lessons-cpp.js"></script>
+<script src="js/lessons-robotics.js"></script>
+<script src="js/lessons-scratch.js"></script>
+<script src="js/app.js"></script>
+<script>
+  // Override APP.go to handle landing/academy-shell visibility
+  const originalGo = APP.go.bind(APP);
+  APP.go = function(page, params) {
+    const landingPage = document.getElementById('page-landing');
+    const shell = document.getElementById('academy-shell');
+    if (page === 'landing') {
+      landingPage.classList.add('active');
+      shell.style.display = 'none';
+      this.state.page = 'landing';
+      this.render('landing', params);
+      window.scrollTo(0,0);
+      return;
+    }
+    landingPage.classList.remove('active');
+    shell.style.display = 'grid';
+    originalGo(page, params);
+    // Update avatar/name displays
+    document.getElementById('topbar-avatar-init').textContent = this.state.user.initials;
+    document.getElementById('sidebar-avatar-init').textContent = this.state.user.initials;
+    document.getElementById('sidebar-user-name').textContent = this.state.user.name;
+    document.getElementById('sidebar-user-xp').textContent = `${this.state.user.xp} XP · 🔥 ${this.state.user.streak || 1} day streak`;
+    document.getElementById('dash-certs') && (document.getElementById('dash-certs').textContent = this.state.completedCourses.length);
+    document.getElementById('prog-certs-count') && (document.getElementById('prog-certs-count').textContent = this.state.completedCourses.length);
+  };
+
+  APP.searchAcademy = function(e) {
+    const q = e.target.value.toLowerCase().trim();
+    if (e.key === 'Enter' && q) {
+      const match = T21.allCourses().find(c => c.title.toLowerCase().includes(q) || c.lang.toLowerCase().includes(q));
+      if (match) {
+        this.openCourse(match.id);
+        e.target.value = '';
+      } else {
+        this.toast(`No course found for "${q}"`);
+      }
+    }
+  };
+
+  // Load saved progress (if any) then decide initial screen
+  const hadSavedProgress = APP.load();
+  if (hadSavedProgress && APP.state.user.name !== 'Student') {
+    // Returning, identified user → go straight to dashboard
+    APP.go('dashboard');
+  } else {
+    // First-time visitor or no saved name yet → show landing page
+    APP.render_landing();
+  }
+</script>
+</body>
+</html>
+

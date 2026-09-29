@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Admin Dashboard · Innov8te Labs4Africa</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="stylesheet" href="css/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23FF5714'/><text x='50' y='70' font-size='52' text-anchor='middle' fill='black' font-weight='bold'>i8</text></svg>">
+</head>
+<body>
+
+<!-- GATE -->
+<div id="gate" style="position:fixed;inset:0;z-index:200;background:var(--black);display:grid;place-items:center;padding:24px">
+  <div class="panel" style="max-width:380px;width:100%;text-align:center;border-top:5px solid var(--orange)">
+    <div style="font-size:3rem;margin-bottom:8px">🔐</div>
+    <h2 style="font-size:1.5rem;margin-bottom:6px">Admin access</h2>
+    <p style="color:var(--muted);font-size:.92rem;margin-bottom:18px">Enter your dashboard passcode to continue.</p>
+    <input id="pass" type="password" placeholder="Passcode" class="lab-input" style="margin-bottom:12px">
+    <button class="btn btn-primary" id="enter" style="width:100%;justify-content:center">Enter →</button>
+    <p id="gateMsg" style="color:#DC2626;font-size:.85rem;margin-top:10px;min-height:18px"></p>
+    <p style="font-size:.78rem;color:var(--muted);margin-top:16px">Default passcode: <code>labs4africa</code><br>Change it in admin.html → search for PASSCODE</p>
+  </div>
+</div>
+
+<header class="site-header">
+  <nav class="wrap nav">
+    <a class="brand" href="index.html"><span class="brand-mark">i8</span><span class="brand-name">Innov<em>8</em>te Labs4Africa</span></a>
+    <ul class="nav-links"><li><a href="index.html">← Back to site</a></li></ul>
+  </nav>
+</header>
+
+<main id="dash" style="display:none">
+  <section class="hero" style="min-height:auto">
+    <div class="wrap" style="padding-block:36px;position:relative;z-index:1">
+      <span class="eyebrow">Admin</span>
+      <h1 style="color:#fff;font-size:clamp(1.8rem,4vw,2.6rem)">Platform analytics dashboard</h1>
+      <p id="range" style="color:rgba(255,255,255,.65);margin-top:6px">Loading…</p>
+    </div>
+  </section>
+  <div class="divider-bar"></div>
+
+  <section class="section" style="background:#fff">
+    <div class="wrap">
+      <div class="stat-grid" style="margin-bottom:26px">
+        <div class="stat"><div class="k">Total page views</div><div class="v" id="s-visits">0</div><div class="sub">pages viewed in this browser</div></div>
+        <div class="stat"><div class="k">Unique visitors</div><div class="v" id="s-unique">0</div><div class="sub">distinct device IDs seen</div></div>
+        <div class="stat"><div class="k">Lab sessions</div><div class="v" id="s-labs">0</div><div class="sub">times a lab was opened</div></div>
+        <div class="stat"><div class="k">Completions</div><div class="v" id="s-done">0</div><div class="sub">labs solved successfully</div></div>
+      </div>
+
+      <div class="lab-layout" style="grid-template-columns:1.2fr 1fr;margin-bottom:22px">
+        <div class="panel"><h3 style="margin-bottom:16px">🏆 Most popular tools</h3><div id="topLabs"></div></div>
+        <div class="panel"><h3 style="margin-bottom:16px">🌍 Where visitors are</h3>
+          <table class="data"><thead><tr><th>Country</th><th>City</th><th style="text-align:right">Visits</th></tr></thead>
+          <tbody id="locBody"><tr><td colspan="3" style="color:var(--muted)">No location data yet.</td></tr></tbody></table>
+        </div>
+      </div>
+
+      <div class="lab-layout" style="grid-template-columns:1fr 1fr;margin-bottom:22px">
+        <div class="panel"><h3 style="margin-bottom:16px">📄 Pages viewed</h3><div id="topPages"></div></div>
+        <div class="panel"><h3 style="margin-bottom:16px">💻 Devices &amp; browsers</h3><div id="devices"></div></div>
+      </div>
+
+      <div class="panel" style="margin-bottom:22px">
+        <h3 style="margin-bottom:16px">🕑 Recent activity</h3>
+        <div style="overflow-x:auto">
+          <table class="data"><thead><tr><th>When</th><th>Type</th><th>What</th><th>Location</th></tr></thead>
+          <tbody id="recent"><tr><td colspan="4" style="color:var(--muted)">No events yet.</td></tr></tbody></table>
+        </div>
+      </div>
+
+      <div class="lab-actions" style="margin-bottom:22px">
+        <button class="btn btn-primary btn-sm" id="exJson">⬇ Export JSON</button>
+        <button class="btn btn-dark btn-sm" id="exCsv">⬇ Export CSV</button>
+        <button class="btn btn-ghost btn-sm" id="refresh">↻ Refresh</button>
+        <button class="btn btn-ghost btn-sm" id="wipe" style="color:#DC2626;border-color:#FCA5A5">🗑 Clear data</button>
+      </div>
+
+      <div class="admin-note">
+        <strong>📡 How to see REAL global visitor data</strong><br><br>
+        Because this site is static (no server = fast + free on GitHub Pages), this dashboard reads from each browser's <b>local storage</b>. For true cross-visitor analytics — top pages + country maps across ALL users — add <a href="https://www.goatcounter.com" target="_blank" rel="noopener" style="color:var(--orange-d);font-weight:700">GoatCounter</a> (free, 3.5 KB, no cookies, perfect for slow networks). Paste one <code>&lt;script&gt;</code> tag into each page's <code>&lt;head&gt;</code> and you get a full hosted dashboard. Full instructions are in the README.
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-bottom">© <span data-year></span> Innov8te Labs4Africa · Innocent Forteh — Paid All Links Foundation. All rights reserved.</div>
+</footer>
+
+<script src="js/analytics.js"></script>
+<script src="js/main.js"></script>
+<script>
+(function () {
+  var PASSCODE = "labs4africa";
+  var gate = document.getElementById("gate"), dash = document.getElementById("dash");
+  function unlock(){ gate.style.display="none"; dash.style.display=""; render(); }
+  if (sessionStorage.getItem("i8_admin_ok")==="1") unlock();
+  document.getElementById("enter").addEventListener("click", tryPass);
+  document.getElementById("pass").addEventListener("keydown", function(e){ if(e.key==="Enter") tryPass(); });
+  function tryPass(){ if(document.getElementById("pass").value===PASSCODE){sessionStorage.setItem("i8_admin_ok","1");unlock();}else document.getElementById("gateMsg").textContent="Incorrect passcode."; }
+
+  function fmtDate(ts){ var d=new Date(ts); return d.toLocaleDateString()+" "+d.toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"}); }
+  function browserOf(ua){ if(/Edg\//.test(ua))return"Edge"; if(/OPR\/|Opera/.test(ua))return"Opera"; if(/SamsungBrowser/.test(ua))return"Samsung"; if(/Firefox\//.test(ua))return"Firefox"; if(/Chrome\//.test(ua))return"Chrome"; if(/Safari\//.test(ua))return"Safari"; return"Other"; }
+  function deviceOf(ua){ return /Mobi|Android|iPhone/.test(ua)?"Mobile":"Desktop"; }
+
+  function bars(id, pairs){
+    var box=document.getElementById(id); if(!pairs.length){box.innerHTML='<p style="color:var(--muted);font-size:.9rem">No data yet.</p>';return;}
+    var max=Math.max.apply(null,pairs.map(function(p){return p[1];}));
+    box.innerHTML=pairs.map(function(p){ var w=Math.round(p[1]/max*100); return'<div class="bar-row"><span>'+p[0]+'</span><span class="track"><i style="width:'+w+'%"></i></span><span class="num">'+p[1]+'</span></div>'; }).join("");
+  }
+  function sortPairs(obj){ return Object.keys(obj).map(function(k){return[k,obj[k]];}).sort(function(a,b){return b[1]-a[1];}); }
+  var LN={"pc-builder":"PC Builder","network-builder":"Network Builder","cyber-phishing":"Phishing Spotter","biology-cell":"Cell Explorer"};
+
+  function render(){
+    var data=window.Analytics.all(), ev=data.events||[];
+    document.getElementById("range").textContent=ev.length?"Showing "+ev.length+" events since "+new Date(data.firstSeen).toLocaleDateString():"No activity recorded on this device yet — open some labs first.";
+    var visits=0,uniq={},labC={},pageC={},done=0,loc={},brow={},dev={};
+    ev.forEach(function(e){
+      uniq[e.vid]=1;
+      if(e.t==="page"){visits++;pageC[e.n]=(pageC[e.n]||0)+1;}
+      if(e.t==="lab"){var nm=LN[e.n]||e.n;labC[nm]=(labC[nm]||0)+1;}
+      if(e.t==="action"&&/success|perfect|complete/.test(e.n))done++;
+      if(e.geo&&e.geo.country){var k=e.geo.country+"||"+(e.geo.city||"—");loc[k]=(loc[k]||0)+1;}
+      if(e.ua){brow[browserOf(e.ua)]=(brow[browserOf(e.ua)]||0)+1;dev[deviceOf(e.ua)]=(dev[deviceOf(e.ua)]||0)+1;}
+    });
+    document.getElementById("s-visits").textContent=visits;
+    document.getElementById("s-unique").textContent=Object.keys(uniq).length;
+    document.getElementById("s-labs").textContent=Object.keys(labC).reduce(function(a,k){return a+labC[k];},0);
+    document.getElementById("s-done").textContent=done;
+    bars("topLabs",sortPairs(labC)); bars("topPages",sortPairs(pageC));
+    bars("devices",sortPairs(dev).concat(sortPairs(brow)));
+    var lb=document.getElementById("locBody"),lp=sortPairs(loc);
+    if(lp.length) lb.innerHTML=lp.map(function(p){var pts=p[0].split("||");return"<tr><td>"+pts[0]+"</td><td>"+pts[1]+"</td><td style='text-align:right'>"+p[1]+"</td></tr>";}).join("");
+    var rb=document.getElementById("recent"),recent=ev.slice(-15).reverse();
+    rb.innerHTML=recent.length?recent.map(function(e){var what=e.t==="lab"?(LN[e.n]||e.n):e.n;var where=e.geo?(e.geo.city?e.geo.city+", ":"")+(e.geo.country||""):"—";return"<tr><td>"+fmtDate(e.ts)+"</td><td>"+e.t+"</td><td>"+what+"</td><td>"+where+"</td></tr>";}).join(""):"<tr><td colspan='4' style='color:var(--muted)'>No events yet.</td></tr>";
+  }
+  function download(name,text,type){var a=document.createElement("a");a.href=URL.createObjectURL(new Blob([text],{type:type}));a.download=name;a.click();URL.revokeObjectURL(a.href);}
+  document.getElementById("exJson").addEventListener("click",function(){download("labs4africa-analytics.json",JSON.stringify(window.Analytics.all(),null,2),"application/json");});
+  document.getElementById("exCsv").addEventListener("click",function(){var ev=window.Analytics.all().events||[];var rows=[["timestamp","datetime","type","name","visitor","country","city","browser"]];ev.forEach(function(e){rows.push([e.ts,new Date(e.ts).toISOString(),e.t,e.n,e.vid,e.geo?e.geo.country:"",e.geo?e.geo.city:"",browserOf(e.ua||"")]);});download("labs4africa-analytics.csv",rows.map(function(r){return r.map(function(c){return'"'+String(c).replace(/"/g,'""')+'"';}).join(",");}).join("\n"),"text/csv");});
+  document.getElementById("refresh").addEventListener("click",render);
+  document.getElementById("wipe").addEventListener("click",function(){if(confirm("Clear all analytics data on this device? Cannot be undone.")){window.Analytics.reset();render();}});
+})();
+</script>
+</body>
+</html>

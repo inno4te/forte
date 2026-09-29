@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Food Additives Decoded — Team21 Health Platform</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700;9..144,800&family=Inter+Tight:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#2d2823">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Team21">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="brand">
+      <div class="brand-mark">T21</div>
+      <div>
+        <div class="brand-name">Team21 Health Platform</div>
+        <div class="brand-sub">Preventive Intelligence</div>
+      </div>
+    </a>
+    <div class="nav-cta" id="navCta"></div>
+  </div>
+</nav>
+
+<main class="page">
+  <header class="page-head">
+    <div>
+      <div class="eyebrow">Part Two · Food Additives</div>
+      <h1>The label, <em>decoded</em>.</h1>
+      <p class="intro">Industrial food relies on dozens of additives that rarely appear under a single name. Carrageenan, aspartame, sodium nitrites, BHA/BHT, titanium dioxide, synthetic dyes, MSG, emulsifiers and potassium bromate are mapped here — what they are, every alias they hide behind, where they appear, and what the evidence shows.</p>
+    </div>
+    <div class="meta">
+      9 ADDITIVES<br>
+      40+ LABEL ALIASES<br>
+      SOURCES: IARC · EFSA · JECFA · FDA
+    </div>
+  </header>
+
+  <div class="search-bar">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+    <input type="text" id="addSearch" placeholder="Search additives — e.g. carrageenan, E171, polysorbate…" />
+  </div>
+
+  <div class="topic-grid" id="additivesGrid"></div>
+
+  <section style="margin-top:60px">
+    <h2 class="sect">Decoding strategies for the <em>conscientious shopper</em></h2>
+    <div class="info-grid">
+      <div class="info-card">
+        <h4>Read in this order</h4>
+        <ul>
+          <li>If the ingredient list is longer than your hand, put it back.</li>
+          <li>Anything starting with E1__ to E4__ is usually a permitted additive — look it up rather than assume the worst, but treat as a signal of processing.</li>
+          <li>"Natural flavour" can legally hide dozens of components; in highly processed foods, assume the flavour profile is engineered.</li>
+          <li>"Uncured" and "no nitrites added" with celery powder/juice deliver the same nitrite exposure as cured meats.</li>
+        </ul>
+      </div>
+      <div class="info-card">
+        <h4>Common hidden synonyms</h4>
+        <ul>
+          <li><strong>Sugar</strong>: HFCS, glucose-fructose syrup, isoglucose, maltose, dextrose, agave, fruit juice concentrate, evaporated cane juice.</li>
+          <li><strong>MSG</strong>: hydrolysed vegetable protein, yeast extract, autolysed yeast, sodium caseinate, soy protein isolate.</li>
+          <li><strong>Carrageenan</strong>: E407, Irish moss extract, PNG carrageenan, "vegetable gum."</li>
+          <li><strong>Nitrites</strong>: celery powder, celery juice concentrate, "natural curing agents."</li>
+          <li><strong>Synthetic dyes</strong>: E102 (Yellow 5), E110 (Yellow 6), E129 (Red 40), E133 (Blue 1), E143 (Green 3).</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script src="data.js"></script>
+<script src="lang-data.js"></script>
+<script src="lang.js"></script>
+<script src="shared.js"></script>
+<script src="components.js"></script>
+<script>
+T21.boot('additives.html');
+const wrap = document.getElementById('additivesGrid');
+wrap.innerHTML = TOPICS.additives.map(renderTopic).join('');
+wireTopicActions(wrap);
+
+document.getElementById('addSearch').addEventListener('input', e=>{
+  const q = e.target.value.toLowerCase().trim();
+  document.querySelectorAll('#additivesGrid .topic').forEach(t=>{
+    const hay = (t.dataset.search || '') + ' ' + t.textContent.toLowerCase();
+    t.style.display = (!q || hay.includes(q)) ? '' : 'none';
+  });
+});
+
+window.onUserAuthChange = ()=> refreshBookmarkStates(wrap);
+</script>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('service-worker.js')
+      .then(reg => console.log('[Team21] Service Worker registered:', reg.scope))
+      .catch(err => console.warn('[Team21] SW registration failed:', err));
+  });
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Natural Remedies — Team21 Health Platform</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700;9..144,800&family=Inter+Tight:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="brand">
+      <div class="brand-mark">T21</div>
+      <div>
+        <div class="brand-name">Team21 Health Platform</div>
+        <div class="brand-sub">Preventive Intelligence</div>
+      </div>
+    </a>
+    <div class="nav-cta" id="navCta"></div>
+  </div>
+</nav>
+
+<main class="page">
+  <header class="page-head">
+    <div>
+      <div class="eyebrow">Pantry &amp; Garden · Evidence-Based</div>
+      <h1>Spices, herbs &amp; foods that <em>actually work</em>.</h1>
+      <p class="intro">A pragmatic field guide to the household plants, spices and foods with credible peer-reviewed evidence behind them — ginger, lemongrass, cloves, turmeric, garlic, hibiscus, moringa, leafy greens, nuts and more. The aim is to separate established benefits from folklore, and to give practical preparation guidance. None of this replaces a doctor for serious illness.</p>
+    </div>
+    <div class="meta">
+      ${15}+ REMEDIES<br>
+      USES · DOSES · CAUTIONS<br>
+      EVIDENCE-CITED
+    </div>
+  </header>
+
+  <div class="warn">
+    <strong>An honest framing</strong>
+    Foods and herbs can support health — they cannot reliably cure serious disease. The remedies below have credible evidence for specific, often modest effects. They are not substitutes for vaccinations, prescribed medications, cancer treatment, or evaluation of serious symptoms. Some interact with medications (garlic, ginger, turmeric with anticoagulants; grapefruit with many drugs); discuss any regular medicinal use with your clinician.
+  </div>
+
+  <div class="search-bar">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+    <input type="text" id="rSearch" placeholder="Search remedies — e.g. nausea, ginger, BP, cholesterol…" />
+  </div>
+
+  <section>
+    <h2 class="sect">The <em>pantry</em></h2>
+    <div class="remedy-grid" id="remedyGrid"></div>
+  </section>
+
+  <section style="margin-top:60px">
+    <h2 class="sect">Putting it <em>together</em> — practical combinations</h2>
+    <div class="info-grid">
+      <div class="info-card">
+        <h4>For nausea</h4>
+        <p>Sliced fresh ginger (2 cm) simmered in water for 10 min, sweetened lightly with honey. 1–2 cups/day. Effective for motion sickness, morning sickness, post-operative nausea.</p>
+      </div>
+      <div class="info-card">
+        <h4>For mild blood pressure elevation</h4>
+        <p>Hibiscus tea (2 cups daily, unsweetened) + 1 fresh garlic clove crushed and rested 10 min before eating + 2–3 cups oily-fish weekly + brisk walking 30 min/day. Reasonable to try before medication if BP is borderline (130–139/80–89), with your clinician.</p>
+      </div>
+      <div class="info-card">
+        <h4>For common cold and sore throat</h4>
+        <p>Warm lemon and honey (>1 year old only), with grated ginger and a pinch of cayenne. Soothes throat; honey is a modest cough suppressant.</p>
+      </div>
+      <div class="info-card">
+        <h4>For mild joint stiffness</h4>
+        <p>Turmeric milk: ½ tsp turmeric, ½ tsp grated ginger, pinch of black pepper, in warm milk (or plant milk) at bedtime. Curcumin has modest evidence for osteoarthritis pain.</p>
+      </div>
+      <div class="info-card">
+        <h4>For IBS or bloating</h4>
+        <p>Enteric-coated peppermint oil 0.2 mL three times daily before meals has the strongest evidence. Reduce ultra-processed food and FODMAP triggers. Discuss with a gastroenterologist if symptoms persist.</p>
+      </div>
+      <div class="info-card">
+        <h4>For everyday cardio-protection</h4>
+        <p>30 g of nuts daily (mixed: walnuts, almonds, groundnuts — discard mouldy), one tablespoon ground flaxseed, fresh garlic and ginger in cooking, leafy greens daily, hibiscus 2× weekly. Cumulative effects matter more than any single ingredient.</p>
+      </div>
+    </div>
+  </section>
+
+  <section style="margin-top:50px">
+    <h2 class="sect">What does <em>not</em> work (despite popular claims)</h2>
+    <div class="warn">
+      <strong>Caution: avoid</strong>
+      <ul style="margin:8px 0 0;padding-left:20px;line-height:1.7">
+        <li><strong>"Liver detoxes" and "kidney cleanses"</strong> — the liver and kidneys are continuous detoxifiers; some traditional formulas contain nephrotoxic aristolochic acid (IARC Group 1 carcinogen).</li>
+        <li><strong>High-dose green tea extract supplements</strong> — multiple case reports of acute liver injury. Drinking green tea is fine; concentrated extracts are not.</li>
+        <li><strong>Colloidal silver</strong> — causes irreversible argyria (blue-grey skin discolouration) and has no proven therapeutic benefit.</li>
+        <li><strong>Whole-leaf aloe vera taken orally</strong> — linked to colorectal tumours in animal studies (US NTP). Topical inner-gel use is fine.</li>
+        <li><strong>"Cancer-curing" herbal preparations</strong> — none have credible RCT evidence. They delay effective treatment.</li>
+        <li><strong>Unlicensed weight-loss "naturals"</strong> — frequently adulterated with stimulants, diuretics, or hidden pharmaceuticals.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section style="margin-top:30px">
+    <div class="note">
+      <strong>How to evaluate any health claim</strong>
+      Look for: peer-reviewed sources (PubMed, Cochrane, major medical journals); randomised controlled trials with placebo arms; effect sizes (not just "significant" but "by how much"); systematic reviews and meta-analyses; consistency across studies; biological plausibility. Be sceptical of single small studies, anecdotes, "ancient wisdom" alone, and anything that promises a cure for a serious disease.
+    </div>
+  </section>
+</main>
+
+<script src="data.js"></script>
+<script src="data-ext.js"></script>
+<script src="lang-data.js"></script>
+<script src="lang.js"></script>
+<script src="shared.js"></script>
+<script src="components.js"></script>
+<script>
+T21.boot('natural-remedies.html');
+
+const wrap = document.getElementById('remedyGrid');
+const _rFR = window.T21Lang && T21Lang.current==='fr';
+const _bL_r = _rFR ? '☆ Favori' : '☆ Bookmark';
+const _nL_r = _rFR ? '✎ Ajouter une note' : '✎ Add note';
+const _aL_r = _rFR ? '? Poser une question' : '? Ask question';
+const _howLabel = _rFR ? 'Comment utiliser' : 'How to use';
+wrap.innerHTML = REMEDIES.map(r=>{
+  const tr = _rFR ? T21Lang.Td('remedy', r.name) : null;
+  const name = (tr && tr.name) || r.name;
+  const sub = (tr && tr.sub) || r.sub;
+  const hay = (name+' '+sub+' '+r.uses+' '+r.how+' '+r.ev).toLowerCase();
+  const rid = 'remedy-'+r.name.toLowerCase().replace(/\s+/g,'-');
+  return `<article class="remedy" data-search="${hay.replace(/"/g,'&quot;')}">
+    <div class="remedy-head">
+      <div class="remedy-icon">${r.ic}</div>
+      <h3>${name}<small>${sub}</small></h3>
+    </div>
+    <div class="uses">${r.uses}</div>
+    <div class="topic-block"><h5>${_howLabel}</h5><p>${r.how}</p></div>
+    <div class="ev">${r.ev}</div>
+    <div class="topic-actions">
+      <button class="action-btn" data-act="bookmark" data-id="${rid}" data-name="${name.replace(/"/g,'&quot;')}">${_bL_r}</button>
+      <button class="action-btn" data-act="note" data-id="${rid}" data-name="${name.replace(/"/g,'&quot;')}">${_nL_r}</button>
+      <button class="action-btn" data-act="ask" data-id="${rid}" data-name="${name.replace(/"/g,'&quot;')}">${_aL_r}</button>
+    </div>
+  </article>`;
+}).join('');
+wireTopicActions(wrap);
+
+document.getElementById('rSearch').addEventListener('input', e=>{
+  const q = e.target.value.toLowerCase().trim();
+  wrap.querySelectorAll('.remedy').forEach(r=>{
+    r.style.display = (!q || (r.dataset.search||'').includes(q)) ? '' : 'none';
+  });
+});
+
+window.onUserAuthChange = ()=> refreshBookmarkStates(wrap);
+</script>
+</body>
+</html>

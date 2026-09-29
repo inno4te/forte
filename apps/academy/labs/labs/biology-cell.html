@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cell Explorer Lab · Innov8te Labs4Africa</title>
+<meta name="description" content="Label the parts of an animal cell, learn each organelle's function, then test yourself with a quick quiz.">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23FF6A1A'/><text x='50' y='70' font-size='52' text-anchor='middle' fill='black' font-weight='bold'>i8</text></svg>">
+<script>window.PAGE_LABEL = "Lab: Cell Explorer";</script>
+<style>
+  .cellwrap { position: relative; width: 100%; max-width: 580px; margin-inline: auto; aspect-ratio: 520/420; }
+  .cellwrap svg { width: 100%; height: 100%; display: block; }
+  .cell-slot { position: absolute; transform: translate(-50%,-50%); min-width: 34px; height: 32px; padding: 0 9px;
+    border-radius: 999px; background: #fff; border: 2.5px dashed var(--ink); display: grid; place-items: center;
+    font-size: .78rem; font-weight: 800; color: var(--ink); cursor: pointer; transition: .15s; white-space: nowrap; }
+  .cell-slot.over { background: var(--orange-tint); border-color: var(--orange); transform: translate(-50%,-50%) scale(1.12); }
+  .cell-slot.correct { border-style: solid; border-color: var(--orange); color: #fff; background: var(--orange); }
+  .tokens { display: flex; flex-wrap: wrap; gap: 9px; }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <nav class="wrap nav" aria-label="Primary">
+    <a class="brand" href="../index.html"><span class="brand-mark">i8</span>
+      <span class="brand-name">Innov<span>8</span>te Labs4Africa</span></a>
+    <button class="nav-toggle" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    <ul class="nav-links"><li><a href="../index.html">Home</a></li><li><a href="../index.html#labs">All labs</a></li><li><a href="../about.html">About</a></li></ul>
+  </nav>
+</header>
+
+<section class="lab-hero">
+  <div class="wrap">
+    <div>
+      <a href="../index.html#labs" class="back">← All labs</a>
+      <h1>🔬 Cell Explorer Lab</h1>
+      <p>Drag each label onto the correct part of this animal cell — or tap a label, then tap its spot. Get it right to learn what that organelle does. Label all eight to unlock the quiz.</p>
+    </div>
+    <div class="scoreboard">Labelled <b id="found">0</b><span>/ 8</span></div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="lab-layout" id="lab">
+      <div class="panel">
+        <div class="tray-title">Labels — drag onto the cell</div>
+        <div class="tokens" id="tokens">
+          <span class="label-token" data-org="nucleus">Nucleus</span>
+          <span class="label-token" data-org="mito">Mitochondrion</span>
+          <span class="label-token" data-org="membrane">Cell membrane</span>
+          <span class="label-token" data-org="ribosome">Ribosome</span>
+          <span class="label-token" data-org="golgi">Golgi apparatus</span>
+          <span class="label-token" data-org="lysosome">Lysosome</span>
+          <span class="label-token" data-org="er">Endoplasmic reticulum</span>
+          <span class="label-token" data-org="cytoplasm">Cytoplasm</span>
+        </div>
+        <div class="progress" style="margin-top:16px"><i id="bar"></i></div>
+        <div class="feedback" id="fb"></div>
+        <button class="btn btn-ghost btn-sm" id="reset" style="margin-top:14px">↺ Reset</button>
+      </div>
+
+      <div class="panel">
+        <div class="cellwrap" id="cellwrap">
+          <svg viewBox="0 0 520 420" xmlns="http://www.w3.org/2000/svg" aria-label="Animal cell diagram">
+            <ellipse cx="260" cy="210" rx="246" ry="196" fill="#FFF6EF" stroke="#0A0A0A" stroke-width="5"/>
+            <ellipse cx="260" cy="210" rx="237" ry="187" fill="none" stroke="#FF6A1A" stroke-width="2" opacity=".5"/>
+            <!-- ER -->
+            <path d="M150 150 q30 -25 60 0 q30 25 60 0" fill="none" stroke="#E2520A" stroke-width="4" opacity=".7"/>
+            <path d="M150 172 q30 -25 60 0 q30 25 60 0" fill="none" stroke="#E2520A" stroke-width="4" opacity=".7"/>
+            <!-- nucleus -->
+            <circle cx="270" cy="205" r="58" fill="#0A0A0A"/>
+            <circle cx="285" cy="196" r="19" fill="#333"/>
+            <!-- mitochondrion -->
+            <g transform="translate(385 120) rotate(20)">
+              <ellipse rx="40" ry="22" fill="#FF6A1A"/>
+              <path d="M-32 0 q10 -14 20 0 q10 14 20 0 q10 -14 20 0" fill="none" stroke="#fff" stroke-width="3"/>
+            </g>
+            <!-- ribosomes -->
+            <g fill="#0A0A0A"><circle cx="158" cy="150" r="5"/><circle cx="174" cy="158" r="5"/><circle cx="148" cy="166" r="5"/><circle cx="168" cy="140" r="5"/></g>
+            <!-- golgi -->
+            <g transform="translate(195 305)" fill="none" stroke="#FF8A45" stroke-width="6" stroke-linecap="round">
+              <path d="M-34 0 q34 -20 68 0"/><path d="M-30 14 q30 -18 60 0"/><path d="M-26 28 q26 -16 52 0"/></g>
+            <!-- lysosome -->
+            <circle cx="365" cy="300" r="22" fill="#0A0A0A"/><circle cx="365" cy="300" r="13" fill="#FF6A1A"/>
+          </svg>
+
+          <div class="cell-slot" data-org="membrane"  style="left:50%;top:4%">?</div>
+          <div class="cell-slot" data-org="er"        style="left:43%;top:34%">?</div>
+          <div class="cell-slot" data-org="ribosome"  style="left:30%;top:36%">?</div>
+          <div class="cell-slot" data-org="nucleus"   style="left:52%;top:49%">?</div>
+          <div class="cell-slot" data-org="mito"      style="left:74%;top:28%">?</div>
+          <div class="cell-slot" data-org="cytoplasm" style="left:24%;top:62%">?</div>
+          <div class="cell-slot" data-org="golgi"     style="left:37.5%;top:74%">?</div>
+          <div class="cell-slot" data-org="lysosome"  style="left:70%;top:71.4%">?</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- QUIZ -->
+    <div class="panel" id="quizCard" style="margin-top:22px;display:none">
+      <span class="eyebrow">Bonus quiz</span>
+      <h2 style="font-size:1.5rem;margin-bottom:6px">Test yourself</h2>
+      <p class="lead" style="margin-bottom:16px">Three quick questions on what each organelle does.</p>
+      <div id="quiz"></div>
+      <div class="feedback" id="quizFb"></div>
+    </div>
+
+    <div style="margin-top:34px">
+      <h2 style="font-size:1.6rem;margin-bottom:6px">Go deeper</h2>
+      <div class="res-grid">
+        <div class="yt" data-yt="URUJD5NEXC8" data-title="Cell organelles"><img alt=""><span class="play"></span><span class="cap">Cell organelles &amp; their functions</span></div>
+        <div class="yt" data-yt="8IlzKri08kk" data-title="Inside the cell"><img alt=""><span class="play"></span><span class="cap">A tour inside the living cell</span></div>
+      </div>
+      <ul class="link-list" style="margin-top:16px">
+        <li><a href="https://www.khanacademy.org/science/biology/structure-of-a-cell" target="_blank" rel="noopener" data-res="khan-cell"><span class="ico">🔬</span> Khan Academy — Structure of a cell <span class="arrow">↗</span></a></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer"><div class="footer-bottom">© <span data-year></span> Innov8te Labs4Africa · Innocent Forteh — Paid All Links Foundation. All rights reserved.</div></footer>
+
+<script src="../js/analytics.js"></script>
+<script src="../js/main.js"></script>
+<script>
+(function () {
+  if (window.Analytics) window.Analytics.track("lab", "biology-cell");
+  var INFO = {
+    nucleus:{name:"Nucleus", fn:"the control centre — stores the cell's DNA and directs all activity."},
+    mito:{name:"Mitochondrion", fn:"the powerhouse — releases energy (ATP) from food through respiration."},
+    membrane:{name:"Cell membrane", fn:"the boundary that controls what enters and leaves — selectively permeable."},
+    ribosome:{name:"Ribosome", fn:"the tiny machine that builds proteins from the nucleus's instructions."},
+    golgi:{name:"Golgi apparatus", fn:"the post office — packages and ships proteins to where they're needed."},
+    lysosome:{name:"Lysosome", fn:"the recycler — enzymes break down waste and worn-out parts."},
+    er:{name:"Endoplasmic reticulum", fn:"the transport network — moves proteins and lipids around the cell."},
+    cytoplasm:{name:"Cytoplasm", fn:"the jelly-like fluid where organelles sit and many reactions happen."}
+  };
+  var total = 8, found = 0;
+  var fb=document.getElementById("fb"), bar=document.getElementById("bar");
+  function show(good,html){ fb.className="feedback show "+(good?"good":"bad"); fb.innerHTML=html; }
+
+  LabDnD.init({
+    container: document.getElementById("lab"), dragSel: ".label-token", dropSel: ".cell-slot",
+    onDrop: function(token, slot){
+      var want=slot.getAttribute("data-org"), got=token.getAttribute("data-org");
+      if (got!==want){ slot.classList.add("over"); setTimeout(function(){slot.classList.remove("over");},500);
+        show(false, "❌ Not quite — that's a different part. (Hint: think where the <b>"+INFO[got].name+"</b> usually sits.)"); return; }
+      if (slot.classList.contains("correct")) return;
+      slot.classList.add("correct"); slot.textContent=INFO[want].name; token.classList.add("placed");
+      found++; document.getElementById("found").textContent=found; bar.style.width=(found/total*100)+"%";
+      show(true, "✅ <b>"+INFO[want].name+"</b> — "+INFO[want].fn);
+      if (found===total){ show(true, "🎉 <b>Cell fully labelled!</b> All eight organelles identified. Scroll down for the bonus quiz."); document.getElementById("quizCard").style.display=""; if(window.Analytics)window.Analytics.track("action","cell:complete"); }
+    }
+  });
+
+  document.getElementById("reset").addEventListener("click", function(){
+    found=0; document.getElementById("found").textContent=0; bar.style.width="0%"; fb.className="feedback";
+    document.querySelectorAll(".label-token").forEach(function(t){t.classList.remove("placed");});
+    document.querySelectorAll(".cell-slot").forEach(function(s){s.classList.remove("correct","over"); s.textContent="?";});
+  });
+
+  // ---- quiz ----
+  var QUIZ = [
+    { q:"Which organelle releases energy (ATP) for the cell?", a:"Mitochondrion", opts:["Nucleus","Mitochondrion","Ribosome","Golgi apparatus"] },
+    { q:"Which part stores the cell's DNA and controls its activity?", a:"Nucleus", opts:["Lysosome","Cell membrane","Nucleus","Cytoplasm"] },
+    { q:"Where are proteins actually built?", a:"Ribosome", opts:["Ribosome","Mitochondrion","Lysosome","Cell membrane"] }
+  ];
+  var quizBox=document.getElementById("quiz"), answered=0, correct=0;
+  QUIZ.forEach(function(item, i){
+    var wrap=document.createElement("div"); wrap.style.marginBottom="18px";
+    wrap.innerHTML='<div class="quiz-q">'+(i+1)+". "+item.q+'</div>';
+    var opts=document.createElement("div"); opts.className="quiz-opts";
+    item.opts.forEach(function(o){
+      var b=document.createElement("button"); b.className="quiz-opt"; b.textContent=o;
+      b.addEventListener("click", function(){
+        if (wrap.dataset.done) return; wrap.dataset.done="1"; answered++;
+        if (o===item.a){ b.classList.add("right"); correct++; }
+        else { b.classList.add("wrong"); opts.querySelectorAll(".quiz-opt").forEach(function(x){ if(x.textContent===item.a)x.classList.add("right"); }); }
+        if (answered===QUIZ.length){
+          var qf=document.getElementById("quizFb");
+          qf.className="feedback show good";
+          qf.innerHTML="🏁 <b>You scored "+correct+" / "+QUIZ.length+".</b> "+(correct===QUIZ.length?"Perfect — you really know your cell biology!":"Review the labels above and try again any time.");
+          if(window.Analytics)window.Analytics.track("action","cell:quiz-"+correct);
+        }
+      });
+      opts.appendChild(b);
+    });
+    wrap.appendChild(opts); quizBox.appendChild(wrap);
+  });
+})();
+</script>
+</body>
+</html>

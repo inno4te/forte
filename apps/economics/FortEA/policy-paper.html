@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Policy Paper: From Extraction to Industrialization — ForTe Economics</title>
+<meta name="description" content="A policy framework for African governments to convert the current economic moment into structural transformation — with Cameroon's mining sector as a worked example.">
+<style>
+:root{
+  --ink:#f3efe6; --ink-dim:#b9b3a6; --ink-faint:#7d786e;
+  --bg:#14161a; --bg-raised:#1b1e23; --bg-card:#20242a; --line:#33373d;
+  --cobalt:#5b7fff; --copper:#e0873c; --verdigris:#57a68f; --alert:#e0574c; --gold:#e8b23d;
+  --serif:'Fraunces', Georgia, serif; --sans:'Inter', -apple-system, sans-serif; --mono:'IBM Plex Mono', monospace;
+  --maxw:880px;
+}
+*{box-sizing:border-box; margin:0; padding:0;}
+html{scroll-behavior:scroll;}
+body{background:var(--bg); color:var(--ink); font-family:var(--sans); line-height:1.7; -webkit-font-smoothing:antialiased; overflow-x:hidden;}
+@media (prefers-reduced-motion: reduce){ *{animation-duration:.01ms !important; transition-duration:.01ms !important;} }
+a{color:inherit;}
+.wrap{max-width:var(--maxw); margin:0 auto; padding:0 24px;}
+h1,h2,h3,h4{font-family:var(--serif); font-weight:600; letter-spacing:-0.01em; color:var(--ink);}
+::selection{background:var(--cobalt); color:#fff;}
+
+.topbar{position:sticky; top:0; z-index:50; background:rgba(20,22,26,0.92); backdrop-filter:blur(10px); border-bottom:1px solid var(--line);}
+.topbar-inner{max-width:var(--maxw); margin:0 auto; padding:12px 20px; display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;}
+.tb-back{font-family:var(--mono); font-size:12px; color:var(--ink-dim); text-decoration:none; white-space:nowrap;}
+.tb-back:hover{color:var(--ink);}
+.tb-brand{font-family:var(--serif); font-weight:700; font-size:15px; white-space:nowrap;}
+.tb-brand .mark{color:var(--copper); font-style:italic;}
+.tb-print{
+  font-family:var(--mono); font-size:11.5px; padding:8px 14px; border-radius:100px; border:1px solid var(--line);
+  color:var(--ink-dim); background:none; cursor:pointer;
+}
+.tb-print:hover{border-color:var(--ink-dim); color:var(--ink);}
+
+/* ---- Cover ---- */
+.cover{padding:60px 0 44px; border-bottom:1px solid var(--line);}
+.doc-meta{font-family:var(--mono); font-size:11.5px; color:var(--ink-faint); text-transform:uppercase; letter-spacing:.08em; margin-bottom:20px;}
+.cover h1{font-size:clamp(28px,4.4vw,44px); line-height:1.1; margin-bottom:18px; max-width:20ch;}
+.cover .subtitle{font-family:var(--serif); font-style:italic; font-size:19px; color:var(--copper); margin-bottom:26px;}
+.cover .authorship{font-size:14px; color:var(--ink-dim); margin-bottom:6px;}
+.cover .authorship strong{color:var(--ink);}
+.abstract-box{
+  margin-top:30px; padding:26px 28px; background:var(--bg-raised); border:1px solid var(--line); border-radius:14px;
+}
+.abstract-box .ab-label{font-family:var(--mono); font-size:11px; text-transform:uppercase; letter-spacing:.08em; color:var(--cobalt); margin-bottom:12px; display:block;}
+.abstract-box p{font-size:15px; color:var(--ink-dim);}
+
+/* ---- TOC ---- */
+.toc{padding:32px 0; border-bottom:1px solid var(--line);}
+.toc h2{font-family:var(--mono); font-size:12px; text-transform:uppercase; letter-spacing:.1em; color:var(--ink-faint); margin-bottom:16px; font-weight:500;}
+.toc ol{list-style:none; counter-reset:toc; display:flex; flex-direction:column; gap:2px;}
+.toc li{counter-increment:toc;}
+.toc a{
+  display:flex; align-items:baseline; gap:12px; padding:9px 4px; text-decoration:none; color:var(--ink-dim); font-size:14.5px;
+  border-bottom:1px dotted var(--line); transition:color .2s;
+}
+.toc a:hover{color:var(--ink);}
+.toc a::before{content:counter(toc, decimal-leading-zero); font-family:var(--mono); font-size:12px; color:var(--copper); flex-shrink:0;}
+
+/* ---- Body sections ---- */
+.paper-section{padding:56px 0; border-bottom:1px solid var(--line); scroll-margin-top:70px;}
+.sec-label{font-family:var(--mono); font-size:11.5px; text-transform:uppercase; letter-spacing:.09em; color:var(--copper); margin-bottom:14px; display:flex; align-items:center; gap:10px;}
+.sec-label::before{content:""; width:20px; height:1px; background:var(--copper);}
+.paper-section h2{font-size:clamp(24px,3.2vw,32px); line-height:1.15; margin-bottom:20px;}
+.paper-section h3{font-size:19px; margin:30px 0 12px;}
+.paper-section p{color:var(--ink-dim); font-size:15px; margin-bottom:16px;}
+.paper-section p strong{color:var(--ink);}
+.paper-section p em{color:var(--gold); font-style:italic;}
+
+.stat-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin:24px 0;}
+.stat-card{border:1px solid var(--line); border-radius:12px; padding:20px; background:var(--bg-raised);}
+.stat-card .sv{font-family:var(--mono); font-size:22px; color:var(--gold); font-weight:600;}
+.stat-card .sl{font-size:11.5px; color:var(--ink-faint); margin-top:8px; line-height:1.4;}
+@media (max-width:700px){ .stat-grid{grid-template-columns:1fr 1fr;} }
+@media (max-width:460px){ .stat-grid{grid-template-columns:1fr;} }
+
+.callout{background:var(--bg-card); border:1px solid var(--line); border-left:3px solid var(--cobalt); border-radius:0 12px 12px 0; padding:22px 26px; margin:22px 0;}
+.callout .co-label{font-family:var(--mono); font-size:10.5px; text-transform:uppercase; letter-spacing:.07em; color:var(--cobalt); margin-bottom:10px; display:block;}
+.callout p{margin-bottom:0; font-size:14.5px;}
+
+.alert-callout{background:rgba(224,87,76,0.06); border:1px solid var(--line); border-left:3px solid var(--alert); border-radius:0 12px 12px 0; padding:22px 26px; margin:22px 0;}
+.alert-callout .ac-label{font-family:var(--mono); font-size:10.5px; text-transform:uppercase; letter-spacing:.07em; color:var(--alert); margin-bottom:10px; display:block;}
+.alert-callout p{margin-bottom:0; font-size:14.5px; color:var(--ink-dim);}
+
+.gold-callout{background:rgba(232,178,61,0.06); border:1px solid var(--line); border-left:3px solid var(--gold); border-radius:0 12px 12px 0; padding:22px 26px; margin:22px 0;}
+.gold-callout .gc-label{font-family:var(--mono); font-size:10.5px; text-transform:uppercase; letter-spacing:.07em; color:var(--gold); margin-bottom:10px; display:block;}
+.gold-callout p{margin-bottom:0; font-size:14.5px; color:var(--ink-dim);}
+
+.rec-list{list-style:none; counter-reset:rec; display:flex; flex-direction:column; gap:16px; margin:20px 0;}
+.rec-list li{counter-increment:rec; display:flex; gap:16px;}
+.rec-list li::before{
+  content:counter(rec); font-family:var(--mono); font-size:13px; color:var(--verdigris);
+  border:1px solid rgba(87,166,143,.45); background:rgba(87,166,143,.08); width:28px; height:28px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center; flex-shrink:0;
+}
+.rec-list li div h4{font-size:15px; margin-bottom:4px; color:var(--ink); font-weight:600;}
+.rec-list li div p{font-size:14px; margin-bottom:0;}
+
+.data-table{width:100%; border-collapse:collapse; font-size:14px; margin:20px 0;}
+.data-table th{text-align:left; font-family:var(--mono); font-size:10.5px; text-transform:uppercase; letter-spacing:.06em; color:var(--ink-faint); padding:0 12px 10px 0; border-bottom:1px solid var(--line); font-weight:500;}
+.data-table td{padding:11px 12px 11px 0; border-bottom:1px solid rgba(51,55,61,.6); color:var(--ink-dim);}
+.data-table td:first-child{color:var(--ink); font-weight:500;}
+.data-table .num{font-family:var(--mono); color:var(--gold);}
+
+.phase-track{display:flex; flex-direction:column; gap:0; margin:24px 0;}
+.phase-row{display:grid; grid-template-columns:100px 1fr; gap:20px; padding:20px 0; border-top:1px solid var(--line);}
+.phase-row:first-child{border-top:none;}
+.phase-row .ph-tag{font-family:var(--mono); font-size:11.5px; color:var(--copper); padding-top:2px;}
+.phase-row h4{font-size:15.5px; margin-bottom:8px;}
+.phase-row p{font-size:14px; margin-bottom:0;}
+@media (max-width:560px){ .phase-row{grid-template-columns:1fr;} .phase-row .ph-tag{padding-top:0;} }
+
+.signoff{
+  margin-top:12px; padding:32px; border-radius:16px;
+  background:radial-gradient(ellipse 500px 300px at 50% -20%, rgba(91,127,255,0.16), transparent 60%), var(--bg-raised);
+  border:1px solid var(--line); text-align:center;
+}
+.signoff h3{font-size:21px; margin-bottom:12px;}
+.signoff p{color:var(--ink-dim); font-size:14.5px; max-width:56ch; margin:0 auto 20px;}
+.btn{
+  font-family:var(--sans); font-weight:600; font-size:14px; text-decoration:none; padding:13px 22px; border-radius:100px;
+  display:inline-flex; align-items:center; gap:8px; transition:transform .18s ease; cursor:pointer; border:1px solid transparent; margin:4px;
+}
+.btn-primary{background:var(--cobalt); color:#0d1020;}
+.btn-primary:hover{transform:translateY(-2px);}
+.btn-ghost{border-color:var(--line); color:var(--ink);}
+.btn-ghost:hover{border-color:var(--ink-dim); transform:translateY(-2px);}
+
+footer.p-footer{padding:44px 0; text-align:center;}
+footer.p-footer p{color:var(--ink-faint); font-size:12px; max-width:66ch; margin:0 auto; line-height:1.7;}
+footer.p-footer a{color:var(--ink-dim); text-decoration:underline;}
+
+@media print{
+  .topbar, footer.p-footer .btn, .signoff{display:none !important;}
+  body{background:#fff; color:#111;}
+  .paper-section, .cover, .toc{border-color:#ccc;}
+  h1,h2,h3,h4{color:#111;}
+  p, .stat-card .sl{color:#333;}
+  a{text-decoration:underline; color:#111;}
+}
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="forte-soft.css">
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <a href="forte-economics.html#leadership" class="tb-back">← Back to main report</a>
+    <span class="tb-brand">ForTe <span class="mark">Economics</span> · Policy Paper</span>
+    <button class="tb-print" onclick="window.print()">🖨 Print / Save as PDF</button>
+  </div>
+</div>
+
+<header class="cover">
+  <div class="wrap">
+    <div class="doc-meta">Policy Paper · ForTe Economics · 2026</div>
+    <h1>From Extraction to Industrialization</h1>
+    <div class="subtitle">A working policy framework for African governments, with Cameroon's mining sector as a worked example</div>
+    <p class="authorship">Prepared for <strong>heads of state, finance ministries, mining and trade ministries, and central banks</strong> across the countries examined in this report.</p>
+    <p class="authorship">Companion document to the <strong>ForTe Economics</strong> ten-country report. © Innocent Forteh.</p>
+
+    <div class="abstract-box">
+      <span class="ab-label">Abstract</span>
+      <p>The global economic moment of 2025–2026 — a critical-minerals supercycle, a documented shift away from raw-export dependency by early movers like Nigeria's refining sector, an African Continental Free Trade Area beginning to mature, and mounting pressure on the Bretton Woods institutions to reform — is a genuine, time-limited window for structural change. This paper argues that the binding constraint on most African economies is not capital or resources, but <strong>transparency and enforcement</strong> in exactly the sectors already documented as leaking the most value. Using Cameroon's mining sector as a fully worked example — including a documented near-700-fold discrepancy between officially reported and internationally recorded gold exports — this paper sets out what "taking advantage of the current situation" concretely means: a sequenced, auditable, twenty-four-month reform path any government in this report can adapt.</p>
+    </div>
+  </div>
+</header>
+
+<nav class="toc">
+  <div class="wrap">
+    <h2>Contents</h2>
+    <ol>
+      <li><a href="#s1">The Opportunity: Why 2025–2026 Is Not an Ordinary Year</a></li>
+      <li><a href="#s2">The Problem: Where the Value Actually Leaks</a></li>
+      <li><a href="#s3">Worked Example — Cameroon's Mining Sector</a></li>
+      <li><a href="#s4">What Cameroon Can Do: Sector-Specific Recommendations</a></li>
+      <li><a href="#s5">The General Framework: What Applies Everywhere</a></li>
+      <li><a href="#s6">Implementation Roadmap — 24 Months</a></li>
+      <li><a href="#s7">The Leadership Precondition</a></li>
+    </ol>
+  </div>
+</nav>
+
+<!-- SECTION 1 -->
+<section class="paper-section" id="s1">
+  <div class="wrap">
+    <div class="sec-label">Section 01</div>
+    <h2>The opportunity: why 2025–2026 is not an ordinary year</h2>
+    <p>Governments are routinely told that reform windows are always open and always urgent. That framing has worn thin, and legitimately so — advice with no sense of timing is not useful advice. This paper argues something more specific: <strong>several genuinely time-bound conditions are converging right now</strong>, and a government that moves within the next 24 months captures value that a government moving in five years will not.</p>
+
+    <h3>1.1 — The critical-minerals supercycle has a narrowing window</h3>
+    <p>Global demand for cobalt, copper, lithium-adjacent battery metals, platinum-group metals and rare earths is at a structurally elevated level driven by the energy transition — but buyers are actively diversifying supply chains away from single-source dependency, and several competing jurisdictions (Indonesia, several Latin American states, and now a coordinated EU critical-raw-materials strategy) are racing to build the same domestic-processing capacity this report argues for. The premium for being an early, reliable, transparently-governed supplier of <em>processed</em> — not just raw — critical minerals will not persist indefinitely.</p>
+
+    <h3>1.2 — A working precedent now exists inside the region</h3>
+    <p>Nigeria's refining sector spent decades as the textbook case of raw-export dependency this report documents everywhere else — exporting crude, importing refined fuel, paying a foreign margin twice. That specific mechanism has now been measurably broken: as of 2026, Nigeria supplies roughly 80% of its own domestic fuel demand from a single domestically-built refinery and has recorded net petrol-exporter status. This is not a hypothetical policy argument anymore. It is a documented regional precedent, detailed in this report's companion <a href="dangote.html" target="_blank" rel="noopener">Dangote success study</a>, that the exact mechanism described in Section 2 below can be reversed within a single decade given the right sequencing of capital and policy.</p>
+
+    <h3>1.3 — Debt-architecture reform is genuinely under discussion</h3>
+    <p>The multi-year delays in Zambia's and Ghana's debt restructurings exposed real flaws in the G20 Common Framework's handling of disputes between bilateral and private creditors — flaws now under active discussion at the G20 and IMF level. Countries that have already published transparent, audited debt registries are better positioned to benefit from whatever reformed framework emerges; countries that have not risk being treated as higher-risk by default, regardless of their actual fiscal position.</p>
+
+    <h3>1.4 — AfCFTA implementation is past the announcement stage</h3>
+    <p>The African Continental Free Trade Area has moved from framework agreement to active implementation in key corridors. Regional value chains — processed cocoa moving duty-free between West African states, refined fuel moving from Nigeria into neighbouring markets — are becoming commercially real, not just legally possible. A government that has already built processing capacity is positioned to supply these corridors; a government that has not will be supplying the corridor's raw-material inputs to someone else's factory instead.</p>
+
+    <div class="stat-grid">
+      <div class="stat-card"><div class="sv">80%</div><div class="sl">of Nigeria's domestic fuel demand now met domestically — was near-zero a decade ago</div></div>
+      <div class="stat-card"><div class="sv">$10B/yr</div><div class="sl">estimated Nigerian FX savings once refining runs at full capacity</div></div>
+      <div class="stat-card"><div class="sv">2026</div><div class="sl">active G20/IMF discussion on reforming multi-year debt-restructuring delays</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 2 -->
+<section class="paper-section" id="s2">
+  <div class="wrap">
+    <div class="sec-label">Section 02</div>
+    <h2>The problem: where the value actually leaks</h2>
+    <p>This report's ten country case studies document the mechanism repeatedly: raw commodities exported at a fraction of their processed value, financed increasingly by expensive commercial debt when royalties and revenue projections underperform, with governance gaps at both the resource-extraction stage and the debt-management stage compounding the loss. The problem is rarely a single point of failure. It is usually three failures stacked on top of each other.</p>
+
+    <h3>2.1 — The value-chain gap</h3>
+    <p>Raw cobalt sells for a fraction of what the same material is worth once refined into battery-grade sulphate. Raw cocoa beans capture roughly 6–7% of a chocolate bar's retail value. This report's Simulator tool quantifies this gap for any commodity and volume — the arithmetic is not in dispute; the missing piece has always been the domestic processing capacity and the financing to build it.</p>
+
+    <h3>2.2 — The revenue-capture gap</h3>
+    <p>Even where extraction and export continue as raw commodities, the state frequently captures far less of the resource's value than its scale would suggest. The DRC's cobalt sector, contributing roughly 9% of GDP, generated only about 6.3% of fiscal revenue in a recent measured year — a gap this report's DRC case study documents in detail. Weak royalty enforcement, opaque contracts, and informal/artisanal supply chains that never enter the formal tax base are the primary drivers.</p>
+
+    <h3>2.3 — The debt-transparency gap</h3>
+    <p>When revenue underperforms, governments borrow — and where that borrowing happens on opaque, resource-collateralized, or simply undisclosed terms, the resulting debt becomes harder to restructure, harder to audit, and harder for citizens to hold anyone accountable for. Zambia's four-year restructuring delay and Kenya's 2024 Finance Bill protests both trace back to exactly this gap.</p>
+
+    <div class="callout">
+      <span class="co-label">The through-line</span>
+      <p>All three gaps share a single fix at their root: <strong>transparency that is actually enforced</strong>, not transparency that exists on paper. Section 3 shows precisely what that distinction looks like using real, currently-available data from one country's mining sector.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 3: CAMEROON WORKED EXAMPLE -->
+<section class="paper-section" id="s3">
+  <div class="wrap">
+    <div class="sec-label">Section 03 — Worked Example</div>
+    <h2>Cameroon's mining sector: what the data already shows</h2>
+    <p>Cameroon is a useful worked example precisely because it is neither a worst-case nor a best-case country — it has already taken real transparency steps and still shows a governance gap large enough to be worth a government's full attention. Every figure below comes from Cameroon's own EITI (Extractive Industries Transparency Initiative) reporting process, which the government itself participates in and helped generate.</p>
+
+    <h3>3.1 — What Cameroon has already built</h3>
+    <p>The record here is genuinely more advanced than critics of the sector often assume. Cameroon launched an online mining cadastre in February 2017, giving public visibility into license allocation. A new Mining Code (Law No. 2023/014) was adopted in December 2023, followed by eight implementing decrees issued in November 2024, introducing beneficial-ownership disclosure requirements and stricter mineral-traceability rules, including mandatory authorized trading posts and sales registers. A national mining company, SONAMINES, was created in 2020 specifically to centralize and formalize gold purchasing.</p>
+
+    <h3>3.2 — What the data shows is still leaking</h3>
+    <div class="alert-callout">
+      <span class="ac-label">The headline finding</span>
+      <p>Cameroon's own EITI reporting identified a <strong>nearly 700-fold discrepancy</strong> between officially reported gold exports and the volume recorded by Cameroon's trading partners: <strong>22.3 kilograms</strong> reported by Cameroonian authorities against <strong>over 15 tonnes</strong> recorded on the receiving end. This is not an estimate from an outside watchdog — it is the finding of Cameroon's own multi-stakeholder EITI reporting process, using the government's own trade data cross-referenced against partner-country records.</p>
+    </div>
+
+    <p>The enforcement gap compounds the reporting gap. Of an estimated 5 tonnes of gold that left Cameroon through informal channels in a single recent year, government agencies seized only <strong>159 kilograms</strong> — roughly 3% of the estimated informal outflow. Separately, Cameroon's 2023 EITI data found that <strong>269 kilograms</strong> of gold collected by SONAMINES itself, the state company created specifically to formalize and centralize gold purchasing, could not be clearly accounted for in public finances.</p>
+
+    <div class="stat-grid">
+      <div class="stat-card"><div class="sv">22.3 kg</div><div class="sl">gold exports officially reported by Cameroon</div></div>
+      <div class="stat-card"><div class="sv">15+ tonnes</div><div class="sl">gold exports recorded by Cameroon's trading partners</div></div>
+      <div class="stat-card"><div class="sv">159 kg</div><div class="sl">of an estimated 5 tonnes informally exported, actually seized</div></div>
+      <div class="stat-card"><div class="sv">269 kg</div><div class="sl">gold collected by the state's own mining company, unaccounted in public finances</div></div>
+      <div class="stat-card"><div class="sv">53/100</div><div class="sl">Cameroon's EITI implementation score, February 2024</div></div>
+      <div class="stat-card"><div class="sv">2023</div><div class="sl">new Mining Code adopted — the reform tools already exist</div></div>
+    </div>
+
+    <h3>3.3 — Why this is an opportunity, not just a scandal</h3>
+    <p>A gap this large and this well-documented is, from a policy standpoint, good news in one specific sense: it means the fix does not require inventing new institutions or waiting for a new mining code. The cadastre exists. The Mining Code exists. SONAMINES exists. The EITI reporting mechanism that <em>found</em> this discrepancy exists and is already funded and operating. The problem is enforcement and integration between systems that already exist separately, not the absence of a legal or institutional framework.</p>
+
+    <div class="callout">
+      <span class="co-label">Regional leverage point</span>
+      <p>CEMAC (the Central African Economic and Monetary Community, of which Cameroon is the largest economy) has been actively drafting a unified regional mining code since work resumed in April 2024, with technical review continuing into 2025. Cameroon is positioned to shape this regional standard rather than simply adopt whatever the other five member states settle on — a genuine, time-limited seat at the table that closes once the regional code is finalized.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 4: CAMEROON RECOMMENDATIONS -->
+<section class="paper-section" id="s4">
+  <div class="wrap">
+    <div class="sec-label">Section 04</div>
+    <h2>What Cameroon can do: sector-specific recommendations</h2>
+    <p>These recommendations are sequenced from fastest-to-implement to most structurally significant. None requires new legislation beyond what the 2023 Mining Code and its 2024 implementing decrees already provide — the task is enforcement, integration, and closing specific identified gaps.</p>
+
+    <ol class="rec-list">
+      <li><div><h4>Publish a reconciliation report against the 700-fold gold discrepancy within 12 months</h4><p>Commission an independent audit specifically reconciling Cameroon's reported gold export figures against partner-country customs records, with named findings on where the gap occurred — production-site under-reporting, in-transit diversion, or export-declaration fraud. The EITI process has already identified the gap; a dedicated reconciliation converts a known problem into a named, actionable one.</p></div></li>
+      <li><div><h4>Integrate SONAMINES' purchasing records with EITI reporting in real time</h4><p>The 269kg discrepancy in state-company gold accounting suggests a systems-integration failure, not necessarily deliberate diversion. Requiring SONAMINES to report purchasing and sales data on the same schedule and format as the EITI process would close this specific gap in months, not years.</p></div></li>
+      <li><div><h4>Expand authorized trading posts and enforce the 2024 traceability decrees</h4><p>The decrees mandating authorized trading posts and sales registers already exist in law; the seizure rate of only 3% of estimated informal gold exports indicates under-resourced enforcement, not a legal gap. Prioritize customs and border-post capacity specifically at the artisanal mining regions (East and Adamawa) identified in Cameroon's own EITI reporting as the highest-informality zones.</p></div></li>
+      <li><div><h4>Use the CEMAC unified mining code process as leverage, not just compliance</h4><p>With regional code drafting still in technical review as of 2025, Cameroon can propose that Cameroon's own beneficial-ownership and traceability standards become the regional floor — turning a domestic reform into a regional standard-setting opportunity while the window is open.</p></div></li>
+      <li><div><h4>Publish mining conventions and contracts, not just production data</h4><p>Cameroon's EITI reporting explicitly notes that mining conventions and oil contracts are not currently disclosed, even as production and revenue data increasingly are. A working group on contract transparency already exists inside Cameroon's EITI multi-stakeholder group — resourcing it to complete this specific disclosure gap would close the most-cited remaining weakness in the country's 53/100 EITI implementation score.</p></div></li>
+      <li><div><h4>Tie formalization incentives to processing investment, mirroring this report's Cameroon roadmap</h4><p>Combine artisanal-mining formalization (bringing informal gold production into the legal, taxable economy) with the domestic-processing incentives already recommended in this report's Cameroon case study — a formalized, traceable supply chain is also the necessary precondition for any future domestic gold-refining capacity.</p></div></li>
+    </ol>
+  </div>
+</section>
+
+<!-- SECTION 5: GENERAL FRAMEWORK -->
+<section class="paper-section" id="s5">
+  <div class="wrap">
+    <div class="sec-label">Section 05</div>
+    <h2>The general framework: what applies everywhere</h2>
+    <p>Cameroon's mining sector is one worked example of a pattern this paper argues holds across every country in this report, and across sectors beyond mining — oil revenue in Cameroon itself, cobalt in the DRC, SGR debt terms in Kenya, energy-sector arrears in Ghana. The general framework below is what each country-specific version of Section 3 and 4 would look like.</p>
+
+    <h3>5.1 — Publish before you're forced to</h3>
+    <p>Every governance failure documented across this report's ten case studies shares a common feature: the gap was eventually found, usually by an EITI process, an IMF diagnostic, or investigative journalism — but years after the revenue was already lost. A government that publishes reconciliation data proactively, on a fixed public schedule, converts an eventual scandal into a routine disclosure.</p>
+
+    <h3>5.2 — Integrate the systems that already exist separately</h3>
+    <p>Cameroon's cadastre, Mining Code, SONAMINES and EITI process all exist independently and don't yet share data on a common schedule. This pattern — good individual institutions, poor integration between them — repeats across the countries in this report. Integration is consistently cheaper and faster than building new institutions from scratch.</p>
+
+    <h3>5.3 — Resource enforcement at the specific point of highest informality</h3>
+    <p>A 3% seizure rate against estimated informal exports is not a resourcing problem across an entire customs service — it is a resourcing problem at specific, identifiable border posts and mining regions. Targeted enforcement investment consistently outperforms broad, unfocused enforcement mandates.</p>
+
+    <h3>5.4 — Use regional frameworks as leverage while they're still being drafted</h3>
+    <p>CEMAC's unified mining code, the ongoing G20 Common Framework debt-reform discussions, and AfCFTA's maturing implementation are all frameworks currently being shaped, not frameworks already fixed. Countries that engage now, with their own domestic reforms already underway, shape these frameworks; countries that wait simply inherit whatever emerges.</p>
+
+    <div class="gold-callout">
+      <span class="gc-label">Applying this to other sectors in this report</span>
+      <p>The same five-point structure — audit the specific discrepancy, integrate existing systems, target enforcement, use regional leverage, publish contracts not just production data — applies directly to Cameroon's oil-revenue gap at SNH (documented in this report's Cameroon case study), the DRC's SICOMINES valuation dispute, Kenya's SGR loan-term opacity, and Nigeria's NNPC accounting reform. This is not a mining-specific framework; mining is simply where the clearest, most quantified example currently exists.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 6: ROADMAP -->
+<section class="paper-section" id="s6">
+  <div class="wrap">
+    <div class="sec-label">Section 06</div>
+    <h2>Implementation roadmap — 24 months</h2>
+    <p>Sequenced deliberately: early wins that require no new legislation first, structural reforms once the political capital from early wins is banked.</p>
+
+    <div class="phase-track">
+      <div class="phase-row">
+        <div class="ph-tag">Months<br>1–6</div>
+        <div><h4>Publish, audit, integrate</h4><p>Commission the gold-export reconciliation audit; integrate SONAMINES reporting with EITI's schedule; announce a fixed public reporting calendar for all extractive-sector data going forward. None of this requires new legislation — only political will to resource work that existing institutions are already mandated to do.</p></div>
+      </div>
+      <div class="phase-row">
+        <div class="ph-tag">Months<br>7–12</div>
+        <div><h4>Target enforcement, propose regional standards</h4><p>Redirect customs and border-post enforcement resources specifically to the East and Adamawa regions identified in EITI reporting; formally propose Cameroon's beneficial-ownership standards as the CEMAC regional floor while the unified mining code is still in technical review.</p></div>
+      </div>
+      <div class="phase-row">
+        <div class="ph-tag">Months<br>13–18</div>
+        <div><h4>Publish contracts, launch formalization incentives</h4><p>Resource the existing EITI contract-transparency working group to complete disclosure of mining conventions; launch the artisanal-mining formalization program with processing-investment incentives attached, per Section 4.6.</p></div>
+      </div>
+      <div class="phase-row">
+        <div class="ph-tag">Months<br>19–24</div>
+        <div><h4>Report results, replicate the model</h4><p>Publish a full 24-month reconciliation report showing the change in the gold-export discrepancy and EITI implementation score; apply the same five-point framework formally to the oil-revenue transparency gap at SNH, using the mining-sector reform as the proven internal template.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 7: LEADERSHIP PRECONDITION -->
+<section class="paper-section" id="s7" style="border-bottom:none;">
+  <div class="wrap">
+    <div class="sec-label">Section 07</div>
+    <h2>The leadership precondition</h2>
+    <p>Every recommendation in this paper is technically achievable within existing legal frameworks. None of them are politically costless. Publishing a reconciliation report on a 700-fold gold discrepancy means naming, implicitly or explicitly, where in the chain the value disappeared — production sites, transit points, or the state's own purchasing company. That is a genuinely uncomfortable thing for any government to commission.</p>
+    <p>This report's Leadership section makes the underlying argument directly: reform that survives beyond a single administration requires institutions constrained enough that the next office-holder cannot quietly reverse it, and a leadership culture — this report calls it <strong>servant leadership</strong> — that treats this kind of disclosure as stewardship rather than political risk. A finance or mining minister reading this paper does not need to solve that culture question to implement Sections 3 through 6. But a head of state deciding whether to authorize the audit in Section 4.1 does.</p>
+
+    <div class="callout">
+      <span class="co-label">The honest bottom line</span>
+      <p>The technical path from Cameroon's current 53/100 EITI score to a meaningfully higher one is short, specific, and already mapped in Section 4. The distance that actually matters is the decision to commission an audit whose findings a government does not yet control.</p>
+    </div>
+
+    <div class="signoff">
+      <h3>Read the leadership framework this depends on</h3>
+      <p>This paper's recommendations assume institutions that outlast individual office-holders. See the full argument, including African precedents for what that looks like in practice.</p>
+      <a href="forte-economics.html#leadership" target="_blank" rel="noopener" class="btn btn-primary">Read the Leadership section →</a>
+      <a href="dangote.html" target="_blank" rel="noopener" class="btn btn-ghost">See the Dangote success study</a>
+    </div>
+  </div>
+</section>
+
+<footer class="p-footer">
+  <div class="wrap">
+    <p>Sources: EITI Cameroon country page and 2022/2023 EITI Reports (eiti.org); "Cameroon's gold gap: How EITI data is driving reforms," EITI Impact Story, 2026; EITI Progress Report 2024; Chambers and Partners "Mining 2025 — Cameroon" practice guide; Business in Cameroon and Cameroon Intelligence Report coverage of the CEMAC unified mining code process; ITIE Cameroun scoping report, minmidt.cm. Figures reflect Cameroon's own published EITI reporting as of the dates cited — this paper does not independently audit these figures beyond citing their official source. Part of the <a href="forte-economics.html">ForTe Economics</a> report. © Innocent Forteh.</p>
+  </div>
+</footer>
+
+<script src="forte-soft.js"></script>
+</body>
+</html>

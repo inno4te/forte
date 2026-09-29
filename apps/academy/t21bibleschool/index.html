@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Team21 Academy — Online Bible School</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,400&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--gold:#C9902A;--gold-light:#F0C060;--deep:#1A2744;--deep2:#243058;--parchment:#FDF6E3;--parch2:#F5EDD0;--text:#1A1A2E;--muted:#6B5E3E;--red:#8B1A1A;--green:#1A5C2E;--border:#D4B483;--card:#FFFDF5;--shadow:0 4px 20px rgba(26,39,68,0.12)}
+body{font-family:'Source Serif 4',serif;background:var(--parchment);color:var(--text);min-height:100vh}
+.screen{display:none;min-height:100vh}.screen.active{display:block}
+#welcome{background:linear-gradient(160deg,var(--deep) 0%,var(--deep2) 50%,#1E3A5F 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem;text-align:center;position:relative;overflow:hidden;min-height:100vh}
+#welcome::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 50%,rgba(201,144,42,0.08) 0%,transparent 70%);pointer-events:none}
+.welcome-logo{width:90px;height:90px;background:var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:2.5rem;margin:0 auto 1.5rem;box-shadow:0 0 40px rgba(201,144,42,0.4);position:relative;z-index:1}
+.welcome-title{font-family:'Playfair Display',serif;font-size:2.4rem;color:var(--gold-light);font-weight:700;position:relative;z-index:1;line-height:1.2}
+.welcome-sub{color:#B0C4DE;font-size:1rem;margin:.75rem 0 .3rem;position:relative;z-index:1;font-style:italic}
+.verse-banner{background:rgba(201,144,42,0.15);border:1px solid rgba(201,144,42,0.3);border-radius:8px;padding:.75rem 1.2rem;margin:1.2rem 0;color:#E8D5A0;font-style:italic;font-size:.9rem;max-width:500px;position:relative;z-index:1}
+.welcome-form{background:rgba(255,255,255,0.06);border:1px solid rgba(201,144,42,0.3);border-radius:12px;padding:2rem;max-width:420px;width:100%;position:relative;z-index:1}
+.welcome-form label{display:block;color:#C8D8E8;font-size:.85rem;margin-bottom:.5rem;letter-spacing:.05em}
+.welcome-form input{width:100%;padding:.8rem 1rem;border:1px solid rgba(201,144,42,0.4);border-radius:8px;background:rgba(255,255,255,0.08);color:#fff;font-family:'Source Serif 4',serif;font-size:1rem;outline:none}
+.welcome-form input::placeholder{color:rgba(255,255,255,0.35)}
+.welcome-form input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,144,42,0.2)}
+.btn-primary{width:100%;margin-top:1.2rem;padding:.9rem;background:var(--gold);color:var(--deep);font-family:'Playfair Display',serif;font-weight:700;font-size:1rem;border:none;border-radius:8px;cursor:pointer;transition:all .2s;letter-spacing:.03em}
+.btn-primary:hover{background:var(--gold-light);transform:translateY(-1px)}
+.stats-row{display:flex;gap:2rem;margin-top:1.5rem;position:relative;z-index:1}
+.stat-item{text-align:center;color:#B0C4DE}.stat-num{font-family:'Playfair Display',serif;font-size:1.5rem;color:var(--gold-light);display:block}.stat-label{font-size:.75rem;opacity:.7}
+.topbar{background:var(--deep);display:flex;align-items:center;gap:1rem;padding:.75rem 1.2rem;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.3)}
+.topbar-logo{font-family:'Playfair Display',serif;color:var(--gold-light);font-size:1.1rem;font-weight:700;flex:1}
+.topbar-user{color:#B0C4DE;font-size:.85rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:160px}
+.topbar-btn{background:transparent;border:1px solid rgba(201,144,42,0.4);color:var(--gold-light);padding:.35rem .8rem;border-radius:6px;font-size:.8rem;cursor:pointer;font-family:'Source Serif 4',serif}
+.topbar-btn:hover{background:rgba(201,144,42,.15)}
+.menu-btn{display:none;background:none;border:none;color:var(--gold-light);font-size:1.4rem;cursor:pointer;padding:.2rem .4rem}
+#app{background:var(--parchment)}
+.main-content{display:flex;min-height:calc(100vh - 52px)}
+.sidebar{width:240px;background:var(--deep2);flex-shrink:0;overflow-y:auto;max-height:calc(100vh - 52px);position:sticky;top:52px}
+.sidebar-section{padding:.8rem 0}
+.sidebar-heading{font-size:.68rem;color:rgba(176,196,222,.45);letter-spacing:.12em;text-transform:uppercase;padding:.4rem 1rem}
+.sidebar-item{display:flex;align-items:center;gap:.6rem;padding:.5rem 1rem;cursor:pointer;color:#B0C4DE;font-size:.82rem;transition:all .15s;border-left:2px solid transparent;font-family:'Source Serif 4',serif}
+.sidebar-item:hover{background:rgba(201,144,42,.1);color:var(--gold-light)}
+.sidebar-item.active{background:rgba(201,144,42,.15);color:var(--gold-light);border-left-color:var(--gold)}
+.sidebar-item .icon{font-size:.85rem;width:18px;flex-shrink:0}
+.content{flex:1;padding:1.5rem;overflow-y:auto;max-width:940px}
+.dash-greeting{font-family:'Playfair Display',serif;font-size:1.7rem;color:var(--deep);margin-bottom:.3rem}
+.dash-verse{background:var(--deep);color:#E8D5A0;border-radius:10px;padding:1rem 1.5rem;margin-bottom:1.5rem;font-style:italic;font-size:.92rem;position:relative;overflow:hidden}
+.dash-verse::before{content:'\201C';position:absolute;top:-10px;left:10px;font-size:5rem;color:rgba(201,144,42,.2);font-family:'Playfair Display',serif;pointer-events:none}
+.dash-verse .ref{color:var(--gold-light);font-style:normal;font-size:.8rem;display:block;margin-top:.4rem;font-weight:600}
+.progress-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:.8rem;margin-bottom:1.5rem}
+.prog-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:1rem;text-align:center}
+.prog-num{font-family:'Playfair Display',serif;font-size:1.9rem;color:var(--deep);font-weight:700}.prog-label{font-size:.75rem;color:var(--muted);margin-top:.2rem}
+.prog-bar{height:4px;background:#E8D5A0;border-radius:2px;margin-top:.6rem;overflow:hidden}.prog-fill{height:100%;background:var(--gold);border-radius:2px;transition:width .5s}
+.section-title{font-family:'Playfair Display',serif;font-size:1.2rem;color:var(--deep);margin-bottom:.8rem;padding-bottom:.4rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:.5rem}
+.modules-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(185px,1fr));gap:.8rem}
+.mod-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:1rem;cursor:pointer;transition:all .2s;position:relative;overflow:hidden}
+.mod-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--gold);opacity:0;transition:opacity .2s}
+.mod-card:hover{box-shadow:var(--shadow);transform:translateY(-2px)}.mod-card:hover::before{opacity:1}
+.mod-card.completed{border-color:#2E7D32}.mod-card.completed::before{background:#2E7D32;opacity:1}
+.mod-icon{font-size:1.6rem;margin-bottom:.5rem}.mod-title{font-family:'Playfair Display',serif;font-size:.95rem;color:var(--deep);font-weight:600;line-height:1.3}
+.mod-sub{font-size:.75rem;color:var(--muted);margin-top:.2rem}
+.mod-badge{display:inline-flex;align-items:center;font-size:.68rem;padding:.2rem .5rem;border-radius:12px;margin-top:.5rem;font-weight:600}
+.badge-ot{background:#FFF3CD;color:#856404}.badge-nt{background:#D4EDDA;color:#155724}.badge-topic{background:#D1ECF1;color:#0C5460}.badge-done{background:#D4EDDA;color:#155724}
+.lesson-header{background:var(--deep);color:#fff;border-radius:12px;padding:1.2rem 1.5rem;margin-bottom:1.2rem;position:relative;overflow:hidden}
+.lesson-header::after{content:'';position:absolute;right:-20px;top:-20px;width:120px;height:120px;background:rgba(201,144,42,.1);border-radius:50%;pointer-events:none}
+.lesson-breadcrumb{font-size:.75rem;color:rgba(176,196,222,.7);margin-bottom:.4rem}
+.lesson-title{font-family:'Playfair Display',serif;font-size:1.4rem;color:var(--gold-light)}
+.lesson-meta{display:flex;gap:1rem;margin-top:.5rem;flex-wrap:wrap}.lesson-meta span{font-size:.75rem;color:#B0C4DE}
+.lesson-tabs{display:flex;gap:.5rem;margin-bottom:1rem;flex-wrap:wrap}
+.tab-btn{padding:.5rem 1rem;border:1px solid var(--border);background:var(--card);border-radius:8px;font-size:.85rem;cursor:pointer;color:var(--muted);font-family:'Source Serif 4',serif;transition:all .15s}
+.tab-btn.active{background:var(--deep);color:var(--gold-light);border-color:var(--deep)}.tab-btn:hover:not(.active){background:var(--parch2)}
+.lesson-body{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.5rem}
+.lesson-body h3{font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--deep);margin:1.1rem 0 .5rem}.lesson-body h3:first-child{margin-top:0}
+.lesson-body p{line-height:1.85;color:var(--text);margin-bottom:.8rem;font-size:.93rem}
+.lesson-body ul{padding-left:1.3rem;margin-bottom:.8rem}.lesson-body li{margin-bottom:.4rem;font-size:.92rem;line-height:1.7}
+.scripture-block{background:linear-gradient(135deg,#FFF8E7,#FFF3D0);border-left:3px solid var(--gold);border-radius:0 8px 8px 0;padding:.8rem 1rem;margin:.8rem 0;font-style:italic;font-size:.91rem;color:var(--text)}
+.scripture-block strong{color:var(--deep);font-style:normal;font-size:.79rem;display:block;margin-top:.3rem;font-weight:600}
+.christ-box{background:linear-gradient(135deg,#EDE7F6,#E8EAF6);border:1px solid #9575CD;border-radius:8px;padding:.85rem 1rem;margin:.8rem 0}
+.christ-box .christ-title{font-size:.72rem;color:#4527A0;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.35rem}
+.christ-box p{font-size:.87rem;color:#1A237E;margin:0;line-height:1.65}
+.key-box{background:linear-gradient(135deg,#E3F2FD,#EDE7F6);border:1px solid #90CAF9;border-radius:8px;padding:.85rem 1rem;margin:.8rem 0;font-size:.88rem;line-height:1.65}
+.key-box strong{color:var(--deep);font-size:.72rem;display:block;margin-bottom:.3rem;text-transform:uppercase;letter-spacing:.04em}
+.remember-box{background:linear-gradient(135deg,#FFF8E7,#FFF3E0);border:1px solid var(--gold);border-radius:8px;padding:.85rem 1rem;margin:.8rem 0}
+.remember-box .rem-title{font-size:.72rem;color:#E65100;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.35rem}
+.remember-box ul{padding-left:1.2rem;margin:0}.remember-box li{font-size:.87rem;color:#BF360C;line-height:1.65;margin-bottom:.3rem}
+.quiz-wrap{max-width:700px}
+.quiz-progress{display:flex;gap:.4rem;margin-bottom:1.5rem;flex-wrap:wrap}
+.qp-dot{width:32px;height:6px;border-radius:3px;background:#E8D5A0;transition:background .3s}
+.qp-dot.done{background:var(--green)}.qp-dot.current{background:var(--gold)}
+.quiz-q{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.5rem;margin-bottom:1rem}
+.quiz-q-text{font-family:'Playfair Display',serif;font-size:1.05rem;color:var(--deep);margin-bottom:1rem;line-height:1.45}
+.quiz-opts{display:flex;flex-direction:column;gap:.5rem}
+.quiz-opt{display:flex;align-items:flex-start;gap:.7rem;padding:.75rem .9rem;border:1px solid var(--border);border-radius:8px;cursor:pointer;transition:all .15s;background:var(--parchment)}
+.quiz-opt:hover:not(.disabled){border-color:var(--gold);background:#FFF8E7}
+.quiz-opt.selected{border-color:var(--deep2);background:#E8EDF7}
+.quiz-opt.correct{border-color:var(--green);background:#E8F5E9}.quiz-opt.wrong{border-color:var(--red);background:#FFEBEE}
+.quiz-opt .opt-letter{width:24px;height:24px;border-radius:50%;background:var(--deep);color:#fff;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;flex-shrink:0;margin-top:.05rem}
+.quiz-opt.correct .opt-letter{background:var(--green)}.quiz-opt.wrong .opt-letter{background:var(--red)}
+.quiz-opt .opt-text{font-size:.9rem;line-height:1.5}.disabled{cursor:default}
+.quiz-feedback{border-radius:8px;padding:.8rem 1rem;margin-top:.6rem;font-size:.88rem;line-height:1.65;display:none}.quiz-feedback.show{display:block}
+.quiz-feedback.correct-fb{background:#E8F5E9;border:1px solid #81C784;color:#1B5E20}.quiz-feedback.wrong-fb{background:#FFEBEE;border:1px solid #EF9A9A;color:#7F0000}
+.quiz-nav{display:flex;gap:.8rem;margin-top:1rem;flex-wrap:wrap}
+.btn-sec{padding:.7rem 1.2rem;border:1px solid var(--border);background:var(--card);border-radius:8px;font-family:'Source Serif 4',serif;font-size:.9rem;cursor:pointer;color:var(--deep);transition:all .15s}
+.btn-sec:hover{background:var(--parch2);border-color:var(--gold)}
+.btn-gold{padding:.7rem 1.4rem;background:var(--gold);color:var(--deep);border:none;border-radius:8px;font-family:'Playfair Display',serif;font-size:.9rem;font-weight:700;cursor:pointer;transition:all .15s}
+.btn-gold:hover{background:var(--gold-light)}.btn-gold:disabled{opacity:.5;cursor:not-allowed}
+.results-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:2rem;text-align:center;max-width:500px;margin:0 auto}
+.results-score{font-family:'Playfair Display',serif;font-size:3rem;font-weight:700;margin:.5rem 0}.results-score.pass{color:var(--green)}.results-score.fail{color:var(--red)}
+.cert-wrap{max-width:780px;margin:0 auto}
+.cert-preview{background:#fff;border:3px double var(--gold);border-radius:4px;padding:2.5rem 3rem;font-family:'Playfair Display',serif;text-align:center;box-shadow:var(--shadow);position:relative;overflow:hidden}
+.cert-corner{position:absolute;width:70px;height:70px;border:2px solid var(--gold);opacity:.35}
+.cert-corner.tl{top:12px;left:12px;border-right:none;border-bottom:none}.cert-corner.tr{top:12px;right:12px;border-left:none;border-bottom:none}
+.cert-corner.bl{bottom:12px;left:12px;border-right:none;border-top:none}.cert-corner.br{bottom:12px;right:12px;border-left:none;border-top:none}
+.cert-title{font-size:.9rem;letter-spacing:.2em;color:var(--muted);text-transform:uppercase;margin-bottom:.4rem}
+.cert-main{font-size:1.7rem;font-weight:700;color:var(--deep);margin-bottom:.3rem}
+.cert-name{font-size:2rem;color:var(--gold);font-style:italic;margin:.8rem 0;border-bottom:1px solid var(--gold-light);padding-bottom:.8rem}
+.cert-body{font-size:.9rem;color:var(--muted);line-height:1.7;margin-bottom:.7rem;font-family:'Source Serif 4',serif}
+.cert-module{font-size:1.1rem;font-weight:700;color:var(--deep);margin:.4rem 0 1rem}
+.cert-sigs{display:flex;justify-content:center;gap:3rem;margin-top:1.5rem}.cert-sig{text-align:center}
+.cert-sig-line{width:150px;border-top:1px solid var(--text);margin:0 auto .3rem}.cert-sig-name{font-size:.85rem;font-weight:700;color:var(--deep)}.cert-sig-title{font-size:.72rem;color:var(--muted);font-family:'Source Serif 4',serif}
+.cert-seal{width:64px;height:64px;border-radius:50%;background:var(--deep);color:var(--gold-light);display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:700;text-align:center;line-height:1.3;margin:1rem auto .5rem;letter-spacing:.05em;border:2px solid var(--gold);flex-direction:column}
+.testament-tabs{display:flex;gap:.5rem;margin-bottom:1rem;flex-wrap:wrap}
+.test-tab{padding:.5rem 1rem;border-radius:8px;border:1px solid var(--border);background:var(--card);font-size:.85rem;cursor:pointer;color:var(--muted);font-family:'Source Serif 4',serif;transition:all .15s}
+.test-tab.active{background:var(--deep);color:var(--gold-light);border-color:var(--deep)}
+.books-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(145px,1fr));gap:.6rem}
+.book-item{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:.7rem .8rem;cursor:pointer;transition:all .15s}
+.book-item:hover{border-color:var(--gold);background:#FFF8E7}.book-item.completed{border-color:var(--green);background:#F1F8F1}
+.book-name{font-family:'Playfair Display',serif;font-size:.85rem;color:var(--deep);font-weight:600}.book-meta{font-size:.7rem;color:var(--muted);margin-top:.12rem}.book-check{color:var(--green);font-size:.72rem;margin-top:.22rem}
+.topical-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:.8rem}
+.topic-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:1rem;cursor:pointer;transition:all .2s}
+.topic-card:hover{box-shadow:var(--shadow);transform:translateY(-2px);border-color:var(--gold)}
+.topic-icon{font-size:1.8rem;margin-bottom:.5rem}.topic-title{font-family:'Playfair Display',serif;font-size:.95rem;color:var(--deep);font-weight:600}
+.topic-desc{font-size:.78rem;color:var(--muted);margin-top:.3rem;line-height:1.5}
+.certs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:.8rem}
+.cert-mini{background:var(--card);border:2px solid var(--gold);border-radius:10px;padding:1rem;text-align:center}
+.cert-mini-title{font-family:'Playfair Display',serif;font-size:.9rem;color:var(--deep);margin-bottom:.4rem;font-weight:600}.cert-mini-date{font-size:.75rem;color:var(--muted);margin-bottom:.7rem}
+.empty-state{text-align:center;padding:3rem 1rem;color:var(--muted)}.empty-icon{font-size:3rem;margin-bottom:.7rem}.empty-text{font-family:'Playfair Display',serif;font-size:1.1rem}
+@media(max-width:700px){.menu-btn{display:block}.sidebar{width:230px;position:fixed;left:-230px;top:52px;height:calc(100vh - 52px);z-index:99;transition:left .3s}.sidebar.open{left:0;box-shadow:4px 0 20px rgba(0,0,0,.3)}.content{padding:1rem}.welcome-title{font-size:1.7rem}.stats-row{gap:1.2rem}.cert-preview{padding:1.5rem}}
+</style>
+</head>
+<body>
+
+<div class="screen active" id="welcome">
+  <div class="welcome-logo">✝</div>
+  <div class="welcome-title">TEAM21 ACADEMY</div>
+  <div class="welcome-sub">Online Bible School — Grounded in the Word, Relevant to Africa</div>
+  <div class="verse-banner">"Your word is a lamp for my feet, a light on my path." — Psalm 119:105</div>
+  <div class="welcome-form">
+    <label>YOUR FULL NAME</label>
+    <input type="text" id="student-name" placeholder="e.g. Emmanuel Asante" maxlength="60" autocomplete="off"/>
+    <div style="font-size:.78rem;color:rgba(176,196,222,.55);margin-top:.5rem">Your name will appear on all certificates of completion</div>
+    <button class="btn-primary" onclick="startApp()">Enter the Academy →</button>
+  </div>
+  <div class="stats-row">
+    <div class="stat-item"><span class="stat-num">66</span><span class="stat-label">Books of the Bible</span></div>
+    <div class="stat-item"><span class="stat-num">16</span><span class="stat-label">Topical Courses</span></div>
+    <div class="stat-item"><span class="stat-num">100%</span><span class="stat-label">Scripture-Based</span></div>
+  </div>
+</div>
+
+<div class="screen" id="app">
+  <div class="topbar">
+    <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+    <div class="topbar-logo">✝ TEAM21 ACADEMY</div>
+    <div class="topbar-user" id="topbar-name">Student</div>
+    <button class="topbar-btn" onclick="goTo('certs')">🏆 Certificates</button>
+  </div>
+  <div class="main-content">
+    <div class="sidebar" id="sidebar">
+      <div class="sidebar-section">
+        <div class="sidebar-heading">Navigation</div>
+        <div class="sidebar-item active" id="nav-dashboard" onclick="goTo('dashboard')"><span class="icon">🏠</span> Dashboard</div>
+        <div class="sidebar-item" id="nav-books" onclick="goTo('books')"><span class="icon">📖</span> 66 Books</div>
+        <div class="sidebar-item" id="nav-topical" onclick="goTo('topical')"><span class="icon">🌍</span> Topical Courses</div>
+        <div class="sidebar-item" id="nav-certs" onclick="goTo('certs')"><span class="icon">🏆</span> Certificates</div>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-heading">The Bible</div>
+        <div class="sidebar-item" onclick="goTo('books','ot')"><span class="icon">📜</span> Old Testament</div>
+        <div class="sidebar-item" onclick="goTo('books','nt')"><span class="icon">✝</span> New Testament</div>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-heading">Biblical Foundations</div>
+        <div class="sidebar-item" onclick="openTopic('trustbible')"><span class="icon">📚</span> Why Trust the Bible?</div>
+        <div class="sidebar-item" onclick="openTopic('historybible')"><span class="icon">🗺️</span> History of the Bible</div>
+        <div class="sidebar-item" onclick="openTopic('hermeneutics')"><span class="icon">🔍</span> How to Study the Bible</div>
+        <div class="sidebar-item" onclick="openTopic('africa')"><span class="icon">🌍</span> Africa in the Bible</div>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-heading">Topical Courses</div>
+        <div class="sidebar-item" onclick="openTopic('church')"><span class="icon">⛪</span> Church Management</div>
+        <div class="sidebar-item" onclick="openTopic('marriage')"><span class="icon">💒</span> Marriage &amp; Family</div>
+        <div class="sidebar-item" onclick="openTopic('stewardship')"><span class="icon">💰</span> Biblical Finance</div>
+        <div class="sidebar-item" onclick="openTopic('prayer')"><span class="icon">🙏</span> Prayer &amp; Fasting</div>
+        <div class="sidebar-item" onclick="openTopic('discipleship')"><span class="icon">👥</span> Discipleship</div>
+        <div class="sidebar-item" onclick="openTopic('evangelism')"><span class="icon">📢</span> Evangelism</div>
+        <div class="sidebar-item" onclick="openTopic('leadership')"><span class="icon">👑</span> Christian Leadership</div>
+        <div class="sidebar-item" onclick="openTopic('spiritual_warfare')"><span class="icon">⚔️</span> Spiritual Warfare</div>
+        <div class="sidebar-item" onclick="openTopic('apologetics')"><span class="icon">🛡️</span> Apologetics</div>
+        <div class="sidebar-item" onclick="openTopic('holyghost')"><span class="icon">🔥</span> Holy Spirit &amp; Gifts</div>
+        <div class="sidebar-item" onclick="openTopic('eschatology')"><span class="icon">✨</span> End Times</div>
+        <div class="sidebar-item" onclick="openTopic('healing')"><span class="icon">🕊️</span> Healing &amp; Deliverance</div>
+      </div>
+    </div>
+    <div class="content" id="main-content"></div>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// BOOK DATA
+// ============================================================
+const OT_BOOKS=[
+  {id:'genesis',name:'Genesis',chapters:50,theme:'Creation, Fall & Promise',cat:'Law'},
+  {id:'exodus',name:'Exodus',chapters:40,theme:'Redemption from bondage',cat:'Law'},
+  {id:'leviticus',name:'Leviticus',chapters:27,theme:'Holiness and worship',cat:'Law'},
+  {id:'numbers',name:'Numbers',chapters:36,theme:'Journey in the wilderness',cat:'Law'},
+  {id:'deuteronomy',name:'Deuteronomy',chapters:34,theme:'Renewing the covenant',cat:'Law'},
+  {id:'joshua',name:'Joshua',chapters:24,theme:'Possessing the promised land',cat:'History'},
+  {id:'judges',name:'Judges',chapters:21,theme:'Cycles of sin and deliverance',cat:'History'},
+  {id:'ruth',name:'Ruth',chapters:4,theme:'Faithfulness and redemption',cat:'History'},
+  {id:'1samuel',name:'1 Samuel',chapters:31,theme:'Rise of the monarchy',cat:'History'},
+  {id:'2samuel',name:'2 Samuel',chapters:24,theme:"David's kingdom",cat:'History'},
+  {id:'1kings',name:'1 Kings',chapters:22,theme:'Solomon and the divided kingdom',cat:'History'},
+  {id:'2kings',name:'2 Kings',chapters:25,theme:'Fall of Israel and Judah',cat:'History'},
+  {id:'1chronicles',name:'1 Chronicles',chapters:29,theme:"David's legacy",cat:'History'},
+  {id:'2chronicles',name:'2 Chronicles',chapters:36,theme:"Judah's kings",cat:'History'},
+  {id:'ezra',name:'Ezra',chapters:10,theme:'Return from exile',cat:'History'},
+  {id:'nehemiah',name:'Nehemiah',chapters:13,theme:'Rebuilding Jerusalem',cat:'History'},
+  {id:'esther',name:'Esther',chapters:10,theme:"God's providence",cat:'History'},
+  {id:'job',name:'Job',chapters:42,theme:'Suffering and sovereignty',cat:'Poetry'},
+  {id:'psalms',name:'Psalms',chapters:150,theme:'Prayers, praises and laments',cat:'Poetry'},
+  {id:'proverbs',name:'Proverbs',chapters:31,theme:'Wisdom for daily life',cat:'Poetry'},
+  {id:'ecclesiastes',name:'Ecclesiastes',chapters:12,theme:'Meaning under the sun',cat:'Poetry'},
+  {id:'songofsolomon',name:'Song of Solomon',chapters:8,theme:'Love and marriage',cat:'Poetry'},
+  {id:'isaiah',name:'Isaiah',chapters:66,theme:'Salvation and the Servant',cat:'Major Prophets'},
+  {id:'jeremiah',name:'Jeremiah',chapters:52,theme:'Judgment and restoration',cat:'Major Prophets'},
+  {id:'lamentations',name:'Lamentations',chapters:5,theme:'Mourning over Jerusalem',cat:'Major Prophets'},
+  {id:'ezekiel',name:'Ezekiel',chapters:48,theme:'Glory of God and restoration',cat:'Major Prophets'},
+  {id:'daniel',name:'Daniel',chapters:12,theme:'God reigns over nations',cat:'Major Prophets'},
+  {id:'hosea',name:'Hosea',chapters:14,theme:"God's faithful love",cat:'Minor Prophets'},
+  {id:'joel',name:'Joel',chapters:3,theme:'The Day of the Lord',cat:'Minor Prophets'},
+  {id:'amos',name:'Amos',chapters:9,theme:'Justice and righteousness',cat:'Minor Prophets'},
+  {id:'obadiah',name:'Obadiah',chapters:1,theme:'Judgment on Edom',cat:'Minor Prophets'},
+  {id:'jonah',name:'Jonah',chapters:4,theme:"God's mercy to all nations",cat:'Minor Prophets'},
+  {id:'micah',name:'Micah',chapters:7,theme:'Justice, mercy, humility',cat:'Minor Prophets'},
+  {id:'nahum',name:'Nahum',chapters:3,theme:"God's judgment on Nineveh",cat:'Minor Prophets'},
+  {id:'habakkuk',name:'Habakkuk',chapters:3,theme:'Faith amid questions',cat:'Minor Prophets'},
+  {id:'zephaniah',name:'Zephaniah',chapters:3,theme:'The Day of the Lord',cat:'Minor Prophets'},
+  {id:'haggai',name:'Haggai',chapters:2,theme:'Rebuilding the temple',cat:'Minor Prophets'},
+  {id:'zechariah',name:'Zechariah',chapters:14,theme:'Messianic visions',cat:'Minor Prophets'},
+  {id:'malachi',name:'Malachi',chapters:4,theme:'Covenant faithfulness',cat:'Minor Prophets'},
+];
+const NT_BOOKS=[
+  {id:'matthew',name:'Matthew',chapters:28,theme:'Jesus the Jewish Messiah',cat:'Gospels'},
+  {id:'mark',name:'Mark',chapters:16,theme:'Jesus the Servant King',cat:'Gospels'},
+  {id:'luke',name:'Luke',chapters:24,theme:'Jesus the Saviour of all',cat:'Gospels'},
+  {id:'john',name:'John',chapters:21,theme:'Jesus the Son of God',cat:'Gospels'},
+  {id:'acts',name:'Acts',chapters:28,theme:'Birth of the Church',cat:'History'},
+  {id:'romans',name:'Romans',chapters:16,theme:'The Gospel explained',cat:'Epistles'},
+  {id:'1corinthians',name:'1 Corinthians',chapters:16,theme:'Church order and gifts',cat:'Epistles'},
+  {id:'2corinthians',name:'2 Corinthians',chapters:13,theme:'Ministry and suffering',cat:'Epistles'},
+  {id:'galatians',name:'Galatians',chapters:6,theme:'Freedom in Christ',cat:'Epistles'},
+  {id:'ephesians',name:'Ephesians',chapters:6,theme:'The body of Christ',cat:'Epistles'},
+  {id:'philippians',name:'Philippians',chapters:4,theme:'Joy in Christ',cat:'Epistles'},
+  {id:'colossians',name:'Colossians',chapters:4,theme:'Christ preeminent',cat:'Epistles'},
+  {id:'1thessalonians',name:'1 Thessalonians',chapters:5,theme:'The return of Christ',cat:'Epistles'},
+  {id:'2thessalonians',name:'2 Thessalonians',chapters:3,theme:'Perseverance until the end',cat:'Epistles'},
+  {id:'1timothy',name:'1 Timothy',chapters:6,theme:'Church leadership',cat:'Epistles'},
+  {id:'2timothy',name:'2 Timothy',chapters:4,theme:'Faithful ministry',cat:'Epistles'},
+  {id:'titus',name:'Titus',chapters:3,theme:'Sound doctrine and good works',cat:'Epistles'},
+  {id:'philemon',name:'Philemon',chapters:1,theme:'Forgiveness and reconciliation',cat:'Epistles'},
+  {id:'hebrews',name:'Hebrews',chapters:13,theme:'Jesus greater than all',cat:'Epistles'},
+  {id:'james',name:'James',chapters:5,theme:'Faith with works',cat:'Epistles'},
+  {id:'1peter',name:'1 Peter',chapters:5,theme:'Hope in suffering',cat:'Epistles'},
+  {id:'2peter',name:'2 Peter',chapters:3,theme:'Growing in grace',cat:'Epistles'},
+  {id:'1john',name:'1 John',chapters:5,theme:'Love, truth, assurance',cat:'Epistles'},
+  {id:'2john',name:'2 John',chapters:1,theme:'Walking in truth',cat:'Epistles'},
+  {id:'3john',name:'3 John',chapters:1,theme:'Hospitality in ministry',cat:'Epistles'},
+  {id:'jude',name:'Jude',chapters:1,theme:'Contending for the faith',cat:'Epistles'},
+  {id:'revelation',name:'Revelation',chapters:22,theme:"Christ's ultimate victory",cat:'Prophecy'},
+];
+
+const TOPICS=[
+  {id:'trustbible',icon:'📚',title:'Why Trust the Bible?',desc:'Evidence for the reliability and divine inspiration of Scripture',cat:'Foundations'},
+  {id:'historybible',icon:'🗺️',title:'History of the Bible',desc:'How the Bible was written, preserved and transmitted through the ages',cat:'Foundations'},
+  {id:'hermeneutics',icon:'🔍',title:'How to Study the Bible',desc:'Principles of biblical interpretation — reading Scripture rightly',cat:'Foundations'},
+  {id:'africa',icon:'🌍',title:"Africa in the Bible",desc:'Africa\'s remarkable presence and role throughout Scripture',cat:'Foundations'},
+  {id:'church',icon:'⛪',title:'Church Management',desc:'Biblical principles for leading and administering a local church',cat:'Practical'},
+  {id:'marriage',icon:'💒',title:'Marriage & Family',desc:"God's design for marriage and parenting in the African context",cat:'Practical'},
+  {id:'stewardship',icon:'💰',title:'Biblical Stewardship',desc:'Tithing, giving, and financial wisdom for believers',cat:'Practical'},
+  {id:'prayer',icon:'🙏',title:'Prayer & Fasting',desc:'Developing a powerful, sustained prayer life',cat:'Practical'},
+  {id:'discipleship',icon:'👥',title:'Discipleship & Mentoring',desc:'Making and multiplying disciples of Jesus Christ',cat:'Practical'},
+  {id:'evangelism',icon:'📢',title:'Evangelism & Mission',desc:'Reaching the lost with the Gospel — at home and to all nations',cat:'Practical'},
+  {id:'leadership',icon:'👑',title:'Christian Leadership',desc:'Servant leadership from Scripture for African leaders',cat:'Practical'},
+  {id:'spiritual_warfare',icon:'⚔️',title:'Spiritual Warfare',desc:'The believer\'s armor, authority, and battle against darkness',cat:'Spiritual'},
+  {id:'apologetics',icon:'🛡️',title:'Christian Apologetics',desc:'Defending the faith — answering hard questions about Christianity',cat:'Spiritual'},
+  {id:'holyghost',icon:'🔥',title:'Holy Spirit & Gifts',desc:'Baptism, filling, and the gifts of the Spirit for today',cat:'Spiritual'},
+  {id:'eschatology',icon:'✨',title:'End Times',desc:"What the Bible teaches about the last days and Christ's return",cat:'Spiritual'},
+  {id:'healing',icon:'🕊️',title:'Healing & Deliverance',desc:'A biblical theology of healing, deliverance and spiritual freedom',cat:'Spiritual'},
+];
+
+// ============================================================
+// LESSON CONTENT — DAVID PAWSON STYLE
+// ============================================================
+const LESSONS={
+genesis:{
+  title:'Genesis — The Book of Beginnings',
+  overview:'David Pawson said, "You cannot understand any book of the Bible without understanding Genesis." He was right. Genesis is not mythology, not allegory, not a primitive attempt at science — it is the inspired account of how everything began. Without Genesis, the rest of the Bible makes no sense. Every major Christian doctrine — creation, sin, redemption, covenant, marriage, family, nation, and judgment — has its roots here. If you pull up Genesis, the whole Bible collapses.',
+  history:'Genesis was written by Moses around 1400 BC, though the events it records span from creation to the death of Joseph (roughly 1800 BC). The book covers more time than all the rest of the Bible combined. Moses compiled earlier written and oral records under the inspiration of the Holy Spirit. The phrase "these are the generations of" (Hebrew: toledot) appears ten times, suggesting Moses was working with source documents going back to Adam himself. Egypt, where Moses was educated, had highly developed writing by this period — there is no reason to doubt written records were kept.',
+  sections:[
+    {h:'Structure and Key Themes',b:'Genesis divides naturally into two halves. Chapters 1–11 deal with universal history — creation, fall, flood, Babel. Chapters 12–50 deal with patriarchal history — Abraham, Isaac, Jacob, and Joseph. The first half asks: "What went wrong with humanity?" The second half answers: "Here is God\'s plan to fix it." This structure is brilliant. God narrows His focus from all humanity, to one nation, to one family, to one man (Abraham) — and through that one man, He will bless all the nations again (Genesis 12:3).'},
+    {h:'Creation (Chapters 1–2)',b:'Genesis 1 reveals that God (Elohim — the plural of majesty, hinting at the Trinity) created everything from nothing in six days and rested on the seventh. The Hebrew word "bara" (create) is used only of God — never of human activity. Human beings are made in the "image of God" (imago Dei) — a concept unique in the ancient world where only kings were considered divine images. In the Bible, every human being carries royal dignity. Genesis 2 zooms in on Day 6 and the creation of Adam and Eve — and establishes marriage as the foundational human institution.',
+    scr:'"So God created mankind in his own image, in the image of God he created them; male and female he created them."',ref:'Genesis 1:27'},
+    {h:'The Fall and its Catastrophic Consequences (Chapter 3)',b:'The serpent\'s strategy was brilliantly simple: create doubt about God\'s word ("Did God really say?"), create doubt about God\'s character ("God knows that when you eat of it your eyes will be opened"), and offer an alternative ("you will be like God"). This strategy has not changed in 6,000 years. The consequences of the Fall are far-reaching: spiritual death (separation from God), physical death begins, the ground is cursed, work becomes toil, childbirth becomes painful, the man-woman relationship is distorted, and humanity is expelled from the Garden. But notice — even in judgment, God makes them garments of skin (3:21). An animal died so that they could be covered. This is the first blood sacrifice — a picture of what Christ would do.',
+    scr:'"And I will put enmity between you and the woman, and between your offspring and hers; he will crush your head, and you will strike his heel."',ref:'Genesis 3:15 — the Protoevangelium (first gospel)'},
+    {h:'Cain, Abel, the Flood, and Babel (Chapters 4–11)',b:'Sin spreads rapidly. Cain murders Abel — the world\'s first murder happens within the first family. By Genesis 6, violence and corruption fill the earth. The Flood is God\'s judgment — not capricious destruction, but a morally necessary response to universal wickedness. Noah finds grace (6:8). The Ark is a picture of salvation — only those inside are saved. After the Flood, God gives the Noahic Covenant (never again to destroy by flood) with the rainbow as sign. At Babel, humanity\'s pride seeks to reach heaven by human effort — God scatters them and diversifies their languages. This explains why there are nations and languages — and it sets up Pentecost (Acts 2) as the reversal of Babel.',
+    key:'The Flood is not mythology. Jesus treated it as literal history (Matthew 24:37-39). Peter connects it to final judgment (2 Peter 3:6-7). The worldwide distribution of flood stories across cultures supports a global event.'},
+    {h:'Abraham — The Father of Faith (Chapters 12–25)',b:'Genesis 12 is the great turning point. God calls Abraham out of paganism (Joshua 24:2 — his family worshipped idols) and makes an unconditional, unilateral covenant with him: Land (Canaan), Seed (a great nation), and Blessing (to all peoples). This covenant — confirmed with Abraham in chapter 15 by God alone passing between the animal pieces — is the backbone of all subsequent Scripture. Notice: Abraham did not pass between the pieces. He was asleep (15:12). The covenant depended entirely on God\'s faithfulness, not Abraham\'s performance. This is grace. The supreme test comes in Genesis 22 — Abraham is asked to offer Isaac. He goes, because he believed God could raise Isaac from the dead (Hebrews 11:19). This is the most powerful picture of the Father offering His Son in all the Old Testament.',
+    scr:'"I will make you into a great nation, and I will bless you; I will make your name great, and you will be a blessing… and all peoples on earth will be blessed through you."',ref:'Genesis 12:2-3'},
+    {h:'Jacob and Joseph — Providence in Pain (Chapters 25–50)',b:'Jacob\'s story is one of manipulation and transformation. He deceives his father, schemes against his brother, and wrestles with God. Yet God renames him Israel ("one who wrestles with God") and uses him as the father of twelve tribes. God uses flawed people — this is deeply encouraging. Joseph\'s story is perhaps the most sustained demonstration of divine providence in Scripture. Sold into slavery at 17, falsely imprisoned, forgotten — yet at 30, Pharaoh\'s right hand. His brothers meant evil; God meant good (50:20). Not only does he save Egypt and his family — he saves the line through which the Messiah will come. Joseph is the supreme type of Christ in Genesis: beloved son, rejected by brothers, exalted after suffering, becomes saviour of many.',
+    scr:'"You intended to harm me, but God intended it for good to accomplish what is now being done, the saving of many lives."',ref:'Genesis 50:20'}
+  ],
+  christ:'Genesis is saturated with Christ. The seed of the woman (3:15) is Jesus. The lamb provided for Abraham (22:13) is Jesus. Joseph, rejected and exalted, is a type of Jesus. Melchizedek, priest-king who brings bread and wine (14:18), is a type of Jesus (see Hebrews 7). Even the seven days of creation point to the new creation Christ initiates. Genesis 1:2 — the Spirit hovering over chaos — anticipates the Spirit who will hover over the disciples and create the new humanity at Pentecost.',
+  remember:['God created everything good — evil and death are intruders, not part of the original design','The Fall explains everything wrong with the world — it is not how God made it','God always provides a way of rescue — the Ark, the lamb on Moriah, Joseph in Egypt','The Abrahamic Covenant is the foundation of all God\'s dealings with humanity','Joseph\'s story is the Bible\'s greatest statement on providence — God can redeem any suffering','Genesis ends with a coffin in Egypt (50:26) — the Bible ends with a Tree of Life. That\'s the whole story.']
+},
+
+exodus:{
+  title:'Exodus — The Great Deliverance',
+  overview:'Exodus is the Old Testament\'s Gospel. If Genesis is the problem, Exodus is the solution. The word "exodus" means "departure" or "going out." This book records the most significant event in Israel\'s history — the redemption from Egyptian slavery — which becomes the defining picture through which all subsequent redemption in the Bible is interpreted. Pawson insisted: "You cannot understand the cross without understanding the Passover. And you cannot understand the Passover without understanding Exodus."',
+  history:'Moses wrote Exodus around 1400 BC describing events from approximately 1446-1400 BC (using the early date of the Exodus). The date of the Exodus is debated — some scholars argue for 1290 BC (late date) — but 1 Kings 6:1 counts 480 years from the Exodus to Solomon\'s temple, and Acts 13:19-20 supports the early date. Egypt was a superpower; Ramesses II or Thutmose III were the Pharaohs depending on the dating. The Hebrew people had grown from 70 souls (Genesis 46:27) to perhaps 2-3 million people in 430 years — alarming the Egyptians.',
+  sections:[
+    {h:'Slavery, Moses and the Burning Bush (Chapters 1–4)',b:'Pharaoh\'s genocide policy — "throw every newborn Hebrew boy into the Nile" — is the context of Moses\' birth. Providentially, the one who should have been drowned is raised in Pharaoh\'s own palace (2:10). Moses\' premature attempt to deliver Israel by his own strength (killing the Egyptian) fails catastrophically — he flees to Midian, where he spends 40 years in the school of obscurity. At 80, when he has given up on himself, God appears in the burning bush. Note: the bush burns but is not consumed — a picture of Israel in Egypt (afflicted but not destroyed) and ultimately of the nature of God (holy fire that does not destroy). At the bush, God reveals His personal name: YHWH (I AM WHO I AM) — the self-existent, eternal, covenant-keeping God.',
+    scr:'"I have indeed seen the misery of my people in Egypt. I have heard them crying out because of their slave drivers, and I am concerned about their suffering."',ref:'Exodus 3:7'},
+    {h:'The Ten Plagues — A War Against Egypt\'s Gods',b:'The ten plagues are not random natural disasters — each one is a deliberate assault on a specific Egyptian deity. The Nile turned to blood attacked Hapi (god of the Nile). Darkness attacked Ra (the sun god). The death of the firstborn attacked Pharaoh himself, considered divine. God is systematically demolishing the entire Egyptian religious system and demonstrating His supreme power over every false god. This is deeply relevant for any culture with a pantheon of deities or spiritual forces — there is ONE God, and He is above all.',
+    key:'The plagues establish a pattern: God gives warning, Pharaoh hardens his heart (sometimes God hardens it, sometimes Pharaoh does — God\'s hardening is a judicial response to willful rejection), judgment falls, temporary repentance, then return to sin. This is the pattern of spiritual hardening described in Romans 1.'},
+    {h:'The Passover — Salvation by Blood (Chapter 12)',b:'The Passover is the theological heart of Exodus. The instructions are precise: an unblemished lamb (male, year-old), slaughtered at twilight, blood applied to doorposts and lintels. When the destroyer sees the blood, he passes over. This is substitutionary atonement in picture form — the lamb dies so the firstborn lives. The blood must be applied — merely slaughtering the lamb was not enough. The Passover must be eaten in haste, shoes on, staff in hand — ready to leave. Salvation is not passive waiting; it requires urgent, active response. Paul says explicitly: "Christ, our Passover lamb, has been sacrificed" (1 Corinthians 5:7).',
+    scr:'"The blood will be a sign for you on the houses where you are, and when I see the blood, I will pass over you."',ref:'Exodus 12:13'},
+    {h:'The Ten Commandments and the Law (Chapters 19–24)',b:'At Sinai, God enters into a covenant with Israel. The Ten Commandments (Decalogue) are not a way of salvation — they come after the Exodus, not before it. Israel was saved by grace (God\'s initiative, God\'s power, God\'s blood). The Law was given to a redeemed people to show them how to live as God\'s people. This order — grace first, then law — is crucial. The Law is not the basis of salvation; it is the lifestyle of the saved. The commandments cover both vertical relationship (with God: no other gods, no idols, no misuse of Name, Sabbath) and horizontal relationships (with people: honor parents, no murder, adultery, stealing, lying, coveting). Jesus summarizes them as love God and love neighbor (Matthew 22:37-40).',
+    scr:'"I am the LORD your God, who brought you out of Egypt, out of the land of slavery."',ref:'Exodus 20:2 — the Law begins with gospel'},
+    {h:'The Tabernacle (Chapters 25–40)',b:'Almost half of Exodus is devoted to the Tabernacle — its design, construction and inauguration. Modern readers skip this section, but it is rich with meaning. Every element points to Christ. The Tabernacle is where God dwells among His people — a preview of the Incarnation (John 1:14 — "the Word became flesh and dwelt/tabernacled among us"). The detailed instructions show that God cares deeply about how He is approached. The altar (sacrifice), laver (washing), table of showbread (nourishment), lampstand (light), altar of incense (prayer), ark of the covenant (God\'s presence and law) — all are fulfilled in Christ.',
+    key:'God\'s first priority after rescuing Israel was not to give them a land — it was to dwell among them. The Tabernacle comes before the conquest. This shows that God\'s goal is relationship, not just deliverance.'}
+  ],
+  christ:'Christ is everywhere in Exodus. The Passover lamb is Jesus (1 Cor 5:7). The manna is Jesus — the bread from heaven (John 6:35). The rock struck to give water (17:6) is Jesus struck at the cross so that living water flows (1 Cor 10:4). Moses as the mediator of the covenant foreshadows Christ as the mediator of the new covenant. The Tabernacle is a preview of the Incarnation and ultimately of the New Jerusalem where God lives with His people forever.',
+  remember:['Israel was saved by blood (Passover) and by power (crossing the sea) — a picture of justification and liberation','The plagues demonstrate God\'s absolute authority over every false spiritual power','The Law was given to saved people — grace always precedes law in God\'s economy','The Tabernacle shows God\'s passionate desire to dwell among His people','The Exodus is the defining event of the OT — the resurrection is its NT equivalent','Pharaoh\'s repeated hardening shows the danger of resisting God\'s repeated invitations']
+},
+
+leviticus:{
+  title:'Leviticus — Holiness and Access to God',
+  overview:'Leviticus is the most neglected book in the Bible — and yet Martin Luther said it was the book he most needed to study. David Pawson called it "the most Christ-centred book in the Old Testament." Leviticus answers the question Exodus raises: God has come to dwell among a sinful people — but HOW can sinful people survive the presence of a holy God? The answer is: through a detailed system of sacrifice, priesthood, and purification that points forward to Christ\'s once-for-all sacrifice.',
+  history:'Leviticus is almost entirely a collection of laws and procedures given to Moses at Sinai immediately after the Tabernacle was completed (Exodus 40). The word "Leviticus" refers to the Levites — the priestly tribe. The book was given around 1445 BC. It has no narrative apart from two tragedies: the death of Nadab and Abihu (chapter 10) and the stoning of a blasphemer (chapter 24). The rest is law — but not boring law. It is God\'s instruction manual for living with a holy God.',
+  sections:[
+    {h:'The Five Types of Offering (Chapters 1–7)',b:'The five major offerings reveal different dimensions of what Christ would accomplish on the cross. The Burnt Offering (whole animal consumed) = total consecration. The Grain Offering = thankfulness for daily provision. The Fellowship/Peace Offering = communion with God and celebration. The Sin Offering = cleansing from unintentional sin. The Guilt/Trespass Offering = restitution for specific wrongs. Notice: there was no sacrifice for intentional, premeditated sin in the Mosaic system — the person was to be "cut off" (excommunicated). Only Christ\'s blood covers deliberate sin. This shows the radical sufficiency of the new covenant.',
+    scr:'"For the life of a creature is in the blood, and I have given it to you to make atonement for yourselves on the altar; it is the blood that makes atonement for one\'s life."',ref:'Leviticus 17:11'},
+    {h:'The Priesthood and the Day of Atonement (Chapters 8–10, 16)',b:'The High Priest\'s elaborate robes, ordination, and duties all picture Christ. The Day of Atonement (Yom Kippur) in chapter 16 is the climax of the Levitical system. Once a year, only the High Priest enters the Most Holy Place with blood to make atonement for all of Israel\'s sin. Two goats are used: one is slaughtered and its blood sprinkled on the mercy seat — substitutionary atonement. The second (the "scapegoat") has the sins of Israel confessed over it and is driven into the wilderness — the sins are removed and carried away. Christ fulfils both: He is the slain lamb whose blood cleanses, and He is the scapegoat who "bore our sins in his body" (1 Peter 2:24) and removed them "as far as the east is from the west" (Psalm 103:12).',
+    key:'The deaths of Nadab and Abihu (10:1-2) who offered "unauthorized fire" are a severe warning: God is to be approached His way, not our way. Sincerity is not enough. This challenges the "anything goes in worship" approach and calls for reverence.'},
+    {h:'Holiness — The Core of Leviticus (Chapters 17–27)',b:'The Holiness Code (chapters 17-27) contains the command that becomes the heartbeat of biblical ethics: "Be holy because I, the LORD your God, am holy" (19:2). Jesus quotes directly from Leviticus 19 in His teaching (love your neighbour — 19:18). The holiness laws cover sexuality, social justice, care for the poor, fair business practices, and the sacred calendar. These are not arbitrary rules — they are a comprehensive vision of what a society looks like when it reflects God\'s character.',
+    scr:'"Be holy because I, the LORD your God, am holy."',ref:'Leviticus 19:2 — the ultimate standard'},
+    {h:'The Feasts of the LORD (Chapter 23)',b:'Seven annual feasts were prescribed: Passover, Unleavened Bread, Firstfruits, Pentecost (Shavuot), Trumpets (Rosh Hashanah), Day of Atonement, and Tabernacles/Booths. These are not just Jewish festivals — Paul calls them "a shadow of things to come; the reality is found in Christ" (Colossians 2:17). Passover = Christ\'s death. Firstfruits = Christ\'s resurrection (1 Cor 15:20). Pentecost = giving of the Holy Spirit. The autumn feasts (Trumpets, Atonement, Tabernacles) are yet to be fulfilled — they point to the Second Coming, the final judgment, and the ultimate dwelling of God with His people.'}
+  ],
+  christ:'The entire book of Leviticus is a shadow of Christ. He is our High Priest who enters the Most Holy Place not with the blood of animals but with His own blood, obtaining eternal redemption (Hebrews 9:12). He is the Lamb of God who takes away the sin of the world (John 1:29). He is the scapegoat who bears our sins. He is the fulfilment of every feast. The book of Hebrews is essentially a commentary on Leviticus, showing how Christ has fulfilled and surpassed the entire Levitical system.',
+  remember:['Holiness is not optional for God\'s people — it is our calling','Every sacrifice pointed forward to the once-for-all sacrifice of Christ','The Day of Atonement pictures both substitution (slain goat) and removal (scapegoat) of sin','Leviticus 19 contains more about social justice than almost any other chapter in the Bible','The Feasts are God\'s prophetic calendar — many are fulfilled in Christ, some are yet to come','Approaching God must be done His way — reverence matters']
+},
+
+psalms:{
+  title:'Psalms — The Prayer Book of the Universe',
+  overview:'The Psalms are the most quoted Old Testament book in the New Testament — Jesus quotes them more than any other. They are the prayer book of both Testaments — used by Israel in temple worship, by Jesus in His ministry and from the cross, by the early church, and by believers in every generation since. Pawson described the Psalms as "the most human book in the Bible and the most divine." They cover the full range of human experience — from ecstatic praise to crushing depression — and teach us that all of life can be brought to God.',
+  history:'The Psalms were composed over roughly 1,000 years — from Moses (Psalm 90, the oldest) to the post-exilic period. David wrote about half of them (73 attributed to him), with other contributors including Asaph, the Sons of Korah, Solomon, Heman, Ethan, and anonymous writers. They were collected into five books (mirroring the five books of Moses), likely reaching their final form during Ezra\'s time. The Psalms were sung in temple worship with musical accompaniment — many contain musical notations we can no longer fully interpret.',
+  sections:[
+    {h:'Types of Psalms — How to Read Them',b:'Understanding the TYPE of Psalm you are reading transforms the reading experience. Laments (the largest category — about one-third) are honest cries of pain, doubt or distress to God (Psalms 22, 42, 88). Praise Psalms celebrate God\'s attributes and acts (Psalms 145-150). Royal/Messianic Psalms speak of the king and ultimately the King of kings (Psalms 2, 22, 72, 110). Wisdom Psalms offer moral instruction (Psalms 1, 37, 49, 73). Pilgrimage Psalms (120-134, "Songs of Ascent") were sung as worshippers went up to Jerusalem. Historical Psalms rehearse God\'s saving acts (Psalms 78, 105, 106). Imprecatory Psalms call for divine judgment on enemies (Psalms 35, 69, 109) — these trouble modern readers but are expressions of the human longing for divine justice.',
+    key:'The Psalms validate the full range of human emotion before God. You will find anger, depression, doubt, fear, jealousy, and despair in the Psalms — alongside joy, trust, peace and praise. God is not offended by honesty. The problem is not that we feel these things — it is that we feel them away from God rather than TO God.'},
+    {h:'Psalm 1 — The Gateway to the Psalms',b:'Psalm 1 is the doorway through which you must enter to read the rest of the Psalms rightly. It sets out two ways: the way of the righteous (rooted in God\'s Word, fruitful, stable — like a well-irrigated tree) and the way of the wicked (rootless, chaff-like, ultimately swept away). Blessed is the one who meditates on God\'s law day and night. The Hebrew word "meditate" (hagah) means to mutter or murmur — like a lion growling over its prey. True meditation is speaking God\'s Word over your life repeatedly until it shapes you.',
+    scr:'"Blessed is the one who does not walk in step with the wicked… but whose delight is in the law of the LORD, and who meditates on his law day and night."',ref:'Psalm 1:1-2'},
+    {h:'Psalm 22 — The Crucifixion Psalm',b:'Written by David a thousand years before the crucifixion, Psalm 22 describes the cross with astonishing accuracy: "My God, my God, why have you forsaken me?" (v.1 — Jesus\' cry from the cross, Matt 27:46). "They pierce my hands and my feet" (v.16 — crucifixion). "They divide my garments among them and cast lots for my clothing" (v.18 — John 19:24). "All who see me mock me" (v.7). The psalm ends in triumph — "He has not despised or scorned the suffering of the afflicted one... but has listened to his cry for help" (v.24). This is the pattern of the cross and resurrection.',
+    scr:'"My God, my God, why have you forsaken me? Why are you so far from saving me?"',ref:'Psalm 22:1 — quoted by Jesus from the cross'},
+    {h:'Psalm 23 — The Shepherd Psalm',b:'Perhaps the most beloved psalm in the world. Six verses that have comforted more people in more languages through more centuries than any other human composition. David, a former shepherd, writes from experience — he knows exactly what a shepherd does. The LORD is my shepherd (present tense, personal — not "a" shepherd or "our" shepherd). He makes me lie down (I would not rest unless made to). Green pastures and still waters — the sheep does not choose the path; the shepherd leads. The valley of the shadow of death — not a place to avoid but a place where the Shepherd is nearest. Table prepared in the presence of enemies — not after the enemies are gone. Goodness and mercy will follow (literally "hunt me down") all the days of my life.',
+    scr:'"The LORD is my shepherd, I lack nothing."',ref:'Psalm 23:1'},
+    {h:'Psalm 51 — The Repentance Psalm',b:'Written after David\'s catastrophic sin with Bathsheba and the murder of Uriah (2 Samuel 11-12). This is the most profound prayer of repentance in the Bible. David appeals not to his own righteousness but to God\'s "unfailing love" (hesed — covenant loyalty) and "great compassion." He asks for cleansing, not just forgiveness — he understands sin stains the soul. "Create in me a pure heart" (v.10) — the word "create" is bara — the same word used only of God\'s creative acts in Genesis. Only God can create moral purity. "You do not delight in sacrifice, or I would bring it" (v.16) — David understands that ritual without genuine repentance is meaningless.',
+    scr:'"Create in me a pure heart, O God, and renew a steadfast spirit within me."',ref:'Psalm 51:10'}
+  ],
+  christ:'The Psalms are saturated with Christ. Psalm 2 — He is the Son of God, the King to whom all nations will bow. Psalm 22 — His crucifixion in detail. Psalm 16 — His resurrection (quoted in Acts 2:27-31). Psalm 45 — the King\'s wedding (see Hebrews 1:8-9). Psalm 72 — His universal kingdom. Psalm 110 — His exaltation as Priest-King at the Father\'s right hand (the most quoted OT verse in the NT). Jesus said the Psalms speak of Him (Luke 24:44).',
+  remember:['All human emotion is valid before God — the Psalms model bringing it ALL to Him','The Psalms were meant to be sung, not just read — music carries them deeper into the heart','Psalm 22 is the clearest pre-written description of the crucifixion in Scripture','Psalm 23 teaches that the Shepherd leads through the valley, not around it','The imprecatory psalms remind us that God alone is the righteous judge','Jesus used the Psalms constantly — learning them is learning to pray as Jesus prayed']
+},
+
+proverbs:{
+  title:'Proverbs — Wisdom for the Journey',
+  overview:'Proverbs has been called "the most practical book in the Bible." It is Israel\'s school textbook — wisdom for navigating life well. But Pawson made an important distinction: Proverbs gives us wisdom for ordinary life, not promises for every situation. A proverb is a general truth, not an absolute guarantee. "Train up a child in the way he should go" is a proverb — wise parenting generally produces wise children, but we know godly parents have wayward children. The key is reading proverbs as wisdom principles, not ironclad contracts.',
+  history:'Proverbs was compiled primarily by Solomon (chapters 1-29) with contributions from Agur (chapter 30) and King Lemuel\'s mother (chapter 31). Solomon is said to have spoken 3,000 proverbs (1 Kings 4:32). The book\'s final form was likely edited during Hezekiah\'s reign (25:1). It belongs to the Wisdom Literature tradition found throughout the ancient Near East — Israel had its own wisdom tradition that was both connected to and distinct from surrounding cultures, rooted in the fear of the LORD.',
+  sections:[
+    {h:'The Foundation: Fear of the LORD (Chapter 1)',b:'Proverbs 1:7 is the thesis statement of the entire book: "The fear of the LORD is the beginning of wisdom." This fear is not terror but reverential awe — a profound recognition of who God is and who we are. Modern culture worships human intelligence and autonomous self-determination. Proverbs rejects this root-and-branch. Without God as the reference point, all wisdom becomes foolishness. This is why a highly educated person can make catastrophically foolish moral decisions — they have education without the fear of God.',
+    scr:'"The fear of the LORD is the beginning of wisdom, and knowledge of the Holy One is understanding."',ref:'Proverbs 9:10'},
+    {h:'Lady Wisdom and Lady Folly (Chapters 1–9)',b:'The extended poems of chapters 1-9 personify wisdom as a woman who calls out in the public square — available to all, urgently inviting. Wisdom built her house, prepared her feast, and sends out her maidens: "Come, eat my food and drink the wine I have mixed. Leave your simple ways and you will live" (9:5-6). Opposite her stands Lady Folly — also calling, but to destruction (9:13-18). Every human being walks between these two voices daily. The choice seems personal and private, but Proverbs shows it has profoundly public consequences.',
+    key:'The description of the Virtuous Woman in Proverbs 31 is not a checklist for women to feel inadequate against. She is a picture of Wisdom herself — and some commentators identify her as Lady Wisdom made flesh in the person of the godly woman. She is entrepreneurial, compassionate, hard-working, and God-fearing.'},
+    {h:'Key Themes in the Proverbs',b:'The book covers an extraordinary range of practical topics: the tongue and its power (18:21 — "The tongue has the power of life and death"), financial wisdom (do not guarantee another person\'s debt — 11:15), friendship (a friend loves at all times — 17:17; iron sharpens iron — 27:17), diligence versus laziness (the ant as a model — 6:6-11), anger management (a gentle answer turns away wrath — 15:1), pride (goes before destruction — 16:18), the importance of counsel (plans fail for lack of counsel — 15:22), and parenting (discipline your child — 13:24).',
+    scr:'"Trust in the LORD with all your heart and lean not on your own understanding; in all your ways submit to him, and he will make your paths straight."',ref:'Proverbs 3:5-6 — the most famous verse in Proverbs'}
+  ],
+  christ:'Proverbs 8 personifies Wisdom and describes her as present at creation, delighting in God\'s work. The New Testament identifies Christ as "the wisdom of God" (1 Corinthians 1:24) and says that in Christ "are hidden all the treasures of wisdom and knowledge" (Colossians 2:3). John 1:1-3 echoes Proverbs 8 — the Word (Christ) was with God at creation. Jesus IS the Wisdom of God made flesh. When we study Proverbs, we are studying the character of Christ.',
+  remember:['Proverbs are general truths, not absolute promises — wisdom, not guarantee','The fear of the LORD is the non-negotiable foundation of all true wisdom','The tongue is the most powerful and dangerous organ in the body','Financial wisdom is a spiritual matter — debt and careless spending are moral issues in Proverbs','Pride is the root of most foolishness — humility is the soil of wisdom','True wisdom leads to life; folly, however attractive, leads to death']
+},
+
+matthew:{
+  title:'Matthew — Jesus the King',
+  overview:'Matthew was written to the Jewish world with one overriding purpose: to prove that Jesus of Nazareth is the long-promised Jewish Messiah. If you want to understand the New Testament, you must understand that it was not written in a vacuum — it was written by people steeped in the Old Testament, who saw the Old Testament finding its fulfilment in Jesus Christ. Matthew is the great bridge between the Testaments. Pawson said: "Matthew\'s Gospel is the most important book ever written — it contains the words of God incarnate."',
+  history:'Matthew (Levi), a tax collector and one of the Twelve, wrote this Gospel probably around AD 50-60, making it one of the earliest Gospels. He writes for a predominantly Jewish audience — he uses "Kingdom of Heaven" (not "Kingdom of God" as Mark and Luke do) out of Jewish reverence for the divine name. He quotes or alludes to the Old Testament over 130 times. The Gospel was widely circulated in the early church and placed first in the NT canon because it served as the bridge from the Old Testament.',
+  sections:[
+    {h:'The Genealogy — A Royal Pedigree (Chapter 1)',b:'Most modern readers skip Matthew 1:1-17. This is a mistake. The genealogy is Matthew\'s thesis statement. Jesus is "the son of David, the son of Abraham" — the Messiah promised to both. Fourteen generations (Abraham to David), fourteen (David to exile), fourteen (exile to Christ) — structured to show Jesus arrives exactly on God\'s schedule. Remarkably, four women appear in the genealogy — Tamar, Rahab, Ruth, and Bathsheba — all Gentiles or connected to scandalous episodes. Matthew signals from the very first page that this King\'s grace extends beyond Israel to the nations.',
+    scr:'"This is the genealogy of Jesus the Messiah the son of David, the son of Abraham."',ref:'Matthew 1:1'},
+    {h:'The Sermon on the Mount (Chapters 5–7)',b:'The Sermon on the Mount is the greatest moral discourse ever given. Jesus climbs a mountain — deliberately echoing Moses at Sinai — and delivers a new law that far exceeds the old. The Beatitudes (5:3-12) describe the character of citizens of God\'s kingdom — paradoxical, upside-down values that overturn worldly ambition. "You have heard it said... but I say to you" — Jesus speaks with unique authority, not as a rabbi citing other authorities, but as the lawgiver Himself. He intensifies the Law (murder = anger, adultery = lust) to show that it is about the heart, not just behaviour. The Lord\'s Prayer (6:9-13) teaches the shape of all prayer. The Sermon ends with two houses — one built on sand (hearing without doing), one built on rock (hearing and doing). This is the only foundation that survives the storm.',
+    scr:'"Blessed are the poor in spirit, for theirs is the kingdom of heaven."',ref:'Matthew 5:3 — the first Beatitude'},
+    {h:'The Kingdom of Heaven — Matthew\'s Great Theme',b:'Matthew uses the phrase "Kingdom of Heaven" (or "Kingdom of God") over 50 times. This kingdom is the central subject of Jesus\' teaching. It is not a place but a rule — wherever the King\'s authority is submitted to, there is the kingdom. The Kingdom parables of Matthew 13 reveal that the kingdom is: present but hidden (the mustard seed starts small but grows enormously), mixed (wheat and tares grow together until the harvest), precious beyond price (the hidden treasure and the pearl of great value), and comprehensive (the dragnet catches all kinds). The Kingdom has come in Christ\'s first coming; it will be consummated at His second coming.',
+    key:'The Kingdom of God is the thread running through the entire Bible. It begins with God as King in the Garden, is corrupted at the Fall, is partially restored through Israel\'s history, arrives in Jesus ("the Kingdom of God is near" — 4:17), advances through the church, and is fully established at Christ\'s return. Matthew shows us the King.'},
+    {h:'Peter\'s Confession and the Church (Chapter 16)',b:'"Who do you say that I am?" is the most important question ever asked. Peter\'s answer — "You are the Messiah, the Son of the living God" — is the bedrock on which the church is built. "On this rock I will build my church" — not on Peter the man (he will deny Jesus in chapter 26) but on the confession Peter has just made, the revealed truth of who Jesus is. The church\'s identity and authority are inseparable from the person of Christ.',
+    scr:'"You are the Messiah, the Son of the living God."',ref:'Matthew 16:16 — Peter\'s great confession'},
+    {h:'The Great Commission (Chapter 28)',b:'Matthew ends as it begins — with the universal scope of the King\'s reign. "All authority in heaven and on earth has been given to me" — the risen Christ speaks as the universal sovereign. The commission flows from this authority: go, make disciples, baptize, teach. The four verbs in the Greek original are important: "go" is a participle (as you are going), "make disciples" is the main imperative, "baptizing" and "teaching" are participles explaining how. The great aim is not converts but disciples — those who learn from Jesus and obey His commands. The final promise: "I am with you always, to the very end of the age."',
+    scr:'"All authority in heaven and on earth has been given to me. Therefore go and make disciples of all nations."',ref:'Matthew 28:18-19'}
+  ],
+  christ:'Matthew IS about Christ — the promised Jewish Messiah, the new Moses who gives a new law, the new Israel who passes through water (baptism), the wilderness (temptation), and is faithful where Israel failed. Jesus fulfils over 60 specific Old Testament prophecies in Matthew alone. He is not merely a teacher or moral example — He is the divine King who has come to establish an everlasting kingdom.',
+  remember:['Matthew is the bridge between the Old and New Testaments — Jesus fulfils everything Israel pointed to','The Sermon on the Mount raises the moral standard from behaviour to heart — only grace can meet it','The Kingdom of Heaven is the central theme — it has come in Christ and will be consummated at His return','Peter\'s confession is the foundation of the church — who Jesus IS, not what any leader does','The Great Commission commands disciples, not just converts — depth, not just numbers','Jesus ends with "I am with you always" — the final word in Matthew is not a command but a promise']
+},
+
+mark:{
+  title:'Mark — Jesus the Servant Who Acts',
+  overview:'Mark is the shortest Gospel and almost certainly the earliest — probably written before AD 65, possibly as early as AD 45-50. It has been described as "the Gospel of action." The word "immediately" (Greek: euthys) appears over 40 times. Mark has no genealogy, no birth story, no extended teaching sections — he goes straight to Jesus\' ministry and never stops moving. Pawson saw Mark as "the Gospel for Romans" — the Roman world valued power and action, and Mark shows Jesus as the omnipotent Son of God whose authority over disease, demons, nature and death is absolute.',
+  history:'Mark (John Mark of Acts 12:12) was not one of the Twelve but was closely associated with Peter. Early church tradition (Papias, c. AD 130) says Mark "wrote down accurately, though not in order, all that he remembered of the things said and done by the Lord" as he had learned them from Peter. Mark was a young man present in Gethsemane (14:51-52 — the naked young man who fled is almost certainly Mark\'s self-portrait). He accompanied Paul and Barnabas on the first missionary journey, deserted them, caused a rift between Paul and Barnabas — but was later restored to usefulness (2 Timothy 4:11). His is a story of failure and restoration.',
+  sections:[
+    {h:'The Galilean Ministry — Authority Demonstrated (Chapters 1–8)',b:'Mark plunges immediately into Jesus\' ministry without introduction. The Spirit descends at baptism, the voice of the Father speaks, and immediately Jesus is driven into the wilderness. The pace is breathtaking. In rapid succession: He calls disciples, casts out a demon in the synagogue, heals Peter\'s mother-in-law, heals many at sundown, goes on a preaching tour, cleanses a leper, heals a paralytic (and forgives his sins — causing the first controversy), calls Levi, eats with sinners (second controversy), heals on the Sabbath (third controversy). By chapter 3, the religious leaders are plotting to kill Him. Mark is showing us: Jesus has arrived, and His arrival divides everything.',
+    scr:'"What is this? A new teaching — and with authority! He even gives orders to impure spirits and they obey him."',ref:'Mark 1:27'},
+    {h:'The Central Question (Chapter 8)',b:'Mark 8 is the pivot of the Gospel. Two healings frame the crucial question. A blind man at Bethsaida is healed in two stages (8:22-26) — unusual for Jesus, but it illustrates the disciples\' partial sight: they can see something ("men like trees walking") but not clearly. Then Peter confesses Jesus as Messiah (8:29) — the disciples finally see clearly. But immediately Jesus predicts His death and Peter rebukes Him — proving the disciples still do not understand what kind of Messiah Jesus is. Peter sees Jesus as Messiah but does not yet understand the cross. Mark 8 shows that true seeing includes seeing the cross.',
+    key:'The Messianic Secret — throughout Mark, Jesus regularly tells people not to tell what they have seen (1:44; 5:43; 7:36; 8:30). Why? Because no one would understand what kind of Messiah He was until after the resurrection. He did not come to be the political liberator the crowds wanted — He came to die. Only after the resurrection does the secret make sense.'},
+    {h:'The Road to Jerusalem — Servant Suffering (Chapters 8–10)',b:'Three times Jesus predicts His death and resurrection (8:31; 9:31; 10:33-34). Each time the disciples spectacularly miss the point — they argue about who is greatest (9:34), ask for seats of honour (10:37). Jesus responds each time with a teaching on servant leadership: "Whoever wants to be first must be slave of all. For even the Son of Man did not come to be served, but to serve, and to give his life as a ransom for many" (10:44-45). Mark 10:45 is the most important verse in Mark — it is the theological key to the entire Gospel: Jesus is the Servant-King who ransoms through suffering.',
+    scr:'"For even the Son of Man did not come to be served, but to serve, and to give his life as a ransom for many."',ref:'Mark 10:45 — the key verse of Mark\'s Gospel'},
+    {h:'The Passion and Resurrection (Chapters 14–16)',b:'Mark\'s passion narrative is vivid and personal — likely reflecting Peter\'s eyewitness account. The agony in Gethsemane is raw and human: "Take this cup from me" (14:36). The arrest, trials, and crucifixion are told with restrained but powerful detail. At the cross, the centurion — a pagan Roman soldier — is the only human being in Mark\'s Gospel who properly confesses who Jesus is: "Surely this man was the Son of God!" (15:39). Mark\'s original ending (16:8) ends with the women fleeing in fear — a deliberately open ending that invites the reader to complete the story with their own response to the risen Jesus.'}
+  ],
+  christ:'Mark reveals Christ\'s authority over every power — sickness, demons, nature, sin, and death. He is the Suffering Servant of Isaiah 53, the Son of Man of Daniel 7, and the Son of God who surrenders His power in service and dies as a ransom. Mark shows us that true greatness is measured in service and sacrifice — the King becomes the servant of all.',
+  remember:['Mark emphasizes WHAT Jesus DID more than what He taught — action, power, authority','The word "immediately" (41+ times) shows the urgency of Jesus\' mission','Mark 10:45 is the Gospel in miniature — Jesus came to serve and to ransom','The Messianic Secret explains why Jesus told people to be silent — His messiahship is only understood through the cross','The centurion at the cross is the first human confessor — a Gentile, not an Israelite','Mark\'s open ending (16:8) is an invitation — how will YOU respond to the risen Jesus?']
+},
+
+john:{
+  title:'John — The Gospel of Belief',
+  overview:'John is the most theological of the four Gospels and the most personal. Pawson called it "the swimming pool Gospel — ankle-deep for children, but no one has found the bottom." John states his purpose explicitly: "These are written that you may believe that Jesus is the Messiah, the Son of God, and that by believing you may have life in his name" (20:31). Everything in John is chosen to achieve this one purpose. John omits 90% of what the other Gospels include — but what he includes goes deeper than any other Gospel.',
+  history:'John the Apostle — the "beloved disciple" — wrote this Gospel around AD 85-95, making it the latest of the four. He wrote from Ephesus, where he cared for Mary (19:27). His Prologue (1:1-18) shows awareness of Greek philosophy (the concept of Logos/Word) while firmly rooting the Gospel in Hebrew theology. John\'s Gospel supplements the other three — he often omits what they record and records what they omit (the wedding at Cana, Nicodemus, the Samaritan woman, the raising of Lazarus). He has seven "I AM" statements, seven signs, and a carefully structured theological architecture.',
+  sections:[
+    {h:'The Prologue — The Word Became Flesh (1:1-18)',b:'John\'s opening is one of the most profound passages in all literature. "In the beginning was the Word" — deliberate echo of Genesis 1:1. The Word (Logos) was with God and WAS God. This settles the question of Jesus\' pre-existence and divine nature. The Word is both distinct from the Father ("with God") and identical in nature ("was God"). Verse 14 is the axis of the entire Bible: "The Word became flesh and made his dwelling (tabernacled) among us." The God of Sinai, who dwelt in the Tabernacle, has now taken up permanent residence in human flesh. This is the Incarnation — the most extraordinary event in human history.',
+    scr:'"In the beginning was the Word, and the Word was with God, and the Word was God."',ref:'John 1:1'},
+    {h:'The Seven Signs of John',b:'John selects seven miracles and calls them "signs" — they point beyond themselves to who Jesus is. Water to wine (2:1-11) — the old water of purification replaced by the new wine of the kingdom; the bridegroom has come. Healing the official\'s son (4:46-54) — power over distance. Healing the invalid (5:1-15) — power over disability. Feeding 5,000 (6:1-14) — Jesus the bread of life. Walking on water (6:16-21) — power over nature; "I AM" in the storm. Healing the blind man (9:1-41) — Jesus the light of the world, followed by an extended discourse about spiritual blindness. Raising Lazarus (11:1-44) — Jesus the resurrection and the life. The seventh sign, the climax, points to the resurrection itself.',
+    key:'The signs in John are always followed by a discourse or dialogue that explains their meaning. John 6 records the feeding of the 5,000 then the "Bread of Life" discourse. John 9 records the healing of the blind man then a discourse on spiritual blindness and judgment. The signs are not ends in themselves — they are signposts to the person of Jesus.'},
+    {h:'The Seven "I AM" Statements',b:'Seven times Jesus uses the absolute "I AM" (ego eimi) in John — deliberately echoing God\'s name revealed to Moses in Exodus 3:14. In John 8:58, He says "Before Abraham was born, I AM!" — and the Jews pick up stones to kill Him for blasphemy. The I AM statements reveal seven dimensions of who Jesus is: the Bread of Life (6:35), the Light of the World (8:12), the Gate/Door (10:7,9), the Good Shepherd (10:11,14), the Resurrection and the Life (11:25), the Way, Truth and Life (14:6), the True Vine (15:1,5). Each one claims absolute uniqueness and sufficiency.',
+    scr:'"I am the way and the truth and the life. No one comes to the Father except through me."',ref:'John 14:6 — the most exclusive claim in the Gospels'},
+    {h:'The Upper Room Discourse (Chapters 13–17)',b:'John devotes five chapters to the Last Supper evening — more than any other single occasion in Jesus\' life. Jesus washes the disciples\' feet (servant leadership in action). He gives the "new commandment" — love one another as I have loved you. He promises the Holy Spirit (Paraclete — Advocate, Comforter, Counsellor) four times in these chapters. He declares "I AM the vine" — the disciples are branches whose entire life depends on remaining in Him. Chapter 17 is the "High Priestly Prayer" — Jesus prays for Himself, for the Twelve, and for all future believers. We are listening to Jesus pray for us.'}
+  ],
+  christ:'John\'s entire purpose is to reveal who Christ is. His divine pre-existence (1:1-3), His Incarnation (1:14), His signs pointing to His divine power, His I AM claims, His death as the fulfilment of the Passover (19:36 — "not one of his bones will be broken"), His resurrection, His sending of the Spirit. John presents the most complete portrait of the God-Man in Scripture.',
+  remember:['John\'s purpose statement (20:31) is the key to reading the whole Gospel — everything is chosen to produce belief','The Prologue (1:1-18) is the theological foundation — Jesus is the eternal Word made flesh','The seven signs are not just miracles — they are windows into who Jesus is','The I AM statements claim absolute divine identity — Jesus leaves no room for "just a good teacher"','John 3:16 is not just a verse to memorize — it is the heartbeat of the entire Gospel','John 17 is the longest recorded prayer of Jesus — read it on your knees']
+},
+
+acts:{
+  title:'Acts — The Gospel Goes to the World',
+  overview:'The Acts of the Apostles is the most exciting historical narrative in the New Testament. Pawson called it "the most relevant book for the church today — because it describes the church as it was meant to be." Acts is Luke\'s second volume (he wrote both Luke and Acts to Theophilus). It covers approximately 30 years (AD 30-62), from the ascension of Jesus to Paul\'s imprisonment in Rome. Its theme is the expansion of the church from Jerusalem to Rome — from a Jewish sect of 120 to a world movement through the power of the Holy Spirit.',
+  history:'Luke, the physician and travelling companion of Paul, wrote Acts around AD 62-64 (Paul\'s first Roman imprisonment is where the book ends, suggesting it was written then). Luke was a careful historian — his geographical and political details have been repeatedly verified by archaeology. Acts 1:8 is the outline of the entire book: witnesses in Jerusalem (chapters 1-7), Judea and Samaria (8-12), and to the ends of the earth (13-28).',
+  sections:[
+    {h:'Pentecost — The Birth of the Church (Chapter 2)',b:'Acts 2 is the most important chapter in the book. The Holy Spirit falls on 120 disciples in the upper room — the sound of a rushing wind, tongues of fire, speaking in languages. This is the promised baptism of the Spirit (1:5). Peter preaches the first Christian sermon — connecting the events to Joel\'s prophecy (2:17-21), to David\'s psalms (Psalms 16 and 110), and to the resurrection of Jesus. Three thousand people believe and are baptized. The church is born. Notice what this church does immediately: they devote themselves to the apostles\' teaching, to fellowship, to the breaking of bread, and to prayer (2:42). These four marks remain the marks of a healthy church.',
+    scr:'"When the day of Pentecost came, they were all together in one place. Suddenly a sound like the blowing of a violent wind came from heaven and filled the whole house where they were sitting."',ref:'Acts 2:1-2'},
+    {h:'Stephen — The First Martyr and the Dispersion (Chapters 6–8)',b:'Stephen is one of the most remarkable figures in Acts — chosen as a deacon, he becomes a powerful preacher. His speech before the Sanhedrin in chapter 7 is the longest speech in Acts — a tour de force of OT history showing that Israel has always resisted God\'s servants. His death triggers the first great persecution, scattering the Jerusalem church throughout Judea and Samaria. Luke records that "Saul approved of their killing him" (8:1). The persecutor Saul of Tarsus is introduced. Persecution does not stop the gospel — it spreads it.',
+    key:'Stephen\'s dying prayer — "Lord, do not hold this sin against them" (7:60) — mirrors Jesus\' prayer from the cross (Luke 23:34). Could Saul/Paul\'s conversion have been influenced by Stephen\'s dying grace? Very likely. The blood of the martyrs is the seed of the church.'},
+    {h:'Paul\'s Conversion and Mission (Chapters 9–28)',b:'The conversion of Saul of Tarsus (chapter 9) is one of the most dramatic events in history. The chief persecutor of the church becomes its greatest missionary. Jesus appears to him on the Damascus road: "Saul, Saul, why do you persecute me?" — identifying the church with Himself (when you touch the body, you touch the Head). Paul\'s three missionary journeys (chapters 13-21) take the gospel from Antioch through Asia Minor, into Europe (Macedonia — the first time the gospel crosses from Asia to Europe), and back. His strategy: go to major cities, establish churches, appoint elders, move on. The church in Europe owes its existence to Paul\'s obedience to God\'s call.',
+    scr:'"But you will receive power when the Holy Spirit comes on you; and you will be my witnesses in Jerusalem, and in all Judea and Samaria, and to the ends of the earth."',ref:'Acts 1:8 — the theme and outline of the entire book'}
+  ],
+  christ:'Acts is the story of the ascended, exalted Christ continuing His work through the Holy Spirit and the church. Every sermon in Acts centres on the resurrection of Jesus — it is the non-negotiable heart of apostolic preaching. The signs and wonders in Acts are the continuing works of the risen Christ (Acts 1:1 calls the Gospel "all that Jesus began to do and to teach" — Acts continues what He began).',
+  remember:['Pentecost is the birth of the church — the Spirit\'s arrival makes the church possible','The four marks of the early church (2:42) are the standard for every church in every generation','Persecution scattered the gospel — God uses adversity to advance His purposes','Paul\'s strategy: major cities, indigenous leadership, move on — still the most effective mission strategy','The Spirit is the primary agent of mission in Acts — human planning always follows His initiative','Acts ends without an ending (28:30-31) — because the story is still being written through the church today']
+},
+
+romans:{
+  title:'Romans — The Gospel Explained',
+  overview:'Romans is the most systematic and comprehensive explanation of the Gospel in the entire Bible. Martin Luther called it "the chief part of the New Testament and the very purest Gospel." It triggered the Reformation when Luther finally understood Romans 1:17 — "the righteous will live by faith." John Wesley\'s heart was "strangely warmed" reading Luther\'s preface to Romans. Augustine was converted reading Romans 13. More theological revolutions have been sparked by this one letter than any other piece of writing in history.',
+  history:'Paul wrote Romans around AD 57 from Corinth, during his third missionary journey, before visiting Rome for the first time. He had never been to Rome (unlike Corinth, Ephesus, Galatia — the churches he writes to in his other letters). So Romans is not pastoral correspondence addressing specific problems — it is Paul\'s most carefully thought-out statement of the Gospel, written as a kind of theological calling card before his planned visit. It is the one letter Paul wrote to a church he did not plant.',
+  sections:[
+    {h:'The Problem — Universal Guilt (Romans 1–3)',b:'Paul\'s diagnosis before his prescription. He establishes that every human being stands guilty before God. Pagans are guilty: they can see God\'s power and nature in creation (1:20) but have suppressed this truth and turned to idolatry and immorality — God gave them over to the consequences of their choices. Moralists (Jews and those who consider themselves good people) are also guilty: they condemn others but do the same things (2:1). Jews have the Law but have not kept it — the Law condemns them too. "There is no one righteous, not even one" (3:10). "All have sinned and fall short of the glory of God" (3:23). The courtroom is closed. Every mouth is silenced. Every human being is guilty.',
+    scr:'"There is no one righteous, not even one… for all have sinned and fall short of the glory of God."',ref:'Romans 3:10, 23'},
+    {h:'The Solution — Justification by Faith (Romans 3–5)',b:'Into the courtroom of divine justice, the Gospel arrives. "But now apart from the law the righteousness of God has been made known" (3:21). Justification is a legal declaration — God declares the sinner righteous, not because they are righteous, but because Christ\'s righteousness is credited to their account. Abraham was justified by faith before circumcision (chapter 4) — proving the basis of justification was never ritual or race but faith. Therefore: "Since we have been justified through faith, we have peace with God through our Lord Jesus Christ" (5:1). This is not a feeling — it is a legal reality. Guilty sinners are declared righteous. This is the heart of the Gospel.',
+    scr:'"Therefore, since we have been justified through faith, we have peace with God through our Lord Jesus Christ."',ref:'Romans 5:1 — the great declaration'},
+    {h:'Sanctification — Life in the Spirit (Romans 6–8)',b:'Justification is the beginning, not the end. Romans 6-8 deals with sanctification — the ongoing transformation of the believer. Chapter 6: dead to sin, alive to Christ — the baptism into Christ\'s death breaks sin\'s power. Chapter 7: the agonizing struggle with remaining sin — "What I want to do I do not do, but what I hate I do" (7:15). This is not the normal Christian life — it is the normal experience of a person trying to live right by their own effort. Chapter 8: the solution — walking in the Spirit. "There is therefore now no condemnation for those who are in Christ Jesus" (8:1) — the greatest single verse on assurance in the Bible. The Spirit who raised Christ will quicken our mortal bodies too.',
+    scr:'"There is therefore now no condemnation for those who are in Christ Jesus."',ref:'Romans 8:1 — the summit of Paul\'s argument'},
+    {h:'Israel and the Gentiles (Romans 9–11)',b:'Chapters 9-11 are often skipped — but Pawson considered them essential. They deal with God\'s sovereign purposes in history and specifically with the question: Has God abandoned Israel? Paul\'s answer: absolutely not. God\'s election is sovereign — He chose Jacob over Esau before they were born. Israel\'s rejection of Christ is not permanent — "if their transgression means riches for the world, and their loss means riches for the Gentiles, how much greater riches will their full inclusion bring!" (11:12). Paul\'s conclusion bursts into doxology: "Oh, the depth of the riches of the wisdom and knowledge of God!" (11:33). God\'s plan for both Jew and Gentile is staggering in its comprehensiveness.',
+    scr:'"And we know that in all things God works for the good of those who love him, who have been called according to his purpose."',ref:'Romans 8:28 — one of the most claimed promises in Scripture'},
+    {h:'The Transformed Life (Romans 12–16)',b:'The theology of Romans 1-11 explodes into practical ethics in chapters 12-16. "Therefore" (12:1) — in view of all God\'s mercies, present your bodies as living sacrifices. This is true worship. Be transformed by the renewing of your mind. Use your gifts in the body of Christ. Love genuinely. Overcome evil with good. Submit to governing authorities. Welcome the weak. All of this flows from the Gospel — Paul does not command as the law commands, but appeals as a father whose children understand what they owe to God\'s grace.'}
+  ],
+  christ:'Romans presents Christ as the new Adam whose obedience reverses the damage done by the old Adam\'s disobedience (5:12-21). He is the propitiation whose blood satisfies divine justice (3:25). He is the risen Lord who was "declared to be the Son of God in power according to the Spirit of holiness by his resurrection from the dead" (1:4). To be "in Christ Jesus" (the phrase occurs 164 times in Paul\'s letters) is the defining reality of the Christian life.',
+  remember:['Every human being stands guilty before God — this is the necessary starting point of the Gospel','Justification is legal — God DECLARES us righteous; He does not merely improve us','Romans 8:1 and 8:28 and 8:38-39 are three pillars of assurance for every believer','Romans 9-11 reveals God\'s sovereign plan for both Israel and the Gentiles — it is not yet finished','The "therefore" of Romans 12:1 is the most important therefore in the Bible — theology becomes ethics','True worship is not what happens in a church building but what you do with your body 24/7']
+},
+
+// ============================================================
+// TOPICAL CONTENT
+// ============================================================
+trustbible:{
+  title:'Why Trust the Bible? — The Case for Scripture',
+  overview:'In a postmodern world that questions all authority, one of the most important questions any African Christian can answer is: "Why do you trust the Bible?" Not "I was raised with it" or "My pastor told me" — but a reasoned, evidence-based answer that can stand up to scrutiny. The Bible claims to be the Word of God. Either it is — in which case it demands our complete submission — or it is not — in which case we should abandon it immediately. There is no comfortable middle ground.',
+  sections:[
+    {h:'The Bible\'s Own Claims',b:'The Bible claims divine origin throughout. "All Scripture is God-breathed" (2 Timothy 3:16) — the Greek "theopneustos" means breathed out by God. "Men spoke from God as they were carried along by the Holy Spirit" (2 Peter 1:21). "The word of the LORD came to me" appears over 100 times in the Old Testament. Jesus treated the Old Testament as the authoritative Word of God — quoting it in every major controversy, saying "Scripture cannot be broken" (John 10:35). The question is: are these claims true?',
+    scr:'"All Scripture is God-breathed and is useful for teaching, rebuking, correcting and training in righteousness."',ref:'2 Timothy 3:16'},
+    {h:'The Evidence of Fulfilled Prophecy',b:'The most powerful evidence for the divine origin of the Bible is predictive prophecy. The Bible contains hundreds of specific predictions that were fulfilled in history. Isaiah 44:28 names Cyrus as the king who will authorize rebuilding Jerusalem — written 150 years before Cyrus was born. Daniel 2 and 7 predict four world empires (Babylon, Persia, Greece, Rome) with remarkable accuracy. Over 300 specific prophecies are fulfilled in the life of Jesus Christ alone — including birthplace (Micah 5:2), the manner of entry into Jerusalem (Zechariah 9:9), betrayal for 30 pieces of silver (Zechariah 11:12-13), crucifixion details (Psalm 22), and resurrection (Psalm 16:10). The mathematical probability of these all being fulfilled by chance is astronomically impossible.',
+    key:'Professor Peter Stoner calculated that the probability of just 8 of the messianic prophecies being fulfilled by chance in one person is 1 in 10 to the power of 17 (1 in 100 quadrillion). Lay silver dollars across the state of Texas 2 feet deep, mark one, and ask a blindfolded man to pick it up on the first try. That\'s the probability. Jesus fulfilled not 8 but over 300.'},
+    {h:'The Evidence of Archaeological Confirmation',b:'For centuries, critics mocked the Bible as historically unreliable. Archaeology has repeatedly vindicated it. The Hittites (mentioned over 40 times in the OT) were once dismissed as fictional — archaeologists discovered their entire civilization in Turkey in the 19th century. The Pool of Bethesda (John 5:2) was declared fictional — it was excavated in the 20th century, exactly as John described. Pontius Pilate was known only from the Gospels — a stone inscription bearing his name was found in Caesarea in 1961. The walls of Jericho were excavated by Kathleen Kenyon, whose findings are consistent with the biblical account. No archaeological discovery has ever definitively disproved the Bible.'},
+    {h:'The Transmission of Scripture — Can We Trust What We Have?',b:'Some question whether the Bible has been reliably transmitted through the centuries. The evidence for the reliability of the New Testament text is overwhelming. We have over 5,800 Greek manuscripts of the NT — more than any other ancient document. Homer\'s Iliad (considered reliable by historians) has 643 manuscripts; Julius Caesar\'s Gallic Wars has 10. The earliest NT fragments date to within 25-50 years of the originals. Textual scholars are able to reconstruct the original text with 99.5% accuracy. The remaining variants are in punctuation, spelling, and word order — not in doctrine. The Dead Sea Scrolls (discovered 1947) confirmed that the Old Testament text had been transmitted with extraordinary accuracy over 1,000 years.',
+    scr:'"Heaven and earth will pass away, but my words will never pass away."',ref:'Matthew 24:35 — Jesus\' guarantee on the permanence of Scripture'},
+    {h:'The Unity of the Bible',b:'The Bible was written by approximately 40 authors over 1,500 years, on three continents (Asia, Africa, Europe), in three languages (Hebrew, Aramaic, Greek), from a shepherd (Amos), a king (David, Solomon), a priest (Ezekiel), a tax collector (Matthew), a fisherman (Peter), a physician (Luke), and a rabbi (Paul) — and yet it tells ONE coherent story of creation, fall, and redemption. It has ONE hero (Jesus Christ) and ONE theme (the Kingdom of God). This astonishing unity across such diversity is itself evidence of a single divine Author superintending the whole.'}
+  ],
+  christ:'Jesus Christ is the ultimate reason to trust the Bible. He trusted it completely — "Scripture cannot be broken." He is its subject — "You search the Scriptures because you think they give you eternal life. These are the very Scriptures that testify about me" (John 5:39). His resurrection from the dead vindicates His claims — and His claims validate the Bible\'s authority.',
+  remember:['The Bible\'s fulfilled prophecy is the most powerful evidence of its divine origin','Over 5,800 Greek NT manuscripts make it the most reliably attested ancient document in history','No archaeological discovery has ever definitively disproved a biblical claim','The Bible\'s unity across 1,500 years and 40 authors points to a divine Author','Jesus treated the OT as God\'s Word — His example is our warrant','Canonical and textual criticism have strengthened, not undermined, confidence in Scripture']
+},
+
+spiritual_warfare:{
+  title:'Spiritual Warfare — Standing Firm in the Battle',
+  overview:'Spiritual warfare is not an African superstition — it is a biblical reality. The Apostle Paul states plainly: "For our struggle is not against flesh and blood, but against the rulers, against the authorities, against the powers of this dark world and against the spiritual forces of evil in the heavenly realms" (Ephesians 6:12). African believers often have a vivid awareness of spiritual realities that Western Christianity has largely abandoned. The biblical task is to bring this awareness into proper theological alignment — understanding the battle, the enemy, the weapons, and above all, the victory that has already been won.',
+  sections:[
+    {h:'The Reality and Nature of the Spiritual Battle',b:'The Bible teaches a real cosmic conflict. Satan (Hebrew: "adversary") is a created, personal being who rebelled against God. He is described as "the ruler of the kingdom of the air" (Ephesians 2:2), "the god of this age" (2 Corinthians 4:4), and "a roaring lion looking for someone to devour" (1 Peter 5:8). His primary weapon is deception — he is "the father of lies" (John 8:44). He does not fight fairly. He attacks through temptation, accusation (his name "devil" means accuser), deception, and direct oppression. He is powerful — but he is not omnipotent, omniscient, or omnipresent. He is a defeated enemy who knows his time is short.',
+    scr:'"Be alert and of sober mind. Your enemy the devil prowls around like a roaring lion looking for someone to devour."',ref:'1 Peter 5:8'},
+    {h:'The Victory Already Won',b:'The most important truth in spiritual warfare is this: the decisive battle has already been fought and won. At the cross, Jesus "disarmed the powers and authorities" and "made a public spectacle of them, triumphing over them by the cross" (Colossians 2:15). Satan is a defeated enemy. His power to condemn is broken. His ultimate destiny is the lake of fire. The Christian does not fight FOR victory — the Christian fights FROM victory. This distinction is everything. When we stand against demonic attack, we stand in the name and authority of a risen, exalted Lord who has already defeated every power.',
+    key:'In African contexts, fear of evil spirits and ancestral curses can paralyze believers. The biblical response is not to ignore these realities but to anchor in the greater reality: "Greater is he who is in you than he who is in the world" (1 John 4:4). The Christian\'s authority is derivative — based entirely on Christ\'s position, not our own power.'},
+    {h:'The Full Armour of God (Ephesians 6:10-20)',b:'Paul\'s famous metaphor of spiritual armour is not a mere poetic device — it is a practical manual. The belt of truth (girds and holds everything together — deception is Satan\'s chief weapon, so truth is the primary defence). The breastplate of righteousness (our right standing in Christ protects the heart from accusation). The shoes of the gospel of peace (readiness to advance in mission, peace in our walk). The shield of faith (large Roman shield that quenches flaming arrows of doubt, fear, accusation). The helmet of salvation (protects the mind — assurance of salvation guards against doubt). The sword of the Spirit — the Word of God (the only offensive weapon — Jesus modelled this in the wilderness temptation, responding to each attack with "It is written").',
+    scr:'"Finally, be strong in the Lord and in his mighty power. Put on the full armour of God so that you can take your stand against the devil\'s schemes."',ref:'Ephesians 6:10-11'},
+    {h:'Prayer — The Battleground and the Weapon',b:'Prayer is where spiritual warfare is most intensely waged. Daniel 10 gives us a remarkable glimpse behind the scenes — Daniel prays and an angel is sent immediately, but the answer is delayed 21 days because of a spiritual battle in the heavenly realms. This does not mean our prayers fail — it means our prayers are part of a cosmic battle that extends beyond what we can see. Persistent prayer is not twisting God\'s arm — it is holding the ground against spiritual opposition. Praying "in the Spirit" (Ephesians 6:18) means praying in alignment with God\'s will, empowered by the Spirit, with our spirit engaged not just our intellect.',
+    scr:'"Do not be anxious about anything, but in every situation, by prayer and petition, with thanksgiving, present your requests to God. And the peace of God, which transcends all understanding, will guard your hearts and minds in Christ Jesus."',ref:'Philippians 4:6-7'},
+    {h:'Deliverance, Curses, and Ancestral Spirits',b:'African Christianity frequently deals with claims of generational curses, ancestral spirits, and demonic oppression. The biblical position: Christians are delivered from the domain of darkness and transferred into Christ\'s kingdom (Colossians 1:13). Believers have been "blessed with every spiritual blessing in Christ" (Ephesians 1:3) — there is no separate curse over a believer that Christ\'s blood has not already broken. However, patterns of sin can operate across generations (Exodus 20:5) not as spiritual curses but as behavioural and relational patterns that need to be consciously broken through repentance, renunciation, and Spirit-filled living.',
+    key:'The test of deliverance ministry is not dramatic manifestations but lasting fruit: does the person grow in holiness, love, and freedom? 2 Timothy 2:26 describes those who "escape from the trap of the devil, who are taken captive by him to do his will." True deliverance produces lasting freedom, not dependency on a deliverance minister.'}
+  ],
+  christ:'The cross is the decisive act of spiritual warfare. Hebrews 2:14-15 says Christ shared in our humanity "so that by his death he might break the power of him who holds the power of death — that is, the devil — and free those who all their lives were held in slavery by their fear of death." The resurrection is the proof that Christ\'s victory is complete. His ascension exalts Him "far above all rule and authority, power and dominion" (Ephesians 1:21).',
+  remember:['The battle is real — but the decisive victory has already been won at the cross','We fight FROM victory (the position of the risen Christ), not FOR victory','The armour of God is Christ Himself applied to specific areas of vulnerability','Persistent prayer is essential — not to change God\'s mind but to hold spiritual ground','Ancestral patterns (not curses) in Christ are broken by repentance and Spirit-filled living','Greater is He who is in you than he who is in the world (1 John 4:4) — live in this truth']
+},
+
+apologetics:{
+  title:'Christian Apologetics — Defending the Faith',
+  overview:'Apologetics is not arguing or being apologetic about Christianity. The word comes from the Greek "apologia" — a reasoned defence, as used in a court of law. Peter commands: "Always be prepared to give an answer (apologia) to everyone who asks you to give the reason for the hope that you have" (1 Peter 3:15). Every Christian is called to be an apologist. In Africa, where Christianity faces challenges from Islam, traditional religion, postmodernism, prosperity theology, and increasingly, secular atheism, the ability to give reasoned answers is urgent.',
+  sections:[
+    {h:'Answering the Question of God\'s Existence',b:'The cosmological argument: Everything that exists has a cause. The universe exists and began to exist (confirmed by the Big Bang — the universe had a beginning). Therefore the universe has a cause. This cause must be uncaused, timeless, spaceless, and immensely powerful — which is exactly what the Bible describes as God. The fine-tuning argument: the fundamental constants of the universe are precisely calibrated to allow life to exist — alter any one by a fraction and there is no universe, no stars, no life. The probability of this occurring by chance is essentially zero. The moral argument: all human beings have an innate sense of moral obligation — we all know some things are really wrong (not just culturally disapproved). This moral sense requires an objective moral standard, which requires a moral law-giver — God.',
+    scr:'"The heavens declare the glory of God; the skies proclaim the work of his hands."',ref:'Psalm 19:1 — natural revelation'},
+    {h:'Was Jesus Really Raised from the Dead?',b:'The resurrection is the central claim of Christianity — and it is a historical claim that can be examined. Five facts are accepted by the vast majority of historians (including secular and non-Christian scholars): Jesus died by crucifixion. His tomb was empty three days later. Many people (over 500, including hostile witnesses) claimed to have seen Him alive after death. The disciples were transformed from frightened fugitives to bold martyrs willing to die for this claim. Christianity exploded in the very city where the crucifixion occurred, within weeks of the event, among people who could have checked the facts. The best historical explanation for all five facts is that Jesus actually rose from the dead.',
+    key:'The disciples did not die for a belief — people die for beliefs all the time. They died for a claimed FACT — that they had seen the risen Jesus. This makes their testimony categorically different. People do not willingly die for something they know to be a lie.'},
+    {h:'Is Christianity the Only Way?',b:'John 14:6 — "No one comes to the Father except through me" — is Christianity\'s most exclusive claim and its most challenged. But consider: if Jesus is who He claims to be (God incarnate, risen from the dead), then His claim to exclusivity is not arrogant — it is simply true. The issue is not "can a good God send people to hell?" but "who is Jesus?" If Jesus is the eternal Son of God who died and rose again to provide the ONLY sufficient atonement for human sin, then His exclusivity is not narrow-mindedness — it is the nature of the truth. A bridge over a dangerous gorge is "exclusive" — but we are grateful for it rather than resentful.',
+    scr:'"I am the way and the truth and the life. No one comes to the Father except through me."',ref:'John 14:6'},
+    {h:'Answering Islam',b:'Islam shares much with Christianity — monotheism, high view of Jesus as a prophet, moral seriousness, rejection of idolatry. But the differences are fundamental. Islam denies the Trinity ("Allah has no son"), denies the crucifixion ("Jesus was not crucified — someone else died in his place"), and therefore denies the resurrection. The Quran was written 600 years after the NT — it is not an independent source for information about Jesus. The biblical text was established long before Muhammad. Jesus\' own claims (John 8:58; 10:30; 14:9) and the apostolic testimony (1 Corinthians 15:3-8; Acts 1:1-3) are primary sources from eyewitnesses. The Muslim who becomes a Christian is not abandoning God — he is finding the God who loves him enough to become one of us and die for our sins.',
+    scr:'"Who is the liar? It is whoever denies that Jesus is the Christ. Such a person is the antichrist — denying the Father and the Son."',ref:'1 John 2:22'},
+    {h:'Answering African Traditional Religion',b:'African Traditional Religion (ATR) affirms: a Supreme Being (consistent with the biblical God), the reality of the spirit world (consistent with the Bible), the importance of community and ancestors (consistent with the communion of saints), and moral accountability (consistent with biblical ethics). The Gospel affirms these intuitions while correcting key errors: intermediary spirits and ancestors cannot mediate between God and humanity — only Christ can (1 Timothy 2:5). Animal sacrifices do not atone for sin — only Christ\'s blood does (Hebrews 10:4,14). Spiritual power is not neutral energy available to manipulate — all spiritual power is personal, either from God or from His enemies.'}
+  ],
+  christ:'The resurrection of Jesus Christ is the cornerstone of Christian apologetics. If Jesus rose from the dead, then every other claim He made is validated — His deity, His exclusive way to God, His authority over all things. If He did not rise, Christianity is false and should be abandoned (1 Corinthians 15:17-19). The resurrection is not a matter of faith without evidence — it is a well-evidenced historical event that warrants faith.',
+  remember:['Every Christian is called to be able to give a reason for their hope (1 Peter 3:15)','The cosmological, fine-tuning, and moral arguments all point powerfully to God\'s existence','The resurrection has five facts accepted by mainstream historians — the best explanation is that it happened','Exclusivity claims (John 14:6) are not arrogant if Jesus is who He claims to be','ATR has many bridges to the Gospel — affirm them while pointing clearly to Christ\'s uniqueness','Apologetics prepares the ground; the Holy Spirit brings conviction — always pray as you defend']
+},
+
+africa:{
+  title:"Africa in the Bible — God's Story Includes Us",
+  overview:"Africa is not a footnote in the Bible — it is woven into the very fabric of Scripture from Genesis to Revelation. For too long, African believers have been told, implicitly or explicitly, that Christianity is a Western religion imported to their continent. This is a profound historical error. Africa was present at the very beginning of the biblical story, and Africans appear at pivotal moments throughout Scripture. Understanding Africa's place in the Bible is not merely an intellectual exercise — it is a profound affirmation of African dignity, and it reveals that God's redemptive purpose always had Africa in its scope.",
+  sections:[
+    {h:'Africa in the Table of Nations (Genesis 10)',b:'Genesis 10 — the "Table of Nations" — is the Bible\'s record of how the world\'s peoples descended from Noah\'s three sons. Ham\'s descendants include Cush (Ethiopia/Sudan), Mizraim (Egypt), Put (Libya/Somalia), and Canaan. This means Africa and Africans are present at the very foundation of world history in Scripture. The African nations are not peripheral — they are among the oldest and most prominent civilizations mentioned in the earliest chapters of the Bible.',
+    scr:'"The sons of Ham: Cush, Egypt, Put and Canaan."',ref:'Genesis 10:6 — Africa in the table of nations'},
+    {h:'Egypt — The Greatest Biblical Nation Outside Israel',b:'Egypt (Mizraim) appears more often in the Bible than any nation except Israel. Egypt is the place of slavery and Exodus — the setting for the greatest redemption story in the OT. Egypt shelters the infant Jesus (Matthew 2:13-15 — fulfilling Hosea 11:1: "Out of Egypt I called my son"). Egypt is where the greatest intellect in the OT (Moses) received his education. Isaiah 19:18-25 contains one of the most remarkable prophecies in Scripture: a day is coming when Egypt will worship the LORD alongside Israel, and God will call Egypt "my people" — language previously reserved for Israel alone. God has a future for Africa.',
+    key:'The Hebrew people were Africans for 430 years. Moses was raised as an African. The Exodus begins in Africa. The mightiest empire of the ancient world was African. This is not peripheral to the biblical story — it is central.'},
+    {h:'Ethiopia/Cush — A Place of Honour',b:'Cush (Ethiopia/Sudan/Nubia) is mentioned over 50 times in Scripture. Moses married a Cushite woman (Numbers 12:1) — and Miriam\'s criticism of this interracial marriage was met by God with severe judgment (leprosy). God defended the right of the Cushite woman to be married to His servant. The Ethiopian eunuch of Acts 8 is one of the most significant figures in the NT — a court official of Queen Candace, searching Scripture, and the first recorded recipient of the Gospel outside Judea. Philip is supernaturally directed to him. He receives the Gospel, is baptized, and returns to Africa. Ancient tradition credits him with bringing Christianity to Ethiopia — making Ethiopia one of the world\'s oldest Christian nations.',
+    scr:'"Philip ran up to the chariot and heard the man reading Isaiah the prophet. \'Do you understand what you are reading?\' Philip asked."',ref:'Acts 8:30'},
+    {h:'Simon of Cyrene — Africa Carried the Cross',b:'Mark 15:21 records: "A certain man from Cyrene, Simon, the father of Alexander and Rufus, was passing by on his way in from the country, and they forced him to carry the cross." Cyrene is in modern Libya, North Africa. Simon was an African man who carried the cross of Jesus Christ. The mention of "Alexander and Rufus" suggests they were known to Mark\'s audience — and Romans 16:13 greets "Rufus, chosen in the Lord, and his mother, who has been a mother to me too." It is highly likely that Simon\'s family became part of the early church. An African carried the cross — not a Roman soldier, not a Jewish leader, but an African man.',
+    key:'Africa literally carried Christ\'s cross. When the powerful stood aside and the privileged refused, it was an African who bore the instrument of the world\'s salvation. This is not incidental — it is deeply significant.'},
+    {h:'The African Church in Acts and Beyond',b:'Acts 13:1 lists the leadership of the church at Antioch — the first church to send missionaries: "Barnabas, Simeon called Niger (\'the Black\' — an African), Lucius of Cyrene (another North African), Manaen… and Saul." The first Gentile Christian mission was led by an African-majority team. The church at Alexandria (Egypt) was one of the most significant theological centres of the early church — producing thinkers like Origen, Athanasius, Augustine, Clement of Alexandria, and Tertullian, all of whom were African. The first great defender of Trinitarian orthodoxy against the Arian heresy was Athanasius of Alexandria — an African.'}
+  ],
+  christ:'Jesus himself was taken to Africa as a child (Matthew 2:13-15). An African carried His cross (Mark 15:21). An African was among the first to receive the Gospel after the resurrection (Acts 8). Africa\'s place in God\'s story is not peripheral — it is part of the very fabric of redemption. The day is coming when, as Isaiah 19:25 declares, God will call Egypt "my people" and Cush "my handiwork" — Africa will be fully included in the family of God.',
+  remember:['Ham\'s descendants in Genesis 10 establish Africa\'s presence from the very beginning of world history','Egypt appears more times in the Bible than any nation except Israel','The Ethiopian eunuch (Acts 8) brought the Gospel to Africa — Ethiopia is one of the oldest Christian nations','Simon of Cyrene, an African, carried Jesus\' cross — Africa is present at the climax of redemption','The early church\'s greatest theologians were African — Athanasius, Augustine, Origen, Tertullian','Isaiah 19:25 promises a future of worship and dignity for African peoples']
+}
+};
+
+// ============================================================
+// QUIZ DATA — aligned to lesson content
+// ============================================================
+const QUIZZES={
+genesis:[
+  {q:'David Pawson said you cannot understand the Bible without Genesis because:',opts:['It is the longest book','Every major doctrine — creation, sin, covenant, redemption — has its roots here','Moses was the most important author','It describes African history'],ans:1,exp:'Genesis is the foundation of the entire biblical story. Every major doctrine traces back to Genesis — without it, nothing else makes sense.'},
+  {q:'The Passover in Exodus prefigures Christ. What is the correct NT application of this?',opts:['Jesus ate the Passover meal only','Christ IS our Passover Lamb (1 Corinthians 5:7) — His death is the reality the Passover pictured','The Passover is only for Jewish believers','Christians must keep the Passover feast annually'],ans:1,exp:'Paul explicitly states "Christ, our Passover lamb, has been sacrificed" (1 Corinthians 5:7). The Passover was a shadow; Christ is the substance.'},
+  {q:'Joseph\'s statement "You intended to harm me, but God intended it for good" (Genesis 50:20) teaches:',opts:['God causes people to sin against us','God can redeem evil intentions to accomplish His sovereign purposes','Joseph was being sarcastic','We should pretend evil did not happen'],ans:1,exp:'This is the Bible\'s greatest statement on divine providence — God\'s sovereignty overrules human evil without removing human responsibility.'},
+  {q:'The Abrahamic Covenant (Genesis 12:1-3) promised three things. Which is correct?',opts:['Land, money, and power','Land, a great nation/seed, and blessing to all peoples','A temple, a throne, and an army','Egypt, Canaan, and Babylon'],ans:1,exp:'God promised Abraham: the Land of Canaan, a great nation (seed), and that through him all peoples on earth would be blessed (fulfilled in Christ — Galatians 3:14).'},
+  {q:'The "Protoevangelium" in Genesis 3:15 refers to:',opts:['The first law given in the Bible','The first promise of the gospel — a seed of the woman who will crush the serpent\'s head','The first sacrifice in the Bible','The first commandment given to Adam'],ans:1,exp:'"Protoevangelium" means "first gospel." Genesis 3:15 is the first messianic promise — it points to Jesus who crushed Satan\'s power through the cross and resurrection.'},
+],
+exodus:[
+  {q:'The burning bush that was not consumed (Exodus 3) is a picture of:',opts:['The temple in Jerusalem','Israel surviving slavery, and ultimately the nature of God\'s holiness','Moses\' fear','The Promised Land'],ans:1,exp:'The unburned bush pictures Israel — afflicted but not destroyed — and ultimately God\'s nature: consuming holiness that does not ultimately destroy those He protects.'},
+  {q:'The ten plagues were specifically designed to:',opts:['Punish ordinary Egyptians','Demonstrate God\'s power to Moses','Attack specific Egyptian gods, proving God\'s supremacy over all false deities','Cause economic damage to Egypt'],ans:2,exp:'Each plague attacked a specific Egyptian deity — the Nile (Hapi), the sun (Ra), Pharaoh himself (considered divine). God was systematically defeating Egypt\'s entire religious system.'},
+  {q:'The Passover blood had to be applied to the doorposts. This teaches:',opts:['Decoration was important in Hebrew worship','The lamb being killed was sufficient even without application','Salvation requires personal application — it is not enough that Christ died; His blood must be applied by faith','The blood was only symbolic'],ans:2,exp:'The lamb died — but the blood had to be personally applied. Merely knowing Christ died is not salvation; His atonement must be appropriated by personal faith.'},
+  {q:'Why does the Law (Ten Commandments) come AFTER the Exodus, not before?',opts:['Moses forgot to deliver it earlier','The Law comes after redemption — showing that God saves by grace, then gives law to show His people how to live','The Hebrews were not ready earlier','God changed His plan'],ans:1,exp:'The crucial sequence: salvation (grace) → Law (lifestyle). Israel was redeemed from Egypt BEFORE receiving the Law. The Law is not the basis of salvation but the lifestyle of the redeemed. This pattern is identical in the NT.'},
+  {q:'The Tabernacle (half of Exodus) primarily teaches:',opts:['Ancient Hebrew architecture','God\'s passionate desire to dwell among His people, and the precise conditions for that dwelling','How to build a church building','The importance of expensive worship materials'],ans:1,exp:'The Tabernacle is God\'s "dwelling place" among Israel — prefiguring the Incarnation (John 1:14) and ultimately the New Jerusalem. Its design shows that God regulates how He is approached.'},
+],
+psalms:[
+  {q:'What does Psalm 22:1 ("My God, my God, why have you forsaken me?") reveal?',opts:['David was losing his faith','This psalm, written 1,000 years before the cross, describes Christ\'s crucifixion with astonishing accuracy','David was mentally ill','God had truly abandoned David permanently'],ans:1,exp:'Jesus quotes Psalm 22:1 from the cross (Matthew 27:46). The entire psalm describes crucifixion in detail — pierced hands and feet, cast lots for clothing, mocking — written by David a millennium before crucifixion existed as a form of execution.'},
+  {q:'Approximately what portion of the Psalms are laments?',opts:['One in ten','One-third','Half','Almost all of them'],ans:1,exp:'About one-third of the Psalms are laments — honest prayers of pain, doubt, and distress. The Bible validates bringing our full pain honestly to God. Forced praise that masks real anguish is not the biblical model.'},
+  {q:'The word "meditate" (hagah) in Psalm 1:2 literally means:',opts:['Silent contemplation only','To mutter or murmur — speaking God\'s Word over oneself repeatedly','To memorize Scripture','To study with commentaries'],ans:1,exp:'"Hagah" means to mutter or growl — like a lion over its prey, or a dove cooing. Biblical meditation is not emptying the mind but filling it with God\'s Word, speaking it until it shapes us.'},
+  {q:'Psalm 110 ("The LORD says to my Lord: Sit at my right hand") is significant because:',opts:['It describes David\'s coronation','It is the most quoted OT verse in the NT, pointing to Christ\'s exaltation as Priest-King','It describes heaven\'s geography','It was written by Solomon'],ans:1,exp:'Psalm 110:1 is quoted more in the NT than any other OT verse. Jesus uses it to prove that the Messiah is greater than David (Matthew 22:44). Peter applies it to the resurrection and exaltation of Christ (Acts 2:34-35).'},
+  {q:'Psalm 51 was written by David after:',opts:['His victory over Goliath','His adultery with Bathsheba and murder of Uriah — it is the Bible\'s greatest prayer of repentance','His fleeing from Saul','The death of his son Absalom'],ans:1,exp:'The superscription of Psalm 51 says it was written "when the prophet Nathan came to him after David had committed adultery with Bathsheba." It is the most profound prayer of repentance in all Scripture.'},
+],
+matthew:[
+  {q:'Matthew includes four women in Jesus\' genealogy (Tamar, Rahab, Ruth, Bathsheba). This primarily signals:',opts:['Women were unusually important in Jewish culture','The King\'s grace extends to Gentiles and to those with scandalous pasts','Matthew made a historical error','These women were especially holy'],ans:1,exp:'All four women are Gentiles or connected to scandal. Matthew signals from page one that this King\'s grace is scandalously inclusive — it crosses every ethnic and moral boundary.'},
+  {q:'The Sermon on the Mount (Matthew 5-7) differs from Moses\' law because Jesus:',opts:['Relaxes the OT standards','Says "You have heard... but I SAY to you" — speaking with personal authority as the lawgiver, intensifying the law to deal with the heart','Simply repeats OT law','Was speaking only to the Twelve'],ans:1,exp:'Jesus speaks with unique authority ("I say to you" — not citing other authorities as rabbis did). He intensifies the Law (murder = anger, adultery = lust) to show that God\'s standard is not behavioural but internal.'},
+  {q:'The phrase "Kingdom of Heaven" used 50+ times in Matthew refers to:',opts:['The afterlife only','God\'s rule/reign wherever it is submitted to — present now in Christ, to be consummated at His return','A physical territory in Jerusalem','The institutional church'],ans:1,exp:'The Kingdom is not primarily a place but a reign — wherever the King\'s authority is acknowledged. It arrived in Christ\'s first coming and will be fully established at His return.'},
+  {q:'In Matthew 16:18, "on this rock I will build my church" refers to:',opts:['Peter\'s personal character','The confessional truth Peter has just declared — that Jesus is the Messiah, Son of God','The physical location where they stood','The institution of the papacy'],ans:1,exp:'The "rock" is the confession itself — "You are the Messiah, the Son of the living God." The church is built on this revealed truth about who Jesus is, not on Peter personally (who denied Jesus in the very next chapter).'},
+  {q:'The Great Commission (Matthew 28:18-20) emphasises making disciples, not just converts. What is the difference?',opts:['Disciples attend church; converts just believe','Disciples are formed through baptism AND teaching to obey ALL of Jesus\' commands — converts may have only made a decision','Only disciples can be saved','There is no practical difference'],ans:1,exp:'"Make disciples" is the main command — "baptizing" and "teaching them to obey everything I have commanded" explain what making disciples looks like. A disciple is a lifelong learner-follower, not merely a one-time decision.'},
+],
+john:[
+  {q:'John 1:1 — "In the beginning was the Word" deliberately echoes Genesis 1:1 to teach:',opts:['Jesus is a created being','Jesus (the Word) existed eternally before creation — He IS God, not a creature','John was a philosopher influenced by Greek thought only','The NT corrects Genesis'],ans:1,exp:'"In the beginning" places the Word before all creation. "The Word was God" — not a god, not god-like, but THE God. John\'s Prologue is the strongest statement of Christ\'s divine pre-existence in Scripture.'},
+  {q:'John\'s seven "I AM" statements deliberately echo:',opts:['Egyptian mythology','God\'s name revealed to Moses in Exodus 3:14 — claiming divine identity','Psalms of David','Paul\'s letters'],ans:1,exp:'When Jesus says "I AM," He uses the exact formulation of God\'s name in Exodus 3:14. In John 8:58 He says "Before Abraham was, I AM" — and the Jews immediately pick up stones for blasphemy, understanding the claim perfectly.'},
+  {q:'John 14:6 — "I am the way, the truth and the life" — is exclusive because:',opts:['Jesus was being culturally insensitive','The exclusivity flows logically from who Jesus IS — if He is the unique incarnate Son of God who alone provides atonement, the exclusivity is not arrogance but truth','This only applies to Jewish people','It was a figure of speech meaning one of many ways'],ans:1,exp:'The claim is exclusive because the reality is exclusive. Only the incarnate Son of God could die for the sins of the world and be raised from the dead. If these facts are true, the exclusive claim follows necessarily.'},
+  {q:'The purpose statement of John\'s Gospel (20:31) says John selected his material to produce:',opts:['Historical completeness','Belief that Jesus is the Messiah and Son of God, leading to life in His name','Entertainment for the early church','Theological arguments against heretics only'],ans:1,exp:'"But these are written that you may believe that Jesus is the Messiah, the Son of God, and that by believing you may have life in his name." Everything John includes is chosen to achieve this one purpose.'},
+  {q:'The Upper Room Discourse (John 13-17) contains Jesus\' promise of the Holy Spirit four times. He calls the Spirit the "Paraclete" which means:',opts:['The replacement for Jesus','One called alongside to help — Advocate, Comforter, Counsellor, Teacher','The Spirit of prophecy only','A temporary presence until the canon was complete'],ans:1,exp:'"Paraclete" (Greek: Parakletos) means "one called alongside to help" — an advocate who pleads our case, a comforter who strengthens, a counsellor who guides into all truth (John 16:13).'},
+],
+trustbible:[
+  {q:'The term "theopneustos" (2 Timothy 3:16) translated "God-breathed" means:',opts:['God approved the human authors\' ideas','Scripture originated from God — it is breathed out by Him, not merely inspired by Him as literature','The Bible contains God\'s words among human words','Only the original autographs were inspired'],ans:1,exp:'"Theopneustos" — breathed out by God — means the Bible is God\'s own speech through human authors. Not that God approved what they wrote, but that He is the primary Author of what they wrote.'},
+  {q:'Over 300 messianic prophecies are fulfilled in Jesus. This is significant because:',opts:['The prophecies were vague enough to be applied to anyone','The mathematical probability of accidental fulfilment is astronomically impossible — requiring divine foreknowledge','Prophecy is not reliable evidence','The NT authors invented the connections'],ans:1,exp:'Peter Stoner calculated that just 8 messianic prophecies being fulfilled by chance in one person is 1 in 10 to the power of 17. Jesus fulfilled over 300. This requires a divine Author who knows the end from the beginning.'},
+  {q:'The New Testament is the most reliably attested ancient document because:',opts:['It is the newest','We have over 5,800 Greek manuscripts — vastly more than any other ancient text','Church councils guaranteed its accuracy','It has never been questioned'],ans:1,exp:'By comparison: Homer\'s Iliad has 643 manuscripts, Caesar\'s Gallic Wars has 10. With 5,800+ Greek NT manuscripts plus thousands of other language copies, scholars can reconstruct the text with 99.5% accuracy.'},
+  {q:'The Dead Sea Scrolls (discovered 1947) confirmed that:',opts:['The OT had been heavily edited by medieval scribes','The OT text had been transmitted with extraordinary accuracy over 1,000 years — almost no significant changes','The NT is more reliable than the OT','The Bible was written much later than claimed'],ans:1,exp:'The Isaiah scroll found at Qumran was 1,000 years older than the previously oldest known OT manuscript. When compared, the texts were virtually identical — confirming the scrupulous accuracy of Jewish scribal transmission.'},
+  {q:'The Bible\'s unity across 1,500 years, 40 authors, and 3 continents is evidence of:',opts:['A brilliant human editorial team','A single divine Author superintending the whole — the only adequate explanation for such coherent diversity','Coincidence','Ancient plagiarism'],ans:1,exp:'No human editorial team could have coordinated 40 authors writing over 1,500 years on three continents to produce one coherent story with one hero and one theme. This unity is a fingerprint of divine authorship.'},
+],
+spiritual_warfare:[
+  {q:'Ephesians 6:12 says our struggle is not against flesh and blood. This means:',opts:['Christians should not oppose evil in society','The real battle is in the spiritual realm — against demonic powers, not primarily against people','Physical warfare is irrelevant to Christians','We should ignore people who oppose us'],ans:1,exp:'Paul identifies the true battlefield as spiritual — "rulers, authorities, powers of this dark world, spiritual forces of evil in heavenly realms." People are not our primary enemy — they are often themselves captives of the real enemy.'},
+  {q:'Colossians 2:15 says that at the cross, Christ "disarmed the powers and authorities." This means:',opts:['The devil was completely destroyed at the cross','Satan\'s power to condemn and ultimately defeat believers was broken — the decisive battle is won, though the war continues','Spiritual warfare ended at the cross','Christians no longer need to resist temptation'],ans:1,exp:'The cross is the decisive victory — D-Day in World War 2 terms. The outcome is certain, but battles still occur until V-Day (Christ\'s return). We fight FROM a victory already secured, not toward an uncertain outcome.'},
+  {q:'The "sword of the Spirit" in Ephesians 6:17 is described as:',opts:['The gift of prophecy','The Word of God — the only offensive weapon in the armour','Speaking in tongues','The authority to command demons'],ans:1,exp:'"Take the sword of the Spirit, which is the word of God" — the only offensive weapon in the armour. Jesus modelled this in the wilderness: every temptation was defeated with "It is written" (Matthew 4:4, 7, 10). Scripture is our sword.'},
+  {q:'1 Peter 5:8 describes the devil as a "roaring lion." Practically this means:',opts:['Satan is only a symbol, not a real being','We should be fearful and passive','We must be alert and sober-minded — the enemy is real, active, and seeks to devour the unwary','Satan has unlimited power to attack believers'],ans:2,exp:'"Be alert and of sober mind" is the command. The devil is real and powerful — but "resist him, standing firm in the faith" (5:9). He is powerful but he is not omnipotent, and he cannot touch what God covers.'},
+  {q:'Generational curses in the African context are best understood biblically as:',opts:['Real spiritual curses that require deliverance ministry to break','Patterns of sin that can operate across generations — broken through repentance, not through spiritual formulas','Something Christ\'s blood cannot cover','Irrelevant because they are cultural superstition'],ans:1,exp:'Exodus 20:5 describes consequences flowing through generations — this is primarily about patterns of behaviour and relational damage, not spiritual "curses" hanging over believers. Colossians 1:13 says believers are transferred OUT of the domain of darkness. Repentance and Spirit-filled living break generational patterns.'},
+],
+apologetics:[
+  {q:'The word "apologetics" comes from the Greek "apologia" meaning:',opts:['An apology or expression of regret','A reasoned defence — as in a legal defence presented in court','A philosophical system','An attack on false religion'],ans:1,exp:'"Apologia" in Greek means a reasoned defence or answer — as one would give before a judge. Peter says every Christian should be able to give an "apologia" (defence) for the hope they have (1 Peter 3:15).'},
+  {q:'The "fine-tuning argument" for God\'s existence argues that:',opts:['Science disproves God','The fundamental constants of the universe are so precisely calibrated for life that chance is statistically impossible — pointing to an intelligent Creator','The universe is billions of years old, disproving the Bible','Natural selection explains all apparent design'],ans:1,exp:'The cosmological constants (gravity, strong nuclear force, etc.) are set to absurdly precise values — alter any one slightly and there are no stars, no planets, no life. The probability of this by chance is effectively zero — pointing to intentional design.'},
+  {q:'Which five facts about Jesus\' resurrection are accepted by mainstream historians (including non-Christian scholars)?',opts:['The Gospels were written by eyewitnesses','Jesus died by crucifixion; the tomb was empty; post-resurrection appearances occurred; disciples were transformed; Christianity exploded in Jerusalem','The Shroud of Turin is authentic','All accounts are identical'],ans:1,exp:'These five facts are the minimal facts approach: (1) Jesus died by crucifixion, (2) the tomb was empty, (3) many people claimed to see Jesus alive, (4) the disciples were transformed into bold martyrs, (5) Christianity grew rapidly in Jerusalem itself. The best explanation of all five is that the resurrection occurred.'},
+  {q:'The Islamic claim that Jesus was not crucified (but someone else died in his place) is contradicted by:',opts:['Only the Quran, which supports crucifixion','Multiple independent, early historical sources — Roman (Tacitus), Jewish (Josephus), and all four Gospels','Only Christian sources','Modern archaeological evidence'],ans:1,exp:'The crucifixion of Jesus is one of the most well-attested facts in ancient history — confirmed by Tacitus (Annals 15:44), Josephus (Jewish Antiquities 18:3), all four Gospels, and Paul\'s early letters written within 20 years of the event.'},
+  {q:'When engaging African Traditional Religion, the Christian apologist should:',opts:['Reject it entirely as evil without engaging it','Affirm its genuine insights (Supreme Being, spiritual realities, community) while correcting its errors by pointing to Christ','Avoid all discussion of ATR','Accept it as an equally valid path to God'],ans:1,exp:'Paul modelled this at Athens (Acts 17:22-34) — affirming what was true ("you are very religious"; "in him we live and move") while redirecting to Christ. ATR\'s intuitions about a Supreme Being, spiritual realities, and community are bridges, not barriers.'},
+],
+africa:[
+  {q:'Africa\'s presence in Genesis 10 (the "Table of Nations") means:',opts:['Africans are latecomers to biblical history','Africa (through Ham\'s sons: Cush, Mizraim, Put, Canaan) is present from the very beginning of world history in Scripture','The Table of Nations is about European peoples','Genesis 10 is not relevant to Africa'],ans:1,exp:'Ham\'s descendants include Cush (Ethiopia/Sudan), Mizraim (Egypt), Put (Libya/Somalia), and Canaan — placing Africans among the original peoples of the earth and the oldest civilizations in the biblical narrative.'},
+  {q:'The Ethiopian eunuch in Acts 8 is historically significant because:',opts:['He was the first person to be baptized','He likely brought the Gospel to Africa, making Ethiopia one of the world\'s oldest Christian nations','He founded the church at Antioch','He was baptized by the Apostle Peter'],ans:1,exp:'Philip, directed supernaturally by the Spirit, shares the Gospel from Isaiah 53 with this court official of Queen Candace. He is baptized and returns to Ethiopia. Ancient church tradition credits him with bringing Christianity to Ethiopia.'},
+  {q:'Simon of Cyrene (Mark 15:21), who carried Jesus\' cross, was:',opts:['A Roman soldier','A Jewish leader','An African man from Cyrene in modern Libya','An anonymous bystander with no known identity'],ans:2,exp:'Cyrene is in modern Libya, North Africa. Simon was an African. Mark names his sons Alexander and Rufus — likely known to Mark\'s readers. Romans 16:13 may refer to this same Rufus, suggesting the family became part of the early church.'},
+  {q:'Isaiah 19:25 contains a remarkable promise about Egypt/Africa. It says:',opts:['Egypt will be destroyed completely','God will call Egypt "my people" and Cush "my handiwork" — giving Africa the language previously reserved for Israel','Africa will have no role in God\'s final kingdom','Egypt will be converted to Judaism'],ans:1,exp:'Isaiah 19:18-25 is one of the most remarkable passages in the OT — prophesying a day when Egypt will worship the LORD and God will bless them alongside Israel, calling them "my people" and "my handiwork." Africa has a glorious future in God\'s story.'},
+  {q:'The church at Antioch (Acts 13:1), which sent the first missionaries, had African leaders including:',opts:['Peter and John','Simeon called Niger (the Black) and Lucius of Cyrene — Africans','Only Paul and Barnabas','No identifiable African leaders'],ans:1,exp:'Acts 13:1 lists: "Barnabas, Simeon called Niger (\'the Black\'), Lucius of Cyrene, Manaen… and Saul." Simeon Niger and Lucius of Cyrene were African leaders in the first church to send missionaries — Africa helped launch global Christian mission.'},
+],
+};
+
+// ============================================================
+// STATE
+// ============================================================
+const state={
+  studentName:'',currentView:'dashboard',
+  currentLesson:null,currentLessonType:'book',currentLessonTitle:'',
+  currentTab:'overview',quizData:[],quizIndex:0,quizAnswers:[],booksTab:'ot',
+  get completedModules(){return JSON.parse(localStorage.getItem('t21_done')||'[]')},
+  get certificates(){return JSON.parse(localStorage.getItem('t21_certs')||'[]')},
+  addComplete(id){const a=this.completedModules;if(!a.includes(id)){a.push(id);localStorage.setItem('t21_done',JSON.stringify(a))}},
+  addCert(obj){const a=this.certificates;if(!a.find(c=>c.id===obj.id)){a.push(obj);localStorage.setItem('t21_certs',JSON.stringify(a))}},
+};
+
+function startApp(){
+  const name=document.getElementById('student-name').value.trim();
+  if(!name){alert('Please enter your full name to continue.');return;}
+  state.studentName=name;
+  document.getElementById('topbar-name').textContent=name;
+  document.getElementById('welcome').classList.remove('active');
+  document.getElementById('app').classList.add('active');
+  renderDashboard();
+}
+document.getElementById('student-name').addEventListener('keypress',e=>{if(e.key==='Enter')startApp();});
+function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');}
+function mc(){return document.getElementById('main-content');}
+function escQ(s){return(s||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'");}
+
+function goTo(view,sub){
+  state.currentView=view;
+  document.querySelectorAll('.sidebar-item').forEach(el=>el.classList.remove('active'));
+  const nav=document.getElementById('nav-'+view);
+  if(nav)nav.classList.add('active');
+  if(view==='dashboard')renderDashboard();
+  else if(view==='books')renderBooks(sub);
+  else if(view==='topical')renderTopical();
+  else if(view==='certs')renderCerts();
+  if(window.innerWidth<=700)document.getElementById('sidebar').classList.remove('open');
+}
+
+// ============================================================
+// DASHBOARD
+// ============================================================
+function renderDashboard(){
+  const total=OT_BOOKS.length+NT_BOOKS.length+TOPICS.length;
+  const done=state.completedModules.length;
+  const pct=Math.round((done/total)*100);
+  const verses=[
+    {t:'Your word is a lamp for my feet, a light on my path.',r:'Psalm 119:105'},
+    {t:'Study to show yourself approved unto God, a worker who does not need to be ashamed, rightly dividing the word of truth.',r:'2 Timothy 2:15'},
+    {t:'All Scripture is God-breathed and is useful for teaching, rebuking, correcting and training in righteousness.',r:'2 Timothy 3:16'},
+    {t:'Do not merely listen to the word… Do what it says.',r:'James 1:22'},
+    {t:'Let the message of Christ dwell among you richly as you teach and admonish one another with all wisdom.',r:'Colossians 3:16'},
+    {t:'The fear of the LORD is the beginning of wisdom, and knowledge of the Holy One is understanding.',r:'Proverbs 9:10'},
+    {t:'For the word of God is alive and active, sharper than any double-edged sword.',r:'Hebrews 4:12'},
+  ];
+  const dv=verses[new Date().getDay()%verses.length];
+  mc().innerHTML=`
+    <div class="dash-greeting">Shalom, ${state.studentName}! 🙏</div>
+    <p style="color:var(--muted);font-size:.88rem;margin-bottom:1rem">Continue your journey through God's Word. Every lesson opens a deeper window into Christ.</p>
+    <div class="dash-verse"><em>"${dv.t}"</em><span class="ref">${dv.r}</span></div>
+    <div class="progress-cards">
+      <div class="prog-card"><div class="prog-num">${done}</div><div class="prog-label">Modules Completed</div><div class="prog-bar"><div class="prog-fill" style="width:${pct}%"></div></div></div>
+      <div class="prog-card"><div class="prog-num">${state.certificates.length}</div><div class="prog-label">Certificates Earned</div></div>
+      <div class="prog-card"><div class="prog-num">${total-done}</div><div class="prog-label">Remaining</div></div>
+    </div>
+    <div class="section-title">📚 Biblical Foundations — Start Here</div>
+    <div class="modules-grid" style="margin-bottom:1.2rem">
+      ${TOPICS.filter(t=>t.cat==='Foundations').map(t=>topicCard(t)).join('')}
+    </div>
+    <div class="section-title">📖 Explore the 66 Books</div>
+    <div class="modules-grid" style="margin-bottom:1.2rem">
+      ${[...OT_BOOKS,...NT_BOOKS].slice(0,6).map(b=>bookCard(b)).join('')}
+    </div>
+    <div style="text-align:center;margin-bottom:1.5rem"><button class="btn-sec" onclick="goTo('books')">View All 66 Books →</button></div>
+    <div class="section-title">🌍 Topical Courses</div>
+    <div class="modules-grid">
+      ${TOPICS.filter(t=>t.cat!=='Foundations').slice(0,4).map(t=>topicCard(t)).join('')}
+    </div>
+    <div style="text-align:center;margin-top:1rem"><button class="btn-sec" onclick="goTo('topical')">View All Topical Courses →</button></div>
+  `;
+}
+
+function bookCard(b){
+  const done=state.completedModules.includes(b.id);
+  const isOT=OT_BOOKS.includes(b);
+  return`<div class="mod-card${done?' completed':''}" onclick="openLesson('${b.id}','book','${escQ(b.name)}')">
+    <div class="mod-icon">${done?'✅':'📜'}</div>
+    <div class="mod-title">${b.name}</div>
+    <div class="mod-sub">${b.chapters} ch · ${b.theme}</div>
+    <div><span class="mod-badge ${isOT?'badge-ot':'badge-nt'}">${b.cat}</span>${done?'<span class="mod-badge badge-done" style="margin-left:.3rem">✓ Done</span>':''}</div>
+  </div>`;
+}
+
+function topicCard(t){
+  const done=state.completedModules.includes(t.id);
+  return`<div class="mod-card${done?' completed':''}" onclick="openLesson('${t.id}','topic','${escQ(t.title)}')">
+    <div class="mod-icon">${done?'✅':t.icon}</div>
+    <div class="mod-title">${t.title}</div>
+    <div class="mod-sub">${t.desc}</div>
+    <div><span class="mod-badge badge-topic">${t.cat}</span>${done?'<span class="mod-badge badge-done" style="margin-left:.3rem">✓ Done</span>':''}</div>
+  </div>`;
+}
+
+// ============================================================
+// BOOKS PAGE
+// ============================================================
+function renderBooks(sub){
+  if(sub)state.booksTab=sub;
+  const books=state.booksTab==='ot'?OT_BOOKS:NT_BOOKS;
+  mc().innerHTML=`
+    <div class="section-title">📖 The 66 Books of the Bible</div>
+    <div class="testament-tabs">
+      <button class="test-tab${state.booksTab==='ot'?' active':''}" onclick="switchBooksTab('ot')">Old Testament (39 books)</button>
+      <button class="test-tab${state.booksTab==='nt'?' active':''}" onclick="switchBooksTab('nt')">New Testament (27 books)</button>
+    </div>
+    <div class="books-grid">
+      ${books.map(b=>{const done=state.completedModules.includes(b.id);return`<div class="book-item${done?' completed':''}" onclick="openLesson('${b.id}','book','${escQ(b.name)}')">
+        <div class="book-name">${b.name}</div>
+        <div class="book-meta">${b.chapters} ch · ${b.cat}</div>
+        <div class="book-meta" style="color:var(--deep);font-size:.67rem;margin-top:.12rem;line-height:1.4">${b.theme}</div>
+        ${done?'<div class="book-check">✓ Completed</div>':''}
+      </div>`}).join('')}
+    </div>
+  `;
+}
+function switchBooksTab(t){state.booksTab=t;renderBooks();}
+
+// ============================================================
+// TOPICAL PAGE
+// ============================================================
+function renderTopical(){
+  const cats=[...new Set(TOPICS.map(t=>t.cat))];
+  mc().innerHTML=`
+    <div class="section-title">🌍 Topical Courses</div>
+    <p style="color:var(--muted);font-size:.88rem;margin-bottom:1.2rem">Biblical teaching on key issues facing the African believer and church, grounded in deep Scripture.</p>
+    ${cats.map(cat=>`
+      <div class="section-title" style="font-size:1rem;margin-top:1rem">${cat==='Foundations'?'📚':cat==='Practical'?'⚒️':'🔥'} ${cat}</div>
+      <div class="topical-grid" style="margin-bottom:1rem">
+        ${TOPICS.filter(t=>t.cat===cat).map(t=>{const done=state.completedModules.includes(t.id);return`<div class="topic-card" onclick="openLesson('${t.id}','topic','${escQ(t.title)}')">
+          <div class="topic-icon">${t.icon}</div>
+          <div class="topic-title">${t.title}</div>
+          <div class="topic-desc">${t.desc}</div>
+          ${done?'<div style="margin-top:.5rem"><span class="mod-badge badge-done">✓ Completed</span></div>':''}
+        </div>`}).join('')}
+      </div>
+    `).join('')}
+  `;
+}
+function openTopic(id){const t=TOPICS.find(x=>x.id===id);if(t)openLesson(id,'topic',t.title);}
+
+// ============================================================
+// LESSON
+// ============================================================
+function openLesson(id,type,title){
+  state.currentLesson=id;state.currentLessonType=type;state.currentLessonTitle=title;state.currentTab='overview';
+  renderLesson();
+}
+
+function renderLesson(){
+  const id=state.currentLesson,type=state.currentLessonType,title=state.currentLessonTitle;
+  const allB=[...OT_BOOKS,...NT_BOOKS];
+  const book=allB.find(b=>b.id===id);
+  const isDone=state.completedModules.includes(id);
+  const breadcrumb=type==='topic'?'Topical Courses':(OT_BOOKS.find(b=>b.id===id)?'Old Testament':'New Testament');
+  const backFn=type==='topic'?"goTo('topical')":`goTo('books')`;
+  mc().innerHTML=`
+    <div class="lesson-header">
+      <div class="lesson-breadcrumb">← <span style="cursor:pointer;text-decoration:underline" onclick="${backFn}">${breadcrumb}</span></div>
+      <div class="lesson-title">${title}</div>
+      <div class="lesson-meta">
+        ${book?`<span>📖 ${book.chapters} chapters</span><span>📂 ${book.cat}</span>`:''}
+        <span>✍️ Quiz after lesson</span>
+        ${isDone?'<span style="color:#81C784">✓ Completed</span>':''}
+      </div>
+    </div>
+    <div class="lesson-tabs">
+      <button class="tab-btn${state.currentTab==='overview'?' active':''}" onclick="setTab('overview')">📖 Lesson</button>
+      <button class="tab-btn${state.currentTab==='quiz'?' active':''}" onclick="setTab('quiz')">✍️ Quiz</button>
+      ${isDone?`<button class="tab-btn${state.currentTab==='cert'?' active':''}" onclick="setTab('cert')">🏆 Certificate</button>`:''}
+    </div>
+    <div id="tab-content"></div>
+  `;
+  renderTab();
+}
+
+function setTab(tab){
+  state.currentTab=tab;
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  const labels={overview:'Lesson',quiz:'Quiz',cert:'Certificate'};
+  document.querySelectorAll('.tab-btn').forEach(b=>{if(b.textContent.trim().includes(labels[tab]))b.classList.add('active');});
+  renderTab();
+}
+
+function renderTab(){
+  const tc=document.getElementById('tab-content');
+  if(!tc)return;
+  if(state.currentTab==='overview')renderOverview(tc);
+  else if(state.currentTab==='quiz')startQuiz(tc);
+  else if(state.currentTab==='cert')renderCertPreview(tc);
+}
+
+// ============================================================
+// OVERVIEW TAB
+// ============================================================
+function renderOverview(tc){
+  const id=state.currentLesson,type=state.currentLessonType,title=state.currentLessonTitle;
+  const lesson=LESSONS[id];
+  const allB=[...OT_BOOKS,...NT_BOOKS];
+  const book=allB.find(b=>b.id===id);
+  const topic=TOPICS.find(t=>t.id===id);
+  const backView=type==='topic'?'topical':'books';
+
+  if(lesson){
+    let html=`<div class="lesson-body">`;
+    html+=`<p style="font-size:.95rem;line-height:1.9;font-style:italic;border-bottom:1px solid var(--border);padding-bottom:1rem;margin-bottom:1rem">${lesson.overview}</p>`;
+    if(lesson.history) html+=`<h3>📜 Historical Context</h3><p>${lesson.history}</p>`;
+    (lesson.sections||[]).forEach(s=>{
+      html+=`<h3>${s.h}</h3><p>${s.b}</p>`;
+      if(s.scr) html+=`<div class="scripture-block"><em>"${s.scr}"</em><strong>— ${s.ref}</strong></div>`;
+      if(s.key) html+=`<div class="key-box"><strong>Key Insight</strong>${s.key}</div>`;
+    });
+    if(lesson.christ) html+=`<div class="christ-box"><div class="christ-title">✝ How This Points to Jesus Christ</div><p>${lesson.christ}</p></div>`;
+    if(lesson.remember&&lesson.remember.length){
+      html+=`<div class="remember-box"><div class="rem-title">📌 Key Things to Remember</div><ul>${lesson.remember.map(r=>`<li>${r}</li>`).join('')}</ul></div>`;
+    }
+    html+=`</div>`;
+    html+=`<div style="margin-top:1.2rem;display:flex;gap:.8rem;flex-wrap:wrap"><button class="btn-gold" onclick="setTab('quiz')">Take the Quiz →</button><button class="btn-sec" onclick="goTo('${backView}')">← Back</button></div>`;
+    tc.innerHTML=html;
+  } else {
+    // Generic content for books without specific lessons
+    const meta=book||topic;
+    tc.innerHTML=`<div class="lesson-body">
+      <p style="font-size:.95rem;line-height:1.9;font-style:italic;border-bottom:1px solid var(--border);padding-bottom:1rem;margin-bottom:1rem">
+        Welcome to a deep study of <strong>${title}</strong>. This module will open your eyes to the historical context, key themes, and the person of Jesus Christ hidden throughout this portion of God's Word. In the tradition of teachers like David Pawson, we approach Scripture with rigour, reverence, and an eye always fixed on the redemptive narrative.
+      </p>
+      ${book?`<div class="key-box"><strong>Book at a Glance</strong><strong>Theme:</strong> ${book.theme} &nbsp;|&nbsp; <strong>Chapters:</strong> ${book.chapters} &nbsp;|&nbsp; <strong>Category:</strong> ${book.cat}</div>`:''}
+      <h3>📜 Historical Context</h3>
+      <p>Understanding <em>when</em>, <em>where</em>, and <em>to whom</em> this book was written is essential for correct interpretation. Every book of the Bible was written in a specific historical and cultural context — understanding that context unlocks the meaning of the text. As you study this book, ask: Who wrote it? When? To whom? What was the situation?</p>
+      <h3>📖 Key Themes and Issues</h3>
+      <p>Every biblical book addresses its immediate readers and simultaneously speaks across the centuries. The themes here are not ancient curiosities — they are the living Word of God addressed to you, your family, your church, and your community today. As David Pawson used to say: "The Bible is not a book about what God used to do — it is a book about what God is like, and therefore what He always does."</p>
+      <div class="scripture-block"><em>"For the word of God is alive and active. Sharper than any double-edged sword, it penetrates even to dividing soul and spirit, joints and marrow; it judges the thoughts and attitudes of the heart."</em><strong>— Hebrews 4:12</strong></div>
+      <h3>📌 What We Learn</h3>
+      <p>Every book of the Bible teaches us something indispensable about God's character, His purposes in history, and how His people are to live. No book is redundant. Paul says "all Scripture is God-breathed and profitable" (2 Timothy 3:16) — that includes the books you find difficult, the genealogies, the legal sections, and the prophetic visions.</p>
+      <div class="christ-box"><div class="christ-title">✝ How This Points to Jesus Christ</div><p>Luke 24:27 tells us that Jesus, walking with the disciples on the road to Emmaus, "beginning with Moses and all the Prophets, explained to them what was said in all the Scriptures concerning himself." Every book of the Bible — every chapter — finds its fulfilment, climax, and meaning in the person of Jesus Christ. As you study this book, always ask: Where is Jesus here? How does this anticipate the Gospel? What does this teach me about the Christ who is the same yesterday, today, and forever?</p></div>
+      <div class="remember-box"><div class="rem-title">📌 Key Principles for Bible Study</div><ul>
+        <li>Observation: What does the text actually say? Read carefully before interpreting.</li>
+        <li>Interpretation: What did it mean to the original audience? Context is king.</li>
+        <li>Application: What does it mean for me today? How must I respond?</li>
+        <li>Always read individual passages in light of the whole Bible — Scripture interprets Scripture.</li>
+        <li>The Holy Spirit is the primary teacher — study with prayer and dependence on Him.</li>
+      </ul></div>
+    </div>
+    <div style="margin-top:1.2rem;display:flex;gap:.8rem;flex-wrap:wrap"><button class="btn-gold" onclick="setTab('quiz')">Take the Quiz →</button><button class="btn-sec" onclick="goTo('${backView}')">← Back</button></div>`;
+  }
+}
+
+// ============================================================
+// QUIZ ENGINE
+// ============================================================
+function getQuiz(id){
+  if(QUIZZES[id]) return QUIZZES[id];
+  const allB=[...OT_BOOKS,...NT_BOOKS];
+  const book=allB.find(b=>b.id===id);
+  return[
+    {q:`What is the primary theme of ${book?book.name:'this module'}?`,opts:['Entertainment and cultural history','Revelation of God\'s character and His redemptive plan through Christ','Political history of Israel','A collection of unrelated stories'],ans:1,exp:`Every book of the Bible contributes to the single story of God's redemption through Jesus Christ. As Jesus said, the Scriptures testify about Him (John 5:39).`},
+    {q:'According to 2 Timothy 3:16, Scripture is "God-breathed" and profitable for:',opts:['Academic study only','Teaching, rebuking, correcting and training in righteousness','Historical record keeping','Entertainment and cultural education'],ans:1,exp:'"All Scripture is God-breathed and is useful for teaching, rebuking, correcting and training in righteousness, so that the servant of God may be thoroughly equipped for every good work."'},
+    {q:'What principle did Jesus teach on the road to Emmaus (Luke 24:27)?',opts:['Only the Psalms speak of Him','All the Scriptures — Moses and all the Prophets — speak of Christ','The OT is no longer relevant after the NT','Only the major prophets point to Jesus'],ans:1,exp:'Jesus "explained to them what was said in all the Scriptures concerning himself" — beginning with Moses and all the Prophets. Every part of the Bible points to Christ.'},
+    {q:'Good Bible interpretation (hermeneutics) requires:',opts:['Taking every verse in isolation','Understanding the historical context, literary genre, and overall biblical narrative','Following only what your pastor teaches','Ignoring the OT as Old Covenant'],ans:1,exp:'Context is king in Bible interpretation. We must understand who wrote it, to whom, when, and why — and how it fits into the overall story of Scripture — to interpret any passage correctly.'},
+    {q:'Africa\'s connection to this portion of Scripture is best understood through:',opts:['It has no connection to Africa','God\'s Word addresses universal human questions that African communities have always asked — and Africa appears throughout the biblical narrative','Only Western scholarship can interpret Scripture','African traditions override the biblical text'],ans:1,exp:'The Bible addresses creation, suffering, community, justice, and redemption — at the heart of every African culture. Africa is also a physical presence throughout Scripture — in Egypt, Ethiopia, Cyrene, and beyond.'},
+  ];
+}
+
+function startQuiz(tc){
+  state.quizData=getQuiz(state.currentLesson);
+  state.quizIndex=0;
+  state.quizAnswers=new Array(state.quizData.length).fill(null);
+  renderQ(tc);
+}
+
+function renderQ(tc){
+  const q=state.quizData[state.quizIndex];
+  const total=state.quizData.length;
+  const letters=['A','B','C','D'];
+  const answered=state.quizAnswers[state.quizIndex]!==null;
+  const chosen=state.quizAnswers[state.quizIndex];
+  tc.innerHTML=`<div class="quiz-wrap">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.7rem">
+      <span style="font-size:.85rem;color:var(--muted)">Question ${state.quizIndex+1} of ${total}</span>
+      <span style="font-size:.8rem;color:var(--muted)">${state.quizAnswers.filter(a=>a!==null).length} answered</span>
+    </div>
+    <div class="quiz-progress">${state.quizData.map((_,i)=>`<div class="qp-dot${i<state.quizIndex?' done':i===state.quizIndex?' current':''}"></div>`).join('')}</div>
+    <div class="quiz-q">
+      <div class="quiz-q-text">${q.q}</div>
+      <div class="quiz-opts">
+        ${q.opts.map((opt,i)=>{
+          let cls='quiz-opt';
+          if(answered){cls+=' disabled';if(i===q.ans)cls+=' correct';else if(i===chosen)cls+=' wrong';}
+          else if(i===chosen)cls+=' selected';
+          return`<div class="${cls}" onclick="${answered?'':'selectAns('+i+')'}" >
+            <div class="opt-letter">${letters[i]}</div>
+            <div class="opt-text">${opt}</div>
+          </div>`;
+        }).join('')}
+      </div>
+      ${answered?`<div class="quiz-feedback show ${chosen===q.ans?'correct-fb':'wrong-fb'}">${chosen===q.ans?'✓ Correct! ':'✗ Not quite. '}${q.exp}</div>`:''}
+    </div>
+    <div class="quiz-nav">
+      ${state.quizIndex>0?`<button class="btn-sec" onclick="qNav(-1)">← Previous</button>`:''}
+      ${state.quizIndex<total-1
+        ?`<button class="btn-gold" onclick="qNav(1)" ${answered?'':'disabled'}>Next →</button>`
+        :`<button class="btn-gold" onclick="finishQuiz()" ${answered?'':'disabled'}>Submit Quiz</button>`}
+    </div>
+  </div>`;
+}
+
+function selectAns(idx){state.quizAnswers[state.quizIndex]=idx;renderQ(document.getElementById('tab-content'));}
+function qNav(dir){state.quizIndex+=dir;renderQ(document.getElementById('tab-content'));}
+
+function finishQuiz(){
+  const correct=state.quizAnswers.filter((a,i)=>a===state.quizData[i].ans).length;
+  const total=state.quizData.length;
+  const pct=Math.round((correct/total)*100);
+  const pass=pct>=60;
+  const id=state.currentLesson,title=state.currentLessonTitle;
+  if(pass){
+    state.addComplete(id);
+    const today=new Date().toLocaleDateString('en-GB',{year:'numeric',month:'long',day:'numeric'});
+    state.addCert({id,title,date:today,score:pct});
+  }
+  document.getElementById('tab-content').innerHTML=`
+    <div class="results-card">
+      <div style="font-size:2.5rem;margin-bottom:.5rem">${pass?'🎉':'📖'}</div>
+      <div style="font-family:'Playfair Display',serif;font-size:1.2rem;color:var(--deep)">${pass?'Excellent Work!':'Keep Studying'}</div>
+      <div class="results-score ${pass?'pass':'fail'}">${pct}%</div>
+      <div style="font-size:.9rem;color:var(--muted);margin-bottom:.5rem">${correct} of ${total} correct &nbsp;·&nbsp; Pass mark: 60%</div>
+      <div style="font-size:.88rem;color:var(--muted);line-height:1.75;margin-bottom:1.2rem">
+        ${pass
+          ?`You have successfully completed <strong>${title}</strong>. Your certificate of completion is ready to download, signed by Innocent Forteh, Program Manager.`
+          :`Review the lesson carefully and try again. <em>"Study to show yourself approved unto God, a worker who does not need to be ashamed, rightly dividing the word of truth."</em> — 2 Timothy 2:15`}
+      </div>
+      <div style="display:flex;flex-direction:column;gap:.7rem">
+        ${pass?`<button class="btn-gold" onclick="state.currentTab='cert';renderLesson()">View &amp; Download Certificate 🏆</button>`:''}
+        <button class="btn-sec" onclick="startQuiz(document.getElementById('tab-content'))">Retake Quiz</button>
+        <button class="btn-sec" onclick="state.currentTab='overview';renderLesson()">Review Lesson</button>
+        <button class="btn-sec" onclick="goTo('dashboard')">Back to Dashboard</button>
+      </div>
+    </div>`;
+}
+
+// ============================================================
+// CERTIFICATE
+// ============================================================
+function renderCertPreview(tc){
+  const id=state.currentLesson,title=state.currentLessonTitle;
+  const cert=state.certificates.find(c=>c.id===id);
+  const date=cert?cert.date:new Date().toLocaleDateString('en-GB',{year:'numeric',month:'long',day:'numeric'});
+  const score=cert?cert.score+'%':'—';
+  if(!tc)tc=document.getElementById('tab-content');
+  tc.innerHTML=`<div class="cert-wrap">
+    <div class="cert-preview">
+      <div class="cert-corner tl"></div><div class="cert-corner tr"></div>
+      <div class="cert-corner bl"></div><div class="cert-corner br"></div>
+      <div style="color:var(--gold);font-size:2rem;margin-bottom:.3rem">✝</div>
+      <div class="cert-title">Team21 Academy — Online Bible School</div>
+      <div class="cert-main">Certificate of Completion</div>
+      <div class="cert-body" style="margin:.3rem 0">This is to certify that</div>
+      <div class="cert-name">${state.studentName}</div>
+      <div class="cert-body">has successfully completed the module and demonstrated understanding of God's Word through examination.</div>
+      <div class="cert-module">${title}</div>
+      <div class="cert-body" style="font-size:.8rem">Score: ${score} &nbsp;·&nbsp; ${date}</div>
+      <div class="cert-seal"><span>TEAM21</span><span>ACADEMY</span><span>✝</span></div>
+      <div class="cert-sigs">
+        <div class="cert-sig">
+          <div class="cert-sig-line"></div>
+          <div class="cert-sig-name">Innocent Forteh</div>
+          <div class="cert-sig-title">Program Manager, Team21 Academy</div>
+        </div>
+      </div>
+      <div class="cert-body" style="margin-top:1rem;font-size:.8rem">"Your word is a lamp for my feet, a light on my path." — Psalm 119:105</div>
+    </div>
+    <div style="display:flex;gap:.8rem;margin-top:1rem;justify-content:center;flex-wrap:wrap">
+      <button class="btn-gold" onclick="downloadCert('${escQ(title)}')">⬇ Download PDF Certificate</button>
+      <button class="btn-sec" onclick="goTo('certs')">View All Certificates</button>
+    </div>
+  </div>`;
+}
+
+function downloadCert(moduleTitle){
+  try{
+    const{jsPDF}=window.jspdf;
+    const doc=new jsPDF({orientation:'landscape',unit:'pt',format:'a4'});
+    const W=doc.internal.pageSize.getWidth(),H=doc.internal.pageSize.getHeight();
+    doc.setFillColor(253,246,227);doc.rect(0,0,W,H,'F');
+    doc.setDrawColor(201,144,42);doc.setLineWidth(3);doc.rect(18,18,W-36,H-36);
+    doc.setLineWidth(1);doc.rect(26,26,W-52,H-52);
+    doc.setTextColor(26,39,68);doc.setFont('helvetica','bold');doc.setFontSize(10);
+    doc.text('TEAM21 ACADEMY — ONLINE BIBLE SCHOOL',W/2,65,{align:'center'});
+    doc.setTextColor(201,144,42);doc.setFontSize(26);doc.text('†',W/2,95,{align:'center'});
+    doc.setTextColor(26,39,68);doc.setFont('helvetica','bold');doc.setFontSize(28);
+    doc.text('Certificate of Completion',W/2,130,{align:'center'});
+    doc.setFont('helvetica','normal');doc.setFontSize(11);doc.setTextColor(107,94,62);
+    doc.text('This is to certify that',W/2,158,{align:'center'});
+    doc.setTextColor(201,144,42);doc.setFont('helvetica','bolditalic');doc.setFontSize(32);
+    doc.text(state.studentName,W/2,198,{align:'center'});
+    doc.setDrawColor(240,192,96);doc.setLineWidth(1);doc.line(W/2-180,210,W/2+180,210);
+    doc.setTextColor(107,94,62);doc.setFont('helvetica','normal');doc.setFontSize(11);
+    doc.text('has successfully completed the module and demonstrated understanding of God\'s Word.',W/2,232,{align:'center',maxWidth:580});
+    doc.setTextColor(26,39,68);doc.setFont('helvetica','bold');doc.setFontSize(20);
+    const mt=moduleTitle.length>50?moduleTitle.substring(0,50)+'…':moduleTitle;
+    doc.text(mt,W/2,268,{align:'center'});
+    const cert=state.certificates.find(c=>c.title===moduleTitle)||{};
+    const date=cert.date||new Date().toLocaleDateString('en-GB',{year:'numeric',month:'long',day:'numeric'});
+    const score=cert.score?cert.score+'%':'—';
+    doc.setFont('helvetica','normal');doc.setFontSize(10);doc.setTextColor(107,94,62);
+    doc.text(`Score: ${score}   |   Date: ${date}`,W/2,295,{align:'center'});
+    doc.setFillColor(26,39,68);doc.circle(W/2,340,32,'F');
+    doc.setTextColor(201,144,42);doc.setFont('helvetica','bold');doc.setFontSize(7);
+    doc.text('TEAM21',W/2,333,{align:'center'});doc.text('ACADEMY',W/2,343,{align:'center'});
+    doc.setFontSize(11);doc.text('†',W/2,354,{align:'center'});
+    doc.setDrawColor(26,39,68);doc.setLineWidth(0.5);doc.line(W/2-80,406,W/2+80,406);
+    doc.setTextColor(26,39,68);doc.setFont('helvetica','bold');doc.setFontSize(11);
+    doc.text('Innocent Forteh',W/2,419,{align:'center'});
+    doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(107,94,62);
+    doc.text('Program Manager, Team21 Academy',W/2,432,{align:'center'});
+    doc.setFont('helvetica','italic');doc.setFontSize(9);
+    doc.text('"Your word is a lamp for my feet, a light on my path." — Psalm 119:105',W/2,455,{align:'center'});
+    doc.save(`Team21_Certificate_${state.studentName.replace(/\s+/g,'_')}_${moduleTitle.replace(/[^a-zA-Z0-9]/g,'_').substring(0,40)}.pdf`);
+  }catch(e){alert('PDF generation error. Please ensure jsPDF has loaded and try again.');console.error(e);}
+}
+
+// ============================================================
+// CERTIFICATES PAGE
+// ============================================================
+function renderCerts(){
+  const certs=state.certificates;
+  if(!certs.length){
+    mc().innerHTML=`<div class="section-title">🏆 My Certificates</div>
+      <div class="empty-state">
+        <div class="empty-icon">🎓</div>
+        <div class="empty-text">No certificates yet</div>
+        <p style="font-size:.85rem;margin-top:.5rem;color:var(--muted)">Complete any module quiz with 60% or above to earn your first certificate, signed by Innocent Forteh, Program Manager.</p>
+        <button class="btn-gold" style="margin-top:1.2rem" onclick="goTo('books')">Start Learning →</button>
+      </div>`;
+    return;
+  }
+  mc().innerHTML=`<div class="section-title">🏆 My Certificates (${certs.length})</div>
+    <p style="color:var(--muted);font-size:.85rem;margin-bottom:1rem">All certificates are signed by <strong>Innocent Forteh</strong>, Program Manager of Team21 Academy. Each represents mastery of God's Word in that area.</p>
+    <div class="certs-grid">
+      ${certs.map(c=>`<div class="cert-mini">
+        <div style="font-size:1.5rem;margin-bottom:.4rem">🏆</div>
+        <div class="cert-mini-title">${c.title}</div>
+        <div class="cert-mini-date">${c.date} · Score: ${c.score}%</div>
+        <button class="btn-gold" style="width:100%;font-size:.82rem;padding:.5rem" onclick="viewCert('${c.id}','${escQ(c.title)}')">View &amp; Download PDF</button>
+      </div>`).join('')}
+    </div>`;
+}
+
+function viewCert(id,title){
+  openLesson(id,'',''+title);
+  setTimeout(()=>{state.currentTab='cert';renderLesson();},50);
+}
+</script>
+</body>
+</html>
