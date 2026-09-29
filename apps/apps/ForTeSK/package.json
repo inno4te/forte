@@ -1,0 +1,14 @@
+{
+  "name": "forte-webswissknife",
+  "version": "1.0.0",
+  "description": "ForTe WebSwissKnife - Team21 Academy multi-tool web app packaged as an Android APK",
+  "private": true,
+  "scripts": {
+    "sync": "npx cap sync android"
+  },
+  "dependencies": {
+    "@capacitor/android": "^6.2.1",
+    "@capacitor/cli": "^6.2.1",
+    "@capacitor/core": "^6.2.1"
+  }
+}

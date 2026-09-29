@@ -1,0 +1,16 @@
+{
+  "name": "forteinter-app",
+  "version": "1.0.0",
+  "private": true,
+  "description": "ForTeInter live session board, wrapped as an Android app.",
+  "scripts": {
+    "build": "echo 'Static app — no build step needed, HTML lives in www/'"
+  },
+  "dependencies": {
+    "@capacitor/core": "^6.1.2",
+    "@capacitor/android": "^6.1.2"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^6.1.2"
+  }
+}

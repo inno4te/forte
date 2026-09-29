@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Carcinogen Library — Team21 Health Platform</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700;9..144,800&family=Inter+Tight:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="brand">
+      <div class="brand-mark">T21</div>
+      <div>
+        <div class="brand-name">Team21 Health Platform</div>
+        <div class="brand-sub">Preventive Intelligence</div>
+      </div>
+    </a>
+    <div class="nav-cta" id="navCta"></div>
+  </div>
+</nav>
+
+<main class="page">
+  <header class="page-head">
+    <div>
+      <div class="eyebrow">Part One · The Library</div>
+      <h1>Known &amp; probable <em>carcinogens</em>.</h1>
+      <p class="intro">The International Agency for Research on Cancer (IARC) classifies agents into Group 1 (carcinogenic to humans), Group 2A (probably carcinogenic) and Group 2B (possibly carcinogenic). Each entry below identifies common sources, hidden synonyms used on ingredient labels, and the strength of evidence. <strong>Sign in</strong> to bookmark, add private notes, or ask questions on any entry.</p>
+    </div>
+    <div class="meta">
+      VOL. 01 · 2026<br>
+      ~35 ENTRIES<br>
+      UPDATED MONTHLY
+    </div>
+  </header>
+
+  <div class="search-bar">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+    <input type="text" id="topicSearch" placeholder="Search across all categories — e.g. bacon, aflatoxin, radon…" />
+  </div>
+
+  <div class="cat-tabs" id="catTabs">
+    <button class="cat-tab active" data-cat="diet">Diet &amp; Beverages</button>
+    <button class="cat-tab" data-cat="additives">Food Additives</button>
+    <button class="cat-tab" data-cat="environment">Environmental &amp; Physical</button>
+    <button class="cat-tab" data-cat="lifestyle">Lifestyle Exposures</button>
+    <button class="cat-tab" data-cat="occupational">Occupational &amp; Chemical</button>
+  </div>
+
+  <div class="cat-panel active" data-panel="diet"><div class="topic-grid" id="grid-diet"></div></div>
+  <div class="cat-panel" data-panel="additives"><div class="topic-grid" id="grid-additives"></div></div>
+  <div class="cat-panel" data-panel="environment"><div class="topic-grid" id="grid-environment"></div></div>
+  <div class="cat-panel" data-panel="lifestyle"><div class="topic-grid" id="grid-lifestyle"></div></div>
+  <div class="cat-panel" data-panel="occupational"><div class="topic-grid" id="grid-occupational"></div></div>
+
+  <div class="disclaimer" style="margin-top:60px">
+    <strong>Note on classification</strong>
+    IARC classifications describe the strength of evidence that something can cause cancer, not the size of the risk. A "Group 1" listing means the evidence is strong; it does not mean every exposure causes cancer. Real-world risk depends on dose, duration, individual susceptibility, and co-exposures. Always consult a healthcare provider for individual guidance.
+  </div>
+</main>
+
+<script src="data.js"></script>
+<script src="lang-data.js"></script>
+<script src="lang.js"></script>
+<script src="shared.js"></script>
+<script src="components.js"></script>
+<script>
+T21.boot('carcinogens.html');
+
+// Render each category
+['diet','additives','environment','lifestyle','occupational'].forEach(cat=>{
+  const wrap = document.getElementById('grid-'+cat);
+  wrap.innerHTML = TOPICS[cat].map(renderTopic).join('');
+  wireTopicActions(wrap);
+});
+
+// Tabs
+document.querySelectorAll('.cat-tab').forEach(tab=>{
+  tab.addEventListener('click', ()=>{
+    document.querySelectorAll('.cat-tab').forEach(t=>t.classList.remove('active'));
+    document.querySelectorAll('.cat-panel').forEach(p=>p.classList.remove('active'));
+    tab.classList.add('active');
+    document.querySelector(`.cat-panel[data-panel="${tab.dataset.cat}"]`).classList.add('active');
+    document.getElementById('topicSearch').value = '';
+    document.querySelectorAll('.topic').forEach(t=>t.style.display='');
+  });
+});
+
+// Search
+document.getElementById('topicSearch').addEventListener('input', e=>{
+  const q = e.target.value.toLowerCase().trim();
+  if(q){
+    document.querySelectorAll('.cat-panel').forEach(p=>p.classList.add('active'));
+  } else {
+    document.querySelectorAll('.cat-panel').forEach(p=>p.classList.remove('active'));
+    document.querySelector('.cat-panel[data-panel="diet"]').classList.add('active');
+  }
+  document.querySelectorAll('.topic').forEach(t=>{
+    const hay = (t.dataset.search || '') + ' ' + t.textContent.toLowerCase();
+    t.style.display = (!q || hay.includes(q)) ? '' : 'none';
+  });
+});
+
+// Reflect bookmark state when user signs in/out
+window.onUserAuthChange = ()=>{
+  document.querySelectorAll('.topic-grid').forEach(g=> refreshBookmarkStates(g));
+};
+</script>
+</body>
+</html>

@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Team21 360 Eval — Team Member Assessment</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --gold:#C9A84C;--gold-l:#E8CC85;--gold-d:#8B6914;
+  --navy:#0A1628;--navy2:#112040;--navy3:#1A3060;--navy4:#0D1A35;
+  --cream:#FAF7F0;--cream2:#F0EAD6;--muted:#6B7280;
+  --green-l:#4ADE80;--red-l:#F87171;--blue-l:#93C5FD;--amber-l:#FCD34D;
+  --teal:#0F766E;--teal-l:#5EEAD4;--purple-l:#C4B5FD;
+}
+*{scrollbar-width:thin;scrollbar-color:var(--gold-d) var(--navy2)}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-thumb{background:var(--gold-d);border-radius:3px}
+body{font-family:'Segoe UI',Arial,sans-serif;background:var(--navy);color:var(--cream);min-height:100vh;overflow-x:hidden}
+.hidden{display:none!important}
+/* LOGIN */
+#login-page{min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--navy);position:relative;overflow:hidden}
+#login-page::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 50% at 50% 0%,rgba(201,168,76,0.08),transparent 70%)}
+.lcard{background:linear-gradient(160deg,var(--navy2),var(--navy3));border:1px solid rgba(201,168,76,0.3);border-radius:24px;padding:44px 50px;width:460px;max-width:94vw;position:relative;z-index:2;box-shadow:0 32px 96px rgba(0,0,0,0.6)}
+.ltag{background:linear-gradient(135deg,var(--gold),var(--gold-d));color:var(--navy);font-size:10px;font-weight:900;letter-spacing:2px;text-transform:uppercase;padding:4px 12px;border-radius:20px;display:inline-block;margin-bottom:14px}
+.ltitle{font-size:26px;color:var(--gold);font-weight:700;letter-spacing:.5px;line-height:1.2}
+.lsub{font-size:14px;color:var(--cream2);margin-top:4px;font-style:italic}
+.lverse{font-size:11px;color:var(--gold-d);margin:10px 0 22px;font-style:italic;line-height:1.6}
+.ll{display:block;font-size:10px;color:var(--gold);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:5px}
+.li{width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(201,168,76,0.25);border-radius:9px;padding:11px 15px;color:var(--cream);font-size:14px;outline:none;transition:border-color .2s;margin-bottom:12px}
+.li:focus{border-color:var(--gold)}.li::placeholder{color:rgba(255,255,255,0.2)}
+.lbtn{width:100%;margin-top:6px;background:linear-gradient(135deg,var(--gold),var(--gold-d));border:none;border-radius:10px;padding:13px;color:var(--navy);font-size:13px;font-weight:900;cursor:pointer;letter-spacing:2px;text-transform:uppercase;transition:opacity .2s}
+.lbtn:hover{opacity:.88}
+.lerr{color:var(--red-l);font-size:12px;text-align:center;margin-top:8px}
+.lmotto{font-size:10px;color:var(--gold-d);text-align:center;margin-top:14px;letter-spacing:3px;text-transform:uppercase}
+.llink{display:block;text-align:center;margin-top:14px;font-size:12px;color:var(--muted)}
+.llink a{color:var(--gold);text-decoration:none}.llink a:hover{text-decoration:underline}
+/* SHELL */
+#shell{display:flex;height:100vh;overflow:hidden}
+#sb{width:250px;min-width:250px;background:var(--navy2);border-right:1px solid rgba(201,168,76,0.12);display:flex;flex-direction:column;overflow-y:auto}
+.sbhd{padding:14px 14px;border-bottom:1px solid rgba(201,168,76,0.1)}
+.sbtag{background:linear-gradient(135deg,var(--gold),var(--gold-d));color:var(--navy);font-size:9px;font-weight:900;letter-spacing:1.5px;text-transform:uppercase;padding:3px 10px;border-radius:12px;display:inline-block;margin-bottom:6px}
+.sbbrand{font-size:13px;color:var(--gold);font-weight:700}
+.sbcopy{font-size:9px;color:var(--muted);letter-spacing:1px;margin-top:1px}
+.nsec{padding:10px 0 3px}
+.nsl{font-size:9px;color:var(--gold-d);letter-spacing:2.5px;text-transform:uppercase;padding:0 14px 5px}
+.ni{display:flex;align-items:center;gap:8px;padding:8px 14px;cursor:pointer;color:var(--cream2);font-size:12px;transition:all .15s;border-left:3px solid transparent}
+.ni:hover{background:rgba(201,168,76,0.07);color:var(--gold)}
+.ni.active{background:rgba(201,168,76,0.11);color:var(--gold);border-left-color:var(--gold)}
+.ni-ic{font-size:14px;min-width:16px}
+.ni-pct{margin-left:auto;font-size:10px;color:var(--muted)}
+.ni-done{margin-left:auto;color:var(--green-l);font-size:11px}
+.sbext{padding:10px 14px;border-top:1px solid rgba(201,168,76,0.08)}
+.sbext a{display:flex;align-items:center;gap:7px;color:var(--muted);font-size:11px;text-decoration:none;padding:7px 10px;border-radius:8px;transition:all .15s;border:1px solid rgba(201,168,76,0.12)}
+.sbext a:hover{border-color:rgba(201,168,76,0.3);color:var(--gold);background:rgba(201,168,76,0.05)}
+.sbft{padding:10px 12px;border-top:1px solid rgba(201,168,76,0.1)}
+.upill{display:flex;align-items:center;gap:8px;padding:7px 10px;background:rgba(201,168,76,0.07);border-radius:9px;cursor:pointer}
+.upill:hover{background:rgba(201,168,76,0.13)}
+.uav{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold-d));display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;color:var(--navy);flex-shrink:0}
+.uname{font-size:11px;color:var(--cream);font-weight:700}
+.urole{font-size:9px;color:var(--muted)}
+/* MAIN */
+#main{flex:1;overflow-y:auto;background:var(--navy4)}
+.tb{display:flex;align-items:center;justify-content:space-between;padding:11px 24px;background:var(--navy2);border-bottom:1px solid rgba(201,168,76,0.1);position:sticky;top:0;z-index:100}
+.tb-left{display:flex;align-items:center;gap:10px}
+.tb-tag{background:rgba(201,168,76,0.12);border:1px solid rgba(201,168,76,0.25);border-radius:12px;padding:3px 10px;font-size:9px;font-weight:700;color:var(--gold);letter-spacing:1px;text-transform:uppercase}
+.tbtitle{font-size:16px;color:var(--gold);font-weight:700}
+.tbr{display:flex;align-items:center;gap:8px}
+.loutbtn{border-radius:18px;padding:5px 13px;font-size:11px;cursor:pointer;letter-spacing:.8px;transition:all .15s;border:1px solid rgba(201,168,76,0.28);background:transparent;color:var(--muted)}
+.loutbtn:hover{border-color:var(--gold);color:var(--gold)}
+.pg{padding:22px 26px;max-width:1060px;margin:0 auto;width:100%}
+/* CARDS */
+.card{background:var(--navy2);border:1px solid rgba(201,168,76,0.15);border-radius:14px;padding:18px}
+.card-g{border-color:rgba(201,168,76,0.3);background:linear-gradient(145deg,var(--navy2),rgba(201,168,76,0.02))}
+.card-sm{padding:13px 15px}
+.ctitle{font-size:17px;color:var(--gold);font-weight:700;margin-bottom:3px}
+.csub{font-size:12px;color:var(--muted);margin-bottom:14px;font-style:italic}
+.ptitle{font-size:21px;color:var(--gold);font-weight:700;margin-bottom:3px}
+/* GRIDS */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:11px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}
+/* STAT */
+.sc{background:var(--navy3);border:1px solid rgba(201,168,76,0.12);border-radius:10px;padding:12px 15px}
+.sl{font-size:10px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:4px}
+.sv{font-size:24px;color:var(--gold);font-weight:700}
+.ss{font-size:11px;color:var(--muted);margin-top:2px}
+/* PROGRESS */
+.pw{margin:5px 0}.plb{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-bottom:3px}
+.pb{height:5px;background:rgba(255,255,255,0.07);border-radius:3px;overflow:hidden}
+.pf{height:100%;background:linear-gradient(90deg,var(--gold-d),var(--gold));border-radius:3px;transition:width .5s}
+/* BUTTONS */
+.btn{padding:8px 16px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;letter-spacing:.5px;transition:all .15s;border:none}
+.bg{background:linear-gradient(135deg,var(--gold),var(--gold-d));color:var(--navy)}.bg:hover{opacity:.88}
+.bo{background:transparent;border:1px solid rgba(201,168,76,0.38);color:var(--gold)}.bo:hover{background:rgba(201,168,76,0.1)}
+.bgh{background:transparent;border:1px solid rgba(255,255,255,0.09);color:var(--cream2)}.bgh:hover{border-color:rgba(201,168,76,0.3);color:var(--gold)}
+.bsm{padding:5px 11px;font-size:11px}
+/* FORMS */
+.fg{margin-bottom:12px}
+.flb{display:block;font-size:10px;color:var(--gold);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:5px}
+.fi,.fsel,.fta{width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(201,168,76,0.22);border-radius:8px;padding:8px 12px;color:var(--cream);font-size:13px;outline:none;transition:border-color .2s}
+.fi:focus,.fsel:focus,.fta:focus{border-color:var(--gold)}
+.fsel option{background:var(--navy2);color:var(--cream)}
+.fta{resize:vertical;min-height:70px}
+/* BADGES */
+.bdg{display:inline-flex;align-items:center;padding:2px 9px;border-radius:18px;font-size:10px;font-weight:700}
+.bdg-g{background:rgba(201,168,76,0.13);color:var(--gold);border:1px solid rgba(201,168,76,0.28)}
+.bdg-gr{background:rgba(45,125,79,0.13);color:var(--green-l);border:1px solid rgba(74,222,128,0.28)}
+.bdg-r{background:rgba(185,28,28,0.13);color:var(--red-l);border:1px solid rgba(248,113,113,0.28)}
+.bdg-b{background:rgba(59,130,246,0.13);color:var(--blue-l);border:1px solid rgba(147,197,253,0.28)}
+.bdg-t{background:rgba(15,118,110,0.15);color:var(--teal-l);border:1px solid rgba(94,234,212,0.28)}
+.bdg-p{background:rgba(124,58,237,0.13);color:var(--purple-l);border:1px solid rgba(196,181,253,0.28)}
+/* RATING SCALE */
+.rs-wrap{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.rs-btn{padding:7px 13px;border-radius:8px;border:1px solid rgba(201,168,76,0.2);background:rgba(255,255,255,0.03);color:var(--cream2);font-size:12px;font-weight:700;cursor:pointer;transition:all .15s;min-width:42px;text-align:center}
+.rs-btn:hover{border-color:var(--gold);background:rgba(201,168,76,0.08);color:var(--gold)}
+.rs-btn.sel{border-color:var(--gold);background:var(--gold);color:var(--navy)}
+.rs-label{font-size:10px;color:var(--muted);margin-top:4px;display:flex;justify-content:space-between}
+/* QUESTION CARD */
+.qcard{background:rgba(255,255,255,0.02);border:1px solid rgba(201,168,76,0.1);border-radius:10px;padding:14px;margin-bottom:10px;transition:border-color .2s}
+.qcard.answered{border-color:rgba(74,222,128,0.22)}
+.qn{font-size:9px;color:var(--gold);letter-spacing:1px;text-transform:uppercase;margin-bottom:5px}
+.qt{font-size:13.5px;color:var(--cream);line-height:1.55;margin-bottom:8px}
+/* SECTION HEADER */
+.shd{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:8px}
+/* COMP BAR */
+.comp-row{display:flex;align-items:center;gap:10px;margin-bottom:7px}
+.comp-label{font-size:12px;color:var(--cream2);min-width:160px}
+.comp-bar-wrap{flex:1;height:7px;background:rgba(255,255,255,0.07);border-radius:4px;overflow:hidden}
+.comp-bar-fill{height:100%;border-radius:4px;transition:width .5s}
+.comp-pct{font-size:11px;color:var(--muted);min-width:36px;text-align:right}
+/* ALERTS */
+.al{padding:10px 14px;border-radius:8px;font-size:12px;margin-bottom:10px;line-height:1.5}
+.al-g{background:rgba(201,168,76,0.09);border:1px solid rgba(201,168,76,0.28);color:var(--gold)}
+.al-gr{background:rgba(45,125,79,0.09);border:1px solid rgba(74,222,128,0.28);color:var(--green-l)}
+.al-r{background:rgba(185,28,28,0.09);border:1px solid rgba(248,113,113,0.28);color:var(--red-l)}
+.al-b{background:rgba(59,130,246,0.09);border:1px solid rgba(147,197,253,0.28);color:var(--blue-l)}
+/* TABLE */
+.rtbl{width:100%;border-collapse:collapse;font-size:12px}
+.rtbl th{padding:8px 11px;text-align:left;color:var(--gold);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;border-bottom:1px solid rgba(201,168,76,0.18)}
+.rtbl td{padding:8px 11px;border-bottom:1px solid rgba(255,255,255,0.04);color:var(--cream2)}
+.rtbl tr:hover td{background:rgba(201,168,76,0.03)}
+/* DIVIDER */
+.dv{border:none;border-top:1px solid rgba(201,168,76,0.1);margin:14px 0}
+/* NOTIF */
+.notif{position:fixed;top:18px;right:18px;z-index:9999;background:var(--navy3);border:1px solid rgba(74,222,128,0.4);border-radius:10px;padding:11px 16px;color:var(--green-l);font-size:12px;box-shadow:0 8px 32px rgba(0,0,0,0.4);transition:opacity .3s;min-width:200px}
+/* SECTION PILL */
+.sec-pill{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:20px;font-size:11px;font-weight:700;margin-bottom:12px}
+/* HEAT MAP */
+.heat-cell{width:100%;padding:8px;border-radius:6px;text-align:center;font-size:11px;font-weight:700}
+/* OPEN TEXT */
+.open-q{margin-bottom:14px}
+.open-q label{display:block;font-size:12px;color:var(--cream2);margin-bottom:5px;line-height:1.4}
+/* TABS */
+.tabs{display:flex;gap:3px;background:rgba(255,255,255,0.04);padding:3px;border-radius:9px;margin-bottom:16px;flex-wrap:wrap}
+.tab{flex:1;padding:6px 5px;text-align:center;font-size:11px;font-weight:700;border-radius:7px;cursor:pointer;color:var(--muted);transition:all .15s;border:none;background:transparent;white-space:nowrap}
+.tab.active{background:linear-gradient(135deg,var(--gold),var(--gold-d));color:var(--navy)}
+.tab:hover:not(.active){color:var(--gold)}
+/* PRING */
+.pring{width:70px;height:70px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold-d));display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:700;color:var(--navy);box-shadow:0 0 0 4px rgba(201,168,76,0.18)}
+@media print{#sb,.tb,.no-print{display:none!important}#main{overflow:visible}.pg{padding:0;max-width:none}}
+</style>
+</head>
+<body>
+<div id="app">
+<!-- LOGIN -->
+<div id="login-page">
+  <div class="lcard">
+    <svg width="72" height="72" viewBox="0 0 84 84" style="display:block;margin:0 auto 12px" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="42" cy="42" r="41" fill="rgba(201,168,76,0.07)" stroke="rgba(201,168,76,0.32)" stroke-width="1"/>
+      <g fill="#C9A84C">
+        <ellipse cx="42" cy="50" rx="9" ry="13"/>
+        <circle cx="42" cy="31" r="7.5"/>
+        <path d="M50 31 L56 34 L50 35.5Z" opacity=".9"/>
+        <circle cx="47" cy="30" r="1.4" fill="#0A1628"/>
+        <path d="M33 46 Q20 36 8 40 Q14 46 20 48 Q27 50 33 53Z" opacity=".9"/>
+        <path d="M51 46 Q64 36 76 40 Q70 46 64 48 Q57 50 51 53Z" opacity=".9"/>
+        <path d="M38 62 Q42 70 46 62 Q44 66 42 68 Q40 66 38 62Z" opacity=".8"/>
+        <path d="M35 61 L31 67 M35 61 L33 67 M35 61 L35 67" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+        <path d="M49 61 L53 67 M49 61 L51 67 M49 61 L49 67" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+      </g>
+      <text x="42" y="79" text-anchor="middle" font-size="6" fill="rgba(201,168,76,0.5)" font-style="italic">Is 40:31</text>
+    </svg>
+    <div class="ltag">360° Evaluation</div>
+    <h1 class="ltitle">Team21 360 Eval</h1>
+    <p class="lsub">Team Member Assessment Platform</p>
+    <p class="lverse">"Those who wait on the LORD shall renew their strength; they shall mount up with wings as eagles." — Isaiah 40:31</p>
+    <label class="ll">Username</label>
+    <input class="li" id="lu" placeholder="Enter username" autocomplete="username"/>
+    <label class="ll">Password</label>
+    <input class="li" id="lp" type="password" placeholder="Enter password" onkeydown="if(event.key==='Enter')doLogin()"/>
+    <button class="lbtn" onclick="doLogin()">ACCESS PLATFORM</button>
+    <p class="lerr hidden" id="lerr">Invalid credentials. Please try again.</p>
+    <p class="lmotto">✦ Login to a new day ✦ © Innocent Forteh 2026</p>
+    <p class="llink">Part of the <a href="https://consulting-iota-eight.vercel.app/" target="_blank">Team21 AE Consulting Suite ↗</a></p>
+  </div>
+</div>
+<!-- SHELL -->
+<div id="shell" class="hidden">
+  <div id="sb">
+    <div class="sbhd">
+      <div class="sbtag">360° Eval</div>
+      <div class="sbbrand">Team21 360 Eval</div>
+      <div class="sbcopy">© Innocent Forteh 2026</div>
+    </div>
+    <div id="cnav" class="hidden">
+      <div class="nsec"><div class="nsl">Overview</div>
+        <div class="ni" onclick="nav('dash')" id="n-dash"><span class="ni-ic">🏠</span>Dashboard</div>
+        <div class="ni" onclick="nav('profile')" id="n-profile"><span class="ni-ic">👤</span>My Profile</div>
+      </div>
+      <div class="nsec"><div class="nsl">Self-Assessment</div>
+        <div class="ni" onclick="nav('s-leadership')" id="n-s-leadership"><span class="ni-ic">👑</span>Leadership &amp; Vision<span class="ni-pct" id="np-s-leadership">0%</span></div>
+        <div class="ni" onclick="nav('s-communication')" id="n-s-communication"><span class="ni-ic">💬</span>Communication<span class="ni-pct" id="np-s-communication">0%</span></div>
+        <div class="ni" onclick="nav('s-teamwork')" id="n-s-teamwork"><span class="ni-ic">🤝</span>Teamwork &amp; Collaboration<span class="ni-pct" id="np-s-teamwork">0%</span></div>
+        <div class="ni" onclick="nav('s-delivery')" id="n-s-delivery"><span class="ni-ic">⚡</span>Delivery &amp; Results<span class="ni-pct" id="np-s-delivery">0%</span></div>
+        <div class="ni" onclick="nav('s-values')" id="n-s-values"><span class="ni-ic">💎</span>Values &amp; Culture<span class="ni-pct" id="np-s-values">0%</span></div>
+        <div class="ni" onclick="nav('s-growth')" id="n-s-growth"><span class="ni-ic">🌱</span>Learning &amp; Growth<span class="ni-pct" id="np-s-growth">0%</span></div>
+        <div class="ni" onclick="nav('s-innovation')" id="n-s-innovation"><span class="ni-ic">💡</span>Innovation &amp; Initiative<span class="ni-pct" id="np-s-innovation">0%</span></div>
+        <div class="ni" onclick="nav('s-wellbeing')" id="n-s-wellbeing"><span class="ni-ic">🌿</span>Wellbeing &amp; Resilience<span class="ni-pct" id="np-s-wellbeing">0%</span></div>
+      </div>
+      <div class="nsec"><div class="nsl">Open Reflection</div>
+        <div class="ni" onclick="nav('openq')" id="n-openq"><span class="ni-ic">✍️</span>Open Questions</div>
+        <div class="ni" onclick="nav('training')" id="n-training"><span class="ni-ic">📚</span>Training Needs</div>
+        <div class="ni" onclick="nav('myreport')" id="n-myreport"><span class="ni-ic">📊</span>My 360 Report</div>
+      </div>
+    </div>
+    <div id="anav" class="hidden">
+      <div class="nsec"><div class="nsl">Admin Portal</div>
+        <div class="ni" onclick="nav('adash')" id="n-adash"><span class="ni-ic">📊</span>Dashboard</div>
+        <div class="ni" onclick="nav('ateam')" id="n-ateam"><span class="ni-ic">👥</span>All Team Members</div>
+        <div class="ni" onclick="nav('aheatmap')" id="n-aheatmap"><span class="ni-ic">🔥</span>Competency Heatmap</div>
+        <div class="ni" onclick="nav('atraining')" id="n-atraining"><span class="ni-ic">📚</span>Training Needs Analysis</div>
+        <div class="ni" onclick="nav('areports')" id="n-areports"><span class="ni-ic">📥</span>Reports &amp; Exports</div>
+      </div>
+    </div>
+    <div class="sbext">
+      <a href="https://consulting-iota-eight.vercel.app/" target="_blank">
+        <span style="font-size:14px">🏛</span>
+        <span>Team21 AE Consulting ↗</span>
+      </a>
+    </div>
+    <div class="sbft">
+      <div class="upill" onclick="doLogout()">
+        <div class="uav" id="sb-av">T</div>
+        <div><div class="uname" id="sb-un">Team Member</div><div class="urole" id="sb-ur">Respondent</div></div>
+      </div>
+    </div>
+  </div>
+  <div id="main">
+    <div class="tb">
+      <div class="tb-left">
+        <div class="tb-tag">360° Eval</div>
+        <div class="tbtitle" id="tb-title">Dashboard</div>
+      </div>
+      <div class="tbr">
+        <a href="https://consulting-iota-eight.vercel.app/" target="_blank" style="color:var(--muted);font-size:11px;text-decoration:none;border:1px solid rgba(201,168,76,0.2);border-radius:14px;padding:4px 11px;transition:all .15s" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--muted)'">🏛 AE Consulting ↗</a>
+        <button class="loutbtn" onclick="doLogout()">Sign Out</button>
+      </div>
+    </div>
+    <div class="pg" id="pgc"></div>
+  </div>
+</div>
+</div>
+<script>
+// ═══ ACCOUNTS & STATE ═══
+const ACC={
+  team1:{pw:'change01',name:'Team Member 1',role:'team'},
+  team2:{pw:'change02',name:'Team Member 2',role:'team'},
+  team3:{pw:'change03',name:'Team Member 3',role:'team'},
+  team4:{pw:'change04',name:'Team Member 4',role:'team'},
+  team5:{pw:'change05',name:'Team Member 5',role:'team'},
+  team6:{pw:'change06',name:'Team Member 6',role:'team'},
+  team7:{pw:'change07',name:'Team Member 7',role:'team'},
+  team8:{pw:'change08',name:'Team Member 8',role:'team'},
+  team9:{pw:'change09',name:'Team Member 9',role:'team'},
+  team10:{pw:'change10',name:'Team Member 10',role:'team'},
+  forteh:{pw:'f0rteh',name:'Innocent Forteh',role:'admin'},
+};
+let CU=null;
+let DB={};
+function save(){try{localStorage.setItem('t21_360',JSON.stringify(DB));}catch(e){}}
+function load(){try{const d=localStorage.getItem('t21_360');if(d)DB=JSON.parse(d);}catch(e){}}
+function ud(uid){
+  if(!DB[uid])DB[uid]={
+    profile:{dept:'',role:'',years:'',location:''},
+    ratings:{},openq:{},training:{needs:[],priority:'',comments:''},
+    submitted:false,submittedAt:null
+  };
+  return DB[uid];
+}
+function saveUD(uid,d){DB[uid]=d;save();}
+load();
+
+// ═══ AUTH ═══
+function doLogin(){
+  const u=document.getElementById('lu').value.trim().toLowerCase();
+  const p=document.getElementById('lp').value;
+  const err=document.getElementById('lerr');
+  if(ACC[u]&&ACC[u].pw===p){
+    err.classList.add('hidden');CU=u;
+    document.getElementById('login-page').classList.add('hidden');
+    document.getElementById('shell').classList.remove('hidden');
+    const a=ACC[u];
+    document.getElementById('sb-av').textContent=a.name[0];
+    document.getElementById('sb-un').textContent=a.name;
+    document.getElementById('sb-ur').textContent=a.role==='admin'?'Administrator':'Team Respondent';
+    if(a.role==='admin'){document.getElementById('anav').classList.remove('hidden');nav('adash');}
+    else{document.getElementById('cnav').classList.remove('hidden');updateNavPcts();nav('dash');}
+  }else{err.textContent='Invalid credentials. Please try again.';err.classList.remove('hidden');}
+}
+function doLogout(){
+  CU=null;
+  document.getElementById('shell').classList.add('hidden');
+  document.getElementById('cnav').classList.add('hidden');
+  document.getElementById('anav').classList.add('hidden');
+  document.getElementById('login-page').classList.remove('hidden');
+  document.getElementById('lu').value='';document.getElementById('lp').value='';
+  document.getElementById('lerr').classList.add('hidden');
+}
+
+// ═══ NAVIGATION ═══
+const TITLES={dash:'Dashboard',profile:'My Profile',openq:'Open Reflection Questions',training:'Training Needs Self-Assessment',myreport:'My 360° Report',adash:'Admin Dashboard',ateam:'All Team Members',aheatmap:'Competency Heatmap',atraining:'Training Needs Analysis',areports:'Reports & Exports','s-leadership':'Leadership & Vision','s-communication':'Communication','s-teamwork':'Teamwork & Collaboration','s-delivery':'Delivery & Results','s-values':'Values & Culture','s-growth':'Learning & Growth','s-innovation':'Innovation & Initiative','s-wellbeing':'Wellbeing & Resilience'};
+const PAGES={dash:pgDash,profile:pgProfile,openq:pgOpenQ,training:pgTraining,myreport:pgMyReport,adash:pgAdminDash,ateam:pgAdminTeam,aheatmap:pgHeatmap,atraining:pgAdminTraining,areports:pgAdminReports,'s-leadership':()=>pgSection('s-leadership'),'s-communication':()=>pgSection('s-communication'),'s-teamwork':()=>pgSection('s-teamwork'),'s-delivery':()=>pgSection('s-delivery'),'s-values':()=>pgSection('s-values'),'s-growth':()=>pgSection('s-growth'),'s-innovation':()=>pgSection('s-innovation'),'s-wellbeing':()=>pgSection('s-wellbeing')};
+function nav(page){
+  document.querySelectorAll('.ni').forEach(el=>el.classList.remove('active'));
+  const nel=document.getElementById('n-'+page);if(nel)nel.classList.add('active');
+  document.getElementById('tb-title').textContent=TITLES[page]||page;
+  const c=document.getElementById('pgc');c.innerHTML='';
+  if(PAGES[page])PAGES[page](c);
+}
+function v(id){const el=document.getElementById(id);return el?el.value:'';}
+function showNotif(msg,color){
+  const n=document.createElement('div');n.className='notif no-print';n.textContent='✓ '+msg;
+  if(color)n.style.borderColor=color,n.style.color=color;
+  document.body.appendChild(n);setTimeout(()=>{n.style.opacity='0';setTimeout(()=>n.remove(),300);},2200);
+}
+function scoreColor(n){return n>=4?'var(--green-l)':n>=3?'var(--gold)':n>=2?'var(--amber-l)':'var(--red-l)';}
+function scoreLabel(n){return n>=4?'Strong':n>=3?'Developing':n>=2?'Emerging':'Needs Focus';}
+
+// ═══ SECTIONS DATA — 8 COMPETENCY AREAS × 10 QUESTIONS ═══
+const SECS={
+'s-leadership':{
+  icon:'👑',
+  label:'Leadership & Vision',
+  color:'var(--gold)',
+  desc:'Your ability to set direction, inspire others, and lead with purpose and clarity.',
+  questions:[
+    'I clearly understand the mission and vision of our organisation and can articulate it to others.',
+    'I take initiative to lead tasks, projects, or conversations without waiting to be told.',
+    'I inspire and motivate others around me through my attitude and actions.',
+    'I make decisions confidently and in a timely manner, even when information is incomplete.',
+    'I take ownership and accountability for my work and its outcomes.',
+    'I help others understand how their individual work contributes to the bigger organisational picture.',
+    'I demonstrate integrity and ethical behaviour consistently in my leadership approach.',
+    'I remain calm and solution-focused when facing pressure, setbacks, or difficult situations.',
+    'I build trust with colleagues, supervisors, and stakeholders through consistent and reliable behaviour.',
+    'I actively develop my leadership capacity through reading, reflection, and learning from others.',
+  ]
+},
+'s-communication':{
+  icon:'💬',
+  label:'Communication',
+  color:'var(--blue-l)',
+  desc:'Your ability to listen actively, express ideas clearly, and engage effectively across contexts.',
+  questions:[
+    'I express my ideas and thoughts clearly and concisely in both written and verbal communication.',
+    'I listen actively and attentively when others are speaking, without interrupting or dismissing.',
+    'I adapt my communication style to suit different audiences, situations, and levels of seniority.',
+    'I give constructive, specific, and timely feedback to colleagues in a respectful manner.',
+    'I receive feedback — even critical feedback — openly and without becoming defensive.',
+    'I communicate proactively and keep relevant people informed without having to be chased.',
+    'I contribute meaningfully to meetings — I come prepared, stay focused, and add value.',
+    'I am comfortable raising concerns or difficult topics with supervisors or team members.',
+    'I use appropriate digital communication tools effectively and professionally.',
+    'I represent the organisation well in external communications and public interactions.',
+  ]
+},
+'s-teamwork':{
+  icon:'🤝',
+  label:'Teamwork & Collaboration',
+  color:'var(--teal-l)',
+  desc:'Your ability to work effectively with others, build strong relationships, and contribute to collective success.',
+  questions:[
+    'I actively contribute to a positive and supportive team environment.',
+    'I share knowledge, resources, and information generously with colleagues.',
+    'I collaborate willingly across departments or functions, not just within my immediate team.',
+    'I support colleagues when they are under pressure or facing challenges.',
+    'I respect and value perspectives, backgrounds, and working styles different from my own.',
+    'I manage conflict and disagreements constructively and without escalating unnecessarily.',
+    'I celebrate and acknowledge the contributions and successes of my colleagues.',
+    'I fulfil my commitments to team members reliably — what I say I will do, I do.',
+    'I contribute to team goals beyond my individual role and job description when needed.',
+    'I approach cross-cultural and intergenerational collaboration with openness and respect.',
+  ]
+},
+'s-delivery':{
+  icon:'⚡',
+  label:'Delivery & Results',
+  color:'var(--amber-l)',
+  desc:'Your ability to execute effectively, meet standards, and drive outcomes with quality and consistency.',
+  questions:[
+    'I consistently deliver my work on time and to the expected quality standard.',
+    'I manage my time and workload effectively, prioritising high-impact tasks first.',
+    'I set clear goals for my work and systematically track progress toward them.',
+    'I take responsibility for problems in my work area and actively seek solutions.',
+    'I pay close attention to detail and rarely submit work that requires significant correction.',
+    'I work efficiently — I avoid unnecessary duplication and find smarter ways to get things done.',
+    'I manage multiple tasks or projects simultaneously without compromising quality.',
+    'I use data, evidence, and information to inform my decisions and approach to work.',
+    'I hold myself and others accountable to agreed standards without being prompted.',
+    'I consistently go above the minimum requirement — I aim for excellence, not just adequacy.',
+  ]
+},
+'s-values':{
+  icon:'💎',
+  label:'Values & Culture',
+  color:'var(--purple-l)',
+  desc:'Your alignment with and embodiment of the organisation\'s values, culture, and ethical standards.',
+  questions:[
+    'I demonstrate the core values of our organisation consistently in my daily work and behaviour.',
+    'I treat all colleagues, clients, and stakeholders with dignity, respect, and fairness.',
+    'I maintain strict confidentiality about sensitive organisational, client, or personnel information.',
+    'I uphold high ethical standards and would never compromise my integrity for personal gain.',
+    'I speak up when I witness unethical behaviour, unfairness, or a breach of organisational values.',
+    'I model the culture we want to build — I am who I want my organisation to be.',
+    'I contribute positively to psychological safety — people feel safe to be honest around me.',
+    'I embrace and actively support diversity, equity, and inclusion in our workplace.',
+    'I understand and respect the faith, cultural, and community context of our organisation\'s work.',
+    'I am a positive ambassador for our organisation in the community and beyond.',
+  ]
+},
+'s-growth':{
+  icon:'🌱',
+  label:'Learning & Growth',
+  color:'var(--green-l)',
+  desc:'Your commitment to continuous learning, professional development, and investing in your own growth.',
+  questions:[
+    'I actively seek to learn new skills and knowledge relevant to my role and the organisation\'s goals.',
+    'I reflect regularly on my own performance and identify areas for personal and professional growth.',
+    'I apply learning from training, feedback, and experience to improve my day-to-day work.',
+    'I share knowledge and skills I have gained with colleagues to strengthen the whole team.',
+    'I am open to coaching, mentoring, and supervision — I welcome guidance from others.',
+    'I read, research, and stay updated on trends and developments relevant to my area of work.',
+    'I take personal ownership of my career development rather than waiting for others to invest in me.',
+    'I step outside my comfort zone to take on new challenges and grow through experience.',
+    'I learn effectively from failure and mistakes — I analyse what went wrong and adapt accordingly.',
+    'I support and encourage the growth and development of colleagues around me.',
+  ]
+},
+'s-innovation':{
+  icon:'💡',
+  label:'Innovation & Initiative',
+  color:'var(--gold-l)',
+  desc:'Your capacity to think creatively, propose new ideas, and take initiative to solve problems.',
+  questions:[
+    'I regularly identify opportunities to improve processes, systems, or ways of working.',
+    'I bring new ideas and creative solutions to team meetings and work challenges.',
+    'I am not afraid to challenge the status quo and suggest better ways of doing things.',
+    'I experiment and pilot new approaches, even when there is a risk of failure.',
+    'I adapt quickly and positively when plans change or new challenges emerge.',
+    'I take initiative to solve problems without waiting for instructions from above.',
+    'I use technology creatively and effectively to improve how I work and serve others.',
+    'I see problems as opportunities — my instinct is to find solutions, not dwell on obstacles.',
+    'I bring energy and fresh thinking to the work, even when things are routine or difficult.',
+    'I encourage and champion new ideas from colleagues, not just my own.',
+  ]
+},
+'s-wellbeing':{
+  icon:'🌿',
+  label:'Wellbeing & Resilience',
+  color:'var(--teal-l)',
+  desc:'Your personal resilience, self-awareness, and ability to sustain healthy performance over time.',
+  questions:[
+    'I manage my stress and workload in a healthy way and seek support when needed.',
+    'I maintain a positive and constructive attitude even in difficult or uncertain situations.',
+    'I set healthy boundaries between work and personal life and respect others\' boundaries too.',
+    'I am self-aware — I understand my strengths, limitations, and emotional triggers.',
+    'I recover well from setbacks, criticism, or disappointments without prolonged negative impact.',
+    'I take care of my physical, emotional, and spiritual wellbeing as a foundation for my work.',
+    'I create space for rest, reflection, and renewal as part of how I sustain my performance.',
+    'I am honest about when I am struggling and ask for help without shame or hesitation.',
+    'I contribute to a work environment where others feel supported and cared for.',
+    'I am able to find meaning, purpose, and joy in my work even during challenging seasons.',
+  ]
+}
+};
+const SEC_KEYS=['s-leadership','s-communication','s-teamwork','s-delivery','s-values','s-growth','s-innovation','s-wellbeing'];
+
+// ═══ SCORING ═══
+function calcSecScore(uid,sec){
+  const d=ud(uid);const ratings=d.ratings[sec]||{};
+  const qs=SECS[sec].questions;
+  const answered=Object.values(ratings).filter(v=>v>0);
+  if(answered.length===0)return 0;
+  return Math.round(answered.reduce((a,b)=>a+b,0)/answered.length*10)/10;
+}
+function calcOverall(uid){
+  const scores=SEC_KEYS.map(s=>calcSecScore(uid,s)).filter(s=>s>0);
+  return scores.length?Math.round(scores.reduce((a,b)=>a+b,0)/scores.length*10)/10:0;
+}
+function getPct(uid,sec){
+  const d=ud(uid);const ratings=d.ratings[sec]||{};
+  const qs=SECS[sec].questions;
+  return Math.round(Object.keys(ratings).length/qs.length*100);
+}
+function totalPct(uid){
+  return Math.round(SEC_KEYS.reduce((a,s)=>a+getPct(uid,s),0)/SEC_KEYS.length);
+}
+function updateNavPcts(){
+  SEC_KEYS.forEach(s=>{
+    const el=document.getElementById('np-'+s);if(!el)return;
+    const p=getPct(CU,s);
+    el.textContent=p+'%';
+    el.style.color=p===100?'var(--green-l)':p>0?'var(--gold)':'var(--muted)';
+  });
+}
+
+// ═══ RADAR ═══
+function drawRadar(canvasId,labels,scores,size,maxVal){
+  const cv=document.getElementById(canvasId);if(!cv)return;
+  const ctx=cv.getContext('2d');const W=size||220,H=size||220;
+  cv.width=W;cv.height=H;
+  const cx=W/2,cy=H/2,r=(W/2)-36,n=labels.length;
+  const mx=maxVal||5;
+  ctx.clearRect(0,0,W,H);
+  for(let ring=1;ring<=5;ring++){
+    ctx.beginPath();
+    for(let i=0;i<n;i++){const a=2*Math.PI*i/n-Math.PI/2;const pr=r*ring/5;ctx.lineTo(cx+pr*Math.cos(a),cy+pr*Math.sin(a));}
+    ctx.closePath();ctx.strokeStyle='rgba(201,168,76,0.12)';ctx.lineWidth=1;ctx.stroke();
+    ctx.fillStyle='rgba(201,168,76,0.6)';ctx.font='7px sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';
+    const la=-Math.PI/2;ctx.fillText((ring*mx/5).toFixed(1),cx+r*ring/5*Math.cos(la)-8,cy+r*ring/5*Math.sin(la));
+  }
+  for(let i=0;i<n;i++){const a=2*Math.PI*i/n-Math.PI/2;ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(cx+r*Math.cos(a),cy+r*Math.sin(a));ctx.strokeStyle='rgba(201,168,76,0.18)';ctx.lineWidth=1;ctx.stroke();}
+  ctx.beginPath();
+  scores.forEach((s,i)=>{const a=2*Math.PI*i/n-Math.PI/2;const pr=r*(s/mx);i===0?ctx.moveTo(cx+pr*Math.cos(a),cy+pr*Math.sin(a)):ctx.lineTo(cx+pr*Math.cos(a),cy+pr*Math.sin(a));});
+  ctx.closePath();ctx.fillStyle='rgba(201,168,76,0.15)';ctx.fill();ctx.strokeStyle='rgba(201,168,76,0.8)';ctx.lineWidth=2;ctx.stroke();
+  scores.forEach((s,i)=>{
+    const a=2*Math.PI*i/n-Math.PI/2;const pr=r*(s/mx);
+    ctx.beginPath();ctx.arc(cx+pr*Math.cos(a),cy+pr*Math.sin(a),4,0,2*Math.PI);ctx.fillStyle='#C9A84C';ctx.fill();
+    const lx=cx+(r+22)*Math.cos(a),ly=cy+(r+22)*Math.sin(a);
+    ctx.fillStyle='rgba(201,168,76,0.85)';ctx.font='bold 8px sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.fillText(labels[i].substring(0,5),lx,ly);
+    ctx.fillStyle='rgba(250,247,240,0.65)';ctx.font='8px sans-serif';ctx.fillText(s>0?s.toFixed(1):'—',lx,ly+11);
+  });
+}
+
+// ═══ DASHBOARD ═══
+function pgDash(c){
+  const d=ud(CU);const overall=calcOverall(CU);const tp=totalPct(CU);
+  const doneCount=SEC_KEYS.filter(s=>getPct(CU,s)===100).length;
+  const col=overall>=4?'var(--green-l)':overall>=3?'var(--gold)':overall>=2?'var(--amber-l)':'var(--red-l)';
+  c.innerHTML=`
+  <div class="shd">
+    <div>
+      <div class="ptitle">Welcome, ${ACC[CU].name}</div>
+      <div style="font-size:13px;color:var(--muted);margin-top:2px;font-style:italic">Your Team21 360° self-assessment journey</div>
+    </div>
+    <button class="btn bg bsm no-print" onclick="nav('myreport')">📊 My 360 Report</button>
+  </div>
+  ${!d.profile.dept?`<div class="al al-g" style="margin-bottom:14px">👋 Start by completing your <strong>My Profile</strong> section to personalise your assessment. <button class="btn bg bsm" style="margin-left:8px" onclick="nav('profile')">Complete Profile</button></div>`:''}
+  ${d.submitted?`<div class="al al-gr" style="margin-bottom:14px">✅ You have <strong>submitted</strong> your 360 evaluation on ${new Date(d.submittedAt).toLocaleDateString()}. Thank you for your contribution!</div>`:''}
+  <div class="g4" style="margin-bottom:16px">
+    <div class="sc"><div class="sl">Overall Score</div><div class="sv" style="color:${col}">${overall>0?overall.toFixed(1)+'/5':'—'}</div><div class="ss">${overall>0?scoreLabel(overall):'Not started'}</div></div>
+    <div class="sc"><div class="sl">Completion</div><div class="sv">${tp}%</div><div class="ss">of all questions</div></div>
+    <div class="sc"><div class="sl">Sections Done</div><div class="sv">${doneCount}/${SEC_KEYS.length}</div></div>
+    <div class="sc"><div class="sl">Status</div><div class="sv" style="font-size:16px">${d.submitted?'✅':'📝'}</div><div class="ss">${d.submitted?'Submitted':'In Progress'}</div></div>
+  </div>
+  <div class="g2" style="gap:14px;margin-bottom:16px">
+    <div class="card" style="display:flex;flex-direction:column;align-items:center">
+      <div class="ctitle" style="font-size:14px;margin-bottom:10px;align-self:flex-start">Competency Radar</div>
+      <canvas id="dash-radar"></canvas>
+    </div>
+    <div class="card">
+      <div class="ctitle" style="font-size:14px;margin-bottom:12px">Section Scores</div>
+      ${SEC_KEYS.map(s=>{const sc=calcSecScore(CU,s);const p=getPct(CU,s);const col=sc>=4?'var(--green-l)':sc>=3?'var(--gold)':sc>=2?'var(--amber-l)':'var(--red-l)';return`<div class="comp-row"><span class="comp-label">${SECS[s].icon} ${SECS[s].label.split(' ')[0]}</span><div class="comp-bar-wrap"><div class="comp-bar-fill" style="width:${p>0?sc/5*100:0}%;background:${col}"></div></div><span class="comp-pct" style="color:${col}">${sc>0?sc.toFixed(1):p+'%'}</span></div>`;}).join('')}
+    </div>
+  </div>
+  <div class="ctitle" style="margin-bottom:12px">Assessment Sections</div>
+  <div class="g2" style="gap:10px;margin-bottom:16px">
+    ${SEC_KEYS.map(s=>{const sc=calcSecScore(CU,s);const p=getPct(CU,s);const col=sc>=4?'var(--green-l)':sc>=3?'var(--gold)':sc>=2?'var(--amber-l)':'var(--muted)';return`<div class="card card-sm" style="cursor:pointer;transition:all .2s" onclick="nav('${s}')" onmouseover="this.style.borderColor='rgba(201,168,76,0.4)'" onmouseout="this.style.borderColor='rgba(201,168,76,0.15)'">
+      <div style="display:flex;align-items:center;justify-content:space-between">
+        <div><div style="font-size:20px;margin-bottom:5px">${SECS[s].icon}</div><div style="font-size:13px;font-weight:700;color:var(--gold)">${SECS[s].label}</div><div style="font-size:11px;color:var(--muted)">${SECS[s].questions.length} questions</div></div>
+        <div style="text-align:right"><div style="font-size:20px;font-weight:700;color:${col}">${sc>0?sc.toFixed(1):'—'}</div><span class="bdg ${p===100?'bdg-gr':'bdg-g'}">${p===100?'Done':p+'%'}</span></div>
+      </div>
+      <div class="pw"><div class="pb"><div class="pf" style="width:${p}%"></div></div></div>
+    </div>`;}).join('')}
+  </div>
+  ${tp===100&&!d.submitted?`<div class="card card-g"><div class="ctitle" style="font-size:15px;margin-bottom:6px">🎉 All sections completed!</div><p style="font-size:13px;color:var(--cream2);margin-bottom:12px">You have answered all rating questions. Make sure you complete the <strong>Open Questions</strong> and <strong>Training Needs</strong> sections, then submit your evaluation.</p><div style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn bo bsm" onclick="nav('openq')">✍️ Open Questions</button><button class="btn bo bsm" onclick="nav('training')">📚 Training Needs</button><button class="btn bg" onclick="submitEval()">✅ Submit My Evaluation</button></div></div>`:''}`;
+  setTimeout(()=>drawRadar('dash-radar',SEC_KEYS.map(s=>SECS[s].label.split(' ')[0]),SEC_KEYS.map(s=>calcSecScore(CU,s)),210,5),80);
+}
+
+// ═══ PROFILE PAGE ═══
+function pgProfile(c){
+  const d=ud(CU),p=d.profile;
+  c.innerHTML=`
+  <div class="ptitle">My Profile</div>
+  <div style="font-size:13px;color:var(--muted);margin-bottom:18px;font-style:italic">Your information helps contextualise your 360 evaluation responses for the admin and analysis team.</div>
+  <div class="card card-g">
+    <div class="ctitle">Personal & Role Information</div>
+    <div class="g2" style="margin-top:14px;gap:12px">
+      <div class="fg"><label class="flb">Full Name</label><input class="fi" id="pf-name" value="${p.fullName||ACC[CU].name}" placeholder="Your full name"/></div>
+      <div class="fg"><label class="flb">Preferred Name</label><input class="fi" id="pf-pname" value="${p.prefName||''}" placeholder="What you like to be called"/></div>
+      <div class="fg"><label class="flb">Department / Team</label><input class="fi" id="pf-dept" value="${p.dept||''}" placeholder="e.g. Finance, Programmes, HR"/></div>
+      <div class="fg"><label class="flb">Job Title / Role</label><input class="fi" id="pf-role" value="${p.role||''}" placeholder="e.g. Project Coordinator, Finance Officer"/></div>
+      <div class="fg"><label class="flb">Years at Organisation</label><select class="fsel" id="pf-years">
+        ${['Less than 1 year','1–2 years','3–5 years','6–10 years','More than 10 years'].map(y=>`<option ${p.years===y?'selected':''}>${y}</option>`).join('')}
+      </select></div>
+      <div class="fg"><label class="flb">Employment Type</label><select class="fsel" id="pf-type">
+        ${['Full-time Staff','Part-time Staff','Volunteer','Consultant/Contractor','Secondment','Intern'].map(y=>`<option ${p.type===y?'selected':''}>${y}</option>`).join('')}
+      </select></div>
+      <div class="fg"><label class="flb">Location / Office</label><input class="fi" id="pf-loc" value="${p.location||''}" placeholder="e.g. Yaoundé, Douala, Remote"/></div>
+      <div class="fg"><label class="flb">Supervisor / Line Manager</label><input class="fi" id="pf-mgr" value="${p.manager||''}" placeholder="Name of your direct supervisor"/></div>
+    </div>
+    <div class="fg" style="margin-top:4px"><label class="flb">In 2–3 sentences, describe what you do in your role</label><textarea class="fta" id="pf-desc" style="min-height:80px" placeholder="Briefly describe your key responsibilities...">${p.desc||''}</textarea></div>
+    <button class="btn bg" style="margin-top:10px" onclick="saveProfile()">💾 Save Profile</button>
+  </div>`;
+}
+function saveProfile(){
+  const d=ud(CU);
+  d.profile={fullName:v('pf-name'),prefName:v('pf-pname'),dept:v('pf-dept'),role:v('pf-role'),years:v('pf-years'),type:v('pf-type'),location:v('pf-loc'),manager:v('pf-mgr'),desc:v('pf-desc')};
+  saveUD(CU,d);showNotif('Profile saved');
+}
+
+// ═══ RATING SECTION PAGE ═══
+function pgSection(secKey){
+  const c=document.getElementById('pgc');
+  const d=ud(CU);const sec=SECS[secKey];
+  const ratings=d.ratings[secKey]||{};
+  const pct=getPct(CU,secKey);const sc=calcSecScore(CU,secKey);
+  c.innerHTML=`
+  <div class="shd">
+    <div>
+      <div style="font-size:22px;margin-bottom:4px">${sec.icon}</div>
+      <div class="ptitle">${sec.label}</div>
+      <div style="font-size:12px;color:var(--muted);font-style:italic;max-width:600px;margin-top:2px">${sec.desc}</div>
+    </div>
+    <div style="text-align:right">
+      <div style="font-size:24px;font-weight:700;color:${sc>=4?'var(--green-l)':sc>=3?'var(--gold)':sc>=2?'var(--amber-l)':'var(--muted)'}">${sc>0?sc.toFixed(1)+'/5':'—'}</div>
+      <div style="font-size:10px;color:var(--muted)">Section Score</div>
+    </div>
+  </div>
+  <div class="pw" style="margin-bottom:6px"><div class="plb"><span>${pct}% complete (${Object.keys(ratings).length}/${sec.questions.length})</span><span class="bdg ${pct===100?'bdg-gr':'bdg-g'}">${pct===100?'Complete':'In Progress'}</span></div><div class="pb"><div class="pf" style="width:${pct}%"></div></div></div>
+  <div class="al al-g" style="margin-bottom:16px">
+    <strong>Rating Scale:</strong> 1 = Strongly Disagree &nbsp;|&nbsp; 2 = Disagree &nbsp;|&nbsp; 3 = Neither Agree nor Disagree &nbsp;|&nbsp; 4 = Agree &nbsp;|&nbsp; 5 = Strongly Agree
+  </div>
+  ${sec.questions.map((q,qi)=>`<div class="qcard ${ratings[qi]>0?'answered':''}" id="qc-${qi}">
+    <div class="qn">${sec.icon} ${sec.label} — Statement ${qi+1} of ${sec.questions.length}</div>
+    <div class="qt">${q}</div>
+    <div class="rs-wrap">
+      ${[1,2,3,4,5].map(n=>`<button class="rs-btn ${ratings[qi]===n?'sel':''}" onclick="pickRating('${secKey}',${qi},${n})">${n}</button>`).join('')}
+    </div>
+    <div class="rs-label"><span>1 – Strongly Disagree</span><span>5 – Strongly Agree</span></div>
+    ${ratings[qi]>0?`<div style="margin-top:6px;font-size:11px;color:${ratings[qi]>=4?'var(--green-l)':ratings[qi]>=3?'var(--gold)':ratings[qi]>=2?'var(--amber-l)':'var(--red-l)'}">You rated: <strong>${ratings[qi]}/5</strong></div>`:''}
+  </div>`).join('')}
+  <div style="display:flex;gap:10px;margin-top:8px;flex-wrap:wrap">
+    <button class="btn bg bsm" onclick="nav('${secKey}')">Refresh Score</button>
+    <button class="btn bo bsm" onclick="nav('dash')">← Back to Dashboard</button>
+  </div>`;
+}
+function pickRating(secKey,qi,val){
+  const d=ud(CU);
+  if(!d.ratings[secKey])d.ratings[secKey]={};
+  d.ratings[secKey][qi]=val;saveUD(CU,d);
+  const card=document.getElementById('qc-'+qi);
+  if(card){
+    card.classList.add('answered');
+    card.querySelectorAll('.rs-btn').forEach((btn,i)=>{btn.classList.toggle('sel',i+1===val);});
+    const ratingEl=card.querySelector('div[style*="margin-top:6px"]');
+    if(ratingEl){ratingEl.style.color=val>=4?'var(--green-l)':val>=3?'var(--gold)':val>=2?'var(--amber-l)':'var(--red-l)';ratingEl.innerHTML=`You rated: <strong>${val}/5</strong>`;}
+    else{card.insertAdjacentHTML('beforeend',`<div style="margin-top:6px;font-size:11px;color:${val>=4?'var(--green-l)':val>=3?'var(--gold)':val>=2?'var(--amber-l)':'var(--red-l)'}">You rated: <strong>${val}/5</strong></div>`);}
+  }
+  updateNavPcts();
+}
+
+// ═══ OPEN QUESTIONS ═══
+function pgOpenQ(c){
+  const d=ud(CU),oq=d.openq||{};
+  const questions=[
+    {key:'strength',label:'What do you consider your greatest strength as a team member? Give a specific example of when this strength made a positive difference.',placeholder:'Describe your key strength and a real example...'},
+    {key:'growth',label:'What is one area of your work or professional behaviour that you most want to improve? Be honest and specific.',placeholder:'Describe your growth area honestly...'},
+    {key:'team',label:'What does this team or organisation do really well that you are proud to be part of?',placeholder:'Share what you appreciate about the team...'},
+    {key:'challenge',label:'What is the most significant challenge or frustration you experience in your role or in our team? What would you suggest to address it?',placeholder:'Describe the challenge and your proposed solution...'},
+    {key:'support',label:'What kind of support, resource, or investment from leadership would most help you thrive and grow in your role?',placeholder:'What would help you perform and grow?'},
+    {key:'culture',label:'How would you describe the culture of this team in one honest paragraph? What do you love about it, and what would you change?',placeholder:'Describe the team culture honestly...'},
+    {key:'future',label:'Where do you see yourself in this organisation in 2–3 years? What role or growth are you hoping for?',placeholder:'Share your aspirations and hopes...'},
+    {key:'message',label:'Is there anything else you want leadership to know that you may not have been able to share elsewhere? This is your space.',placeholder:'Anything else you want to share freely...'},
+  ];
+  c.innerHTML=`
+  <div class="ptitle">Open Reflection Questions</div>
+  <div style="font-size:13px;color:var(--muted);margin-bottom:16px;font-style:italic">These open questions help us understand your experience in depth. Responses are reviewed by the administrator only. Be honest — this is your space to speak.</div>
+  ${questions.map((q,i)=>`<div class="card" style="margin-bottom:12px">
+    <div class="open-q">
+      <label style="font-size:13px;color:var(--gold);font-weight:700;margin-bottom:7px;display:block">${i+1}. ${q.label}</label>
+      <textarea class="fta" id="oq-${q.key}" style="min-height:90px" placeholder="${q.placeholder}" onchange="saveOQ('${q.key}',this.value)">${oq[q.key]||''}</textarea>
+    </div>
+  </div>`).join('')}
+  <button class="btn bg" onclick="saveAllOQ()">💾 Save All Responses</button>`;
+}
+function saveOQ(key,val){const d=ud(CU);if(!d.openq)d.openq={};d.openq[key]=val;saveUD(CU,d);}
+function saveAllOQ(){
+  const d=ud(CU);if(!d.openq)d.openq={};
+  const keys=['strength','growth','team','challenge','support','culture','future','message'];
+  keys.forEach(k=>{const el=document.getElementById('oq-'+k);if(el)d.openq[k]=el.value;});
+  saveUD(CU,d);showNotif('Open responses saved');
+}
+
+// ═══ TRAINING NEEDS ═══
+function pgTraining(c){
+  const d=ud(CU),tr=d.training||{needs:[],priority:'',comments:''};
+  const areas=[
+    {key:'leadership',label:'Leadership & Management Skills',icon:'👑'},
+    {key:'strategy',label:'Strategic Planning & Thinking',icon:'🎯'},
+    {key:'communication',label:'Communication & Presentation Skills',icon:'💬'},
+    {key:'writing',label:'Professional Writing & Reporting',icon:'✍️'},
+    {key:'finance',label:'Financial Management & Budgeting',icon:'💰'},
+    {key:'project',label:'Project & Programme Management',icon:'📋'},
+    {key:'data',label:'Data Analysis & Research Methods',icon:'📊'},
+    {key:'digital',label:'Digital Tools & Technology',icon:'💻'},
+    {key:'fundraising',label:'Fundraising & Resource Mobilisation',icon:'🌐'},
+    {key:'monitoring',label:'Monitoring, Evaluation & Learning (MEL)',icon:'🔍'},
+    {key:'hr',label:'Human Resource Management',icon:'👥'},
+    {key:'governance',label:'Governance & Organisational Development',icon:'🏛'},
+    {key:'community',label:'Community Engagement & Facilitation',icon:'🌍'},
+    {key:'conflict',label:'Conflict Resolution & Mediation',icon:'⚖️'},
+    {key:'coaching',label:'Coaching & Mentoring Skills',icon:'🌱'},
+    {key:'innovation',label:'Innovation & Design Thinking',icon:'💡'},
+    {key:'language',label:'Language Skills (English / French)',icon:'🗣'},
+    {key:'wellness',label:'Wellbeing, Resilience & Self-Care',icon:'🌿'},
+    {key:'faith',label:'Faith-Based Leadership & Ethics',icon:'✨'},
+    {key:'other',label:'Other (specify in comments below)',icon:'➕'},
+  ];
+  c.innerHTML=`
+  <div class="ptitle">Training Needs Self-Assessment</div>
+  <div style="font-size:13px;color:var(--muted);margin-bottom:16px;font-style:italic">Select all training areas where you feel you would benefit from development. This helps leadership design a training plan that truly responds to team needs.</div>
+  <div class="card card-g" style="margin-bottom:14px">
+    <div class="ctitle" style="font-size:15px;margin-bottom:12px">📚 Select Your Training Needs</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+      ${areas.map(a=>`<label style="display:flex;align-items:center;gap:10px;padding:10px 13px;background:rgba(255,255,255,0.03);border:1px solid ${(tr.needs||[]).includes(a.key)?'rgba(201,168,76,0.4)':'rgba(255,255,255,0.07)'};border-radius:8px;cursor:pointer;transition:all .15s" onmouseover="this.style.borderColor='rgba(201,168,76,0.3)'" onmouseout="this.style.borderColor='${(tr.needs||[]).includes(a.key)?'rgba(201,168,76,0.4)':'rgba(255,255,255,0.07)'}'">
+        <input type="checkbox" id="tr-${a.key}" ${(tr.needs||[]).includes(a.key)?'checked':''} style="width:15px;height:15px;accent-color:var(--gold);flex-shrink:0" onchange="saveTraining()"/>
+        <span style="font-size:16px">${a.icon}</span>
+        <span style="font-size:12.5px;color:var(--cream2)">${a.label}</span>
+      </label>`).join('')}
+    </div>
+  </div>
+  <div class="card" style="margin-bottom:14px">
+    <div class="ctitle" style="font-size:15px;margin-bottom:12px">🎯 Priority & Comments</div>
+    <div class="fg"><label class="flb">What is your single highest-priority training need right now?</label>
+      <input class="fi" id="tr-priority" value="${tr.priority||''}" placeholder="e.g. Project Management, MEL, Leadership Skills..." onchange="saveTraining()"/>
+    </div>
+    <div class="fg"><label class="flb">How would this training help you in your current role?</label>
+      <textarea class="fta" id="tr-impact" style="min-height:80px" placeholder="Describe how this training would improve your work and impact..." onchange="saveTraining()">${tr.impact||''}</textarea>
+    </div>
+    <div class="fg"><label class="flb">What format of learning works best for you?</label>
+      <select class="fsel" id="tr-format" onchange="saveTraining()">
+        ${['In-person workshops','Online/virtual training','Coaching and mentoring','Self-directed study','Peer learning groups','On-the-job training','Conferences and external events','Mixed / Flexible'].map(f=>`<option ${tr.format===f?'selected':''}>${f}</option>`).join('')}
+      </select>
+    </div>
+    <div class="fg"><label class="flb">Any other comments about your training and development needs?</label>
+      <textarea class="fta" id="tr-comments" placeholder="Any other training preferences, constraints, or requests..." onchange="saveTraining()">${tr.comments||''}</textarea>
+    </div>
+    <button class="btn bg bsm" onclick="saveTraining();showNotif('Training needs saved')">💾 Save Training Needs</button>
+  </div>
+  ${totalPct(CU)>=80?`<div class="card card-g"><div class="ctitle" style="font-size:15px;margin-bottom:6px">🚀 Ready to Submit?</div><p style="font-size:13px;color:var(--cream2);margin-bottom:12px">You have completed most of your evaluation. When you are ready, submit your full 360° evaluation to the administrator.</p><button class="btn bg" onclick="submitEval()">✅ Submit My Full Evaluation</button></div>`:''}`;
+}
+function saveTraining(){
+  const d=ud(CU);if(!d.training)d.training={};
+  const areas=['leadership','strategy','communication','writing','finance','project','data','digital','fundraising','monitoring','hr','governance','community','conflict','coaching','innovation','language','wellness','faith','other'];
+  d.training.needs=areas.filter(k=>{const el=document.getElementById('tr-'+k);return el&&el.checked;});
+  d.training.priority=v('tr-priority');d.training.impact=v('tr-impact');d.training.format=v('tr-format');d.training.comments=v('tr-comments');
+  saveUD(CU,d);
+}
+function submitEval(){
+  if(!confirm('Are you sure you want to submit your 360° evaluation? You can still edit after submission.'))return;
+  const d=ud(CU);d.submitted=true;d.submittedAt=new Date().toISOString();saveUD(CU,d);
+  showNotif('Evaluation submitted! Thank you.','var(--green-l)');
+  nav('dash');
+}
+
+// ═══ MY REPORT ═══
+function pgMyReport(c){
+  const d=ud(CU);const p=d.profile;const overall=calcOverall(CU);const tp=totalPct(CU);
+  const col=overall>=4?'var(--green-l)':overall>=3?'var(--gold)':overall>=2?'var(--amber-l)':'var(--muted)';
+  c.innerHTML=`
+  <div class="shd">
+    <div><div class="ptitle">My 360° Report</div><div style="font-size:12px;color:var(--muted);font-style:italic">Your self-assessment summary — Team21 360 Eval</div></div>
+    <button class="btn bg bsm no-print" onclick="window.print()">⬇ Print / Download</button>
+  </div>
+  <div class="card card-g" style="margin-bottom:14px">
+    <div style="display:flex;align-items:center;gap:14px">
+      <div class="pring">${(p.fullName||ACC[CU].name)[0]}</div>
+      <div style="flex:1">
+        <div style="font-size:19px;font-weight:700;color:var(--gold)">${p.fullName||ACC[CU].name}</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:2px">${p.role||''}${p.role&&p.dept?' · ':''}${p.dept||''}${p.location?' · '+p.location:''}</div>
+        ${p.years?`<div style="font-size:11px;color:var(--muted);margin-top:1px">${p.years} at organisation · ${p.type||''}</div>`:''}
+        <div style="margin-top:8px;display:flex;gap:7px;flex-wrap:wrap">
+          <span class="bdg bdg-g" style="font-size:12px">Overall: ${overall>0?overall.toFixed(1)+'/5':'—'}</span>
+          <span class="bdg ${overall>=4?'bdg-gr':overall>=3?'bdg-g':'bdg-r'}">${overall>0?scoreLabel(overall):'Incomplete'}</span>
+          <span class="bdg ${d.submitted?'bdg-gr':'bdg-b'}">${d.submitted?'Submitted':'Draft'}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="g2" style="gap:14px;margin-bottom:14px">
+    <div class="card" style="display:flex;flex-direction:column;align-items:center">
+      <div style="font-size:14px;font-weight:700;color:var(--gold);margin-bottom:10px;align-self:flex-start">Competency Radar</div>
+      <canvas id="rep-radar"></canvas>
+    </div>
+    <div class="card">
+      <div style="font-size:14px;font-weight:700;color:var(--gold);margin-bottom:12px">Section Scores</div>
+      ${SEC_KEYS.map(s=>{
+        const sc=calcSecScore(CU,s);const p2=getPct(CU,s);const col2=sc>=4?'var(--green-l)':sc>=3?'var(--gold)':sc>=2?'var(--amber-l)':'var(--muted)';
+        const rec=sc>=4?'Strength — keep building on this':sc>=3?'Developing — targeted growth needed':sc>=2?'Emerging — structured development recommended':'Needs focused attention and support';
+        return`<div style="margin-bottom:9px"><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:2px"><span style="color:var(--cream2)">${SECS[s].icon} ${SECS[s].label}</span><strong style="color:${col2}">${sc>0?sc.toFixed(1)+'/5':'—'}</strong></div><div style="font-size:10px;color:var(--muted);margin-bottom:3px">${rec}</div><div class="pb"><div class="pf" style="width:${p2>0?sc/5*100:0}%;background:${col2}"></div></div></div>`;
+      }).join('')}
+    </div>
+  </div>
+  <div class="card" style="margin-bottom:12px">
+    <div style="font-size:14px;font-weight:700;color:var(--gold);margin-bottom:10px">Detailed Section Breakdown</div>
+    <table class="rtbl">
+      <thead><tr><th>Section</th><th>Score</th><th>Answered</th><th>Level</th></tr></thead>
+      <tbody>
+        ${SEC_KEYS.map(s=>{const sc=calcSecScore(CU,s);const pp=getPct(CU,s);const col2=sc>=4?'var(--green-l)':sc>=3?'var(--gold)':sc>=2?'var(--amber-l)':'var(--red-l)';const lbl=sc>=4?'bdg-gr':sc>=3?'bdg-g':sc>=2?'bdg-a':'bdg-r';return`<tr><td>${SECS[s].icon} ${SECS[s].label}</td><td style="color:${col2};font-weight:700">${sc>0?sc.toFixed(1)+'/5':'—'}</td><td style="font-size:11px">${pp}%</td><td><span class="bdg ${lbl}">${sc>0?scoreLabel(sc):'—'}</span></td></tr>`;}).join('')}
+      </tbody>
+    </table>
+  </div>
+  ${(d.training?.needs||[]).length>0?`<div class="card" style="margin-bottom:12px">
+    <div style="font-size:14px;font-weight:700;color:var(--gold);margin-bottom:10px">📚 Training Needs Identified</div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px">${(d.training.needs||[]).map(n=>`<span class="bdg bdg-b">${n}</span>`).join('')}</div>
+    ${d.training.priority?`<div style="font-size:12px;color:var(--cream2);margin-top:6px"><strong style="color:var(--gold)">Priority:</strong> ${d.training.priority}</div>`:''}
+  </div>`:''}
+  ${!d.submitted?`<div class="al al-g"><strong>Ready to submit?</strong> When you have completed all sections, <button class="btn bg bsm" style="margin-left:8px" onclick="submitEval()">✅ Submit My Evaluation</button></div>`:`<div class="al al-gr">✅ Submitted on ${new Date(d.submittedAt).toLocaleDateString()}. Thank you!</div>`}`;
+  setTimeout(()=>drawRadar('rep-radar',SEC_KEYS.map(s=>SECS[s].label.split(' ')[0]),SEC_KEYS.map(s=>calcSecScore(CU,s)),210,5),80);
+}
+
+// ═══ ADMIN: DASHBOARD ═══
+function pgAdminDash(c){
+  const team=Object.keys(ACC).filter(k=>ACC[k].role==='team');
+  let submitted=0,started=0,complete=0;
+  team.forEach(uid=>{const d=ud(uid);if(d.submitted)submitted++;if(totalPct(uid)>0)started++;if(totalPct(uid)===100)complete++;});
+  const secAvgs={};
+  SEC_KEYS.forEach(s=>{
+    const scores=team.map(uid=>calcSecScore(uid,s)).filter(sc=>sc>0);
+    secAvgs[s]=scores.length?Math.round(scores.reduce((a,b)=>a+b,0)/scores.length*10)/10:0;
+  });
+  const platOverall=SEC_KEYS.map(s=>secAvgs[s]).filter(s=>s>0);
+  const platAvg=platOverall.length?Math.round(platOverall.reduce((a,b)=>a+b,0)/platOverall.length*10)/10:0;
+  c.innerHTML=`
+  <div class="ptitle">Admin Dashboard</div>
+  <div style="font-size:12px;color:var(--muted);margin-bottom:16px;font-style:italic">Team21 360 Eval — 360° organisational assessment overview — © Innocent Forteh 2026</div>
+  <div class="g4" style="margin-bottom:16px">
+    <div class="sc"><div class="sl">Team Size</div><div class="sv">${team.length}</div><div class="ss">Respondents</div></div>
+    <div class="sc"><div class="sl">Submitted</div><div class="sv" style="color:var(--green-l)">${submitted}</div><div class="ss">of ${team.length}</div></div>
+    <div class="sc"><div class="sl">Platform Avg</div><div class="sv" style="color:${platAvg>=4?'var(--green-l)':platAvg>=3?'var(--gold)':'var(--red-l)'}">${platAvg>0?platAvg.toFixed(1)+'/5':'—'}</div></div>
+    <div class="sc"><div class="sl">Fully Complete</div><div class="sv">${complete}</div><div class="ss">All sections</div></div>
+  </div>
+  <div class="g2" style="gap:14px;margin-bottom:14px">
+    <div class="card">
+      <div style="font-size:14px;font-weight:700;color:var(--gold);margin-bottom:12px">Team Competency Averages</div>
+      ${SEC_KEYS.map(s=>{const sc=secAvgs[s];const col=sc>=4?'var(--green-l)':sc>=3?'var(--gold)':sc>=2?'var(--amber-l)':'var(--red-l)';return`<div class="comp-row"><span class="comp-label">${SECS[s].icon} ${SECS[s].label.split(' ')[0]}</span><div class="comp-bar-wrap"><div class="comp-bar-fill" style="width:${sc>0?sc/5*100:0}%;background:${col}"></div></div><span class="comp-pct" style="color:${col}">${sc>0?sc.toFixed(1):'-'}/5</span></div>`;}).join('')}
+    </div>
+    <div class="card" style="display:flex;flex-direction:column;align-items:center">
+      <div style="font-size:14px;font-weight:700;color:var(--gold);margin-bottom:10px;align-self:flex-start">Team Radar</div>
+      <canvas id="adash-radar"></canvas>
+    </div>
+  </div>
+  <div class="card">
+    <div style="font-size:14px;font-weight:700;color:var(--gold);margin-bottom:12px">Team Member Summary</div>
+    <table class="rtbl">
+      <thead><tr><th>Member</th><th>Dept</th><th>Role</th><th>Overall</th><th>Completion</th><th>Status</th><th>Action</th></tr></thead>
+      <tbody>
+        ${team.map(uid=>{
+          const d=ud(uid),p=d.profile;const ov=calcOverall(uid);const tp2=totalPct(uid);
+          const col=ov>=4?'var(--green-l)':ov>=3?'var(--gold)':ov>=2?'var(--amber-l)':'var(--muted)';
+          return`<tr>
+            <td><strong>${p.fullName||p.prefName||ACC[uid].name}</strong><br/><span style="font-size:10px;color:var(--muted)">${uid}</span></td>
+            <td style="font-size:11px">${p.dept||'—'}</td>
+            <td style="font-size:11px">${p.role||'—'}</td>
+            <td style="color:${col};font-weight:700">${ov>0?ov.toFixed(1)+'/5':'—'}</td>
+            <td><div class="pb" style="min-width:60px"><div class="pf" style="width:${tp2}%"></div></div><span style="font-size:10px;color:var(--muted)">${tp2}%</span></td>
+            <td><span class="bdg ${d.submitted?'bdg-gr':tp2>0?'bdg-g':'bdg-r'}">${d.submitted?'Submitted':tp2>0?'In Progress':'Not Started'}</span></td>
+            <td><button class="btn bo bsm" onclick="adminViewMember('${uid}')">View</button></td>
+          </tr>`;
+        }).join('')}
+      </tbody>
+    </table>
+  </div>`;
+  setTimeout(()=>drawRadar('adash-radar',SEC_KEYS.map(s=>SECS[s].label.split(' ')[0]),SEC_KEYS.map(s=>secAvgs[s]),200,5),80);
+}
+
+// ═══ ADMIN: VIEW MEMBER ═══
+function adminViewMember(uid){
+  const c=document.getElementById('pgc');
+  const d=ud(uid);const p=d.profile;const overall=calcOverall(uid);
+  c.innerHTML=`
+  <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap">
+    <button class="btn bgh bsm" onclick="nav('ateam')">← Back</button>
+    <button class="btn bg bsm" onclick="window.print()">⬇ Print Report</button>
+    <button class="btn bo bsm" onclick="dlMemberCSV('${uid}')">⬇ CSV</button>
+  </div>
+  <div class="card card-g" style="margin-bottom:12px">
+    <div style="display:flex;align-items:center;gap:14px">
+      <div class="pring">${(p.fullName||ACC[uid].name)[0]}</div>
+      <div style="flex:1">
+        <div style="font-size:20px;font-weight:700;color:var(--gold)">${p.fullName||ACC[uid].name}</div>
+        <div style="font-size:12px;color:var(--muted)">${p.role||''}${p.dept?' · '+p.dept:''}${p.location?' · '+p.location:''}</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:1px">${p.years||''}${p.type?' · '+p.type:''}</div>
+        <div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap">
+          <span class="bdg bdg-g">Overall: ${overall>0?overall.toFixed(1)+'/5':'—'}</span>
+          <span class="bdg ${d.submitted?'bdg-gr':'bdg-b'}">${d.submitted?'Submitted':'In Progress'}</span>
+          ${p.manager?`<span class="bdg bdg-g">Manager: ${p.manager}</span>`:''}
+        </div>
+      </div>
+      <canvas id="mv-radar" style="flex-shrink:0"></canvas>
+    </div>
+    ${p.desc?`<div style="margin-top:10px;font-size:12px;color:var(--cream2);line-height:1.55;border-top:1px solid rgba(201,168,76,0.1);padding-top:10px">${p.desc}</div>`:''}
+  </div>
+  <div class="g2" style="gap:10px;margin-bottom:12px">
+    ${SEC_KEYS.map(s=>{const sc=calcSecScore(uid,s);const pp=getPct(uid,s);const col=sc>=4?'var(--green-l)':sc>=3?'var(--gold)':sc>=2?'var(--amber-l)':'var(--muted)';return`<div class="card card-sm"><div style="display:flex;justify-content:space-between;align-items:center"><div style="font-size:13px;font-weight:700;color:var(--gold)">${SECS[s].icon} ${SECS[s].label}</div><div style="font-size:20px;font-weight:700;color:${col}">${sc>0?sc.toFixed(1):'-'}/5</div></div><div class="pw"><div class="pb"><div class="pf" style="width:${pp>0?sc/5*100:0}%;background:${col}"></div></div></div><div style="font-size:10px;color:var(--muted);margin-top:2px">${pp}% answered</div></div>`;}).join('')}
+  </div>
+  ${Object.keys(d.openq||{}).length>0?`<div class="card" style="margin-bottom:12px">
+    <div style="font-size:14px;font-weight:700;color:var(--gold);margin-bottom:10px">Open Reflection Responses</div>
+    ${Object.entries(d.openq).filter(([,v])=>v&&v.trim()).map(([k,v])=>`<div style="margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid rgba(201,168,76,0.08)"><div style="font-size:10px;color:var(--gold);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px">${k}</div><div style="font-size:13px;color:var(--cream2);line-height:1.55">${v}</div></div>`).join('')}
+  </div>`:''}
+  ${(d.training?.needs||[]).length>0?`<div class="card">
+    <div style="font-size:14px;font-weight:700;color:var(--gold);margin-bottom:10px">📚 Training Needs</div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px">${d.training.needs.map(n=>`<span class="bdg bdg-b">${n}</span>`).join('')}</div>
+    ${d.training.priority?`<div style="font-size:12px;color:var(--cream2);margin-top:6px"><strong style="color:var(--gold)">Priority:</strong> ${d.training.priority}</div>`:''}
+    ${d.training.impact?`<div style="font-size:12px;color:var(--cream2);margin-top:4px"><strong style="color:var(--gold)">Impact:</strong> ${d.training.impact}</div>`:''}
+    ${d.training.format?`<div style="font-size:12px;color:var(--cream2);margin-top:4px"><strong style="color:var(--gold)">Preferred Format:</strong> ${d.training.format}</div>`:''}
+    ${d.training.comments?`<div style="font-size:12px;color:var(--cream2);margin-top:4px"><strong style="color:var(--gold)">Comments:</strong> ${d.training.comments}</div>`:''}
+  </div>`:''}`;
+  setTimeout(()=>drawRadar('mv-radar',SEC_KEYS.map(s=>SECS[s].label.split(' ')[0]),SEC_KEYS.map(s=>calcSecScore(uid,s)),165,5),80);
+}
+
+// ═══ ADMIN: ALL TEAM ═══
+function pgAdminTeam(c){
+  const team=Object.keys(ACC).filter(k=>ACC[k].role==='team');
+  c.innerHTML=`
+  <div class="ptitle">All Team Members</div>
+  <div style="font-size:12px;color:var(--muted);margin-bottom:16px;font-style:italic">Click any member to view their full 360° report</div>
+  <div class="g2" style="gap:10px">
+    ${team.map(uid=>{const d=ud(uid),p=d.profile;const ov=calcOverall(uid);const tp2=totalPct(uid);const col=ov>=4?'var(--green-l)':ov>=3?'var(--gold)':ov>=2?'var(--amber-l)':'var(--muted)';return`<div class="card card-sm" style="cursor:pointer" onclick="adminViewMember('${uid}')">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+        <div class="uav" style="width:36px;height:36px;font-size:14px">${(p.fullName||ACC[uid].name)[0]}</div>
+        <div style="flex:1"><div style="font-weight:700;color:var(--cream);font-size:13px">${p.fullName||ACC[uid].name}</div><div style="font-size:11px;color:var(--muted)">${p.role||'—'} · ${p.dept||'—'}</div></div>
+        <div style="font-size:18px;font-weight:700;color:${col}">${ov>0?ov.toFixed(1):'—'}</div>
+      </div>
+      <div class="pw"><div class="plb"><span style="font-size:10px">${tp2}% complete</span><span class="bdg ${d.submitted?'bdg-gr':tp2>0?'bdg-g':'bdg-r'}">${d.submitted?'Submitted':tp2>0?'In Progress':'Not Started'}</span></div><div class="pb"><div class="pf" style="width:${tp2}%"></div></div></div>
+    </div>`;}).join('')}
+  </div>`;
+}
+
+// ═══ ADMIN: HEATMAP ═══
+function pgHeatmap(c){
+  const team=Object.keys(ACC).filter(k=>ACC[k].role==='team');
+  c.innerHTML=`
+  <div class="ptitle">Competency Heatmap</div>
+  <div style="font-size:12px;color:var(--muted);margin-bottom:16px;font-style:italic">At-a-glance view of team scores across all 8 competency areas. Green = Strong (≥4), Gold = Developing (3–3.9), Amber = Emerging (2–2.9), Red = Needs Focus (&lt;2)</div>
+  <div class="card" style="overflow-x:auto">
+    <table style="width:100%;border-collapse:collapse;font-size:12px">
+      <thead>
+        <tr>
+          <th style="text-align:left;padding:8px 10px;color:var(--gold);font-size:10px;letter-spacing:1px;text-transform:uppercase;border-bottom:1px solid rgba(201,168,76,0.18);min-width:140px">Team Member</th>
+          ${SEC_KEYS.map(s=>`<th style="padding:7px 6px;color:var(--gold);font-size:9px;letter-spacing:.5px;text-transform:uppercase;border-bottom:1px solid rgba(201,168,76,0.18);text-align:center;min-width:80px">${SECS[s].icon}<br/>${SECS[s].label.split(' ')[0]}</th>`).join('')}
+          <th style="padding:7px 6px;color:var(--gold);font-size:9px;letter-spacing:.5px;text-transform:uppercase;border-bottom:1px solid rgba(201,168,76,0.18);text-align:center">Overall</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${team.map(uid=>{const d=ud(uid),p=d.profile;const ov=calcOverall(uid);return`<tr>
+          <td style="padding:7px 10px;color:var(--cream2);font-size:12px;font-weight:700;border-bottom:1px solid rgba(255,255,255,0.04)">${p.fullName||ACC[uid].name}<br/><span style="font-size:10px;color:var(--muted);font-weight:400">${p.dept||''}</span></td>
+          ${SEC_KEYS.map(s=>{const sc=calcSecScore(uid,s);const bg=sc>=4?'rgba(45,125,79,0.25)':sc>=3?'rgba(201,168,76,0.2)':sc>=2?'rgba(146,100,10,0.25)':sc>0?'rgba(185,28,28,0.2)':'rgba(255,255,255,0.03)';const col=sc>=4?'var(--green-l)':sc>=3?'var(--gold)':sc>=2?'var(--amber-l)':sc>0?'var(--red-l)':'var(--muted)';return`<td style="padding:6px;text-align:center;border-bottom:1px solid rgba(255,255,255,0.04)"><div style="background:${bg};border-radius:6px;padding:6px 4px;font-size:12px;font-weight:700;color:${col}">${sc>0?sc.toFixed(1):'—'}</div></td>`;}).join('')}
+          <td style="padding:6px;text-align:center;border-bottom:1px solid rgba(255,255,255,0.04)"><div style="background:${ov>=4?'rgba(45,125,79,0.3)':ov>=3?'rgba(201,168,76,0.25)':ov>=2?'rgba(146,100,10,0.25)':ov>0?'rgba(185,28,28,0.25)':'rgba(255,255,255,0.03)'};border-radius:6px;padding:6px;font-size:13px;font-weight:900;color:${ov>=4?'var(--green-l)':ov>=3?'var(--gold)':ov>=2?'var(--amber-l)':ov>0?'var(--red-l)':'var(--muted)'}">${ov>0?ov.toFixed(1):'—'}</div></td>
+        </tr>`;}).join('')}
+        <tr style="border-top:2px solid rgba(201,168,76,0.2)">
+          <td style="padding:8px 10px;font-size:12px;font-weight:700;color:var(--gold)">TEAM AVERAGE</td>
+          ${SEC_KEYS.map(s=>{const scores=team.map(uid=>calcSecScore(uid,s)).filter(sc=>sc>0);const avg=scores.length?Math.round(scores.reduce((a,b)=>a+b,0)/scores.length*10)/10:0;const col=avg>=4?'var(--green-l)':avg>=3?'var(--gold)':avg>=2?'var(--amber-l)':avg>0?'var(--red-l)':'var(--muted)';return`<td style="padding:6px;text-align:center"><div style="border-radius:6px;padding:6px 4px;font-size:13px;font-weight:900;color:${col}">${avg>0?avg.toFixed(1):'—'}</div></td>`;}).join('')}
+          <td style="padding:6px;text-align:center">${(()=>{const scores=team.map(uid=>calcOverall(uid)).filter(s=>s>0);const avg=scores.length?Math.round(scores.reduce((a,b)=>a+b,0)/scores.length*10)/10:0;return`<div style="border-radius:6px;padding:6px;font-size:14px;font-weight:900;color:${avg>=4?'var(--green-l)':avg>=3?'var(--gold)':'var(--muted)'}">${avg>0?avg.toFixed(1):'—'}</div>`;})()}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>`;
+}
+
+// ═══ ADMIN: TRAINING NEEDS ANALYSIS ═══
+function pgAdminTraining(c){
+  const team=Object.keys(ACC).filter(k=>ACC[k].role==='team');
+  const areaCount={};const priorities=[];const formats={};
+  team.forEach(uid=>{
+    const d=ud(uid);const tr=d.training||{};
+    (tr.needs||[]).forEach(n=>{areaCount[n]=(areaCount[n]||0)+1;});
+    if(tr.priority)priorities.push({uid,name:(d.profile.fullName||ACC[uid].name),dept:d.profile.dept||'',priority:tr.priority,format:tr.format||''});
+    if(tr.format)formats[tr.format]=(formats[tr.format]||0)+1;
+  });
+  const sorted=Object.entries(areaCount).sort((a,b)=>b[1]-a[1]);
+  c.innerHTML=`
+  <div class="ptitle">Training Needs Analysis</div>
+  <div style="font-size:12px;color:var(--muted);margin-bottom:16px;font-style:italic">Aggregated training needs from all team member self-assessments</div>
+  <div class="g2" style="gap:14px;margin-bottom:14px">
+    <div class="card">
+      <div style="font-size:14px;font-weight:700;color:var(--gold);margin-bottom:12px">📊 Training Needs Frequency</div>
+      ${sorted.length>0?sorted.map(([area,count])=>`<div class="comp-row"><span class="comp-label" style="font-size:11px">${area}</span><div class="comp-bar-wrap"><div class="comp-bar-fill" style="width:${Math.round(count/team.length*100)}%;background:var(--gold)"></div></div><span class="comp-pct">${count} / ${team.length}</span></div>`).join(''):`<div style="font-size:12px;color:var(--muted);font-style:italic">No training needs recorded yet.</div>`}
+    </div>
+    <div class="card">
+      <div style="font-size:14px;font-weight:700;color:var(--gold);margin-bottom:12px">🎓 Preferred Learning Formats</div>
+      ${Object.entries(formats).length>0?Object.entries(formats).sort((a,b)=>b[1]-a[1]).map(([fmt,cnt])=>`<div class="comp-row"><span class="comp-label" style="font-size:11px">${fmt}</span><div class="comp-bar-wrap"><div class="comp-bar-fill" style="width:${Math.round(cnt/team.length*100)}%;background:var(--teal-l)"></div></div><span class="comp-pct">${cnt}</span></div>`).join(''):`<div style="font-size:12px;color:var(--muted);font-style:italic">No format preferences recorded yet.</div>`}
+      <div class="dv"></div>
+      <div style="font-size:13px;font-weight:700;color:var(--gold);margin-bottom:10px">Lowest Scoring Competencies</div>
+      ${SEC_KEYS.map(s=>{const scores=team.map(uid=>calcSecScore(uid,s)).filter(sc=>sc>0);const avg=scores.length?Math.round(scores.reduce((a,b)=>a+b,0)/scores.length*10)/10:0;return{s,avg};}).sort((a,b)=>a.avg-b.avg).slice(0,4).map(({s,avg})=>{const col=avg>=4?'var(--green-l)':avg>=3?'var(--gold)':avg>=2?'var(--amber-l)':'var(--red-l)';return`<div class="comp-row"><span class="comp-label" style="font-size:11px">${SECS[s].icon} ${SECS[s].label.split(' ')[0]}</span><div class="comp-bar-wrap"><div class="comp-bar-fill" style="width:${avg>0?avg/5*100:0}%;background:${col}"></div></div><span class="comp-pct" style="color:${col}">${avg>0?avg.toFixed(1):'—'}</span></div>`;}).join('')}
+    </div>
+  </div>
+  <div class="card">
+    <div style="font-size:14px;font-weight:700;color:var(--gold);margin-bottom:12px">🎯 Individual Priority Training Needs</div>
+    ${priorities.length>0?`<table class="rtbl"><thead><tr><th>Team Member</th><th>Department</th><th>Priority Training Need</th><th>Preferred Format</th></tr></thead><tbody>${priorities.map(p=>`<tr><td style="font-weight:700">${p.name}</td><td style="font-size:11px">${p.dept}</td><td><span class="bdg bdg-b">${p.priority}</span></td><td style="font-size:11px">${p.format||'—'}</td></tr>`).join('')}</tbody></table>`:`<div style="font-size:12px;color:var(--muted);font-style:italic">No priority training needs submitted yet.</div>`}
+  </div>`;
+}
+
+// ═══ ADMIN: REPORTS & EXPORTS ═══
+function pgAdminReports(c){
+  const team=Object.keys(ACC).filter(k=>ACC[k].role==='team');
+  c.innerHTML=`
+  <div class="ptitle">Reports & Exports</div>
+  <div style="font-size:12px;color:var(--muted);margin-bottom:16px;font-style:italic">Download and export 360° assessment data for analysis and reporting</div>
+  <div class="card card-g" style="margin-bottom:14px">
+    <div style="font-size:15px;font-weight:700;color:var(--gold);margin-bottom:6px">Consolidated Team Report</div>
+    <p style="font-size:12.5px;color:var(--muted);margin-bottom:12px">Full CSV export of all team member scores across all 8 competency sections, completion rates, and profile data.</p>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <button class="btn bg" onclick="dlConsolidated()">⬇ Download Full Team CSV</button>
+      <button class="btn bo" onclick="dlTrainingReport()">⬇ Training Needs CSV</button>
+    </div>
+  </div>
+  <div style="font-size:15px;font-weight:700;color:var(--gold);margin-bottom:12px">Individual Member Reports</div>
+  <div class="g2" style="gap:10px">
+    ${team.map(uid=>{const d=ud(uid),p=d.profile;const ov=calcOverall(uid);const tp2=totalPct(uid);const col=ov>=4?'var(--green-l)':ov>=3?'var(--gold)':ov>=2?'var(--amber-l)':'var(--muted)';return`<div class="card card-sm"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px"><div><div style="font-weight:700;color:var(--cream);font-size:13px">${p.fullName||ACC[uid].name}</div><div style="font-size:11px;color:var(--muted)">${p.dept||'—'} · ${tp2}% complete</div></div><div style="font-size:18px;font-weight:700;color:${col}">${ov>0?ov.toFixed(1):'—'}</div></div><div style="display:flex;gap:7px;flex-wrap:wrap"><button class="btn bo bsm" onclick="adminViewMember('${uid}')">View</button><button class="btn bg bsm" onclick="dlMemberCSV('${uid}')">⬇ CSV</button></div></div>`;}).join('')}
+  </div>`;
+}
+function dlConsolidated(){
+  const team=Object.keys(ACC).filter(k=>ACC[k].role==='team');
+  let csv='Name,Username,Department,Role,Years,Employment Type,Location,Manager,';
+  csv+=SEC_KEYS.map(s=>SECS[s].label).join(',')+',Overall Score,Completion %,Submitted,Submission Date,Training Needs,Priority Training\n';
+  team.forEach(uid=>{
+    const d=ud(uid),p=d.profile;const ov=calcOverall(uid);const tp2=totalPct(uid);
+    csv+=`"${p.fullName||ACC[uid].name}","${uid}","${p.dept||''}","${p.role||''}","${p.years||''}","${p.type||''}","${p.location||''}","${p.manager||''}",`;
+    csv+=SEC_KEYS.map(s=>calcSecScore(uid,s)>0?calcSecScore(uid,s).toFixed(1):'').join(',')+`,${ov>0?ov.toFixed(1):''},${tp2},${d.submitted?'Yes':'No'},"${d.submittedAt?new Date(d.submittedAt).toLocaleDateString():''}","${(d.training?.needs||[]).join('; ')}","${d.training?.priority||''}"\n`;
+  });
+  dlBlob(csv,'Team21_360_Consolidated.csv');
+}
+function dlTrainingReport(){
+  const team=Object.keys(ACC).filter(k=>ACC[k].role==='team');
+  let csv='Name,Department,Role,Training Needs,Priority Need,Preferred Format,Impact Statement,Comments\n';
+  team.forEach(uid=>{
+    const d=ud(uid),p=d.profile,tr=d.training||{};
+    csv+=`"${p.fullName||ACC[uid].name}","${p.dept||''}","${p.role||''}","${(tr.needs||[]).join('; ')}","${tr.priority||''}","${tr.format||''}","${tr.impact||''}","${tr.comments||''}"\n`;
+  });
+  dlBlob(csv,'Team21_360_Training_Needs.csv');
+}
+function dlMemberCSV(uid){
+  const d=ud(uid),p=d.profile;const oq=d.openq||{};const ov=calcOverall(uid);
+  let csv=`Team21 360 Eval — Individual Report\nGenerated: ${new Date().toLocaleDateString()}\n© Innocent Forteh 2026\n\n`;
+  csv+=`Name: ${p.fullName||ACC[uid].name}\nDepartment: ${p.dept||''}\nRole: ${p.role||''}\nYears: ${p.years||''}\nLocation: ${p.location||''}\nManager: ${p.manager||''}\n\n`;
+  csv+=`SECTION SCORES\nSection,Score,Completion%\n`;
+  SEC_KEYS.forEach(s=>{csv+=`${SECS[s].label},${calcSecScore(uid,s)>0?calcSecScore(uid,s).toFixed(1):''},${getPct(uid,s)}\n`;});
+  csv+=`\nOverall Score,${ov>0?ov.toFixed(1):''}\n`;
+  csv+=`\nOPEN RESPONSES\n`;
+  Object.entries(oq).forEach(([k,v])=>{if(v&&v.trim())csv+=`${k}: "${v}"\n\n`;});
+  const tr=d.training||{};
+  if((tr.needs||[]).length){csv+=`\nTRAINING NEEDS\nNeeds: ${tr.needs.join(', ')}\nPriority: ${tr.priority||''}\nFormat: ${tr.format||''}\n`;}
+  dlBlob(csv,`Team21_360_${uid}.csv`);
+}
+function dlBlob(csv,fn){const blob=new Blob([csv],{type:'text/csv'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=fn;a.click();}
+
+// ═══ INIT ═══
+// nothing extra needed
+</script>
+</body></html>

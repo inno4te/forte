@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ForTé Vault — Step in to Practical Tools</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --black:#0a0a0c;
+    --panel:#111319;
+    --panel-2:#161922;
+    --brass:#c6a15b;
+    --brass-light:#e7c988;
+    --brass-dark:#8b6f3e;
+    --emerald:#123b36;
+    --emerald-light:#1f5c54;
+    --wine:#4a1226;
+    --parchment:#f3e9d8;
+    --smoke:#948c7e;
+    --hairline: rgba(198,161,91,0.22);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--black);
+    color:var(--parchment);
+    font-family:'Jost',sans-serif;
+    font-weight:300;
+    overflow:hidden; /* locked until vault opens */
+  }
+  body.unlocked{ overflow:auto; }
+  ::selection{ background:var(--brass-dark); color:var(--parchment); }
+
+  h1,h2,h3{ font-family:'Cormorant Garamond', serif; font-weight:500; margin:0; color:var(--parchment); }
+
+  a{ color:inherit; text-decoration:none; }
+
+  /* ---------- Vault scene ---------- */
+  #vault-scene{
+    position:fixed; inset:0; z-index:50;
+    display:flex; align-items:center; justify-content:center;
+    background:
+      radial-gradient(ellipse at 50% 38%, #1a1c22 0%, #0a0a0c 62%, #050506 100%);
+    transition:opacity .7s ease;
+  }
+  #vault-scene.dismiss{ opacity:0; pointer-events:none; }
+  #vault-scene::before{
+    content:"";
+    position:absolute; inset:0;
+    background-image:radial-gradient(rgba(255,255,255,0.03) 1px, transparent 1px);
+    background-size:3px 3px;
+    opacity:.5;
+    pointer-events:none;
+  }
+  .scene-inner{
+    position:relative;
+    display:flex; flex-direction:column; align-items:center;
+    padding:0 24px;
+    text-align:center;
+  }
+  .scene-mark{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    letter-spacing:.42em;
+    color:var(--brass);
+    margin:0 0 38px;
+    text-transform:uppercase;
+  }
+  .door-wrap{ position:relative; width:300px; height:400px; perspective:1400px; }
+  .glow{
+    position:absolute; inset:-40px;
+    border-radius:50%;
+    background:radial-gradient(circle, rgba(230,196,130,0.35), rgba(230,196,130,0) 70%);
+    opacity:0;
+    transition:opacity 1s ease, transform 1s ease;
+    transform:scale(.7);
+    pointer-events:none;
+  }
+  .glow.flare{ opacity:1; transform:scale(1.25); }
+
+  .vault-door{
+    position:absolute; inset:0;
+    border-radius:24px;
+    background:
+      linear-gradient(155deg, #d9b878 0%, #a7803f 28%, #8b6f3e 48%, #b3924f 62%, #6f552b 100%);
+    box-shadow:
+      0 30px 60px rgba(0,0,0,.65),
+      inset 0 2px 0 rgba(255,255,255,.25),
+      inset 0 -6px 14px rgba(0,0,0,.45);
+    transform-style:preserve-3d;
+    transform-origin:left center;
+    transition:transform 1.3s cubic-bezier(.7,0,.2,1);
+    cursor:pointer;
+  }
+  .vault-door.open{ transform:rotateY(-108deg) translateZ(4px); }
+  .vault-door::before{ /* inner bezel */
+    content:"";
+    position:absolute; inset:14px;
+    border-radius:16px;
+    border:1px solid rgba(0,0,0,.35);
+    box-shadow:inset 0 0 0 1px rgba(255,255,255,.12);
+  }
+  .door-bolts{ position:absolute; right:6px; top:0; bottom:0; width:14px; }
+  .bolt{
+    position:absolute; right:0; width:10px; height:10px; border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, #f4dfa8, #6f552b 75%);
+    box-shadow:0 1px 2px rgba(0,0,0,.5);
+    transition:transform .5s ease;
+  }
+  .door-bolts.unlocked .bolt{ transform:translateX(10px); opacity:.4; }
+
+  .wheel-svg{
+    position:absolute; left:50%; top:50%;
+    width:150px; height:150px;
+    transform:translate(-50%,-50%);
+    transition:transform 1.05s cubic-bezier(.3,0,.15,1);
+  }
+  .wheel-svg.engage{ transform:translate(-50%,-50%) rotate(900deg); }
+  .wheel-ring{ fill:none; stroke:#3b2d16; stroke-width:3; }
+  .wheel-ring.outer{ stroke:#2a2010; stroke-width:5; }
+  .wheel-spoke{ stroke:#2a2010; stroke-width:5; stroke-linecap:round; }
+  .wheel-hub{ fill:#2a2010; }
+  .wheel-hub-inner{ fill:#e7c988; }
+
+  .scene-headline{
+    margin-top:40px;
+    font-size:clamp(28px,5vw,44px);
+    line-height:1.15;
+    letter-spacing:.01em;
+  }
+  .scene-headline span{
+    display:block;
+    font-style:italic;
+    color:var(--brass-light);
+    font-size:clamp(30px,5.6vw,50px);
+    margin-top:2px;
+  }
+  .enter-btn{
+    margin-top:34px;
+    background:transparent;
+    border:1px solid var(--hairline);
+    color:var(--brass-light);
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    letter-spacing:.22em;
+    text-transform:uppercase;
+    padding:15px 30px;
+    border-radius:999px;
+    cursor:pointer;
+    transition:border-color .3s ease, background .3s ease, letter-spacing .3s ease;
+  }
+  .enter-btn:hover, .enter-btn:focus-visible{
+    border-color:var(--brass);
+    background:rgba(198,161,91,0.08);
+    letter-spacing:.28em;
+  }
+
+  /* ---------- Content ---------- */
+  #content{ max-width:1180px; margin:0 auto; padding:0 28px 40px; }
+
+  .vault-header{
+    padding:110px 0 70px;
+    text-align:center;
+    border-bottom:1px solid var(--hairline);
+  }
+  .wordmark{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    letter-spacing:.5em;
+    color:var(--brass);
+    text-transform:uppercase;
+    margin:0 0 18px;
+  }
+  .vault-header h1{
+    font-size:clamp(34px,6vw,58px);
+    font-style:italic;
+    color:var(--parchment);
+  }
+  .tagline{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    letter-spacing:.14em;
+    color:var(--smoke);
+    text-transform:uppercase;
+    margin:22px 0 14px;
+  }
+  .intro{
+    max-width:560px; margin:0 auto;
+    color:var(--smoke);
+    font-weight:300;
+    font-size:15.5px;
+    line-height:1.7;
+  }
+
+  .chamber{ padding:74px 0 10px; border-bottom:1px solid var(--hairline); }
+  .chamber:last-of-type{ border-bottom:none; }
+  .chamber-head{ margin-bottom:38px; }
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    letter-spacing:.34em;
+    text-transform:uppercase;
+    color:var(--brass);
+    margin:0 0 10px;
+  }
+  .chamber-head h2{
+    font-size:clamp(26px,4vw,38px);
+    font-weight:500;
+    color:var(--parchment);
+  }
+  .chamber-desc{
+    color:var(--smoke);
+    font-size:14.5px;
+    font-style:italic;
+    font-family:'Cormorant Garamond', serif;
+    margin-top:8px;
+  }
+
+  .tool-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(258px, 1fr));
+    gap:18px;
+    margin-bottom:12px;
+  }
+  .tool-card{
+    display:flex; flex-direction:column;
+    background:var(--panel);
+    border:1px solid rgba(255,255,255,.06);
+    border-radius:12px;
+    padding:22px 22px 20px;
+    min-height:168px;
+    transition:transform .35s ease, border-color .35s ease, background .35s ease, box-shadow .35s ease;
+  }
+  .tool-card:hover, .tool-card:focus-visible{
+    transform:translateY(-4px);
+    border-color:var(--hairline);
+    background:var(--panel-2);
+    box-shadow:0 18px 32px rgba(0,0,0,.35);
+  }
+  .tool-domain{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10px;
+    letter-spacing:.05em;
+    color:var(--smoke);
+  }
+  .tool-card h3{
+    font-size:22px;
+    margin:9px 0 8px;
+    color:var(--parchment);
+  }
+  .tool-card p{
+    font-size:13.5px;
+    line-height:1.55;
+    color:var(--smoke);
+    margin:0;
+    flex-grow:1;
+  }
+  .tool-cta{
+    margin-top:16px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    color:var(--brass);
+    display:inline-flex; align-items:center; gap:6px;
+  }
+  .tool-cta span{ transition:transform .3s ease; }
+  .tool-card:hover .tool-cta span{ transform:translateX(4px); }
+
+  .vault-footer{
+    margin-top:90px;
+    padding:44px 0 60px;
+    text-align:center;
+    border-top:1px solid var(--hairline);
+  }
+  .verse{
+    font-family:'Cormorant Garamond', serif;
+    font-style:italic;
+    color:var(--brass-light);
+    font-size:16px;
+    margin:0 0 10px;
+  }
+  .attribution{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    letter-spacing:.1em;
+    color:var(--smoke);
+    text-transform:uppercase;
+    margin:0;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .vault-door, .wheel-svg, .door-bolts .bolt, #vault-scene, .tool-card{ transition:none !important; }
+  }
+
+  @media (max-width:520px){
+    .door-wrap{ width:240px; height:320px; }
+    .wheel-svg{ width:120px; height:120px; }
+    .vault-header{ padding:90px 0 54px; }
+  }
+</style>
+</head>
+<body>
+
+<div id="vault-scene">
+  <div class="scene-inner">
+    <p class="scene-mark">ForTé Vault</p>
+    <div class="door-wrap">
+      <div class="glow" id="glow"></div>
+      <div class="vault-door" id="vault-door" role="button" tabindex="0" aria-label="Open the vault">
+        <div class="door-bolts" id="door-bolts">
+          <div class="bolt" style="top:8%"></div>
+          <div class="bolt" style="top:24%"></div>
+          <div class="bolt" style="top:40%"></div>
+          <div class="bolt" style="top:56%"></div>
+          <div class="bolt" style="top:72%"></div>
+          <div class="bolt" style="top:88%"></div>
+        </div>
+        <svg class="wheel-svg" id="wheel-svg" viewBox="0 0 200 200">
+          <circle class="wheel-ring outer" cx="100" cy="100" r="90"></circle>
+          <circle class="wheel-ring" cx="100" cy="100" r="60"></circle>
+          <line class="wheel-spoke" x1="134" y1="100" x2="190" y2="100"></line>
+          <line class="wheel-spoke" x1="124" y1="124" x2="163.6" y2="163.6"></line>
+          <line class="wheel-spoke" x1="100" y1="134" x2="100" y2="190"></line>
+          <line class="wheel-spoke" x1="76" y1="124" x2="36.4" y2="163.6"></line>
+          <line class="wheel-spoke" x1="66" y1="100" x2="10" y2="100"></line>
+          <line class="wheel-spoke" x1="76" y1="76" x2="36.4" y2="36.4"></line>
+          <line class="wheel-spoke" x1="100" y1="66" x2="100" y2="10"></line>
+          <line class="wheel-spoke" x1="124" y1="76" x2="163.6" y2="36.4"></line>
+          <circle class="wheel-hub" cx="100" cy="100" r="26"></circle>
+          <circle class="wheel-hub-inner" cx="100" cy="100" r="10"></circle>
+        </svg>
+      </div>
+    </div>
+    <h1 class="scene-headline">Step in to<span>Practical Tools</span></h1>
+    <button class="enter-btn" id="enter-btn">Turn the wheel — Enter the Vault</button>
+  </div>
+</div>
+
+<main id="content">
+
+  <header class="vault-header">
+    <p class="wordmark">ForTé Vault</p>
+    <h1>The Collection</h1>
+    <p class="tagline">Forty-eight tools · Five chambers · One builder</p>
+    <p class="intro">A private collection of software built under inno4te · Team21 Academy — now open for practical use. Each chamber below holds a different kind of work.</p>
+  </header>
+
+  <!-- CHAMBER I -->
+  <section class="chamber">
+    <div class="chamber-head">
+      <p class="eyebrow">Chamber I</p>
+      <h2>The Academy</h2>
+      <p class="chamber-desc">Where courses, cohorts, and certifications live.</p>
+    </div>
+    <div class="tool-grid">
+
+      <a class="tool-card" href="https://team21lms.vercel.app" target="_blank" rel="noopener">
+        <span class="tool-domain">team21lms.vercel.app</span>
+        <h3>Team21 Academy LMS</h3>
+        <p>The core classroom — AI Unlocked courses, quizzes, and certification exams.</p>
+        <span class="tool-cta">Enter <span>→</span></span>
+      </a>
+
+      <a class="tool-card" href="https://team21academy.vercel.app" target="_blank" rel="noopener">
+        <span class="tool-domain">team21academy.vercel.app</span>
+        <h3>Team21 Academy</h3>
+        <p>The public front door to Team21's courses, cohorts, and story.</p>
+        <span class="tool-cta">Enter <span>→</span></span>
+      </a>
+
+      <a class="tool-card" href="https://learnonline-murex.vercel.app" target="_blank" rel="noopener">
+        <span class="tool-domain">learnonline-murex.vercel.app</span>
+        <h3>Learn Online</h3>
+        <p>A lightweight classroom for teaching and learning at a distance.</p>
+        <span class="tool-cta">Enter <span>→</span></span>
+      </a>
+
+      <a class="tool-card" href="https://team21ai.vercel.app" target="_blank" rel="noopener">
+        <span class="tool-domain">team21ai.vercel.app</span>
+        <h3>Team21 AI</h3>
+        <p>An AI coach, document tools, and knowledge hub for learners.</p>
+        <span class="tool-cta">Enter <span>→</span></span>
+      </a>
+
+      <a class="tool-card" href="https://t21aibuild.vercel.app" target="_blank" rel="noopener">
+        <span class="tool-domain">t21aibuild.vercel.app</span>
+        <h3>T21 AI Build</h3>
+        <p>The build pipeline behind the Team21 AI Workspace.</p>
+        <span class="tool-cta">Enter <span>→</span></span>
+      </a>
+
+      <a class="tool-card" href="https://pmiceval.vercel.app" target="_blank" rel="noopener">
+        <span class="tool-domain">pmiceval.vercel.app</span>
+        <h3>PMI CE Eval</h3>
+        <p>Continuing-education evaluation aligned to PMI credit requirements.</p>
+        <span class="tool-cta">Enter <span>→</span></span>
+      </a>
+
+      <a class="tool-card" href="https://team21-pmp.vercel.app" target="_blank" rel="noopener">
+        <span class="tool-domain">team21-pmp.vercel.app</span>
+        <h3>Team21 PMP</h3>
+        <p>PMP exam preparation, built from real certification training.</p>
+        <span class="tool-cta">Enter <span>→</span></span>
+      </a>
+
+      <a class="tool-card" href="https://team21-pmp-8.vercel.app" target="_blank" rel="noopener">
+        <span class="tool-domain">team21-pmp-8.vercel.app</span>
+        <h3>Team21 PMP II</h3>
+        <p>A refined second edition of the PMP prep experience.</p>
+        <span class="tool-cta">Enter <span>→</span></span>
+      </a>
+
+      <a class="tool-card" href="https://kidscode-five.vercel.app" target="_blank" rel="noopener">
+        <span class="tool-domain">kidscode-five.vercel.app</span>
+        <h3>KidsCode</h3>
+        <p>Introducing children to programming through playful, guided lessons.</p>
+        <span class="tool-cta">Enter <span>→</span></span>
+      </a>
+
+      <a class="tool-card" href="https://nnschool.vercel.app" target="_blank" rel="noopener">
+        <span class="tool-domain">nnschool.vercel.app</span>
+        <h3>School of Champions</h3>
+        <p>A servant-leadership academy for young champions, named in memory and honour.</p>
+        <span class="tool-cta">Enter <span>→</span></span>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- CHAMBER II -->
+  <section class="chamber">
+    <div class="chamber-head">
+      <p class="eyebrow">Chamber II</p>
+      <h2>The Builder's Bench</h2>
+      <p class="chamber-desc">Business and productivity tools, built to be used daily.</p>
+    </div>
+    <div class="tool-grid">
+
+      <a class="tool-card" href="https://forte-erp.vercel.app" target="_blank" rel="noopener">
+        <span class="tool-domain">forte-erp.vercel.app</span>
+        <h3>ForTé ERP</h3>
+        <p>A full enterprise planner with a deep procurement workflow at its core.</p>
+        <span class="tool-cta">Enter <span>→</span></span>
+      </a>
+
+      <a class="tool-card" href="https://for-te-sk.vercel.app" target="_blank" rel="noopener">
+        <span class="tool-domain">for-te-sk.vercel.app</span>
+        <h3>ForTe WebSwissKnife</h3>
+        <p>Seventy-three browser utilities, one Swiss Army knife of a tool.</p>
+        <span class="tool-cta">Enter <span>→</span></span>
+      </a>
+
+      <a class="tool-card" href="https://forteditor.vercel.app" target="_blank" rel="noopener">
+        <span class="tool-domain">forteditor.vercel.app</span>
+        <h3>FortEditor</h3>
+        <p>A PDF and document studio with OCR and cloud sync.</p>
+        <span class="tool-cta">Enter <span>→</span></span>
+      </a>
+
+      <a class="tool-card" href="https://fam-beta-ten.vercel.app" target="_blank" rel="noopener">
+        <span class="tool-domain">fam-beta-ten.vercel.app</span>
+        <h3>ForTe Fam</h3>
+        <p>A productivity app built for households, not just individuals.</p>
+        <span class="tool-cta">Enter <span>→</span></span>
+      </a>
+
+      <a class="tool-card" href="https://ffmail.vercel.app" target="_blank" rel="noopener">
+        <span class="tool-domain">ffmail.vercel.app</span>
+        <h3>ForTe Fam Mail</h3>
+        <p>Private messaging for the ForTe Fam household.</p>
+        <span class="tool-cta">Enter <span>→</span></span>
+      </a>
+
+      <a class="tool-card" href="https://fortehnote.vercel.app" target="_blank" rel="noopener">
+        <span class="tool-domain">fortehnote.vercel.app</span>
+        <h3>ForteHNote</h3>
+        <p>Fast, distraction-free note capture, with preview builds close behind.</p>
+        <span class="tool-cta">Enter <span>→</span></span>
+      </a>
+
+      <a class="tool-card" href="https://fortehsm.vercel.app" target="_blank" rel="noopener">
+        <span class="tool-domain">fortehsm.vercel.app</span>
+        <h3>ForteHSM</h3>
+        <p>Secure credential and secrets management, kept close and locked.</p>
+        <span class="tool-cta">Enter <span>→</span></span>
+      </a>
+
+      <a class="tool-card" href="https://fortetemps.vercel.app" target="_blank" rel="noopener">
+        <span class="tool-domain">fortetemps.vercel.app</span>
+        <h3>Fortetemps</h3>
+        <p>Time and schedule tracking, kept simple.</p>
+        <span class="tool-cta">Enter <span>→</span></span>
+      </a>
+
+      <a class="tool-card" href="https://innotrade.vercel.app" target="_blank" rel="noopener">
+        <span class="tool-domain">innotrade.vercel.app</span>
+        <h3>ForTe Trade Command</h3>
+        <p>A live charting console for watching the markets move.</p>
+        <span class="tool-cta">Enter <span>→</span></span>
+      </a>
+
+      <a class="tool-card" href="https://tierworld-mocha.vercel.app" target="_blank" rel="noopener">
+        <span class="tool-domain">tierworld-mocha.vercel.app</span>
+        <h3>Tierworld</h3>
+        <p>A ranking and tier-list builder for anything worth comparing.</p>
+        <span class="tool-cta">Enter <span>→</span></span>
+      </a>
+
+      <a class="tool-card" href="https://t21prod.vercel.app" target="_blank" rel="noopener">
+        <span class="tool-domain">t21prod.vercel.app</span>
+        <h3>T21 Prod</h3>
+        <p>The staging ground where Team21 builds go before release.</p>
+        <span class="tool-cta">Enter <span>→</span></span>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- CHAMBER III -->
+  <section class="chamber">
+    <div class="chamber-head">
+      <p class="eyebrow">Chamber III</p>
+      <h2>The Common Good</h2>
+      <p class="chamber-desc">Tools built for community, safety, and social impact.</p>
+    </div>
+    <div class="tool-grid">
+
+      <a class="tool-card" href="https://madit-one.vercel.app" target="_blank" rel="noopener">
+        <span class="tool-domain">madit-one.vercel.app</span>
+        <h3>MaD</h3>
+        <p>Make a Difference — turning a headline into a one-minute act of help.</p>
+        <span class="tool-cta">Enter <span>→</span></span>
+      </a>
+
+      <a class="tool-card" href="https://10000women.vercel.app" target="_blank" rel="noopener">
+        <span class="tool-domain">10000women.vercel.app</span>
+        <h3>Vision 10,000 Women</h3>
+        <p>Registration hub for training 10,000 Cameroonian women in practical AI.</p>
+        <span class="tool-cta">Enter <span>→</span></span>
+      </a>
+
+      <a class="tool-card" href="https://judetv.vercel.app" target="_blank" rel="noopener">
+        <span class="tool-domain">judetv.vercel.app</span>
+        <h3>JudeTV</h3>
+        <p>Free, family-safe streaming — live channels, radio, and community content.</p>
+        <span class="tool-cta">Enter <span>→</span></span>
+      </a>
+
+      <a class="tool-card" href="https://interact-ruby.vercel.app" target="_blank" rel="noopener">
+        <span class="tool-domain">interact-ruby.vercel.app</span>
+        <h3>ForTeInter</h3>
+        <p>A live reaction board for events — high-fives and questions, in real time.</p>
+        <span class="tool-cta">Enter <span>→</span></span>
+      </a>
+
+      <a class="tool-card" href="https://health-self-chi.vercel.app" target="_blank" rel="noopener">
+        <span class="tool-domain">health-self-chi.vercel.app</span>
+        <h3>ForTe Foods</h3>
+        <p>Tracking African foods, preparation methods, and healthier portions.</p>
+        <span class="tool-cta">Enter <span>→</span></span>
+      </a>
+
+      <a class="tool-card" href="https://news-steel-seven.vercel.app" target="_blank" rel="noopener">
+        <span class="tool-domain">news-steel-seven.vercel.app</span>
+        <h3>News</h3>
+        <p>A clean digest pulling headlines from trusted global wires.</p>
+        <span class="tool-cta">Enter <span>→</span></span>
+      </a>
+
+      <a class="tool-card" href="https://aiready-lilac.vercel.app" target="_blank" rel="noopener">
+        <span class="tool-domain">aiready-lilac.vercel.app</span>
+        <h3>AI Readiness</h3>
+        <p>A quick read on how ready your career is for the AI era.</p>
+        <span class="tool-cta">Enter <span>→</span></span>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- CHAMBER IV -->
+  <section class="chamber">
+    <div class="chamber-head">
+      <p class="eyebrow">Chamber IV</p>
+      <h2>The Consultancy</h2>
+      <p class="chamber-desc">Client-facing and professional sites.</p>
+    </div>
+    <div class="tool-grid">
+
+      <a class="tool-card" href="https://team21-ashen.vercel.app" target="_blank" rel="noopener">
+        <span class="tool-domain">team21-ashen.vercel.app</span>
+        <h3>Team21</h3>
+        <p>The flagship — every Team21 initiative under one roof.</p>
+        <span class="tool-cta">Enter <span>→</span></span>
+      </a>
+
+      <a class="tool-card" href="https://team21-consulting.vercel.app" target="_blank" rel="noopener">
+        <span class="tool-domain">team21-consulting.vercel.app</span>
+        <h3>Team21 Consulting</h3>
+        <p>Advisory and training services under the Team21 banner.</p>
+        <span class="tool-cta">Enter <span>→</span></span>
+      </a>
+
+      <a class="tool-card" href="https://team21-it.vercel.app" target="_blank" rel="noopener">
+        <span class="tool-domain">team21-it.vercel.app</span>
+        <h3>Team21 IT</h3>
+        <p>IT services and support under the Team21 umbrella.</p>
+        <span class="tool-cta">Enter <span>→</span></span>
+      </a>
+
+      <a class="tool-card" href="https://l2-t21.vercel.app" target="_blank" rel="noopener">
+        <span class="tool-domain">l2-t21.vercel.app</span>
+        <h3>L2 T21</h3>
+        <p>A second-layer build in the Team21 family of sites.</p>
+        <span class="tool-cta">Enter <span>→</span></span>
+      </a>
+
+      <a class="tool-card" href="https://ifconsulting.vercel.app" target="_blank" rel="noopener">
+        <span class="tool-domain">ifconsulting.vercel.app</span>
+        <h3>IF Consulting</h3>
+        <p>Innocent Forteh Consulting — leadership, PMP, and AI advisory.</p>
+        <span class="tool-cta">Enter <span>→</span></span>
+      </a>
+
+      <a class="tool-card" href="https://zoeconsulting.vercel.app" target="_blank" rel="noopener">
+        <span class="tool-domain">zoeconsulting.vercel.app</span>
+        <h3>Zoe Consulting</h3>
+        <p>An independent consulting practice, standing on its own.</p>
+        <span class="tool-cta">Enter <span>→</span></span>
+      </a>
+
+      <a class="tool-card" href="https://insapt.vercel.app" target="_blank" rel="noopener">
+        <span class="tool-domain">insapt.vercel.app</span>
+        <h3>INSAPT</h3>
+        <p>Procurement systems strengthening for the Kofi Annan Global Health Leadership Programme.</p>
+        <span class="tool-cta">Enter <span>→</span></span>
+      </a>
+
+      <a class="tool-card" href="https://consulting-iota-eight.vercel.app" target="_blank" rel="noopener">
+        <span class="tool-domain">consulting-iota-eight.vercel.app</span>
+        <h3>Consulting</h3>
+        <p>A general consulting landing page, plain and direct.</p>
+        <span class="tool-cta">Enter <span>→</span></span>
+      </a>
+
+      <a class="tool-card" href="https://aboutme-alpha-gold.vercel.app" target="_blank" rel="noopener">
+        <span class="tool-domain">aboutme-alpha-gold.vercel.app</span>
+        <h3>About Me</h3>
+        <p>The personal introduction — who's behind the vault.</p>
+        <span class="tool-cta">Enter <span>→</span></span>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- CHAMBER V -->
+  <section class="chamber">
+    <div class="chamber-head">
+      <p class="eyebrow">Chamber V</p>
+      <h2>The Workshop</h2>
+      <p class="chamber-desc">Early builds and experiments, still taking shape.</p>
+    </div>
+    <div class="tool-grid">
+
+      <a class="tool-card" href="https://labs-navy-two.vercel.app" target="_blank" rel="noopener">
+        <span class="tool-domain">labs-navy-two.vercel.app</span>
+        <h3>Labs</h3>
+        <p>Where new ideas get their first working prototype.</p>
+        <span class="tool-cta">Enter <span>→</span></span>
+      </a>
+
+      <a class="tool-card" href="https://lennoxbooks.vercel.app" target="_blank" rel="noopener">
+        <span class="tool-domain">lennoxbooks.vercel.app</span>
+        <h3>Lennox Books</h3>
+        <p>Home to published book projects and manuscripts.</p>
+        <span class="tool-cta">Enter <span>→</span></span>
+      </a>
+
+      <a class="tool-card" href="https://fort-ea.vercel.app" target="_blank" rel="noopener">
+        <span class="tool-domain">fort-ea.vercel.app</span>
+        <h3>Fort EA</h3>
+        <p>An early-stage build, still finding its shape.</p>
+        <span class="tool-cta">Enter <span>→</span></span>
+      </a>
+
+      <a class="tool-card" href="https://fort-econ.vercel.app" target="_blank" rel="noopener">
+        <span class="tool-domain">fort-econ.vercel.app</span>
+        <h3>FortEcon</h3>
+        <p>Economic tools and calculators, in progress.</p>
+        <span class="tool-cta">Enter <span>→</span></span>
+      </a>
+
+      <a class="tool-card" href="https://innolan.vercel.app" target="_blank" rel="noopener">
+        <span class="tool-domain">innolan.vercel.app</span>
+        <h3>Innolan</h3>
+        <p>A local-network utility, quietly under construction.</p>
+        <span class="tool-cta">Enter <span>→</span></span>
+      </a>
+
+      <a class="tool-card" href="https://jimit.vercel.app" target="_blank" rel="noopener">
+        <span class="tool-domain">jimit.vercel.app</span>
+        <h3>Jimit</h3>
+        <p>A personal project in early development.</p>
+        <span class="tool-cta">Enter <span>→</span></span>
+      </a>
+
+      <a class="tool-card" href="https://lat-ochre-six.vercel.app" target="_blank" rel="noopener">
+        <span class="tool-domain">lat-ochre-six.vercel.app</span>
+        <h3>LAT</h3>
+        <p>A compact utility, purpose still taking shape.</p>
+        <span class="tool-cta">Enter <span>→</span></span>
+      </a>
+
+      <a class="tool-card" href="https://360-rosy.vercel.app" target="_blank" rel="noopener">
+        <span class="tool-domain">360-rosy.vercel.app</span>
+        <h3>360</h3>
+        <p>A feedback and review concept, in the works.</p>
+        <span class="tool-cta">Enter <span>→</span></span>
+      </a>
+
+      <a class="tool-card" href="https://mobprod.vercel.app" target="_blank" rel="noopener">
+        <span class="tool-domain">mobprod.vercel.app</span>
+        <h3>MobProd</h3>
+        <p>Mobile production tooling, in progress.</p>
+        <span class="tool-cta">Enter <span>→</span></span>
+      </a>
+
+      <a class="tool-card" href="https://tchadp.vercel.app" target="_blank" rel="noopener">
+        <span class="tool-domain">tchadp.vercel.app</span>
+        <h3>Tchad P</h3>
+        <p>A Chad-focused public-sector concept, related to the INSAPT work.</p>
+        <span class="tool-cta">Enter <span>→</span></span>
+      </a>
+
+      <a class="tool-card" href="https://10th-pink.vercel.app" target="_blank" rel="noopener">
+        <span class="tool-domain">10th-pink.vercel.app</span>
+        <h3>10th</h3>
+        <p>A milestone project, marking a decade of building.</p>
+        <span class="tool-cta">Enter <span>→</span></span>
+      </a>
+
+    </div>
+  </section>
+
+  <footer class="vault-footer">
+    <p class="verse">"They shall mount up with wings as eagles." — Isaiah 40:31</p>
+    <p class="attribution">inno4te · Team21 Academy — #LeadLikeJesus</p>
+  </footer>
+
+</main>
+
+<script>
+  (function(){
+    var scene = document.getElementById('vault-scene');
+    var door = document.getElementById('vault-door');
+    var wheel = document.getElementById('wheel-svg');
+    var bolts = document.getElementById('door-bolts');
+    var glow = document.getElementById('glow');
+    var btn = document.getElementById('enter-btn');
+    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var opened = false;
+
+    function openVault(){
+      if (opened) return;
+      opened = true;
+
+      if (reduced){
+        finish();
+        return;
+      }
+
+      wheel.classList.add('engage');
+      setTimeout(function(){ bolts.classList.add('unlocked'); }, 850);
+      setTimeout(function(){
+        door.classList.add('open');
+        glow.classList.add('flare');
+      }, 1000);
+      setTimeout(finish, 2350);
+    }
+
+    function finish(){
+      scene.classList.add('dismiss');
+      document.body.classList.add('unlocked');
+      setTimeout(function(){
+        scene.style.display = 'none';
+        window.scrollTo({top:0, behavior:'instant'});
+      }, 700);
+    }
+
+    door.addEventListener('click', openVault);
+    door.addEventListener('keydown', function(e){
+      if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); openVault(); }
+    });
+    btn.addEventListener('click', openVault);
+  })();
+</script>
+
+</body>
+</html>

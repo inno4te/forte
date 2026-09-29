@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Community Q&A — Team21 Health Platform</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700;9..144,800&family=Inter+Tight:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<style>
+  .q-card{background:var(--paper);border:1px solid var(--rule);padding:26px 28px;margin-bottom:14px;position:relative}
+  .q-card .q-meta{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--mute);letter-spacing:.05em;display:flex;gap:14px;flex-wrap:wrap;margin-bottom:10px}
+  .q-card .q-meta .ctx{color:var(--accent);font-weight:600}
+  .q-card h3.q-title{font-family:"Fraunces",serif;font-size:23px;margin:0 0 8px;font-weight:500;letter-spacing:-.01em;line-height:1.2}
+  .q-card .q-body{font-size:14px;color:var(--ink-soft);line-height:1.6;white-space:pre-wrap;word-break:break-word}
+  .q-card .q-author{font-size:12px;color:var(--mute);margin-top:10px}
+  .q-card .q-author strong{color:var(--ink);font-weight:600}
+  .answers{margin-top:18px;padding-top:16px;border-top:1px dashed var(--rule)}
+  .answers h5{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin:0 0 12px;font-weight:600}
+  .answer{padding:12px 14px;background:var(--paper-2);border-left:3px solid var(--accent-2);margin-bottom:8px;font-size:13.5px;line-height:1.55;color:var(--ink-soft)}
+  .answer .a-author{font-size:11px;color:var(--mute);margin-top:6px;letter-spacing:.05em}
+  .answer .a-author strong{color:var(--ink);font-weight:600}
+  .answer-form{margin-top:10px;display:flex;flex-direction:column;gap:8px}
+  .answer-form textarea{width:100%;border:1px solid var(--rule);background:var(--paper);font-family:inherit;font-size:13.5px;padding:10px;resize:vertical;min-height:60px}
+  .answer-form textarea:focus{outline:none;border-color:var(--accent)}
+  .answer-form .row{display:flex;justify-content:flex-end;gap:8px}
+  .empty{text-align:center;padding:80px 20px;color:var(--mute)}
+  .empty h3{font-family:"Fraunces",serif;font-size:26px;color:var(--ink);font-weight:500;margin:0 0 10px}
+  .q-card[data-search]{transition:opacity .15s}
+</style>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#2d2823">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Team21">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="brand">
+      <div class="brand-mark">T21</div>
+      <div>
+        <div class="brand-name">Team21 Health Platform</div>
+        <div class="brand-sub">Preventive Intelligence</div>
+      </div>
+    </a>
+    <div class="nav-cta" id="navCta"></div>
+  </div>
+</nav>
+
+<main class="page">
+  <header class="page-head">
+    <div>
+      <div class="eyebrow">Part Six · Community</div>
+      <h1>Ask. Answer. <em>Learn together.</em></h1>
+      <p class="intro">A public board for questions about the topics covered in the platform — and for sharing what you've learned with others on the same journey. All posts are by registered users; please be respectful, factual, and cite sources where you can.</p>
+    </div>
+    <div class="meta">
+      PUBLIC · MODERATED<br>
+      SIGN IN TO POST<br>
+      ANYONE CAN READ
+    </div>
+  </header>
+
+  <div style="display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:20px">
+    <div class="search-bar" style="margin:0;flex:1;max-width:520px">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+      <input type="text" id="qSearch" placeholder="Search questions — topic, keyword, author…" />
+    </div>
+    <button class="btn btn-primary" id="askNew">+ Ask a question</button>
+  </div>
+
+  <div id="loginHint" class="disclaimer" style="display:none;margin:0 0 24px">
+    <strong>Want to ask or answer?</strong>
+    You can read the community board without an account — but to post a question or reply, you'll need a free Team21 account.
+    <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
+      <button class="btn btn-sm btn-primary" onclick="T21.openAuth('login')">Sign in</button>
+      <button class="btn btn-sm" onclick="T21.openAuth('register')">Create account</button>
+    </div>
+  </div>
+
+  <div id="qList"></div>
+</main>
+
+<script src="data.js"></script>
+<script src="lang-data.js"></script>
+<script src="lang.js"></script>
+<script src="shared.js"></script>
+<script src="components.js"></script>
+<script>
+T21.boot('community.html');
+
+function fmtDate(ts){
+  if(!ts) return '';
+  const d = new Date(ts);
+  const now = Date.now();
+  const diff = (now - ts)/1000;
+  if(diff < 60) return 'just now';
+  if(diff < 3600) return Math.floor(diff/60) + ' min ago';
+  if(diff < 86400) return Math.floor(diff/3600) + ' h ago';
+  if(diff < 86400*7) return Math.floor(diff/86400) + ' d ago';
+  return d.toLocaleDateString();
+}
+
+async function renderQuestions(){
+  const list = await loadQuestions('public');
+  const wrap = document.getElementById('qList');
+  if(!list.length){
+    wrap.innerHTML = `<div class="empty"><h3>No public questions yet</h3><p>Be the first to ask. Click <em>"Ask a question"</em> above to start a thread.</p></div>`;
+    return;
+  }
+  const q = (document.getElementById('qSearch').value || '').toLowerCase().trim();
+  const filtered = list.filter(it=>{
+    if(!q) return true;
+    const hay = [it.title, it.body||'', it.topicName||'', it.author||''].join(' ').toLowerCase();
+    return hay.includes(q);
+  });
+  if(!filtered.length){
+    wrap.innerHTML = `<div class="empty"><h3>No matches</h3><p>Try a broader search term.</p></div>`;
+    return;
+  }
+  wrap.innerHTML = filtered.map(q=>`
+    <article class="q-card" data-id="${q.id}">
+      <div class="q-meta">
+        <span>${fmtDate(q.created)}</span>
+        ${q.topicName ? `<span class="ctx">on ${q.topicName}</span>` : ''}
+        <span>${(q.answers||[]).length} answer${(q.answers||[]).length===1?'':'s'}</span>
+      </div>
+      <h3 class="q-title">${q.title.replace(/</g,'&lt;')}</h3>
+      ${q.body ? `<div class="q-body">${q.body.replace(/</g,'&lt;')}</div>` : ''}
+      <div class="q-author">Asked by <strong>${(q.author||'anonymous').replace(/</g,'&lt;')}</strong></div>
+      <div class="answers">
+        <h5>${(q.answers||[]).length ? 'Answers' : 'No answers yet — be the first to reply'}</h5>
+        ${(q.answers||[]).map(a=>`
+          <div class="answer">
+            <div>${a.body.replace(/</g,'&lt;')}</div>
+            <div class="a-author"><strong>${(a.author||'anonymous').replace(/</g,'&lt;')}</strong> · ${fmtDate(a.created)}</div>
+          </div>`).join('')}
+        <div class="answer-form" data-q="${q.id}">
+          <textarea placeholder="Share an answer, source, or experience…"></textarea>
+          <div class="row"><button class="btn btn-sm btn-primary" data-reply="${q.id}">Post answer</button></div>
+        </div>
+      </div>
+    </article>
+  `).join('');
+
+  wrap.querySelectorAll('[data-reply]').forEach(b=>{
+    b.onclick = async ()=>{
+      if(!T21.user){ T21.openAuth('login'); T21.toast('Sign in to answer'); return; }
+      const form = b.closest('.answer-form');
+      const txt = form.querySelector('textarea').value.trim();
+      if(!txt){ T21.toast('Write an answer first','error'); return; }
+      await postAnswer(b.dataset.reply, txt);
+      T21.toast('Answer posted','success');
+      renderQuestions();
+    };
+  });
+}
+
+document.getElementById('qSearch').addEventListener('input', renderQuestions);
+document.getElementById('askNew').addEventListener('click', ()=>{
+  if(!T21.user){ T21.openAuth('login'); T21.toast('Sign in to post a question'); return; }
+  openQuestionEditor({});
+});
+
+window.refreshQuestions = renderQuestions;
+
+function reflect(){
+  document.getElementById('loginHint').style.display = T21.user ? 'none' : 'block';
+  renderQuestions();
+}
+window.onUserAuthChange = reflect;
+setTimeout(reflect, 250);
+</script>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('service-worker.js')
+      .then(reg => console.log('[Team21] Service Worker registered:', reg.scope))
+      .catch(err => console.warn('[Team21] SW registration failed:', err));
+  });
+}
+</script>
+</body>
+</html>

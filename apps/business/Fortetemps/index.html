@@ -1,0 +1,1246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="ForteTemps Atelier — a 744-brief design library for AI-assisted design across website and graphic templates, by inno4te / Team21 Academy.">
+<meta name="author" content="Innocent Forteh">
+<meta property="og:title" content="ForteTemps Atelier">
+<meta property="og:description" content="744 copy-ready design briefs across 24 domains, 24 graphic formats and 16 aesthetic directions, plus the elite 100-word vocabulary.">
+<meta property="og:type" content="website">
+<style>
+  :root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);}
+  body{margin:0;font:14px system-ui,sans-serif;background:#F4F2EC;}
+  img{max-width:100%;}
+  [hidden]{display:none!important;}
+</style>
+<title>ForteTemps Atelier</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800&family=Outfit:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme:light;
+  --bg:#F4F2EC;
+  --panel:#FFFFFF;
+  --panel-2:#EAE6DC;
+  --line:#D8D2C4;
+  --ink:#191712;
+  --ink-2:#6C6555;
+  --gold:#A9742A;
+  --clay:#7B2A2F;
+  --ok:#3C6B4F;
+  --r:10px;
+  --display:'Fraunces',Georgia,serif;
+  --sans:'Outfit',system-ui,sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#131211;--panel:#1C1A18;--panel-2:#232120;--line:#332F2B;
+    --ink:#F0EDE6;--ink-2:#9C9384;--gold:#D5A756;--clay:#C4666C;--ok:#6FA985;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#131211;--panel:#1C1A18;--panel-2:#232120;--line:#332F2B;
+  --ink:#F0EDE6;--ink-2:#9C9384;--gold:#D5A756;--clay:#C4666C;--ok:#6FA985;
+}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;}
+.wrap{max-width:1420px;margin:0 auto;padding:0 20px 90px;}
+
+/* ---------- masthead ---------- */
+.mast{padding-block:44px 26px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:flex-end;gap:26px;flex-wrap:wrap;}
+.logo{font-family:var(--display);font-weight:800;font-size:clamp(28px,5vw,40px);letter-spacing:-0.02em;line-height:1;}
+.logo em{font-style:normal;color:var(--gold);}
+.kicker{font-family:var(--mono);font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-2);margin-bottom:10px;}
+.lede{color:var(--ink-2);font-size:14.5px;line-height:1.6;max-width:56ch;margin:12px 0 0;text-wrap:pretty;}
+.counts{font-family:var(--mono);font-size:11px;color:var(--ink-2);text-align:right;line-height:2;letter-spacing:.04em;}
+.counts b{color:var(--gold);font-weight:500;}
+.themetog{margin-top:10px;background:none;border:1px solid var(--line);color:var(--ink-2);border-radius:20px;padding:5px 12px;font-family:var(--mono);font-size:10px;cursor:pointer;letter-spacing:.08em;}
+.themetog:hover{color:var(--ink);border-color:var(--ink-2);}
+
+/* ---------- section switch ---------- */
+.switch{display:flex;gap:0;margin-top:26px;border:1px solid var(--line);border-radius:999px;padding:4px;background:var(--panel);width:fit-content;max-width:100%;flex-wrap:wrap;}
+.switch button{border:none;background:none;font-family:var(--sans);font-size:13.5px;font-weight:500;color:var(--ink-2);padding:9px 20px;border-radius:999px;cursor:pointer;white-space:nowrap;}
+.switch button[aria-selected="true"]{background:var(--ink);color:var(--bg);}
+
+.sectionintro{margin:22px 0 4px;display:flex;gap:18px;align-items:baseline;flex-wrap:wrap;}
+.sectionintro h2{font-family:var(--display);font-weight:600;font-size:22px;margin:0;}
+.sectionintro p{margin:0;color:var(--ink-2);font-size:13px;max-width:60ch;line-height:1.55;}
+
+/* ---------- filters ---------- */
+.filters{display:flex;flex-direction:column;gap:12px;padding-block:20px 4px;}
+.frow{display:flex;gap:7px;flex-wrap:wrap;align-items:center;}
+.flabel{font-family:var(--mono);font-size:9.5px;text-transform:uppercase;letter-spacing:.14em;color:var(--ink-2);width:92px;flex-shrink:0;}
+.chip{font-size:12px;font-family:var(--sans);padding:6px 12px;border-radius:6px;background:var(--panel);border:1px solid var(--line);color:var(--ink-2);cursor:pointer;white-space:nowrap;transition:.12s;}
+.chip:hover{border-color:var(--gold);color:var(--ink);}
+.chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--bg);font-weight:500;}
+.search{flex:1;min-width:180px;background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:7px 11px;color:var(--ink);font-family:var(--sans);font-size:12.5px;}
+.search::placeholder{color:var(--ink-2);}
+
+.bar{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center;padding-block:18px 2px;font-family:var(--mono);font-size:11.5px;color:var(--ink-2);letter-spacing:.03em;}
+.bar b{color:var(--ink);font-weight:500;}
+
+/* ---------- grid + cards ---------- */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(258px,1fr));gap:16px;padding-top:16px;}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;cursor:pointer;text-align:left;padding:0;font:inherit;color:inherit;transition:border-color .15s,transform .15s;}
+.card:hover,.card:focus-visible{border-color:var(--gold);transform:translateY(-2px);}
+.card:focus-visible{outline:2px solid var(--gold);outline-offset:2px;}
+.cshell{padding:11px;background:var(--panel-2);}
+.cbody{padding:12px 14px 14px;display:flex;flex-direction:column;gap:3px;}
+.cdom{font-family:var(--mono);font-size:9px;letter-spacing:.11em;text-transform:uppercase;color:var(--gold);}
+.cstyle{font-family:var(--display);font-size:16px;font-weight:600;line-height:1.2;}
+.cnote{font-size:11.5px;color:var(--ink-2);line-height:1.45;}
+.cmeta{font-family:var(--mono);font-size:9px;color:var(--ink-2);letter-spacing:.06em;margin-top:4px;}
+.more{margin:26px auto 0;display:block;background:var(--panel);border:1px solid var(--line);color:var(--ink);border-radius:8px;padding:11px 26px;font-family:var(--sans);font-size:13px;cursor:pointer;}
+.more:hover{border-color:var(--gold);}
+.empty{padding:50px 0;text-align:center;color:var(--ink-2);font-size:13.5px;}
+
+/* ================= MOCKS ================= */
+.mock{width:100%;aspect-ratio:4/3;border-radius:5px;overflow:hidden;position:relative;font-family:var(--sans);}
+.m-ico{display:inline-flex;flex-shrink:0;}
+.m-ico svg{width:100%;height:100%;display:block;}
+
+.mock[data-s="minimalist"]{background:#FAFAF8;display:flex;flex-direction:column;justify-content:center;padding:13% 12%;}
+.mock[data-s="minimalist"] .mk{font-family:var(--mono);font-size:7.5px;letter-spacing:.14em;color:#B4B0A6;margin-bottom:13%;}
+.mock[data-s="minimalist"] .hd{width:66%;height:2px;background:#1A1A1A;margin-bottom:9%;}
+.mock[data-s="minimalist"] .l1{width:80%;height:11px;background:#1A1A1A;margin-bottom:5px;}
+.mock[data-s="minimalist"] .l2{width:38%;height:11px;background:#1A1A1A;margin-bottom:14%;}
+.mock[data-s="minimalist"] .lk{font-family:var(--mono);font-size:7.5px;color:var(--a1);text-decoration:underline;text-underline-offset:3px;}
+
+.mock[data-s="editorial"]{background:#F6F4EE;display:grid;padding:10%;}
+.mock[data-s="editorial"] .side{border-right:1px solid #D8D2C2;padding-right:8%;display:flex;flex-direction:column;gap:7px;}
+.mock[data-s="editorial"] .kick{font-family:var(--mono);font-size:6.5px;letter-spacing:.11em;color:var(--a1);text-transform:uppercase;display:flex;align-items:center;gap:4px;}
+.mock[data-s="editorial"] .by{width:70%;height:3px;background:#847C68;opacity:.5;margin-top:auto;}
+.mock[data-s="editorial"] .main{padding-left:8%;display:flex;flex-direction:column;justify-content:center;}
+.mock[data-s="editorial"] .dc{font-family:var(--display);font-size:32px;line-height:.9;float:left;margin-right:5px;color:#18160F;}
+.mock[data-s="editorial"] .hl{font-family:var(--display);font-weight:600;font-size:13.5px;color:#18160F;line-height:1.16;}
+.mock[data-s="editorial"] .rl{width:100%;height:1px;background:#D8D2C2;margin-top:8px;}
+
+.mock[data-s="brutalist"]{background:#fff;padding:9%;}
+.mock[data-s="brutalist"] .tg{position:absolute;top:8%;left:9%;font-family:var(--mono);font-size:7.5px;border:1.5px solid #000;padding:2px 6px;color:#000;}
+.mock[data-s="brutalist"] .b1{width:76%;height:20px;background:#0A0A0A;margin-top:19%;}
+.mock[data-s="brutalist"] .b2{width:58%;height:20px;background:var(--a1);margin-top:6px;}
+.mock[data-s="brutalist"] .bx{position:absolute;bottom:10%;width:25%;height:25%;border:2px solid #0A0A0A;box-shadow:5px 5px 0 #0A0A0A;background:#fff;display:flex;align-items:center;justify-content:center;}
+
+.mock[data-s="glassmorphism"]{background:radial-gradient(circle at 20% 25%,var(--a1) 0%,transparent 42%),radial-gradient(circle at 82% 78%,var(--a2) 0%,transparent 44%),linear-gradient(160deg,#EEF0F8,#DCE2F0);}
+.mock[data-s="glassmorphism"] .pn{position:absolute;background:rgba(255,255,255,.44);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.66);border-radius:14px;}
+.mock[data-s="glassmorphism"] .p1{width:52%;height:38%;}
+.mock[data-s="glassmorphism"] .p2{width:40%;height:30%;}
+.mock[data-s="glassmorphism"] .dt{width:17px;height:17px;border-radius:50%;background:rgba(255,255,255,.75);margin:13% 0 0 13%;display:flex;align-items:center;justify-content:center;}
+
+.mock[data-s="neumorphism"]{background:#E7E8EF;display:flex;align-items:center;}
+.mock[data-s="neumorphism"] .dial{width:33%;aspect-ratio:1;border-radius:50%;background:#E7E8EF;box-shadow:8px 8px 16px #c6c7d0,-8px -8px 16px #fff;display:flex;align-items:center;justify-content:center;}
+.mock[data-s="neumorphism"] .tcol{display:flex;flex-direction:column;gap:12px;}
+.mock[data-s="neumorphism"] .tg2{width:42px;height:17px;border-radius:10px;background:#E7E8EF;box-shadow:4px 4px 8px #c6c7d0,-4px -4px 8px #fff;position:relative;}
+.mock[data-s="neumorphism"] .tg2::after{content:'';position:absolute;top:2px;left:2px;width:13px;height:13px;border-radius:50%;background:var(--a1);}
+
+.mock[data-s="dark-luxury"]{background:#0F0E0C;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:10%;}
+.mock[data-s="dark-luxury"] .wd{font-family:var(--mono);font-size:6.5px;letter-spacing:.3em;color:#8A8375;margin-bottom:9%;}
+.mock[data-s="dark-luxury"] .tt{font-family:var(--display);font-size:14px;color:#F2F0EA;margin-bottom:6%;}
+.mock[data-s="dark-luxury"] .hr{height:1px;background:var(--a1);margin-bottom:8%;}
+.mock[data-s="dark-luxury"] .ct{font-family:var(--mono);font-size:6.5px;letter-spacing:.12em;color:#F2F0EA;border:1px solid #4A4438;padding:5px 13px;}
+
+.mock[data-s="maximalist"]{overflow:hidden;}
+.mock[data-s="maximalist"] .big{position:absolute;top:36%;left:-8%;width:116%;font-family:var(--display);font-weight:800;font-size:29px;color:#fff;line-height:1;mix-blend-mode:overlay;text-align:center;}
+.mock[data-s="maximalist"] .bg2{position:absolute;bottom:8%;width:15%;aspect-ratio:1;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;}
+
+.mock[data-s="corporate"]{background:#F3F5F8;display:grid;}
+.mock[data-s="corporate"] .sb{background:#0F2338;display:flex;flex-direction:column;gap:9px;padding:14% 0;align-items:center;}
+.mock[data-s="corporate"] .sb i{width:8px;height:8px;border-radius:2px;background:rgba(255,255,255,.3);display:block;}
+.mock[data-s="corporate"] .mn{padding:9%;display:flex;flex-direction:column;gap:8%;}
+.mock[data-s="corporate"] .kps{display:flex;gap:6%;}
+.mock[data-s="corporate"] .kp{flex:1;background:#fff;border:1px solid #DCE3EC;border-radius:5px;height:34px;box-shadow:0 1px 3px rgba(15,35,56,.06);display:flex;align-items:center;justify-content:center;}
+.mock[data-s="corporate"] .ch{background:#fff;border:1px solid #DCE3EC;border-radius:5px;flex:1;display:flex;align-items:flex-end;gap:5px;padding:9px;}
+.mock[data-s="corporate"] .ch u{flex:1;background:var(--a1);opacity:.75;display:block;border-radius:2px 2px 0 0;}
+
+.mock[data-s="retro-future"]{background:linear-gradient(180deg,#160734,#0E0221 55%);display:flex;align-items:center;justify-content:center;overflow:hidden;}
+.mock[data-s="retro-future"] .sun{position:absolute;bottom:32%;width:33%;aspect-ratio:1;border-radius:50%;background:linear-gradient(180deg,var(--a1),var(--a2));display:flex;align-items:center;justify-content:center;}
+.mock[data-s="retro-future"] .hl2{position:relative;z-index:2;font-family:var(--display);font-weight:800;font-size:15px;background:linear-gradient(90deg,#fff,var(--a2));-webkit-background-clip:text;background-clip:text;color:transparent;}
+.mock[data-s="retro-future"] .hz{position:absolute;inset:auto 0 0 0;height:42%;background-image:linear-gradient(rgba(255,255,255,.35) 1px,transparent 1px);background-size:100% 8px;-webkit-mask-image:linear-gradient(180deg,transparent,#000);mask-image:linear-gradient(180deg,transparent,#000);}
+
+.mock[data-s="technical"]{background:#0D0F12;background-image:linear-gradient(#181B20 1px,transparent 1px),linear-gradient(90deg,#181B20 1px,transparent 1px);background-size:12px 12px;}
+.mock[data-s="technical"] .co{position:absolute;top:6%;left:8%;font-family:var(--mono);font-size:6px;color:#5C6870;display:flex;align-items:center;gap:4px;}
+.mock[data-s="technical"] .vp{position:absolute;border:1px solid #2A343C;}
+.mock[data-s="technical"] .vp::before,.mock[data-s="technical"] .vp::after{content:'';position:absolute;width:8px;height:8px;border-top:1.5px solid var(--a1);border-left:1.5px solid var(--a1);top:-1px;left:-1px;}
+.mock[data-s="technical"] .vp::after{top:auto;left:auto;bottom:-1px;right:-1px;border:none;border-bottom:1.5px solid var(--a1);border-right:1.5px solid var(--a1);}
+.mock[data-s="technical"] .cr{position:absolute;top:50%;left:50%;width:14px;height:14px;transform:translate(-50%,-50%);border:1px solid #576269;border-radius:50%;}
+.mock[data-s="technical"] .ro{position:absolute;bottom:6%;right:8%;font-family:var(--mono);font-size:6px;color:#7C8A94;}
+
+/* NEW STYLES */
+.mock[data-s="heritage"]{background:#F1E4D0;display:flex;flex-direction:column;justify-content:center;padding:11%;gap:8px;position:relative;}
+.mock[data-s="heritage"] .band{height:14px;width:100%;background:repeating-linear-gradient(90deg,var(--a1) 0 7px,transparent 7px 14px),repeating-linear-gradient(45deg,var(--a2) 0 4px,transparent 4px 9px);opacity:.9;}
+.mock[data-s="heritage"] .ti{font-family:var(--display);font-weight:600;font-size:14px;color:#3A2716;line-height:1.15;}
+.mock[data-s="heritage"] .dv{display:flex;gap:4px;}
+.mock[data-s="heritage"] .dv i{width:8px;height:8px;background:var(--a2);display:block;transform:rotate(45deg);}
+
+.mock[data-s="organic"]{background:#2A211B;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:12%;position:relative;}
+.mock[data-s="organic"] .blob{position:absolute;inset:auto -20% -30% -20%;height:70%;border-radius:50% 50% 0 0;background:radial-gradient(ellipse at 50% 100%,var(--a1) 0%,transparent 70%);opacity:.35;}
+.mock[data-s="organic"] .it{font-family:var(--display);font-style:italic;font-size:17px;color:#F3EBDD;position:relative;z-index:2;line-height:1.1;}
+.mock[data-s="organic"] .lb{font-family:var(--mono);font-size:6.5px;letter-spacing:.24em;color:var(--a1);margin-top:9%;position:relative;z-index:2;}
+
+.mock[data-s="kinetic"]{background:#07070A;overflow:hidden;display:flex;align-items:center;justify-content:center;}
+.mock[data-s="kinetic"] .num{font-family:var(--display);font-weight:800;font-size:56px;line-height:.8;color:transparent;-webkit-text-stroke:1.5px var(--a1);position:absolute;left:-4%;top:14%;}
+.mock[data-s="kinetic"] .num2{font-family:var(--display);font-weight:800;font-size:56px;line-height:.8;color:var(--a2);position:absolute;right:-4%;bottom:10%;opacity:.9;}
+.mock[data-s="kinetic"] .strip{position:absolute;left:0;right:0;top:48%;height:13px;background:var(--a1);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:6.5px;letter-spacing:.3em;color:#07070A;}
+
+.mock[data-s="swiss"]{background:#FFFFFF;display:grid;grid-template-columns:repeat(6,1fr);grid-template-rows:repeat(4,1fr);gap:4px;padding:9%;}
+.mock[data-s="swiss"] .rd{background:var(--a1);grid-column:span 2;grid-row:span 1;}
+.mock[data-s="swiss"] .bk{background:#111;}
+.mock[data-s="swiss"] .gy{background:#E4E4E4;}
+.mock[data-s="swiss"] .tx{grid-column:span 4;font-family:var(--sans);font-weight:600;font-size:11px;color:#111;align-self:center;line-height:1.1;}
+
+.mock[data-s="noir"]{background:#0B0B0D;display:flex;align-items:flex-end;padding:11%;position:relative;overflow:hidden;}
+.mock[data-s="noir"] .beam{position:absolute;inset:-20% 40% -20% -10%;background:linear-gradient(115deg,transparent 40%,rgba(255,255,255,.14) 50%,transparent 60%);}
+.mock[data-s="noir"] .gl{position:absolute;top:18%;right:14%;width:30%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,var(--a1) 0%,transparent 68%);}
+.mock[data-s="noir"] .ttl{font-family:var(--display);font-weight:800;font-size:15px;color:#EDEAE4;position:relative;z-index:2;letter-spacing:-.01em;line-height:1.05;}
+
+.mock[data-s="scandi"]{background:#EFEAE2;display:flex;flex-direction:column;justify-content:center;padding:12%;gap:9px;}
+.mock[data-s="scandi"] .arc{width:46%;aspect-ratio:2/1;border-radius:100px 100px 0 0;background:var(--a1);opacity:.85;}
+.mock[data-s="scandi"] .st{font-family:var(--display);font-size:13px;color:#2E2A24;line-height:1.2;}
+.mock[data-s="scandi"] .bar2{width:34%;height:6px;border-radius:3px;background:var(--a2);opacity:.6;}
+
+/* ---------- modal ---------- */
+.ov{position:fixed;inset:0;background:rgba(15,13,10,.68);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;padding:18px;z-index:60;}
+.ov.open{display:flex;}
+.md{background:var(--panel);border:1px solid var(--line);border-radius:14px;max-width:1000px;width:100%;max-height:90vh;overflow:auto;display:grid;grid-template-columns:minmax(0,0.85fr) minmax(0,1.15fr);}
+@media (max-width:820px){.md{grid-template-columns:1fr;}}
+.mvis{padding:22px;background:var(--panel-2);display:flex;flex-direction:column;gap:14px;}
+.minfo{padding:22px;display:flex;flex-direction:column;gap:11px;min-width:0;}
+.mclose{position:absolute;top:14px;right:16px;background:var(--panel);border:1px solid var(--line);color:var(--ink-2);font-size:17px;line-height:1;cursor:pointer;border-radius:50%;width:30px;height:30px;}
+.mclose:hover{color:var(--ink);}
+.mdwrap{position:relative;}
+.meye{font-family:var(--mono);font-size:10px;letter-spacing:.11em;text-transform:uppercase;color:var(--gold);}
+.mtitle{font-family:var(--display);font-size:24px;font-weight:600;margin:0;line-height:1.15;}
+.mdesc{font-size:13px;color:var(--ink-2);line-height:1.6;margin:0;}
+.specs{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:9px;}
+.spec{border:1px solid var(--line);border-radius:7px;padding:8px 10px;}
+.spec dt{font-family:var(--mono);font-size:8.5px;letter-spacing:.11em;text-transform:uppercase;color:var(--ink-2);margin-bottom:3px;}
+.spec dd{margin:0;font-size:12px;line-height:1.35;}
+.pal{display:flex;gap:6px;flex-wrap:wrap;}
+.sw{width:30px;height:30px;border-radius:6px;border:1px solid rgba(0,0,0,.14);}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;}
+.tab{background:none;border:1px solid var(--line);border-radius:6px;padding:5px 11px;font-family:var(--mono);font-size:10px;color:var(--ink-2);cursor:pointer;letter-spacing:.05em;}
+.tab[aria-selected="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink);}
+.pbox{background:#141210;border:1px solid #2C2925;border-radius:9px;padding:14px;font-family:var(--mono);font-size:11.5px;line-height:1.62;color:#DCD8CE;white-space:pre-wrap;overflow:auto;max-height:340px;word-break:break-word;}
+.copy{background:var(--ink);color:var(--bg);border:none;border-radius:7px;padding:11px 16px;font-family:var(--sans);font-weight:500;font-size:13px;cursor:pointer;}
+.copy:hover{opacity:.87;}
+.copy.done{background:var(--ok);color:#fff;}
+.principles{display:flex;gap:5px;flex-wrap:wrap;}
+.pr{font-family:var(--mono);font-size:8.5px;letter-spacing:.07em;text-transform:uppercase;border:1px solid var(--line);border-radius:999px;padding:3px 8px;color:var(--ink-2);}
+
+footer{margin-top:52px;padding-top:22px;border-top:1px solid var(--line);font-family:var(--mono);font-size:10.5px;color:var(--ink-2);text-align:center;letter-spacing:.07em;line-height:1.9;}
+
+/* ---------- vocabulary ---------- */
+.vbuild{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:20px;margin-top:22px;display:flex;flex-direction:column;gap:12px;position:sticky;top:env(safe-area-inset-top,0px);z-index:5;}
+.vbhead{display:flex;justify-content:space-between;gap:14px;align-items:flex-start;flex-wrap:wrap;}
+.vbtitle{font-family:var(--display);font-size:19px;font-weight:600;}
+.vbnote{color:var(--ink-2);font-size:12.5px;line-height:1.5;max-width:62ch;margin-top:3px;}
+.vclear{background:none;border:1px solid var(--line);color:var(--ink-2);border-radius:6px;padding:6px 12px;font-family:var(--mono);font-size:10px;letter-spacing:.07em;cursor:pointer;}
+.vclear:hover{border-color:var(--clay);color:var(--clay);}
+.vlabel{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2);}
+.vsubject{width:100%;}
+.vpicked{display:flex;gap:6px;flex-wrap:wrap;min-height:28px;align-items:center;}
+.vpicked .none{font-size:12px;color:var(--ink-2);font-style:italic;}
+.ptag{display:inline-flex;align-items:center;gap:6px;background:var(--panel-2);border:1px solid var(--line);border-radius:999px;padding:4px 6px 4px 11px;font-size:12px;}
+.ptag b{font-weight:500;}
+.ptag i{font-family:var(--mono);font-size:8px;letter-spacing:.09em;text-transform:uppercase;color:var(--gold);font-style:normal;}
+.ptag button{background:none;border:none;color:var(--ink-2);cursor:pointer;font-size:14px;line-height:1;padding:0 4px;}
+.ptag button:hover{color:var(--clay);}
+.vout{max-height:190px;}
+
+.vcats{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:16px;margin-top:22px;}
+.vcat{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px 17px 17px;display:flex;flex-direction:column;gap:9px;}
+.vcat h3{margin:0;font-family:var(--display);font-size:16.5px;font-weight:600;line-height:1.2;}
+.vcatletter{font-family:var(--mono);font-size:9px;letter-spacing:.14em;color:var(--gold);text-transform:uppercase;}
+.vcatuse{font-size:12px;color:var(--ink-2);line-height:1.5;margin:0;}
+.vwords{display:flex;flex-wrap:wrap;gap:5px;}
+.vw{background:var(--panel-2);border:1px solid transparent;border-radius:6px;padding:5px 10px;font-size:12px;font-family:var(--sans);color:var(--ink);cursor:pointer;transition:.12s;}
+.vw:hover{border-color:var(--gold);}
+.vw[aria-pressed="true"]{background:var(--ink);color:var(--bg);}
+.vtip{font-size:11.5px;color:var(--ink-2);line-height:1.5;border-left:2px solid var(--gold);padding-left:9px;margin-top:2px;}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;}}
+</style>
+
+</head>
+<body>
+<div class="wrap">
+  <header class="mast">
+    <div>
+      <div class="kicker">inno4te · Team21 Academy</div>
+      <div class="logo">Forte<em>Temps</em> Atelier</div>
+      <p class="lede">A working brief library for AI-assisted design. Every entry pairs a domain with an aesthetic direction and hands you a copy-ready prompt built on the Level 2 master formula — subject, style, lighting, composition, emotion, finish — with the palette, typography and avoid-list already decided.</p>
+    </div>
+    <div class="counts">
+      <span id="totalCount">—</span> BRIEFS<br>
+      <b id="domCount">—</b> DOMAINS · <b id="styCount">—</b> DIRECTIONS
+      <br><button class="themetog" id="themeTog">THEME</button>
+    </div>
+  </header>
+
+  <div class="switch" role="tablist" aria-label="Library sections">
+    <button role="tab" id="tab-web" aria-selected="true" data-sec="web">Website Templates</button>
+    <button role="tab" id="tab-gfx" aria-selected="false" data-sec="gfx">Graphic Templates</button>
+    <button role="tab" id="tab-voc" aria-selected="false" data-sec="voc">The 100-Word Vocabulary</button>
+  </div>
+
+  <div class="sectionintro">
+    <h2 id="secTitle">Website Templates</h2>
+    <p id="secLede">Full site briefs. Each one names the required sections for that domain, the layout system, and the one signature element that keeps the page off the default AI template.</p>
+  </div>
+
+<div id="libraryPane">
+  <div class="filters">
+    <div class="frow"><span class="flabel" id="catLabel">Domain</span><div class="frow" id="catChips"></div></div>
+    <div class="frow"><span class="flabel">Direction</span><div class="frow" id="styleChips"></div></div>
+    <div class="frow"><span class="flabel">Find</span><input class="search" id="search" type="search" placeholder="Search domain, direction, or keyword…" aria-label="Search templates"></div>
+  </div>
+
+  <div class="bar">
+    <span>Showing <b id="shown">0</b> of <b id="total">0</b> briefs</span>
+    <span id="filterLabel">All domains · All directions</span>
+  </div>
+
+  <div class="grid" id="grid"></div>
+  <div class="empty" id="empty" hidden>Nothing matches that combination. Clear a filter to see more.</div>
+  <button class="more" id="more" hidden>Load more briefs</button>
+</div>
+
+<div id="vocabPane" hidden>
+  <div class="vbuild">
+    <div class="vbhead">
+      <div>
+        <div class="vbtitle">Prompt builder</div>
+        <div class="vbnote">Pick one or two words per category. Quality + Lighting + Composition + Finish is the combination that does most of the work.</div>
+      </div>
+      <button class="vclear" id="vClear">Clear all</button>
+    </div>
+    <label class="vlabel" for="vSubject">Your subject</label>
+    <input class="search vsubject" id="vSubject" type="text" value="a portrait of a Cameroonian AI educator" placeholder="e.g. a book cover for a leadership memoir">
+    <div class="vpicked" id="vPicked"></div>
+    <div class="pbox vout" id="vOut"></div>
+    <button class="copy" id="vCopy">Copy prompt</button>
+  </div>
+  <div class="vcats" id="vCats"></div>
+</div>
+
+  <footer>
+    FORTETEMPS ATELIER · DESIGN BRIEF SYSTEM<br>
+    Built on the Team21 AI Level 2 Playbook and the Team21 UX Teaching Guide — Innocent Forteh<br>
+    Click any card to read and copy its full prompt.
+  </footer>
+</div>
+
+<div class="ov" id="ov" role="dialog" aria-modal="true" aria-labelledby="mTitle">
+  <div class="md mdwrap">
+    <button class="mclose" id="mClose" aria-label="Close">&times;</button>
+    <div class="mvis">
+      <div id="mMock"></div>
+      <div class="pal" id="mPal"></div>
+      <div class="principles" id="mPrin"></div>
+    </div>
+    <div class="minfo">
+      <div class="meye" id="mEye"></div>
+      <h3 class="mtitle" id="mTitle"></h3>
+      <p class="mdesc" id="mDesc"></p>
+      <dl class="specs" id="mSpecs"></dl>
+      <div class="tabs" role="tablist" aria-label="Prompt length">
+        <button class="tab" role="tab" data-mode="full" aria-selected="true">Full brief</button>
+        <button class="tab" role="tab" data-mode="short" aria-selected="false">One-liner</button>
+        <button class="tab" role="tab" data-mode="upgrade" aria-selected="false">Before / after</button>
+      </div>
+      <div class="pbox" id="mPrompt"></div>
+      <button class="copy" id="mCopy">Copy prompt</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ================================================================
+   FORTETEMPS ATELIER — data model
+   Direction = aesthetic system (palette, type, layout, signature)
+   Domain    = industry/subject (audience, sections, accents, icon)
+   Graphic   = deliverable format (ratio, staging, purpose)
+   ================================================================ */
+
+const DIRECTIONS = [
+ {id:'minimalist',name:'Refined Minimal',bg:'#FAFAF8',surface:'#FFFFFF',text:'#1A1A1A',muted:'#9A9690',
+  display:'Söhne, or Inter at 300 weight',body:'Inter',
+  layout:'One centred column, wide margins on all four sides. No cards, no grid lines, no drop shadows. A single 2px rule separates the wordmark from the headline. Corner radius stays at 0 everywhere.',
+  signature:'One short headline set very large against mostly empty space, with an underlined text link where a button would normally go.',
+  note:'Works only when the offer can be stated in under eight words. The layout gives weak copy nowhere to hide.',
+  principles:['White Space','Emphasis','Hierarchy'],
+  emotion:'calm authority and confidence',
+  lighting:'flat even daylight, no visible shadow',
+  composition:'centred composition, generous negative space',
+  avoid:'rounded cards, drop shadows, gradient buttons, stock photography, more than one accent colour'},
+
+ {id:'editorial',name:'Editorial Magazine',bg:'#F6F4EE',surface:'#FFFFFF',text:'#18160F',muted:'#847C68',
+  display:'Source Serif 4, or Freight Text',body:'Inter',
+  layout:'Asymmetric two-column grid — a narrow left rail carrying kicker and byline, a wide right column carrying a serif headline with a dropped capital. Hairline rules separate sections instead of cards.',
+  signature:'A dropped capital opening the first paragraph and a kicker line above the headline, laid out the way a print feature would be.',
+  note:'For brands with a real point of view to publish, not just a product to sell.',
+  principles:['Hierarchy','Alignment','Rhythm'],
+  emotion:'considered, literate, trustworthy',
+  lighting:'soft ambient light, printed-page flatness',
+  composition:'asymmetric grid, rule of thirds, layered depth in imagery',
+  avoid:'centred hero text, icon rows, gradient overlays, sans-serif headlines'},
+
+ {id:'brutalist',name:'Brutalist Raw',bg:'#FFFFFF',surface:'#FFFFFF',text:'#0A0A0A',muted:'#0A0A0A',
+  display:'Space Grotesk Bold, or Archivo Black',body:'IBM Plex Mono',
+  layout:'Stacked, slightly overlapping blocks with 2px black borders and hard offset shadows that have zero blur. Deliberate misalignment instead of a tidy grid. Zero corner radius throughout.',
+  signature:'A bordered box overlapping a solid colour bar, offset just far enough to read as intentional rather than broken.',
+  note:'Needs confident copy. Restraint here is confrontational, not friendly — and that is the point.',
+  principles:['Contrast','Emphasis','Scale & Proportion'],
+  emotion:'confrontational, urgent, unmistakably human',
+  lighting:'hard flat light, no gradients',
+  composition:'deliberate misalignment, oversized blocks, single focal point',
+  avoid:'soft shadows, rounded corners, pastel tints, decorative illustration, more than two typefaces'},
+
+ {id:'glassmorphism',name:'Layered Glass',bg:'#EDEFF7',surface:'rgba(255,255,255,0.5)',text:'#101423',muted:'#586178',
+  display:'General Sans Semibold',body:'Inter',
+  layout:'Two frosted panels at different depths floating over a soft ambient gradient. 14px radii, 1px light borders, no hard shadows — depth comes from blur and layering only.',
+  signature:'Panels overlapping just enough to show the blur working against real contrast behind them.',
+  note:'Keep the background gradient restrained. The effect reads as expensive only when there is something for the blur to catch.',
+  principles:['Layered Depth','Unity','Proximity'],
+  emotion:'modern, light, effortless',
+  lighting:'diffused ambient glow behind translucent surfaces',
+  composition:'overlapping planes, layered depth, generous negative space',
+  avoid:'blur used on a flat single-colour background, neon gradients, heavy drop shadows'},
+
+ {id:'neumorphism',name:'Soft Extruded',bg:'#E7E8EF',surface:'#E7E8EF',text:'#33354A',muted:'#8385A0',
+  display:'Poppins Medium',body:'Inter',
+  layout:'A monochrome surface where controls appear pressed into or extruded out of the same material, using dual soft shadows with the light source at top-left. No borders, no colour blocking. Accent colour appears only on active states.',
+  signature:'A dial or switch that looks physically moulded from the surface rather than placed on top of it.',
+  note:'Belongs on controls-heavy interfaces — settings, trackers, hardware companions — not content-heavy marketing pages.',
+  principles:['Consistency','Proximity','Feedback'],
+  emotion:'tactile, quiet, precise',
+  lighting:'single soft light from the upper left, dual shadow',
+  composition:'symmetrical framing, centred controls, even spacing',
+  avoid:'high-contrast text, busy backgrounds, more than one accent, small type (contrast is already low)'},
+
+ {id:'dark-luxury',name:'Dark Luxury',bg:'#0F0E0C',surface:'#171613',text:'#F2F0EA',muted:'#7A7568',
+  display:'Cormorant Garamond, or a fashion-house serif',body:'Inter',
+  layout:'Centred symmetric composition on a near-black field. One hairline rule under the headline, a small-caps label above it, generous margin on every side. Buttons are outlined, never filled.',
+  signature:'A single hairline rule doing all the separating work — no cards, no shadows, no gradient beyond the accent itself.',
+  note:'The restraint is the product. One accent colour used once says more than five used everywhere.',
+  principles:['White Space','Balance','Emphasis'],
+  emotion:'prestige, aspiration, quiet expense',
+  lighting:'low-key rim lighting, deep moody shadows',
+  composition:'symmetrical framing, centred focal point, wide margins',
+  avoid:'filled buttons, multiple accents, stock imagery, drop shadows, anything bright'},
+
+ {id:'maximalist',name:'Bold Maximalist',bg:'#FFFFFF',surface:'#FFFFFF',text:'#101010',muted:'#2B2B2B',
+  display:'Clash Display, or Fraunces at 800',body:'Inter',
+  layout:'A diagonal two-colour split fills the frame. Oversized type crosses the seam at a slight rotation and bleeds off both edges. The diagonal is the only structural line — there is no grid.',
+  signature:'Type set large enough to break the frame, rotated a few degrees so it reads as deliberate collage.',
+  note:'One diagonal, one rotation, one oversized element. Stacking bold moves reads as noise, not confidence.',
+  principles:['Scale & Proportion','Contrast','Movement'],
+  emotion:'loud, energetic, impossible to scroll past',
+  lighting:'flat saturated colour, high contrast lighting',
+  composition:'diagonal composition, type bleeding off-frame, single badge anchor',
+  avoid:'more than two colours, centred symmetry, thin type, subtle anything'},
+
+ {id:'corporate',name:'Corporate Operational',bg:'#F3F5F8',surface:'#FFFFFF',text:'#0F2338',muted:'#5A6D82',
+  display:'IBM Plex Sans Semibold',body:'IBM Plex Sans',
+  layout:'Fixed sidebar plus content grid, styled like an internal tool rather than a marketing page. KPI tiles and a chart module sit above the fold on 8px-radius cards with soft ambient shadow.',
+  signature:'A real-looking metrics panel — a chart plus two or three KPI figures — placed where a hero image would normally sit.',
+  note:'Credible because it looks operational rather than decorative. No stock illustration anywhere on this page.',
+  principles:['Hierarchy','Alignment','Consistency'],
+  emotion:'trust, competence, control',
+  lighting:'clean studio lighting, neutral and even',
+  composition:'strict grid alignment, summary before detail, tabular figures',
+  avoid:'hero illustrations, gradient headers, playful type, decorative icons'},
+
+ {id:'retro-future',name:'Retro-Futuristic',bg:'#0E0221',surface:'#1B0B3A',text:'#EDE6FF',muted:'#9C8FD6',
+  display:'Michroma, or Eurostile',body:'Space Grotesk',
+  layout:'A deep violet gradient field with a glowing horizon grid receding at the base and a gradient-filled sun sitting on the horizon. Headline type uses a chrome or gradient fill, used exactly once.',
+  signature:'The horizon grid and the gradient arc together — either alone is just a generic dark hero.',
+  note:'One neon hue plus one gradient. A second accent turns retro-futurism into a rave flyer.',
+  principles:['Movement','Unity','Emphasis'],
+  emotion:'nostalgic optimism, forward motion',
+  lighting:'neon glow, volumetric haze on the horizon',
+  composition:'one-point perspective, centred horizon, low camera angle',
+  avoid:'a second neon hue, glassy cards, serif type, daylight photography'},
+
+ {id:'technical',name:'Instrument Technical',bg:'#0D0F12',surface:'#14171C',text:'#E7ECEF',muted:'#6E7C86',
+  display:'Inter for headlines, JetBrains Mono for every label',body:'Inter',
+  layout:'A faint background grid, a bordered viewport panel marked with corner brackets, coordinate-style labels in the corners and small monospace readouts beside key numbers. An instrument panel, not a poster.',
+  signature:'Corner brackets and coordinate labels carrying real information — version numbers, timestamps, specs — never decoration.',
+  note:'Every mono label must say something true. A fake coordinate reads as costume; a real spec reads as competence.',
+  principles:['Alignment','Repetition','Hierarchy'],
+  emotion:'precision, engineering credibility',
+  lighting:'cold screen light, low ambient fill',
+  composition:'grid-locked, corner-anchored labels, centred viewport',
+  avoid:'decorative fake data, glow effects, rounded cards, marketing adjectives'},
+
+ {id:'heritage',name:'African Heritage Modern',bg:'#F1E4D0',surface:'#FFF8EC',text:'#3A2716',muted:'#8A6B49',
+  display:'Fraunces Semibold, or a bold humanist serif',body:'Outfit',
+  layout:'Warm ivory ground with woven pattern bands used as real section dividers, drawn from Bogolan and Kente geometry. Sections are separated by pattern, never by cards. Type sits in generous left-aligned columns.',
+  signature:'A geometric textile band that changes rhythm between sections so the pattern carries the structure of the page.',
+  note:'Cultural design is pattern, colour and form used with intention — never clip art dropped onto a Western template.',
+  principles:['Repetition','Rhythm','Unity'],
+  emotion:'rooted, premium, contemporary African',
+  lighting:'warm golden hour light, soft earth shadow',
+  composition:'horizontal banding, left-aligned type columns, motif as divider',
+  avoid:'tribal-mask clip art, safari photography, tourist-brochure framing, generic startup layout'},
+
+ {id:'organic',name:'Organic Luxury',bg:'#2A211B',surface:'#33291F',text:'#F3EBDD',muted:'#A0917C',
+  display:'Cormorant Garamond Italic',body:'DM Sans',
+  layout:'Deep espresso ground with a single soft radial bloom at the base, subtle paper-grain noise over everything, and very generous vertical rhythm. Content sits in one narrow reading column.',
+  signature:'An italic serif headline over a faint warm bloom, with a monospace label beneath it doing all the labelling work.',
+  note:'Luxury here is texture and typographic precision. Adding elements cheapens it; refining the few you have does not.',
+  principles:['White Space','Balance','Unity'],
+  emotion:'warm prestige, intimacy, editorial calm',
+  lighting:'soft glow from below, candlelit warmth, deep falloff',
+  composition:'narrow centred column, layered depth, wide vertical rhythm',
+  avoid:'cool greys, hard borders, multiple columns, stock business photography'},
+
+ {id:'kinetic',name:'Kinetic Youth',bg:'#07070A',surface:'#111118',text:'#FFFFFF',muted:'#8E8EA3',
+  display:'Clash Display, or Neue Haas Grotesk Black',body:'Space Grotesk',
+  layout:'Near-black field with oversized numerals breaking out of their containers — one outlined, one filled — and a full-width marquee strip cutting horizontally across the middle. Layout is intentionally off-centre.',
+  signature:'Giant numerals that overflow the frame, one in outline and one solid, with a scrolling label strip between them.',
+  note:'Loud is a valid choice when the audience demands it. Keep the palette to two electric hues so the energy reads as directed.',
+  principles:['Scale & Proportion','Movement','Contrast'],
+  emotion:'urgency, excitement, belonging',
+  lighting:'high-contrast strobe, coloured rim light',
+  composition:'off-centre, oversized numerals, horizontal cut across the frame',
+  avoid:'corporate blue, soft pastels, centred symmetry, small timid type'},
+
+ {id:'swiss',name:'Swiss Grid',bg:'#FFFFFF',surface:'#F4F4F4',text:'#111111',muted:'#6B6B6B',
+  display:'Neue Haas Grotesk, or Inter at 600',body:'Inter',
+  layout:'A visible six-column, four-row modular grid. Every block snaps to the grid, one red module anchors the composition, and all type is flush left with a consistent baseline.',
+  signature:'One saturated red module in an otherwise black, white and grey grid, placed off-centre and never repeated.',
+  note:'The discipline is the design. If a block cannot be justified on the grid, remove it rather than nudging it.',
+  principles:['Alignment','Balance','Repetition'],
+  emotion:'objectivity, clarity, order',
+  lighting:'flat neutral light, no atmosphere',
+  composition:'modular grid, flush-left type, single asymmetric anchor',
+  avoid:'centred text, gradients, shadows, decorative flourish of any kind'},
+
+ {id:'noir',name:'Cinematic Noir',bg:'#0B0B0D',surface:'#16161A',text:'#EDEAE4',muted:'#7C7A75',
+  display:'Fraunces at 800, or Playfair Display',body:'Inter',
+  layout:'A single dark frame lit by one diagonal light beam, with one glowing source off to the side. Content sits low in the frame; the upper two-thirds stay almost empty.',
+  signature:'One diagonal beam of light crossing the frame, with the headline anchored at the bottom edge.',
+  note:'Restraint in light is what makes this cinematic. Two light sources kill the drama immediately.',
+  principles:['Contrast','Movement','Emphasis'],
+  emotion:'tension, intrigue, anticipation',
+  lighting:'single-source rim lighting, volumetric beam, deep moody shadows',
+  composition:'low-anchored type, diagonal lead line, heavy negative space above',
+  avoid:'a second light source, bright fills, busy backgrounds, light-mode variants'},
+
+ {id:'scandi',name:'Scandinavian Warm',bg:'#EFEAE2',surface:'#FFFFFF',text:'#2E2A24',muted:'#7D7466',
+  display:'Fraunces at 500',body:'Outfit',
+  layout:'Warm oat ground with simple arch and bar shapes used as the only graphic language. Two-column reading layout at desktop, single column on phone, with very consistent 24px rhythm.',
+  signature:'A single flat arch shape sitting above the headline, in one muted colour, repeated at smaller scale as a section marker.',
+  note:'Warmth comes from the neutral, not from decoration. Pick the off-white deliberately and everything else follows.',
+  principles:['Proximity','Consistency','White Space'],
+  emotion:'calm, welcoming, uncluttered',
+  lighting:'soft north-window daylight',
+  composition:'two-column rhythm, arch motif anchor, even vertical spacing',
+  avoid:'pure white, cool greys, hard black, dense sections, heavy imagery'}
+];
+
+const DOMAINS = [
+ {id:'christianity',name:'Christianity & Church',mark:'CHR',a1:'#7A5C2E',a2:'#3E5C7A',
+  subject:'a local church or faith ministry',audience:'members, new visitors and online congregants',
+  sections:'service times with a map and directions, a livestream and sermon archive, ministries and small groups, a first-time visitor path, online giving, and a prayer-request form',
+  ico:'<path d="M12 3v18M6.5 8.5h11" stroke-linecap="round"/>'},
+ {id:'it',name:'IT & Software Services',mark:'ITS',a1:'#2563A8',a2:'#12A594',
+  subject:'an IT services and systems integration firm',audience:'operations directors and IT managers',
+  sections:'a service catalogue, an uptime and SLA panel, a client stack diagram, certifications, support tiers with response times, and an incident-contact block',
+  ico:'<rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8" stroke-linecap="round"/>'},
+ {id:'news',name:'News & Media',mark:'NWS',a1:'#B3261E',a2:'#1F2937',
+  subject:'an independent news and current-affairs outlet',audience:'daily readers and subscribers',
+  sections:'a lead story with a running headline stack, section fronts, a live-updates rail, reporter bylines, a newsletter sign-up, and a corrections and standards page',
+  ico:'<rect x="3" y="5" width="14" height="14" rx="1"/><path d="M17 9h4v8a2 2 0 0 1-2 2h-2z"/>'},
+ {id:'personal',name:'Personal & Portfolio',mark:'PSN',a1:'#5B4B8A',a2:'#C08A3E',
+  subject:'an individual professional building a personal brand',audience:'recruiters, clients and event organisers',
+  sections:'a positioning statement, selected work with outcomes, a speaking and media kit, a short biography, writing or talks, and a direct contact block',
+  ico:'<circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-6 8-6s8 2 8 6"/>'},
+ {id:'sports',name:'Sports & Athletics',mark:'SPT',a1:'#1E7A3C',a2:'#E0A21C',
+  subject:'a sports club, academy or athletics programme',audience:'players, parents and supporters',
+  sections:'a fixtures and results table, a live league standings block, squad profiles, training schedules, ticketing or trials sign-up, and a sponsor wall',
+  ico:'<circle cx="12" cy="12" r="9"/><path d="M12 3c3 4 3 14 0 18M3.5 9h17M3.5 15h17"/>'},
+ {id:'fitness',name:'Fitness & Training',mark:'FIT',a1:'#D64545',a2:'#20303F',
+  subject:'a gym or personal-training studio',audience:'members and prospective clients',
+  sections:'a class timetable, coach profiles, membership tiers with pricing, transformation results with real numbers, a free-trial booking flow, and facility photography',
+  ico:'<path d="M4 9v6M20 9v6M7 7v10M17 7v10M7 12h10" stroke-linecap="round"/>'},
+ {id:'saas',name:'SaaS & Product',mark:'SYS',a1:'#4F46E5',a2:'#14B8A6',
+  subject:'a B2B software platform',audience:'technical buyers and engineering teams',
+  sections:'a live product demo panel, a feature grid, an integrations marquee, a tiered pricing table, and a customer-logo strip',
+  ico:'<path d="M8 6 3 12l5 6M16 6l5 6-5 6" stroke-linecap="round" stroke-linejoin="round"/>'},
+ {id:'ecom',name:'Luxury E-Commerce',mark:'LUX',a1:'#9C7A3C',a2:'#7A1F2B',
+  subject:'a high-end fashion or goods label',audience:'discerning retail customers',
+  sections:'a full-bleed lookbook hero, a shoppable product grid, a craftsmanship story, a size and fit guide, and a members-only programme teaser',
+  ico:'<path d="M4 9h16l-8 12L4 9z" stroke-linejoin="round"/><path d="M4 9l4-6h8l4 6"/>'},
+ {id:'realestate',name:'Real Estate',mark:'RE',a1:'#2F5233',a2:'#B8934A',
+  subject:'a boutique real-estate brokerage',audience:'home buyers and property investors',
+  sections:'a featured-listings carousel, an interactive neighbourhood map, agent profile cards, a virtual-tour call to action, and a mortgage calculator',
+  ico:'<path d="M3 11l9-7 9 7" stroke-linecap="round"/><path d="M5 10v10h14V10"/>'},
+ {id:'restaurant',name:'Restaurant & Hospitality',mark:'R&H',a1:'#8C3A2E',a2:'#4B5E3A',
+  subject:'a chef-driven restaurant',audience:'diners and event planners',
+  sections:'menu highlights with prices, the chef story, a reservation widget, a gallery of dishes and the room, and a private-events enquiry',
+  ico:'<path d="M7 3v8a2 2 0 0 0 4 0V3M9 11v10M17 3c-1.5 2-2 4-2 6h4c0-2-.5-4-2-6zM17 9v12"/>'},
+ {id:'agency',name:'Creative Agency',mark:'AGC',a1:'#D6491F',a2:'#101820',
+  subject:'an independent design and branding studio',audience:'prospective enterprise clients',
+  sections:'a case-study grid with measurable results, a process timeline, a client roster, a studio-culture strip, and a project-enquiry brief form',
+  ico:'<circle cx="9" cy="12" r="6"/><circle cx="15" cy="12" r="6"/>'},
+ {id:'fintech',name:'Fintech & Banking',mark:'FIN',a1:'#1B3F73',a2:'#1E9E63',
+  subject:'a digital banking or investing product',audience:'retail and small-business customers',
+  sections:'an account dashboard preview, security and compliance badges, a fee and rate comparison table, an app-download panel, and a regulatory footer',
+  ico:'<path d="M3 17l6-6 4 4 8-8" stroke-linecap="round"/><path d="M15 7h6v6"/>'},
+ {id:'wellness',name:'Health & Wellness',mark:'HW',a1:'#3E7C6B',a2:'#C9905A',
+  subject:'a wellness studio or clinic',audience:'clients seeking care or membership',
+  sections:'a programme overview, practitioner bios with credentials, a testimonial carousel, an online booking flow, and membership tiers',
+  ico:'<path d="M4 20C4 10 12 4 20 4c0 8-6 16-16 16z"/><path d="M4 20L14 10" stroke-linecap="round"/>'},
+ {id:'education',name:'Education & Learning',mark:'EDU',a1:'#1D4E89',a2:'#D2932E',
+  subject:'an online course or cohort-based school',audience:'prospective students and their sponsors',
+  sections:'a course catalogue, an instructor spotlight, a curriculum roadmap, graduate outcome statistics, and an enrolment call to action',
+  ico:'<path d="M2 9l10-5 10 5-10 5-10-5z"/><path d="M6 11v5c0 1.5 3 3 6 3s6-1.5 6-3v-5"/>'},
+ {id:'nonprofit',name:'Nonprofit & Cause',mark:'NGO',a1:'#6B4226',a2:'#B99A6B',
+  subject:'a mission-driven nonprofit',audience:'donors, partners and volunteers',
+  sections:'a mission statement, quantified impact figures, beneficiary stories, a volunteer sign-up, and a transparency and financials report',
+  ico:'<path d="M12 20s-7-4.5-9.5-9C1 7.5 3 4 6.5 4 9 4 11 6 12 7c1-1 3-3 5.5-3C21 4 23 7.5 21.5 11 19 15.5 12 20 12 20z"/>'},
+ {id:'travel',name:'Travel & Hospitality',mark:'TRV',a1:'#1C6E8C',a2:'#D89B2E',
+  subject:'a boutique hotel or travel outfitter',audience:'travellers planning a stay or trip',
+  sections:'a destination hero, room or package categories, curated experience add-ons, guest reviews, and a live booking calendar',
+  ico:'<circle cx="12" cy="12" r="9"/><path d="M15 9l-2 6-6 2 2-6 6-2z"/>'},
+ {id:'government',name:'Government & Public Sector',mark:'GOV',a1:'#1F4E5F',a2:'#9A7B2F',
+  subject:'a public institution or government agency',audience:'citizens, partners and oversight bodies',
+  sections:'a services directory, official announcements, downloadable forms and procedures, a leadership and mandate page, an accessibility statement, and public-contact channels',
+  ico:'<path d="M3 10l9-6 9 6M5 10v9h14v-9M9 19v-6h6v6"/>'},
+ {id:'legal',name:'Legal & Professional Services',mark:'LEG',a1:'#243B53',a2:'#8A6D3B',
+  subject:'a law or professional advisory firm',audience:'corporate clients and private individuals',
+  sections:'practice areas, partner profiles with admissions, representative matters, published insights, fee structure, and a confidential enquiry form',
+  ico:'<path d="M12 4v16M5 20h14M7 8l-3 6h6zM17 8l-3 6h6zM4 8h16"/>'},
+ {id:'music',name:'Music & Entertainment',mark:'MUS',a1:'#B4306E',a2:'#2B1B4A',
+  subject:'a recording artist or entertainment label',audience:'fans, promoters and press',
+  sections:'a release hero with streaming links, a tour date list with ticket links, a video gallery, a press kit, merchandise, and a fan mailing list',
+  ico:'<circle cx="7" cy="18" r="3"/><circle cx="18" cy="16" r="3"/><path d="M10 18V6l11-2v12"/>'},
+ {id:'agritech',name:'Agriculture & Agri-Tech',mark:'AGR',a1:'#4A6B24',a2:'#B07B2C',
+  subject:'an agribusiness or agricultural technology venture',audience:'farmers, cooperatives and buyers',
+  sections:'crop and product lines, yield and traceability data, a cooperative or outgrower programme, logistics and cold-chain capability, certifications, and a wholesale enquiry form',
+  ico:'<path d="M12 21V9M12 9C9 9 6 7 6 4c3 0 6 2 6 5zM12 9c3 0 6-2 6-5-3 0-6 2-6 5z"/>'},
+ {id:'automotive',name:'Automotive & Mobility',mark:'AUT',a1:'#C2410C',a2:'#1E293B',
+  subject:'a vehicle brand, dealership or mobility service',audience:'buyers and fleet managers',
+  sections:'a model configurator, specification tables, a test-drive booking flow, finance and warranty terms, a dealer locator, and an aftersales service panel',
+  ico:'<path d="M5 16h14M4 16l2-6h12l2 6M7 16v2M17 16v2"/><circle cx="8" cy="16" r="1.5"/><circle cx="16" cy="16" r="1.5"/>'},
+ {id:'events',name:'Events & Conferences',mark:'EVT',a1:'#7C3AED',a2:'#F0A312',
+  subject:'a conference, summit or festival',audience:'delegates, speakers and sponsors',
+  sections:'a date and venue hero with a countdown, a multi-track agenda, speaker cards, ticket tiers, a sponsor prospectus, and travel and accommodation guidance',
+  ico:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18"/>'},
+ {id:'ecommerce-mass',name:'Retail & Marketplace',mark:'RTL',a1:'#0F766E',a2:'#E0762C',
+  subject:'a multi-category online retailer or marketplace',audience:'everyday shoppers on mobile',
+  sections:'a category grid, a search and filter bar, deal and stock badges, seller ratings, a cart and checkout path, and delivery and returns terms',
+  ico:'<path d="M4 7h16l-1.5 12h-13z"/><path d="M9 7V5a3 3 0 0 1 6 0v2"/>'}
+];
+
+const GRAPHICS = [
+ {id:'book-cover',name:'Book Cover',mark:'BK',ratio:'2/3',
+  brief:'a commercial book cover that must read at thumbnail size on a storefront and hold up as a physical object on a shelf',
+  where:'an online storefront thumbnail and a printed paperback face',
+  action:'make a browser stop scrolling and read the subtitle',
+  extras:'title, author name, a one-line endorsement, and a spine-safe margin'},
+ {id:'thumbnail',name:'YouTube Thumbnail',mark:'YT',ratio:'16/9',
+  brief:'a high click-through video thumbnail',
+  where:'a crowded video feed at roughly 320px wide',
+  action:'earn the click without over-promising the video',
+  extras:'three to four words of oversized text, one face or one object, and a clear curiosity gap'},
+ {id:'ig-post',name:'Social Post (1:1)',mark:'IG',ratio:'1/1',
+  brief:'a single-frame social post',
+  where:'a mobile feed, seen for under half a second while scrolling',
+  action:'stop the thumb and earn a save or share',
+  extras:'one headline, one supporting line, and a small brand mark in a fixed corner'},
+ {id:'story',name:'Story / Reel Cover (9:16)',mark:'ST',ratio:'9/16',
+  brief:'a vertical story or reel cover frame',
+  where:'a full-screen vertical feed with interface chrome at both ends',
+  action:'hold the viewer past the first second',
+  extras:'type kept inside the central safe area, one focal subject, and a tap-forward cue'},
+ {id:'poster',name:'Poster & Flyer',mark:'PST',ratio:'3/4',
+  brief:'an event or promotional poster',
+  where:'a printed A4 handout and a shared image on phones',
+  action:'get the date, place and price remembered',
+  extras:'headline, date and time, venue, price, and a QR or contact line'},
+ {id:'billboard',name:'Billboard & Outdoor',mark:'BLB',ratio:'21/9',
+  brief:'an outdoor billboard panel',
+  where:'roadside, read in under two seconds at distance',
+  action:'lodge one message and one brand in memory',
+  extras:'a maximum of six words, one image, and no fine print at all'},
+ {id:'logo',name:'Logo & Wordmark',mark:'LGO',ratio:'1/1',
+  brief:'a primary brand mark and wordmark lockup',
+  where:'a favicon at 32px, a signboard, and an embroidered shirt',
+  action:'be recognised again after one exposure',
+  extras:'a monochrome version, a clear-space rule, and a minimum-size note'},
+ {id:'product-ad',name:'Product Advertisement',mark:'ADV',ratio:'4/5',
+  brief:'a premium product advertisement with the product as hero',
+  where:'a paid social placement and a magazine page',
+  action:'create desire and move the viewer to buy',
+  extras:'the product staged in light, one benefit line, price or offer, and a brand mark'},
+ {id:'packaging',name:'Product Packaging',mark:'PKG',ratio:'3/4',
+  brief:'retail packaging artwork for a physical product',
+  where:'a shelf at eye height among competing products',
+  action:'get picked up rather than passed',
+  extras:'product name, variant, net quantity, and a front-panel benefit claim'},
+ {id:'podcast',name:'Podcast Cover Art',mark:'POD',ratio:'1/1',
+  brief:'podcast cover art',
+  where:'a directory grid at roughly 200px square',
+  action:'earn a subscribe from a stranger',
+  extras:'show name legible at small size, host presence, and a category cue'},
+ {id:'magazine',name:'Magazine Cover',mark:'MAG',ratio:'3/4',
+  brief:'a magazine or report cover',
+  where:'a newsstand rack and a downloadable PDF front page',
+  action:'signal authority and make the issue worth opening',
+  extras:'masthead, issue line, three cover lines, and a dominant cover subject'},
+ {id:'linkedin',name:'Profile & Channel Header',mark:'HDR',ratio:'4/1',
+  brief:'a professional profile or channel banner',
+  where:'the top of a profile, cropped differently on phone and desktop',
+  action:'establish credibility in one glance',
+  extras:'a positioning line, safe-area margins for avatar overlap, and one contact handle'},
+ {id:'infographic',name:'Infographic',mark:'INF',ratio:'2/3',
+  brief:'a data-led infographic explaining one idea',
+  where:'a shared image and a printed handout',
+  action:'be understood without narration and passed on',
+  extras:'one headline claim, three to five real data points with units, a source line, and a legend'},
+ {id:'slide',name:'Presentation Slide',mark:'SLD',ratio:'16/9',
+  brief:'a keynote presentation slide system',
+  where:'a projected screen in a lit room, plus a PDF sent afterwards',
+  action:'carry one idea per slide without being read aloud',
+  extras:'a slide title, one supporting visual, a footer with section and page, and a high-contrast type minimum'},
+ {id:'certificate',name:'Certificate & Award',mark:'CRT',ratio:'4/3',
+  brief:'a certificate of completion or award document',
+  where:'printed on A4 landscape and framed on a wall',
+  action:'feel genuinely earned and worth displaying',
+  extras:'recipient name field, programme title, date, two signature blocks, and a verification code'},
+ {id:'portrait',name:'Portrait & Headshot Treatment',mark:'PRT',ratio:'4/5',
+  brief:'a treated portrait for a professional or public figure',
+  where:'a profile, a speaker page and press use',
+  action:'project authority and warmth at the same time',
+  extras:'consistent crop, background treatment, and a colour grade that matches the brand'},
+ {id:'church-graphic',name:'Sermon & Church Series Graphic',mark:'SRM',ratio:'16/9',
+  brief:'a sermon-series or church announcement graphic',
+  where:'a projection screen behind the stage and a shared image on phones',
+  action:'set the tone for the series and make the details stick',
+  extras:'series title, scripture reference, dates, and a church mark'},
+ {id:'sports-graphic',name:'Matchday & Score Graphic',mark:'MTC',ratio:'1/1',
+  brief:'a matchday, lineup or final-score graphic',
+  where:'a fast-moving social feed during and after a fixture',
+  action:'be reposted by supporters within minutes',
+  extras:'both team marks, the score or kickoff time, the competition name, and the venue'},
+ {id:'news-card',name:'News & Breaking Card',mark:'NWC',ratio:'4/5',
+  brief:'a news headline card for social distribution',
+  where:'a feed where it will be screenshotted and reshared out of context',
+  action:'carry the fact accurately even when reshared',
+  extras:'the headline, a one-line standfirst, the outlet mark, a dateline, and a photo credit'},
+ {id:'menu',name:'Menu & Price List',mark:'MNU',ratio:'3/4',
+  brief:'a printed menu or service price list',
+  where:'in the hand at a table, often in low light',
+  action:'guide the eye to the items worth ordering',
+  extras:'sections, item names with short descriptions, prices aligned in a column, and allergen or option marks'},
+ {id:'cv',name:'CV & Personal One-Pager',mark:'CV',ratio:'3/4',
+  brief:'a one-page CV or personal capability sheet',
+  where:'an A4 print and a PDF opened on a phone',
+  action:'survive a six-second scan and earn a longer read',
+  extras:'name and positioning line, three achievements with numbers, skills, and contact details'},
+ {id:'pitch',name:'Pitch Deck Cover',mark:'PCH',ratio:'16/9',
+  brief:'the cover slide of an investor or client pitch deck',
+  where:'a boardroom projector and an emailed PDF',
+  action:'set expectation of competence before slide two',
+  extras:'company name, one-line proposition, round or engagement label, and date'},
+ {id:'merch',name:'Apparel & Merchandise Print',mark:'MRC',ratio:'1/1',
+  brief:'an apparel or merchandise print',
+  where:'a garment front, printed in limited colours',
+  action:'be worn voluntarily by someone who is not paid to',
+  extras:'a limited colour count, a print-safe size, and a design that works on both light and dark fabric'},
+ {id:'ad-banner',name:'Display Ad Banner',mark:'BNR',ratio:'3/1',
+  brief:'a display advertising banner set',
+  where:'a page margin beside unrelated content',
+  action:'earn a click without being mistaken for site furniture',
+  extras:'one offer line, a visible button, a brand mark, and a legible size at the smallest placement'}
+];
+
+/* ---------------- prompt builders ---------------- */
+
+function webPrompt(dom,dir){
+return `Build a website for ${dom.subject}, aimed at ${dom.audience}.
+
+CREATIVE BRIEF (one sentence)
+${dom.audience} need to feel ${dir.emotion} so that they will act on the page's primary call to action.
+
+AESTHETIC DIRECTION
+${dir.name}. ${dir.layout}
+
+COLOUR SYSTEM — use these exact values, do not substitute
+- Background: ${dir.bg}
+- Surface / panels: ${dir.surface}
+- Primary text: ${dir.text}
+- Muted text: ${dir.muted}
+- Primary accent: ${dom.a1}
+- Secondary accent: ${dom.a2}
+Support both light and dark themes from the same token set.
+
+TYPOGRAPHY
+- Display face: ${dir.display}
+- Body and UI face: ${dir.body}
+Do not fall back to Inter, Roboto, Arial or system defaults unless the face above names one. Two families maximum.
+
+SIGNATURE ELEMENT
+${dir.signature} Build it around ${dom.subject}'s real offering, never a placeholder.
+
+REQUIRED SECTIONS
+${dom.sections}.
+
+DESIGN PRINCIPLES TO ENFORCE
+${dir.principles.join(', ')}. Composition: ${dir.composition}. Light and atmosphere: ${dir.lighting}.
+
+UX REQUIREMENTS
+- Every action gets visible feedback: pressed state, loading state, success state with a clear next step.
+- Buttons say what happens, not "Submit".
+- One primary call to action per screen.
+- Works on a low-end Android phone on slow data: readable at 4 inches, legible in bright sunlight, no layout that needs hover.
+- Consistent button, colour and spacing system across every page.
+
+AVOID
+${dir.avoid}. Also avoid the default AI layout of hero, three cards, testimonials, footer.
+
+DESIGN NOTE
+${dir.note}`;
+}
+
+function webShort(dom,dir){
+return `Build a ${dir.name.toLowerCase()} website for ${dom.subject}, for ${dom.audience}. Palette ${dir.bg} background, ${dom.a1} primary accent, ${dom.a2} secondary, ${dir.text} text. ${dir.display} for headlines, ${dir.body} for body — no Inter or system fallbacks. ${dir.signature} Sections: ${dom.sections}. ${dir.composition}. Avoid ${dir.avoid}.`;
+}
+
+function webUpgrade(dom,dir){
+return `AMATEUR PROMPT
+"Make me a website for ${dom.subject.replace(/^an? /,'')}."
+
+WHAT GOES WRONG
+The model fills the gap with its defaults: Inter, a purple gradient, rounded cards on white, a hero followed by three feature boxes. Nothing in it belongs to ${dom.subject} specifically.
+
+ELITE PROMPT
+${webShort(dom,dir)}
+
+WHAT CHANGED
+1. Audience named — ${dom.audience} — so tone and reading level are decided.
+2. Emotion named — ${dir.emotion} — so colour and type have a target.
+3. Palette and typefaces fixed to exact values, with the defaults explicitly banned.
+4. A signature element specified, so the page has one memorable thing instead of five forgettable ones.
+5. An avoid-list, which does as much work as the request itself.`;
+}
+
+function gfxPrompt(g,dir,dom){
+return `${g.brief.charAt(0).toUpperCase()+g.brief.slice(1)} for ${dom.subject}.
+
+CREATIVE DIRECTOR ANSWERS
+- WHO: ${dom.audience}.
+- EMOTION: ${dir.emotion}.
+- WHERE: ${g.where}. Format ratio ${g.ratio.replace('/',':')}.
+- ACTION: ${g.action}.
+
+MASTER FORMULA
+[Subject] ${dom.subject} presented as ${g.brief}
+[Style] ${dir.name.toLowerCase()} — ${dir.signature}
+[Lighting] ${dir.lighting}
+[Composition] ${dir.composition}
+[Emotion / purpose] ${dir.emotion}, in service of: ${g.action}
+[Finish] production-ready, pixel-perfect at the size it will actually be seen, gallery quality
+
+COLOUR
+Ground ${dir.bg}, primary text ${dir.text}, secondary text ${dir.muted}, primary accent ${dom.a1}, secondary accent ${dom.a2}. Two accents maximum, and the secondary appears once.
+
+TYPOGRAPHY
+${dir.display} for display type, ${dir.body} for supporting text. Two families, no more. Never Inter, Roboto or Arial by default.
+
+MUST INCLUDE
+${g.extras}.
+
+PRINCIPLES TO ENFORCE
+${dir.principles.join(', ')}. One dominant focal point. Everything aligned to a grid. Generous breathing room around the focal element.
+
+AVOID
+${dir.avoid}. No three-font layouts, no random colour, no floating unaligned elements, no effects stacked for their own sake, and no describing objects where you should be describing feeling.
+
+TEST BEFORE ACCEPTING
+Shrink it to the size in WHERE above. If the main message is not readable and the focal point is not obvious, the design has failed regardless of how it looks at full size.`;
+}
+
+function gfxShort(g,dir,dom){
+return `${g.brief.charAt(0).toUpperCase()+g.brief.slice(1)} for ${dom.subject}. ${dir.name} style. ${dir.lighting}. ${dir.composition}. ${dir.emotion}. Palette: ${dom.a1} and ${dom.a2} on ${dir.bg}. ${dir.display} display type with ${dir.body} support. Must include ${g.extras}. Format ${g.ratio.replace('/',':')}. Avoid ${dir.avoid}. Production-ready, high contrast, single focal point.`;
+}
+
+function gfxUpgrade(g,dir,dom){
+return `AMATEUR PROMPT
+"${g.name.toLowerCase().startsWith('logo')?'Make a logo':'Design a '+g.name.toLowerCase()}."
+
+WHAT GOES WRONG
+No audience, no emotion, no lighting, no format. The model describes an object instead of a feeling, and returns something technically correct and completely forgettable.
+
+ELITE PROMPT
+${gfxShort(g,dir,dom)}
+
+WHAT CHANGED
+1. A named subject: ${dom.subject}, not a generic placeholder.
+2. Lighting specified — ${dir.lighting} — which is the single biggest lever on perceived quality.
+3. Composition specified — ${dir.composition} — so the focal point is decided before generation.
+4. Format and viewing distance stated: ${g.where}.
+5. An avoid-list closing off the nine standard failure modes.`;
+}
+
+/* ---------------- assemble ---------------- */
+
+const WEB=[],GFX=[];
+DOMAINS.forEach(dom=>DIRECTIONS.forEach(dir=>{
+  WEB.push({sec:'web',id:'w_'+dom.id+'_'+dir.id,cat:dom,dir,
+    catName:dom.name,ratio:'4/3',
+    prompts:{full:webPrompt(dom,dir),short:webShort(dom,dir),upgrade:webUpgrade(dom,dir)}});
+}));
+GRAPHICS.forEach((g,gi)=>DIRECTIONS.forEach(dir=>{
+  const dom=DOMAINS[(gi*5+DIRECTIONS.indexOf(dir))%DOMAINS.length];
+  GFX.push({sec:'gfx',id:'g_'+g.id+'_'+dir.id,cat:g,dir,dom,
+    catName:g.name,ratio:g.ratio,
+    prompts:{full:gfxPrompt(g,dir,dom),short:gfxShort(g,dir,dom),upgrade:gfxUpgrade(g,dir,dom)}});
+}));
+
+/* ---------------- mock rendering ---------------- */
+
+function ico(d,size,color){
+  const path=d.ico||'<circle cx="12" cy="12" r="8"/>';
+  return `<span class="m-ico" style="width:${size}px;height:${size}px;color:${color}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">${path}</svg></span>`;
+}
+
+function mock(item){
+  const dir=item.dir;
+  const dom=item.sec==='web'?item.cat:item.dom;
+  const idx=DOMAINS.findIndex(d=>d.id===dom.id);
+  const flip=idx%2===1, g3=idx%3;
+  const rot=[-7,6,-5,8,-3,7,-9,4,-6,8,-4,5][idx%12];
+  const v=`--a1:${dom.a1};--a2:${dom.a2};aspect-ratio:${item.ratio}`;
+  const label=item.sec==='gfx'?item.cat.mark:dom.mark;
+
+  switch(dir.id){
+  case 'minimalist':return `<div class="mock" data-s="minimalist" style="${v};align-items:${flip?'flex-end':'flex-start'};text-align:${flip?'right':'left'}">
+    <div style="display:flex;align-items:center;gap:5px;margin-bottom:13%;flex-direction:${flip?'row-reverse':'row'}">${ico(dom,10,dom.a1)}<span class="mk">${label}</span></div>
+    <div class="hd"></div><div class="l1"></div><div class="l2" style="${flip?'margin-left:auto':''}"></div><div class="lk">Enter →</div></div>`;
+
+  case 'editorial':{const cols=flip?'1fr 28%':'28% 1fr';
+    const side=`<div class="side" style="${flip?'border-right:none;padding-right:0;padding-left:8%':''}"><div class="kick">${ico(dom,9,dom.a1)}${label}</div><div class="by"></div></div>`;
+    const main=`<div class="main" style="${flip?'padding-left:0;padding-right:8%;border-right:1px solid #D8D2C2':''}"><div class="dc">${dom.name[0]}</div><div class="hl">A considered opening, set like a feature story.</div><div class="rl"></div></div>`;
+    return `<div class="mock" data-s="editorial" style="${v};grid-template-columns:${cols}">${flip?main+side:side+main}</div>`;}
+
+  case 'brutalist':return `<div class="mock" data-s="brutalist" style="${v}">
+    <div class="tg">${label}·${String(idx+1).padStart(2,'0')}</div>
+    <div class="b1"></div><div class="b2" style="transform:translateX(${flip?-13:13}%)"></div>
+    <div class="bx" style="${flip?'left:9%':'right:9%'}">${ico(dom,15,'#0A0A0A')}</div></div>`;
+
+  case 'glassmorphism':return `<div class="mock" data-s="glassmorphism" style="${v}">
+    <div class="pn p1" style="top:13%;${flip?'right:10%':'left:10%'}"><div class="dt">${ico(dom,9,'#33405C')}</div></div>
+    <div class="pn p2" style="bottom:12%;${flip?'left:8%':'right:8%'}"></div></div>`;
+
+  case 'neumorphism':return `<div class="mock" data-s="neumorphism" style="${v};justify-content:center">
+    <div style="display:flex;align-items:center;gap:11%;width:100%;padding:0 11%;justify-content:${flip?'flex-end':'flex-start'};flex-direction:${flip?'row-reverse':'row'}">
+      <div class="dial">${ico(dom,13,dom.a1)}</div><div class="tcol"><div class="tg2"></div><div class="tg2"></div></div></div></div>`;
+
+  case 'dark-luxury':return `<div class="mock" data-s="dark-luxury" style="${v}">
+    <div style="margin-bottom:7%">${ico(dom,13,'#8A8375')}</div><div class="wd">${label}</div>
+    <div class="tt">A quieter kind of statement</div><div class="hr" style="width:${[18,24,30][g3]}%"></div><div class="ct">DISCOVER</div></div>`;
+
+  case 'maximalist':return `<div class="mock" data-s="maximalist" style="${v};background:linear-gradient(${flip?'225deg':'135deg'},${dom.a1} 0 50%,${dom.a2} 50%)">
+    <div class="big" style="transform:rotate(${rot}deg)">${label}</div>
+    <div class="bg2" style="${flip?'left:8%':'right:8%'}">${ico(dom,13,dom.a1)}</div></div>`;
+
+  case 'corporate':{const bars=[42,66,54,80,60].map(h=>`<u style="height:${h}%"></u>`).join('');
+    const sb=`<div class="sb">${ico(dom,11,'#fff')}<i></i><i></i><i></i></div>`;
+    const mn=`<div class="mn"><div class="kps"><div class="kp">${ico(dom,11,dom.a1)}</div><div class="kp"></div><div class="kp"></div></div><div class="ch">${bars}</div></div>`;
+    return `<div class="mock" data-s="corporate" style="${v};grid-template-columns:${flip?'1fr 16%':'16% 1fr'}">${flip?mn+sb:sb+mn}</div>`;}
+
+  case 'retro-future':return `<div class="mock" data-s="retro-future" style="${v}">
+    <div class="sun" style="${['left:20%','left:50%;transform:translateX(-50%)','right:20%'][g3]}">${ico(dom,13,'rgba(255,255,255,.8)')}</div>
+    <div class="hl2">${label}</div><div class="hz"></div></div>`;
+
+  case 'technical':return `<div class="mock" data-s="technical" style="${v}">
+    <div class="co">${ico(dom,8,'#5C6870')} ${label}/OK · 12.11N 15.03E</div>
+    <div class="vp" style="${flip?'inset:17% 21% 25% 12%':'inset:20% 16%'}"><div class="cr"></div></div>
+    <div class="ro">REV ${idx+1}.${g3}</div></div>`;
+
+  case 'heritage':return `<div class="mock" data-s="heritage" style="${v}">
+    <div class="band"></div>
+    <div class="ti">Rooted work,<br>made for now.</div>
+    <div class="dv"><i></i><i></i><i></i></div>
+    <div style="display:flex;align-items:center;gap:5px;font-family:var(--mono);font-size:6.5px;letter-spacing:.18em;color:#8A6B49">${ico(dom,9,dom.a1)}${label}</div></div>`;
+
+  case 'organic':return `<div class="mock" data-s="organic" style="${v}">
+    <div class="blob"></div><div class="it">Considered,<br>and quiet.</div><div class="lb">${label} · ATELIER</div></div>`;
+
+  case 'kinetic':return `<div class="mock" data-s="kinetic" style="${v}">
+    <div class="num">${String(idx+1).padStart(2,'0')}</div>
+    <div class="num2">${label[0]}</div>
+    <div class="strip">${label} · NOW OPEN · ${label} · NOW OPEN</div></div>`;
+
+  case 'swiss':return `<div class="mock" data-s="swiss" style="${v}">
+    <div class="rd" style="${flip?'grid-column:5/7':'grid-column:1/3'}"></div>
+    <div class="tx" style="${flip?'grid-column:1/5':'grid-column:3/7'}">Order<br>is the idea.</div>
+    <div class="gy" style="grid-column:1/4;grid-row:2/4"></div>
+    <div class="bk" style="grid-column:4/7;grid-row:3/4"></div>
+    <div class="gy" style="grid-column:4/6;grid-row:2/3"></div>
+    <div style="grid-column:1/3;grid-row:4/5;display:flex;align-items:center;gap:5px;font-family:var(--mono);font-size:6.5px;color:#111">${ico(dom,9,'#111')}${label}</div></div>`;
+
+  case 'noir':return `<div class="mock" data-s="noir" style="${v}">
+    <div class="beam"></div><div class="gl"></div>
+    <div class="ttl">${label}<br>After dark.</div></div>`;
+
+  case 'scandi':return `<div class="mock" data-s="scandi" style="${v}">
+    <div class="arc"></div><div class="st">Plain things,<br>made well.</div><div class="bar2"></div>
+    <div style="display:flex;align-items:center;gap:5px;font-family:var(--mono);font-size:6.5px;letter-spacing:.16em;color:#7D7466">${ico(dom,9,dom.a1)}${label}</div></div>`;
+
+  default:return `<div class="mock" style="${v};background:${dir.bg}"></div>`;
+  }
+}
+
+/* ---------------- state + render ---------------- */
+
+const $=id=>document.getElementById(id);
+let section='web', activeCat='all', activeDir='all', query='', limit=48;
+
+const catChips=$('catChips'), styleChips=$('styleChips'), grid=$('grid');
+
+$('totalCount').textContent=(WEB.length+GFX.length);
+$('domCount').textContent=DOMAINS.length+GRAPHICS.length;
+$('styCount').textContent=DIRECTIONS.length;
+
+function cats(){return section==='web'?DOMAINS:GRAPHICS;}
+function items(){return section==='web'?WEB:GFX;}
+
+function renderChips(){
+  catChips.innerHTML='<button class="chip" aria-pressed="true" data-v="all">All</button>'+
+    cats().map(c=>`<button class="chip" aria-pressed="false" data-v="${c.id}">${c.name}</button>`).join('');
+  styleChips.innerHTML='<button class="chip" aria-pressed="true" data-v="all">All</button>'+
+    DIRECTIONS.map(d=>`<button class="chip" aria-pressed="false" data-v="${d.id}">${d.name}</button>`).join('');
+  catChips.querySelectorAll('.chip').forEach(b=>b.onclick=()=>{
+    activeCat=b.dataset.v;limit=48;
+    catChips.querySelectorAll('.chip').forEach(x=>x.setAttribute('aria-pressed',x===b));render();});
+  styleChips.querySelectorAll('.chip').forEach(b=>b.onclick=()=>{
+    activeDir=b.dataset.v;limit=48;
+    styleChips.querySelectorAll('.chip').forEach(x=>x.setAttribute('aria-pressed',x===b));render();});
+}
+
+function filtered(){
+  const q=query.trim().toLowerCase();
+  return items().filter(t=>
+    (activeCat==='all'||t.cat.id===activeCat)&&
+    (activeDir==='all'||t.dir.id===activeDir)&&
+    (!q||(t.catName+' '+t.dir.name+' '+t.dir.note+' '+(t.cat.subject||t.cat.brief)).toLowerCase().includes(q))
+  );
+}
+
+function render(){
+  const list=filtered();
+  $('shown').textContent=Math.min(limit,list.length);
+  $('total').textContent=list.length;
+  const cn=activeCat==='all'?(section==='web'?'All domains':'All formats'):cats().find(c=>c.id===activeCat).name;
+  const dn=activeDir==='all'?'All directions':DIRECTIONS.find(d=>d.id===activeDir).name;
+  $('filterLabel').textContent=cn+' · '+dn;
+  $('empty').hidden=list.length>0;
+
+  grid.innerHTML=list.slice(0,limit).map(t=>`
+    <button class="card" data-id="${t.id}">
+      <div class="cshell">${mock(t)}</div>
+      <div class="cbody">
+        <div class="cdom">${t.catName}</div>
+        <div class="cstyle">${t.dir.name}</div>
+        <div class="cnote">${t.dir.layout.split('.')[0]}.</div>
+        <div class="cmeta">${t.dir.principles.join(' · ').toUpperCase()}${t.sec==='gfx'?' · '+t.ratio.replace('/',':'):''}</div>
+      </div>
+    </button>`).join('');
+  grid.querySelectorAll('.card').forEach(c=>c.onclick=()=>open(c.dataset.id));
+  $('more').hidden=list.length<=limit;
+}
+
+$('more').onclick=()=>{limit+=48;render();};
+$('search').oninput=e=>{query=e.target.value;limit=48;render();};
+
+document.querySelectorAll('.switch button').forEach(b=>b.onclick=()=>{
+  const sec=b.dataset.sec;
+  document.querySelectorAll('.switch button').forEach(x=>x.setAttribute('aria-selected',x===b));
+  $('libraryPane').hidden = sec==='voc';
+  $('vocabPane').hidden = sec!=='voc';
+  if(sec==='voc'){
+    $('secTitle').textContent='The Elite 100-Word Vocabulary';
+    $('secLede').textContent='Ten categories of language that separate a five-dollar design from a five-thousand-dollar one. Click words to stack them into a prompt — the builder writes it in master-formula order as you go.';
+    return;
+  }
+  section=sec;activeCat='all';activeDir='all';limit=48;
+  $('catLabel').textContent=section==='web'?'Domain':'Format';
+  $('secTitle').textContent=section==='web'?'Website Templates':'Graphic Templates';
+  $('secLede').textContent=section==='web'
+    ? 'Full site briefs. Each one names the required sections for that domain, the layout system, and the one signature element that keeps the page off the default AI template.'
+    : 'Single-asset briefs built on the master formula. Each one fixes the format ratio, the viewing distance, the lighting and the finish, and ends with a size test the design has to survive.';
+  renderChips();render();
+});
+
+/* ================= THE 100-WORD VOCABULARY ================= */
+
+const VOCAB=[
+ {letter:'A',slot:'Quality',name:'Premium, Luxury & Expensive Look',
+  use:'Use these when you want to communicate high value, prestige and quality. They tell the model to elevate every element of the output.',
+  words:['Luxury','Premium','High-end','Upscale','Exclusive','Bespoke','Designer','Elite','Prestigious','Sophisticated'],
+  tip:'Pair any of these with your subject and the perceived quality jumps immediately. "Luxury packaging" reads nothing like "product packaging". "Bespoke portrait" tells the model something precise about refinement and customisation.'},
+ {letter:'B',slot:'Style',name:'Clean, Modern & Professional',
+  use:'Use these when precision, clarity and contemporary style are the goal. They signal restraint — the confidence to show less.',
+  words:['Minimalist','Sleek','Refined','Polished','Modern','Sharp','Elegant','Streamlined','Clean-lined','Contemporary'],
+  tip:'"Minimalist" on its own can come back sparse and empty. Combine it with a quality word — "luxury minimalist" or "premium minimalist editorial" — to get restraint that still feels rich.'},
+ {letter:'C',slot:'Emotion',name:'Cinematic, Emotional & Storytelling',
+  use:'These unlock the emotional dimension. Include them and the model shifts from illustrating a scene to telling a story.',
+  words:['Cinematic','Dramatic','Epic','Emotional','Atmospheric','Moody','Tension-filled','Inspirational','Heroic','Narrative-driven'],
+  tip:'Cinematic + Atmospheric + Moody together signal film-still quality, which is instantly recognisable. Add a lighting term from Category D for the full effect.'},
+ {letter:'D',slot:'Lighting',name:'Lighting Terms — The Game Changer',
+  use:'Lighting is the single most powerful element in visual design. It sets mood, time of day, emotional tone and perceived professionalism. This vocabulary is worth more than any other single skill.',
+  words:['Golden hour','Soft glow','Rim lighting','Backlit','Volumetric light','Studio lighting','Moody shadows','Neon glow','Ambient lighting','High contrast lighting'],
+  tip:'Golden hour means warmth and nostalgia. Volumetric light means drama and the ethereal. Rim lighting means separation and style. Studio lighting means clean and commercial. Moody shadows mean tension and sophistication.'},
+ {letter:'E',slot:'Composition',name:'Composition & Camera',
+  use:'Borrowed from professional photography and cinematography, these give precise instructions about how to frame and compose the shot.',
+  words:['Centered composition','Rule of thirds','Wide angle','Close-up','Dynamic perspective',"Bird's-eye view",'Low angle shot','Symmetrical framing','Layered depth','Negative space'],
+  tip:'"Layered depth" builds a foreground, midground and background, which makes almost any image feel three-dimensional. Pair it with "depth of field" for the most professional result.'},
+ {letter:'F',slot:'Purpose',name:'Viral, Marketing & Sales Impact',
+  use:'These serve a strategic function. They tell the model what the image is for — clicks, conversions or engagement.',
+  words:['Eye-catching','Scroll-stopping','Clickworthy','High-converting','Attention-grabbing','Bestseller look','Premium branding','Trust-building','Authority-driven','Viral-ready'],
+  tip:'Name the job, not just the look. "Trust-building" and "scroll-stopping" pull the design in opposite directions, so pick the one that matches your actual goal.'},
+ {letter:'G',slot:'Texture',name:'Texture, Material & Realism',
+  use:'Texture words add tactile richness. They make an image feel physical, real and expensive.',
+  words:['Glossy','Matte','Metallic','Velvet','Glass-like','Marble finish','Satin texture','Carbon fiber','Leather detail','Hyper-detailed'],
+  tip:'Contrast two finishes in the same prompt — "glossy and matte surface contrast" — and the material reads as real rather than rendered.'},
+ {letter:'H',slot:'Style',name:'Fashion, Editorial & Magazine',
+  use:'When the output has to look like it belongs in a magazine spread or a luxury campaign, these are essential.',
+  words:['Editorial','Vogue-inspired','Runway-ready','Haute couture','Styled shoot','Fashion-forward','Luxury campaign','Magazine cover quality','Studio editorial','Designer aesthetic'],
+  tip:'"Editorial" is the highest-leverage single word in this category. It brings typographic discipline and generous white space with it for free.'},
+ {letter:'I',slot:'Style',name:'Futuristic, Tech & Innovation',
+  use:'For product launches, tech brands, innovation campaigns, or anything that should feel ahead of its time.',
+  words:['Futuristic','Cyberpunk','Next-gen','Holographic','AI-powered aesthetic','Smart-tech design','Sci-fi realism','Digital luxury','Neon futuristic','Concept-grade'],
+  tip:'These stack badly. One futurism word plus one lighting word is enough; three turns the output into a stock-art cliché.'},
+ {letter:'J',slot:'Finish',name:'Final Polish & Technical Finish',
+  use:'Your closing words — the last layer of quality. They signal that the output should be gallery-ready and technically flawless.',
+  words:['Ultra realistic','Photorealistic','8K detail','Rendered masterpiece','Studio quality','Production-ready','Pixel perfect','Gallery quality','Mastercrafted','Award-winning'],
+  tip:'Two finish words is the ceiling. Stacking six does not make the output sharper; it just dilutes everything you asked for before them.'}
+];
+
+const ORDER=['Quality','Style','Lighting','Composition','Texture','Emotion','Purpose','Finish'];
+let picked=[];
+
+function renderVocab(){
+  $('vCats').innerHTML=VOCAB.map(c=>`
+    <div class="vcat">
+      <div class="vcatletter">Category ${c.letter} · ${c.slot}</div>
+      <h3>${c.name}</h3>
+      <p class="vcatuse">${c.use}</p>
+      <div class="vwords">${c.words.map(w=>
+        `<button class="vw" aria-pressed="${picked.some(p=>p.w===w)}" data-w="${w}" data-slot="${c.slot}" data-l="${c.letter}">${w}</button>`).join('')}</div>
+      <p class="vtip">${c.tip}</p>
+    </div>`).join('');
+  $('vCats').querySelectorAll('.vw').forEach(b=>b.onclick=()=>{
+    const w=b.dataset.w;
+    const i=picked.findIndex(p=>p.w===w);
+    if(i>-1)picked.splice(i,1);else picked.push({w,slot:b.dataset.slot,l:b.dataset.l});
+    renderVocab();buildVocabPrompt();
+  });
+}
+
+function buildVocabPrompt(){
+  const subj=$('vSubject').value.trim()||'your subject';
+  $('vPicked').innerHTML=picked.length
+    ? picked.map(p=>`<span class="ptag"><i>${p.l}</i><b>${p.w}</b><button data-w="${p.w}" aria-label="Remove ${p.w}">&times;</button></span>`).join('')
+    : '<span class="none">No words picked yet — the prompt below shows what the formula looks like empty.</span>';
+  $('vPicked').querySelectorAll('button').forEach(b=>b.onclick=()=>{
+    picked=picked.filter(p=>p.w!==b.dataset.w);renderVocab();buildVocabPrompt();});
+
+  const bySlot={};
+  picked.forEach(p=>{(bySlot[p.slot]=bySlot[p.slot]||[]).push(p.w);});
+  const lines=ORDER.filter(s=>bySlot[s]).map(s=>`[${s}] ${bySlot[s].join(', ')}`);
+
+  const sentence=[subj]
+    .concat(ORDER.filter(s=>bySlot[s]).map(s=>bySlot[s].join(', ').toLowerCase()))
+    .join('. ')+'.';
+
+  $('vOut').textContent =
+`MASTER FORMULA
+[Subject] ${subj}
+${lines.length?lines.join('\n'):'[Style] —\n[Lighting] —\n[Composition] —\n[Finish] —\n(pick words below to fill these in)'}
+
+READY-TO-PASTE PROMPT
+${sentence}
+
+CHECK BEFORE YOU SEND
+- Is there exactly one focal point?
+- Is the palette named, or did you leave colour to chance?
+- Are there two typefaces at most?
+- Did you say where this will appear and at what size?
+- Are you describing a feeling, or only describing an object?`;
+}
+
+$('vSubject').oninput=buildVocabPrompt;
+$('vClear').onclick=()=>{picked=[];renderVocab();buildVocabPrompt();};
+$('vCopy').onclick=()=>{
+  const btn=$('vCopy'),txt=$('vOut').textContent;
+  const done=()=>{btn.textContent='Copied ✓';btn.classList.add('done');
+    setTimeout(()=>{btn.textContent='Copy prompt';btn.classList.remove('done');},1700);};
+  try{navigator.clipboard.writeText(txt).then(done).catch(()=>{});}catch(e){}
+};
+
+
+/* ---------------- modal ---------------- */
+let current=null,mode='full';
+const ov=$('ov');
+
+function open(id){
+  const t=items().find(x=>x.id===id);if(!t)return;
+  current=t;mode='full';
+  const dom=t.sec==='web'?t.cat:t.dom;
+  $('mMock').innerHTML=mock(t);
+  $('mPal').innerHTML=[t.dir.bg,t.dir.surface,t.dir.text,dom.a1,dom.a2]
+    .map(c=>`<div class="sw" style="background:${c}" title="${c}"></div>`).join('');
+  $('mPrin').innerHTML=t.dir.principles.map(p=>`<span class="pr">${p}</span>`).join('');
+  $('mEye').textContent=(t.sec==='web'?'Website':'Graphic')+' · '+t.catName;
+  $('mTitle').textContent=t.dir.name;
+  $('mDesc').textContent=t.dir.note;
+  $('mSpecs').innerHTML=`
+    <div class="spec"><dt>Display face</dt><dd>${t.dir.display}</dd></div>
+    <div class="spec"><dt>Body face</dt><dd>${t.dir.body}</dd></div>
+    <div class="spec"><dt>Lighting</dt><dd>${t.dir.lighting}</dd></div>
+    <div class="spec"><dt>${t.sec==='gfx'?'Format':'Composition'}</dt><dd>${t.sec==='gfx'?t.ratio.replace('/',':')+' · '+t.cat.where:t.dir.composition}</dd></div>`;
+  paint();
+  ov.classList.add('open');
+  $('mClose').focus();
+}
+function paint(){
+  $('mPrompt').textContent=current.prompts[mode];
+  document.querySelectorAll('.tab').forEach(b=>b.setAttribute('aria-selected',b.dataset.mode===mode));
+  const c=$('mCopy');c.classList.remove('done');
+  c.textContent=mode==='upgrade'?'Copy the comparison':'Copy prompt';
+}
+document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{mode=b.dataset.mode;paint();});
+$('mCopy').onclick=()=>{
+  const txt=current.prompts[mode],btn=$('mCopy');
+  const done=()=>{btn.textContent='Copied ✓';btn.classList.add('done');setTimeout(paint,1700);};
+  try{navigator.clipboard.writeText(txt).then(done).catch(sel);}catch(e){sel();}
+  function sel(){const r=document.createRange();r.selectNodeContents($('mPrompt'));
+    const s=getSelection();s.removeAllRanges();s.addRange(r);
+    btn.textContent='Selected — press copy';setTimeout(paint,2200);}
+};
+const close=()=>ov.classList.remove('open');
+$('mClose').onclick=close;
+ov.onclick=e=>{if(e.target===ov)close();};
+document.addEventListener('keydown',e=>{if(e.key==='Escape')close();});
+
+/* ---------------- theme ---------------- */
+$('themeTog').onclick=()=>{
+  const cur=document.documentElement.getAttribute('data-theme');
+  const dark=cur?cur==='dark':matchMedia('(prefers-color-scheme: dark)').matches;
+  document.documentElement.setAttribute('data-theme',dark?'light':'dark');
+};
+
+renderChips();render();renderVocab();buildVocabPrompt();
+</script>
+
+</body>
+</html>

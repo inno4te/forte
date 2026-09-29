@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Business Plan Library — ForTe Economics</title>
+<meta name="description" content="15 replicable transformation business plans: process, equipment cost, and real resources — for anyone ready to build instead of export raw.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,450;0,9..144,600;0,9..144,700;1,9..144,450;1,9..144,600&family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#f3efe6; --ink-dim:#b9b3a6; --ink-faint:#7d786e;
+  --bg:#14161a; --bg-raised:#1b1e23; --bg-card:#20242a; --line:#33373d;
+  --cobalt:#5b7fff; --copper:#e0873c; --verdigris:#57a68f; --alert:#e0574c; --gold:#e8b23d;
+  --serif:'Fraunces', Georgia, serif; --sans:'Inter', -apple-system, sans-serif; --mono:'IBM Plex Mono', monospace;
+  --maxw:1100px;
+}
+*{box-sizing:border-box; margin:0; padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg); color:var(--ink); font-family:var(--sans); line-height:1.6; -webkit-font-smoothing:antialiased; overflow-x:hidden;}
+@media (prefers-reduced-motion: reduce){ *{animation-duration:.01ms !important; transition-duration:.01ms !important;} }
+a{color:inherit;}
+.wrap{max-width:var(--maxw); margin:0 auto; padding:0 24px;}
+h1,h2,h3,h4{font-family:var(--serif); font-weight:600; letter-spacing:-0.01em; color:var(--ink);}
+::selection{background:var(--cobalt); color:#fff;}
+
+.topbar{position:sticky; top:0; z-index:50; background:rgba(20,22,26,0.9); backdrop-filter:blur(10px); border-bottom:1px solid var(--line);}
+.topbar-inner{max-width:var(--maxw); margin:0 auto; padding:14px 24px; display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;}
+.tb-back{font-family:var(--mono); font-size:12.5px; color:var(--ink-dim); text-decoration:none; display:flex; align-items:center; gap:6px;}
+.tb-back:hover{color:var(--ink);}
+.tb-brand{font-family:var(--serif); font-weight:700; font-size:16px;}
+.tb-brand .mark{color:var(--copper); font-style:italic;}
+.tb-cta{
+  font-family:var(--sans); font-weight:600; font-size:12.5px; padding:9px 16px; border-radius:100px;
+  background:var(--copper); color:#191008; text-decoration:none;
+}
+
+.hero{padding:72px 0 48px; border-bottom:1px solid var(--line);}
+.eyebrow{
+  font-family:var(--mono); font-size:12.5px; letter-spacing:0.14em; text-transform:uppercase;
+  color:var(--copper); display:flex; align-items:center; gap:10px; margin-bottom:16px;
+}
+.eyebrow::before{content:""; width:22px; height:1px; background:var(--copper); display:inline-block;}
+.hero h1{font-size:clamp(32px,4.6vw,50px); line-height:1.06; margin-bottom:20px; max-width:16ch;}
+.hero p{color:var(--ink-dim); font-size:17px; max-width:66ch; margin-bottom:8px;}
+.hero .note{font-family:var(--mono); font-size:12.5px; color:var(--ink-faint); margin-top:20px;}
+
+.jump-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:10px; padding:36px 0; border-bottom:1px solid var(--line);}
+.jump-card{
+  border:1px solid var(--line); border-radius:12px; padding:14px 16px; text-decoration:none; background:var(--bg-raised);
+  display:flex; align-items:center; gap:10px; transition:border-color .2s, transform .2s;
+}
+.jump-card:hover{border-color:var(--copper); transform:translateY(-2px);}
+.jump-card .jc-num{font-family:var(--mono); font-size:11px; color:var(--ink-faint);}
+.jump-card .jc-name{font-size:13.5px; font-weight:600; color:var(--ink);}
+@media (max-width:800px){ .jump-grid{grid-template-columns:1fr 1fr;} }
+@media (max-width:520px){ .jump-grid{grid-template-columns:1fr;} }
+
+.plans{padding:56px 0 90px;}
+.plan{
+  border:1px solid var(--line); border-radius:18px; margin-bottom:20px; background:var(--bg-raised); overflow:hidden; scroll-margin-top:80px;
+}
+.plan summary{
+  list-style:none; cursor:pointer; padding:26px 28px; display:flex; align-items:center; justify-content:space-between; gap:20px;
+}
+.plan summary::-webkit-details-marker{display:none;}
+.p-head-left{display:flex; align-items:center; gap:16px;}
+.p-icon{font-size:28px; line-height:1;}
+.p-title-block .p-num{font-family:var(--mono); font-size:11px; color:var(--copper); margin-bottom:2px;}
+.p-title-block h3{font-size:21px; font-weight:600;}
+.p-chevron{font-family:var(--mono); color:var(--ink-faint); font-size:22px; transition:transform .25s ease; flex-shrink:0;}
+.plan[open] .p-chevron{transform:rotate(45deg); color:var(--cobalt);}
+.plan-body{padding:0 28px 34px; border-top:1px solid var(--line); margin-top:2px;}
+
+.p-intro{color:var(--ink-dim); font-size:15px; padding-top:24px; margin-bottom:24px;}
+.p-intro strong{color:var(--ink);}
+
+.p-subhead{
+  font-family:var(--mono); font-size:11px; text-transform:uppercase; letter-spacing:.09em; color:var(--ink-faint);
+  margin:28px 0 14px; padding-top:22px; border-top:1px solid var(--line); display:flex; align-items:center; gap:10px;
+}
+.p-subhead:first-of-type{border-top:none; padding-top:0; margin-top:0;}
+.p-subhead .dot{width:7px; height:7px; border-radius:2px; background:var(--verdigris); flex-shrink:0;}
+
+.process-list{list-style:none; counter-reset:pstep; display:flex; flex-direction:column; gap:12px;}
+.process-list li{counter-increment:pstep; display:flex; gap:14px; font-size:14.5px; color:var(--ink-dim);}
+.process-list li::before{
+  content:counter(pstep); font-family:var(--mono); font-size:12px; color:var(--cobalt);
+  border:1px solid rgba(91,127,255,.4); background:rgba(91,127,255,.08);
+  width:25px; height:25px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px;
+}
+.process-list li strong{color:var(--ink);}
+
+.cost-table{width:100%; border-collapse:collapse; font-size:14px; margin-bottom:6px;}
+.cost-table th{text-align:left; font-family:var(--mono); font-size:10.5px; text-transform:uppercase; letter-spacing:.07em; color:var(--ink-faint); padding:0 12px 10px 0; border-bottom:1px solid var(--line); font-weight:500;}
+.cost-table td{padding:10px 12px 10px 0; border-bottom:1px solid rgba(51,55,61,.6); color:var(--ink-dim);}
+.cost-table td:first-child{color:var(--ink); font-weight:500;}
+.cost-table .num{font-family:var(--mono); color:var(--gold);}
+.cost-total{
+  display:flex; justify-content:space-between; align-items:center; margin-top:14px; padding:14px 18px;
+  background:var(--bg-card); border-radius:10px; border:1px solid var(--line);
+}
+.cost-total .ct-label{font-family:var(--mono); font-size:12px; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-faint);}
+.cost-total .ct-value{font-family:var(--mono); font-size:20px; color:var(--gold); font-weight:600;}
+
+.econ-strip{display:flex; gap:24px; flex-wrap:wrap; margin:16px 0 4px;}
+.econ-item{font-family:var(--mono);}
+.econ-item .e-v{font-size:16.5px; color:var(--verdigris); font-weight:600;}
+.econ-item .e-l{font-size:10.5px; color:var(--ink-faint); text-transform:uppercase; letter-spacing:.05em;}
+
+.resource-grid{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
+.resource-link{
+  display:flex; align-items:flex-start; gap:10px; padding:13px 16px; border:1px solid var(--line); border-radius:10px;
+  text-decoration:none; background:var(--bg-card); transition:border-color .2s;
+}
+.resource-link:hover{border-color:var(--verdigris);}
+.resource-link .r-tag{font-family:var(--mono); font-size:9.5px; text-transform:uppercase; letter-spacing:.05em; padding:2px 7px; border-radius:100px; flex-shrink:0; margin-top:2px;}
+.resource-link .r-tag.org{color:var(--cobalt); border:1px solid rgba(91,127,255,.4); background:rgba(91,127,255,.08);}
+.resource-link .r-tag.video{color:var(--alert); border:1px solid rgba(224,87,76,.4); background:rgba(224,87,76,.08);}
+.resource-link .r-tag.diy{color:var(--gold); border:1px solid rgba(232,178,61,.4); background:rgba(232,178,61,.08);}
+.resource-link .r-tag.supplier{color:var(--verdigris); border:1px solid rgba(87,166,143,.4); background:rgba(87,166,143,.08);}
+.resource-link .r-text{font-size:13px; color:var(--ink-dim); line-height:1.4;}
+.resource-link .r-text strong{color:var(--ink); display:block; font-size:13.5px; margin-bottom:1px;}
+@media (max-width:700px){ .resource-grid{grid-template-columns:1fr;} }
+
+.plan-cta{
+  margin-top:26px; padding:18px 22px; border-left:3px solid var(--copper); background:rgba(224,135,60,0.06); border-radius:0 10px 10px 0;
+}
+.plan-cta p{font-size:13.5px; color:var(--ink-dim);}
+.plan-cta strong{color:var(--copper);}
+
+footer.pl-footer{border-top:1px solid var(--line); padding:44px 0; text-align:center;}
+footer.pl-footer p{color:var(--ink-faint); font-size:12.5px; max-width:60ch; margin:0 auto;}
+footer.pl-footer a{color:var(--ink-dim); text-decoration:underline;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <a href="forte-economics.html#pathways" class="tb-back">← Back to main report</a>
+    <span class="tb-brand">ForTe <span class="mark">Economics</span> · Business Plans</span>
+    <a href="https://wa.me/237674917169?text=I%27m%20starting%20one%20of%20the%20ForTe%20Economics%20business%20plans.%20Here%27s%20which%20one%20and%20where%3A%20" class="tb-cta" target="_blank" rel="noopener">Tell us you're starting →</a>
+  </div>
+</div>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">15 Replicable Templates</div>
+    <h1>Stop selling raw. Here's exactly how to start.</h1>
+    <p>Every template below follows the same structure: what you're transforming and why it pays, the actual transformation process step by step, realistic equipment and startup costs, and real places to learn the skill or source the machinery — including specific organizations, supplier directories, and YouTube searches that return genuine how-to content. These aren't abstract advice. They're a starting checklist.</p>
+    <p class="note">Costs are in USD, rough ranges based on small-scale/artisanal equipment as of 2025–26 — always get 2–3 local quotes before committing capital. Equipment prices vary significantly by country and import duty.</p>
+  </div>
+</header>
+
+<nav class="jump-grid">
+  <div class="wrap" style="display:contents;">
+    <a href="#p1" class="jump-card"><span class="jc-num">01</span><span class="jc-name">🍫 Cocoa → Chocolate</span></a>
+    <a href="#p2" class="jump-card"><span class="jc-num">02</span><span class="jc-name">🥔 Cassava → Flour</span></a>
+    <a href="#p3" class="jump-card"><span class="jc-num">03</span><span class="jc-name">☕ Coffee → Roasted</span></a>
+    <a href="#p4" class="jump-card"><span class="jc-num">04</span><span class="jc-name">🧵 Cotton → Textiles</span></a>
+    <a href="#p5" class="jump-card"><span class="jc-num">05</span><span class="jc-name">🌴 Palm Fruit → Oil</span></a>
+    <a href="#p6" class="jump-card"><span class="jc-num">06</span><span class="jc-name">🥜 Cashew → Roasted</span></a>
+    <a href="#p7" class="jump-card"><span class="jc-num">07</span><span class="jc-name">🧴 Shea → Butter</span></a>
+    <a href="#p8" class="jump-card"><span class="jc-num">08</span><span class="jc-name">🪣 Rubber → Goods</span></a>
+    <a href="#p9" class="jump-card"><span class="jc-num">09</span><span class="jc-name">🥫 Groundnuts → Peanut Butter</span></a>
+    <a href="#p10" class="jump-card"><span class="jc-num">10</span><span class="jc-name">🌽 Maize → Flour &amp; Pasta</span></a>
+    <a href="#p11" class="jump-card"><span class="jc-num">11</span><span class="jc-name">🐟 Fish &amp; Poultry Farming</span></a>
+    <a href="#p12" class="jump-card"><span class="jc-num">12</span><span class="jc-name">🪵 Timber → Furniture</span></a>
+    <a href="#p13" class="jump-card"><span class="jc-num">13</span><span class="jc-name">🔌 Copper → Wire &amp; Cable</span></a>
+    <a href="#p14" class="jump-card"><span class="jc-num">14</span><span class="jc-name">💎 Gemstones → Cut &amp; Polished</span></a>
+    <a href="#p15" class="jump-card"><span class="jc-num">15</span><span class="jc-name">🫙 Sesame → Oil &amp; Tahini</span></a>
+  </div>
+</nav>
+
+<main class="plans">
+  <div class="wrap">
+
+    <!-- 01 COCOA -->
+    <details class="plan" id="p1" open>
+      <summary>
+        <div class="p-head-left"><span class="p-icon">🍫</span><div class="p-title-block"><div class="p-num">Template 01</div><h3>Cocoa Beans → Powder, Butter &amp; Chocolate</h3></div></div>
+        <span class="p-chevron">+</span>
+      </summary>
+      <div class="plan-body">
+        <p class="p-intro">Applies directly in <strong>Cameroon, Ghana, Nigeria, DRC</strong>. Raw beans sell at ~$4,400/tonne; the same tonne as finished chocolate is worth $25,000–35,000+. You don't need a factory to capture a meaningful slice of that gap — a compact grinder can turn farm-gate beans into powder and butter within your first season.</p>
+
+        <div class="p-subhead"><span class="dot"></span>The transformation process</div>
+        <ol class="process-list">
+          <li><strong>Source &amp; ferment:</strong> Buy fully-fermented, sun-dried beans directly from a cooperative — fermentation quality (5–7 days in wooden boxes) determines flavor and cannot be fixed later.</li>
+          <li><strong>Clean &amp; roast:</strong> Sort out debris and broken beans, then roast at 120–150°C for 20–40 minutes depending on bean size, until the shell cracks easily.</li>
+          <li><strong>Winnow:</strong> Crack the roasted beans and separate the shell from the nib using a winnower (manual or motorized fan-based).</li>
+          <li><strong>Grind:</strong> Pass nibs through a melangeur or stone grinder — first producing cocoa liquor/mass, which separates into cocoa solids and cocoa butter under a hydraulic press.</li>
+          <li><strong>Package the intermediate products:</strong> Cocoa powder (from pressed solids) and cocoa butter sell readily to bakeries, cosmetics makers, and confectioners even before you attempt finished chocolate bars.</li>
+          <li><strong>Optional — conch &amp; temper for bars:</strong> Once cash flow is established, add a conche (refines texture over hours) and tempering machine to produce retail chocolate bars.</li>
+        </ol>
+
+        <div class="p-subhead"><span class="dot"></span>Equipment &amp; startup cost</div>
+        <table class="cost-table">
+          <thead><tr><th>Item</th><th>Estimated cost</th><th>Note</th></tr></thead>
+          <tbody>
+            <tr><td>Cocoa roaster (small batch, 5–20kg)</td><td class="num">$800–2,500</td><td>Gas or electric drum roaster</td></tr>
+            <tr><td>Winnower</td><td class="num">$300–900</td><td>Can be built DIY from a shop-vac + sieves initially</td></tr>
+            <tr><td>Stone melangeur / grinder</td><td class="num">$1,500–4,500</td><td>The single most important machine — buy quality here</td></tr>
+            <tr><td>Cocoa butter press</td><td class="num">$1,200–3,000</td><td>Hydraulic, separates butter from cake</td></tr>
+            <tr><td>Packaging &amp; labeling setup</td><td class="num">$200–600</td><td>Heat sealer, scale, basic branding</td></tr>
+          </tbody>
+        </table>
+        <div class="cost-total"><span class="ct-label">Total realistic starter budget</span><span class="ct-value">$4,000–11,500</span></div>
+
+        <div class="econ-strip">
+          <div class="econ-item"><span class="e-v">2–3×</span><span class="e-l">margin vs. raw beans, powder/butter stage</span></div>
+          <div class="econ-item"><span class="e-v">1 tonne</span><span class="e-l">beans → ≈950kg saleable product</span></div>
+          <div class="econ-item"><span class="e-v">4–8 wks</span><span class="e-l">from purchase to first sale</span></div>
+        </div>
+
+        <div class="p-subhead"><span class="dot"></span>Learn it &amp; source equipment</div>
+        <div class="resource-grid">
+          <a class="resource-link" href="https://www.fao.org/family-farming/detail/en/c/1239784/" target="_blank" rel="noopener"><span class="r-tag org">Org</span><span class="r-text"><strong>FAO cocoa value-chain guidance</strong>Smallholder processing standards &amp; fermentation technique</span></a>
+          <a class="resource-link" href="https://www.youtube.com/results?search_query=small+scale+cocoa+processing+bean+to+bar+equipment" target="_blank" rel="noopener"><span class="r-tag video">Video</span><span class="r-text"><strong>"Small-scale cocoa processing" search</strong>Bean-to-bar equipment demonstrations</span></a>
+          <a class="resource-link" href="https://www.appropedia.org/Category:Cocoa" target="_blank" rel="noopener"><span class="r-tag diy">DIY</span><span class="r-text"><strong>Appropedia cocoa processing category</strong>Open-source appropriate-tech build guides</span></a>
+          <a class="resource-link" href="https://www.alibaba.com/showroom/cocoa-processing-machine.html" target="_blank" rel="noopener"><span class="r-tag supplier">Supplier</span><span class="r-text"><strong>Alibaba cocoa processing machinery</strong>Compare small-batch roaster/grinder suppliers</span></a>
+        </div>
+
+        <div class="plan-cta"><p><strong>Country deep dives:</strong> see the full mechanism and value-loss arithmetic for cocoa in the <a href="country.html?c=cameroon" target="_blank" rel="noopener">Cameroon report</a> and <a href="country.html?c=ghana" target="_blank" rel="noopener">Ghana report</a>.</p></div>
+      </div>
+    </details>
+
+    <!-- 02 CASSAVA -->
+    <details class="plan" id="p2">
+      <summary>
+        <div class="p-head-left"><span class="p-icon">🥔</span><div class="p-title-block"><div class="p-num">Template 02</div><h3>Cassava → Flour, Garri, Starch &amp; Pasta</h3></div></div>
+        <span class="p-chevron">+</span>
+      </summary>
+      <div class="plan-body">
+        <p class="p-intro">Applies directly in <strong>Nigeria, Ghana, DRC, Cameroon</strong>. Cassava roots spoil within 48 hours of harvest — the entire economics of this business is about buying at the harvest-glut price and converting to a shelf-stable product before rot sets in.</p>
+
+        <div class="p-subhead"><span class="dot"></span>The transformation process (flour route)</div>
+        <ol class="process-list">
+          <li><strong>Harvest &amp; peel fast:</strong> Process within 24–48 hours of harvest — peel by hand or with a mechanical peeler to reduce cyanogenic compounds and prevent spoilage.</li>
+          <li><strong>Wash &amp; grate:</strong> Wash thoroughly, then grate into a mash using a motorized grater (the single highest-leverage piece of equipment for scale).</li>
+          <li><strong>Press:</strong> Load the mash into sacks and use a screw or hydraulic press to remove excess liquid — this step also removes cyanide-carrying compounds.</li>
+          <li><strong>Dry:</strong> Sun-dry on raised mats or use a solar/mechanical dryer to bring moisture below 12% — this is the step that determines shelf life.</li>
+          <li><strong>Mill:</strong> Pass dried cassava chips through a hammer mill to produce High Quality Cassava Flour (HQCF).</li>
+          <li><strong>For garri instead:</strong> Fry the pressed, fermented mash in a large pan over heat, stirring continuously, instead of sun-drying and milling.</li>
+          <li><strong>Advanced — pasta/spaghetti:</strong> Blend HQCF (typically 20–40%) with wheat flour and an extruder to produce composite-flour pasta — a genuine import-substitution product, though pure-cassava pasta requires specialized gluten-free extrusion equipment.</li>
+        </ol>
+
+        <div class="p-subhead"><span class="dot"></span>Equipment &amp; startup cost</div>
+        <table class="cost-table">
+          <thead><tr><th>Item</th><th>Estimated cost</th><th>Note</th></tr></thead>
+          <tbody>
+            <tr><td>Motorized cassava grater</td><td class="num">$400–1,200</td><td>The core machine — diesel or electric</td></tr>
+            <tr><td>Screw/hydraulic press</td><td class="num">$300–900</td><td>Removes liquid &amp; cyanide compounds</td></tr>
+            <tr><td>Solar or mechanical dryer</td><td class="num">$500–2,000</td><td>Sun-drying racks are a free starting alternative</td></tr>
+            <tr><td>Hammer mill</td><td class="num">$800–2,500</td><td>For flour; skip if only making garri</td></tr>
+            <tr><td>Frying pan/roaster (garri route)</td><td class="num">$150–500</td><td>Large flat cast-iron pan over fire</td></tr>
+            <tr><td>Pasta extruder (advanced)</td><td class="num">$3,000–8,000</td><td>Only needed for the spaghetti/pasta stretch goal</td></tr>
+          </tbody>
+        </table>
+        <div class="cost-total"><span class="ct-label">Total realistic starter budget (flour or garri route)</span><span class="ct-value">$1,500–4,500</span></div>
+
+        <div class="econ-strip">
+          <div class="econ-item"><span class="e-v">60–80%</span><span class="e-l">below-peak buying price at harvest glut</span></div>
+          <div class="econ-item"><span class="e-v">6–18 mo</span><span class="e-l">shelf life once dried/milled vs. 48 hrs raw</span></div>
+          <div class="econ-item"><span class="e-v">2–4×</span><span class="e-l">margin vs. raw root sale</span></div>
+        </div>
+
+        <div class="p-subhead"><span class="dot"></span>Learn it &amp; source equipment</div>
+        <div class="resource-grid">
+          <a class="resource-link" href="https://www.fao.org/4/y4355e/y4355e00.htm" target="_blank" rel="noopener"><span class="r-tag org">Org</span><span class="r-text"><strong>FAO Cassava Processing Manual</strong>Full technical guide, HQCF &amp; garri processes</span></a>
+          <a class="resource-link" href="https://www.youtube.com/results?search_query=high+quality+cassava+flour+processing+machine+nigeria" target="_blank" rel="noopener"><span class="r-tag video">Video</span><span class="r-text"><strong>"HQCF processing machine" search</strong>Nigerian &amp; Ghanaian small-mill walkthroughs</span></a>
+          <a class="resource-link" href="https://www.appropedia.org/Cassava_processing" target="_blank" rel="noopener"><span class="r-tag diy">DIY</span><span class="r-text"><strong>Appropedia cassava processing page</strong>Low-cost grater &amp; press build plans</span></a>
+          <a class="resource-link" href="https://www.iita.org/" target="_blank" rel="noopener"><span class="r-tag org">Org</span><span class="r-text"><strong>IITA (Intl. Institute of Tropical Agriculture)</strong>Research-backed cassava processing training programs</span></a>
+        </div>
+
+        <div class="plan-cta"><p><strong>Country deep dive:</strong> see the full import-substitution case for cassava flour in the <a href="country.html?c=nigeria" target="_blank" rel="noopener">Nigeria report</a>'s Roadmap page.</p></div>
+      </div>
+    </details>
+
+    <!-- 03 COFFEE -->
+    <details class="plan" id="p3">
+      <summary>
+        <div class="p-head-left"><span class="p-icon">☕</span><div class="p-title-block"><div class="p-num">Template 03</div><h3>Green Coffee → Roasted, Branded Beans</h3></div></div>
+        <span class="p-chevron">+</span>
+      </summary>
+      <div class="plan-body">
+        <p class="p-intro">Applies directly in <strong>Ethiopia, Kenya, Cameroon</strong>. Green beans are commodity-priced; roasted, branded coffee sells for multiples more. This is one of the most accessible transformations because a real specialty market — both domestic café culture and export buyers — already exists and pays a premium for traceable origin.</p>
+
+        <div class="p-subhead"><span class="dot"></span>The transformation process</div>
+        <ol class="process-list">
+          <li><strong>Source graded green beans:</strong> Buy directly from a cooperative or the national commodity exchange, specifying grade and altitude — this is your single biggest quality lever.</li>
+          <li><strong>Sample roast &amp; cup:</strong> Before committing to a batch, roast small samples and taste ("cup") them to understand the flavor profile you're working with.</li>
+          <li><strong>Roast:</strong> Use a drum roaster, tracking time and temperature carefully (typically 8–15 minutes to first crack, longer for darker roasts) — consistency is what buyers pay for.</li>
+          <li><strong>Rest &amp; degas:</strong> Let roasted beans rest 12–48 hours to release CO2 before sealing — packaging too early causes bags to bloat and stales the coffee.</li>
+          <li><strong>Grade &amp; package:</strong> Sort for defects, package in one-way valve bags (lets CO2 out, keeps oxygen out), and label with origin, roast date and roast level.</li>
+          <li><strong>Get Q-graded (optional but valuable):</strong> Formal cupping certification lets you sell into the specialty export market at meaningfully higher prices.</li>
+        </ol>
+
+        <div class="p-subhead"><span class="dot"></span>Equipment &amp; startup cost</div>
+        <table class="cost-table">
+          <thead><tr><th>Item</th><th>Estimated cost</th><th>Note</th></tr></thead>
+          <tbody>
+            <tr><td>Small drum roaster (1–5kg batch)</td><td class="num">$1,500–5,000</td><td>Gas-fired is cheaper to run than electric in most markets</td></tr>
+            <tr><td>Cupping kit</td><td class="num">$150–400</td><td>Bowls, spoons, grinder — needed for quality control</td></tr>
+            <tr><td>Burr grinder (retail-facing)</td><td class="num">$300–1,000</td><td>If selling ground coffee, not just whole bean</td></tr>
+            <tr><td>Valve bags &amp; sealer</td><td class="num">$300–700</td><td>One-way degassing valve bags essential for freshness</td></tr>
+            <tr><td>Digital scale &amp; thermometer</td><td class="num">$80–200</td><td>Roast consistency depends on this</td></tr>
+          </tbody>
+        </table>
+        <div class="cost-total"><span class="ct-label">Total realistic starter budget</span><span class="ct-value">$2,300–7,300</span></div>
+
+        <div class="econ-strip">
+          <div class="econ-item"><span class="e-v">3–6×</span><span class="e-l">retail markup vs. green bean price</span></div>
+          <div class="econ-item"><span class="e-v">12–48 hrs</span><span class="e-l">rest time before packaging</span></div>
+          <div class="econ-item"><span class="e-v">Weeks</span><span class="e-l">not months, to first sale</span></div>
+        </div>
+
+        <div class="p-subhead"><span class="dot"></span>Learn it &amp; source equipment</div>
+        <div class="resource-grid">
+          <a class="resource-link" href="https://sca.coffee/research" target="_blank" rel="noopener"><span class="r-tag org">Org</span><span class="r-text"><strong>Specialty Coffee Association resources</strong>Roasting standards, cupping protocols, Q-grader info</span></a>
+          <a class="resource-link" href="https://www.youtube.com/results?search_query=small+batch+coffee+roasting+for+beginners+drum+roaster" target="_blank" rel="noopener"><span class="r-tag video">Video</span><span class="r-text"><strong>"Small batch coffee roasting" search</strong>Beginner drum-roaster technique walkthroughs</span></a>
+          <a class="resource-link" href="https://home-barista.com/roasting" target="_blank" rel="noopener"><span class="r-tag diy">DIY</span><span class="r-text"><strong>Home-Barista roasting forum</strong>Community troubleshooting for small-scale roasters</span></a>
+          <a class="resource-link" href="https://www.alibaba.com/showroom/coffee-roaster-machine.html" target="_blank" rel="noopener"><span class="r-tag supplier">Supplier</span><span class="r-text"><strong>Alibaba coffee roaster listings</strong>Compare small drum roaster suppliers &amp; prices</span></a>
+        </div>
+
+        <div class="plan-cta"><p><strong>Country deep dive:</strong> see the GERD self-financing parallel and coffee value-loss arithmetic in the <a href="country.html?c=ethiopia" target="_blank" rel="noopener">Ethiopia report</a>.</p></div>
+      </div>
+    </details>
+
+    <!-- 04 COTTON -->
+    <details class="plan" id="p4">
+      <summary>
+        <div class="p-head-left"><span class="p-icon">🧵</span><div class="p-title-block"><div class="p-num">Template 04</div><h3>Raw Cotton → Yarn, Fabric &amp; Garments</h3></div></div>
+        <span class="p-chevron">+</span>
+      </summary>
+      <div class="plan-body">
+        <p class="p-intro">Applies directly in <strong>Cameroon, Egypt, Nigeria</strong>. This is a longer, more capital-intensive chain than most on this list — realistic entry points are at the smaller finishing/garment end rather than industrial spinning, which needs serious capital.</p>
+
+        <div class="p-subhead"><span class="dot"></span>The transformation process (garment-finishing entry point)</div>
+        <ol class="process-list">
+          <li><strong>Buy finished or semi-finished fabric locally:</strong> Rather than starting at raw lint, the realistic small-business entry point is sourcing locally-milled fabric (or importing bolt fabric short-term) and focusing on cut-and-sew finishing.</li>
+          <li><strong>Design &amp; pattern:</strong> Develop a small, focused product line (school uniforms, workwear, or a specific garment category) with clear, repeatable patterns.</li>
+          <li><strong>Cut:</strong> Use pattern-cutting tools to cut fabric in batches, minimizing waste through efficient layout ("marker making").</li>
+          <li><strong>Sew:</strong> Assemble garments on industrial sewing machines — start with a small team (3–6 machines) rather than a full factory line.</li>
+          <li><strong>Finish &amp; quality-check:</strong> Trim threads, press, inspect for defects, and attach labels/branding.</li>
+          <li><strong>Sell direct or B2B:</strong> Target institutional buyers (schools, uniforms, corporate workwear) for predictable bulk orders before pursuing retail.</li>
+        </ol>
+
+        <div class="p-subhead"><span class="dot"></span>Equipment &amp; startup cost</div>
+        <table class="cost-table">
+          <thead><tr><th>Item</th><th>Estimated cost</th><th>Note</th></tr></thead>
+          <tbody>
+            <tr><td>Industrial sewing machines (5 units)</td><td class="num">$1,500–4,000</td><td>Single-needle lockstitch, the workhorse machine</td></tr>
+            <tr><td>Overlock/serger machine</td><td class="num">$400–1,200</td><td>For finished seam edges</td></tr>
+            <tr><td>Cutting table &amp; rotary cutter</td><td class="num">$300–800</td><td>Accuracy here reduces fabric waste significantly</td></tr>
+            <tr><td>Pressing/ironing station</td><td class="num">$150–500</td><td>Steam press for professional finish</td></tr>
+            <tr><td>Fabric stock (initial run)</td><td class="num">$1,000–3,000</td><td>Working capital for first production batch</td></tr>
+          </tbody>
+        </table>
+        <div class="cost-total"><span class="ct-label">Total realistic starter budget</span><span class="ct-value">$3,350–9,500</span></div>
+
+        <div class="econ-strip">
+          <div class="econ-item"><span class="e-v">3–5</span><span class="e-l">machines to start a viable small line</span></div>
+          <div class="econ-item"><span class="e-v">Institutional</span><span class="e-l">buyers = predictable bulk demand</span></div>
+        </div>
+
+        <div class="p-subhead"><span class="dot"></span>Learn it &amp; source equipment</div>
+        <div class="resource-grid">
+          <a class="resource-link" href="https://www.itc.int/sectors/fashion-textiles" target="_blank" rel="noopener"><span class="r-tag org">Org</span><span class="r-text"><strong>International Trade Centre — fashion/textiles</strong>SME export-readiness training for garment makers</span></a>
+          <a class="resource-link" href="https://www.youtube.com/results?search_query=start+small+garment+factory+cutting+sewing+beginners" target="_blank" rel="noopener"><span class="r-tag video">Video</span><span class="r-text"><strong>"Start small garment factory" search</strong>Cut-and-sew production line walkthroughs</span></a>
+          <a class="resource-link" href="https://www.indiamart.com/impcat/industrial-sewing-machine.html" target="_blank" rel="noopener"><span class="r-tag supplier">Supplier</span><span class="r-text"><strong>IndiaMART industrial sewing machines</strong>Wide price-range supplier comparison</span></a>
+          <a class="resource-link" href="https://www.betterwork.org/" target="_blank" rel="noopener"><span class="r-tag org">Org</span><span class="r-text"><strong>Better Work (ILO/IFC)</strong>Garment-sector working-condition &amp; production standards</span></a>
+        </div>
+
+        <div class="plan-cta"><p><strong>Country deep dive:</strong> see the textile-finishing opportunity detailed in the <a href="country.html?c=egypt" target="_blank" rel="noopener">Egypt report</a>.</p></div>
+      </div>
+    </details>
+
+    <!-- 05 PALM OIL -->
+    <details class="plan" id="p5">
+      <summary>
+        <div class="p-head-left"><span class="p-icon">🌴</span><div class="p-title-block"><div class="p-num">Template 05</div><h3>Palm Fruit → Refined Cooking Oil</h3></div></div>
+        <span class="p-chevron">+</span>
+      </summary>
+      <div class="plan-body">
+        <p class="p-intro">Applies directly in <strong>Nigeria, Cameroon, Ghana, DRC</strong>. Countries with the palm belt still import large volumes of refined oil due to inefficient local milling — closing this gap doesn't require exporting anything, just supplying the domestic market better than imports do.</p>
+
+        <div class="p-subhead"><span class="dot"></span>The transformation process</div>
+        <ol class="process-list">
+          <li><strong>Harvest &amp; sterilize:</strong> Fresh fruit bunches must be processed within 24–48 hours; sterilize with steam or boiling water to halt enzyme activity that degrades oil quality.</li>
+          <li><strong>Strip &amp; digest:</strong> Separate fruit from bunches (stripping), then mash the fruit in a digester to loosen the oil-bearing pulp from the nut.</li>
+          <li><strong>Press:</strong> Use a screw press to extract crude palm oil from the digested mash.</li>
+          <li><strong>Clarify:</strong> Heat the crude oil and let it settle (or centrifuge) to separate oil from water and sediment.</li>
+          <li><strong>Refine (for cooking-grade oil):</strong> Degum, bleach and deodorize using a small refining unit to remove free fatty acids and improve shelf stability and taste — this step is what separates "crude" from supermarket-shelf oil.</li>
+          <li><strong>Bottle &amp; brand:</strong> Package in retail-size bottles with clear labeling — a genuinely branded local product competes directly with imported oil on price and freshness.</li>
+        </ol>
+
+        <div class="p-subhead"><span class="dot"></span>Equipment &amp; startup cost</div>
+        <table class="cost-table">
+          <thead><tr><th>Item</th><th>Estimated cost</th><th>Note</th></tr></thead>
+          <tbody>
+            <tr><td>Small sterilizer/digester unit</td><td class="num">$1,000–3,000</td><td>Combined units available at small scale</td></tr>
+            <tr><td>Screw press</td><td class="num">$800–2,500</td><td>Manual or motorized</td></tr>
+            <tr><td>Clarification tank/centrifuge</td><td class="num">$500–1,500</td><td>Settling tanks are a lower-cost starting alternative</td></tr>
+            <tr><td>Small refining unit</td><td class="num">$2,500–6,000</td><td>Optional at first; crude oil still sells locally</td></tr>
+            <tr><td>Bottling &amp; sealing equipment</td><td class="num">$300–900</td><td>Manual filling to start</td></tr>
+          </tbody>
+        </table>
+        <div class="cost-total"><span class="ct-label">Total realistic starter budget (crude-oil stage)</span><span class="ct-value">$2,600–7,900</span></div>
+
+        <div class="econ-strip">
+          <div class="econ-item"><span class="e-v">24–48 hrs</span><span class="e-l">processing window after harvest</span></div>
+          <div class="econ-item"><span class="e-v">Domestic</span><span class="e-l">market alone is large enough to start</span></div>
+        </div>
+
+        <div class="p-subhead"><span class="dot"></span>Learn it &amp; source equipment</div>
+        <div class="resource-grid">
+          <a class="resource-link" href="https://www.fao.org/3/x0250e/x0250e00.htm" target="_blank" rel="noopener"><span class="r-tag org">Org</span><span class="r-text"><strong>FAO small-scale palm oil processing manual</strong>Full technical process guide</span></a>
+          <a class="resource-link" href="https://www.youtube.com/results?search_query=small+scale+palm+oil+processing+machine+nigeria" target="_blank" rel="noopener"><span class="r-tag video">Video</span><span class="r-text"><strong>"Small scale palm oil processing" search</strong>West African mill setup demonstrations</span></a>
+          <a class="resource-link" href="https://www.appropedia.org/Palm_oil_processing" target="_blank" rel="noopener"><span class="r-tag diy">DIY</span><span class="r-text"><strong>Appropedia palm oil processing page</strong>Low-cost equipment build references</span></a>
+          <a class="resource-link" href="https://www.alibaba.com/showroom/palm-oil-processing-machine.html" target="_blank" rel="noopener"><span class="r-tag supplier">Supplier</span><span class="r-text"><strong>Alibaba palm oil machinery listings</strong>Compare small-mill suppliers</span></a>
+        </div>
+
+        <div class="plan-cta"><p><strong>Import-substitution context:</strong> see the "Refined vegetable &amp; palm oil" entry in the main report's <a href="forte-economics.html#import-sub" target="_blank" rel="noopener">Import Substitution section</a>.</p></div>
+      </div>
+    </details>
+
+    <!-- 06 CASHEW -->
+    <details class="plan" id="p6">
+      <summary>
+        <div class="p-head-left"><span class="p-icon">🥜</span><div class="p-title-block"><div class="p-num">Template 06</div><h3>Raw Cashew → Shelled, Roasted Nuts</h3></div></div>
+        <span class="p-chevron">+</span>
+      </summary>
+      <div class="plan-body">
+        <p class="p-intro">Applies directly in <strong>Nigeria, Ghana</strong> and across West Africa. West Africa grows roughly half the world's raw cashews but historically shipped most of it to Vietnam and India for shelling — the highest-margin, most labor-intensive step, done far from where the nuts are grown.</p>
+
+        <div class="p-subhead"><span class="dot"></span>The transformation process</div>
+        <ol class="process-list">
+          <li><strong>Dry raw nuts:</strong> Sun-dry harvested cashew nuts to below 10% moisture for safe storage and processing.</li>
+          <li><strong>Steam or roast the shell:</strong> Heat treatment (steaming or roasting) softens the shell and neutralizes the caustic cashew shell liquid (CNSL) that can burn skin.</li>
+          <li><strong>Shell/crack:</strong> Use a manual or motorized cracking machine to split shells and extract the kernel — this is the step that requires the most labor and the most care to avoid breaking kernels (whole kernels sell for more).</li>
+          <li><strong>Peel (testa removal):</strong> Remove the thin skin covering the kernel, typically by hand after a light drying/humidifying cycle.</li>
+          <li><strong>Grade:</strong> Sort kernels by size and wholeness (whole white kernels command the highest price; broken/split kernels sell lower).</li>
+          <li><strong>Roast &amp; season (optional):</strong> For retail snack-nut sales, roast and season (salt, spices) before packaging.</li>
+          <li><strong>Package:</strong> Vacuum-seal or use nitrogen-flushed bags to prevent rancidity — cashews are high in oil and spoil faster than most nuts if poorly packaged.</li>
+        </ol>
+
+        <div class="p-subhead"><span class="dot"></span>Equipment &amp; startup cost</div>
+        <table class="cost-table">
+          <thead><tr><th>Item</th><th>Estimated cost</th><th>Note</th></tr></thead>
+          <tbody>
+            <tr><td>Steam/roasting unit for shells</td><td class="num">$500–1,500</td><td>Softens shell, neutralizes CNSL</td></tr>
+            <tr><td>Manual cracking machines (multiple)</td><td class="num">$600–2,000</td><td>Hand-operated units let you scale labor gradually</td></tr>
+            <tr><td>Drying/humidifying chamber</td><td class="num">$400–1,200</td><td>For the peeling stage</td></tr>
+            <tr><td>Grading trays/sieves</td><td class="num">$100–300</td><td>Manual sorting is standard at small scale</td></tr>
+            <tr><td>Vacuum sealer &amp; packaging</td><td class="num">$300–800</td><td>Critical for shelf life given cashew's oil content</td></tr>
+          </tbody>
+        </table>
+        <div class="cost-total"><span class="ct-label">Total realistic starter budget</span><span class="ct-value">$1,900–5,800</span></div>
+
+        <div class="econ-strip">
+          <div class="econ-item"><span class="e-v">Labor-intensive</span><span class="e-l">shelling stage = real local job creation</span></div>
+          <div class="econ-item"><span class="e-v">Whole kernels</span><span class="e-l">command significantly higher prices than broken</span></div>
+        </div>
+
+        <div class="p-subhead"><span class="dot"></span>Learn it &amp; source equipment</div>
+        <div class="resource-grid">
+          <a class="resource-link" href="https://www.technoserve.org/our-work/projects/cashew-industry-competitiveness/" target="_blank" rel="noopener"><span class="r-tag org">Org</span><span class="r-text"><strong>TechnoServe cashew program resources</strong>West African cashew-sector development guidance</span></a>
+          <a class="resource-link" href="https://www.youtube.com/results?search_query=cashew+nut+processing+shelling+machine+small+scale" target="_blank" rel="noopener"><span class="r-tag video">Video</span><span class="r-text"><strong>"Cashew shelling machine" search</strong>Small-scale processing line demonstrations</span></a>
+          <a class="resource-link" href="https://www.africancashewalliance.com/" target="_blank" rel="noopener"><span class="r-tag org">Org</span><span class="r-text"><strong>African Cashew Alliance</strong>Industry network, training &amp; market linkages</span></a>
+          <a class="resource-link" href="https://www.alibaba.com/showroom/cashew-shelling-machine.html" target="_blank" rel="noopener"><span class="r-tag supplier">Supplier</span><span class="r-text"><strong>Alibaba cashew processing equipment</strong>Compare manual &amp; motorized cracking units</span></a>
+        </div>
+
+        <div class="plan-cta"><p><strong>Context:</strong> see the "next transformation candidates" list in the main report's <a href="forte-economics.html#candidates" target="_blank" rel="noopener">Transformation Candidates section</a>.</p></div>
+      </div>
+    </details>
+
+    <!-- 07 SHEA -->
+    <details class="plan" id="p7">
+      <summary>
+        <div class="p-head-left"><span class="p-icon">🧴</span><div class="p-title-block"><div class="p-num">Template 07</div><h3>Shea Nuts → Cosmetic-Grade Butter</h3></div></div>
+        <span class="p-chevron">+</span>
+      </summary>
+      <div class="plan-body">
+        <p class="p-intro">Applies directly in <strong>Ghana, Nigeria</strong> and across the West African "shea belt." This is one of the most proven women-led cooperative business models on the continent — global cosmetics brands pay a real premium for refined, cosmetic-grade butter over crude export-grade.</p>
+
+        <div class="p-subhead"><span class="dot"></span>The transformation process</div>
+        <ol class="process-list">
+          <li><strong>Collect &amp; boil nuts:</strong> Gather fallen shea fruit, remove the pulp, and boil the nuts to prevent germination and ease de-husking.</li>
+          <li><strong>Dry &amp; crack:</strong> Sun-dry the boiled nuts, then crack the shells to extract the kernel.</li>
+          <li><strong>Roast &amp; grind:</strong> Roast kernels to develop flavor/aroma compounds, then grind into a paste using a mill (motorized nut mills dramatically cut labor time versus hand-grinding).</li>
+          <li><strong>Knead &amp; separate:</strong> Knead the paste with water in large basins, working out the oil — this traditional hand-kneading step is being increasingly replaced by mechanical kneaders for scale.</li>
+          <li><strong>Boil &amp; skim:</strong> Boil the extracted oil to purify it, skimming off impurities, then let it cool and solidify into raw shea butter.</li>
+          <li><strong>Refine for cosmetic grade:</strong> Filter and lightly process to remove odor and improve texture/color consistency — this is the step that unlocks cosmetics-brand contracts over crude local-market sales.</li>
+          <li><strong>Package for target market:</strong> Bulk-pack for B2B cosmetics buyers, or retail-package (jars, tubs) for direct-to-consumer sale.</li>
+        </ol>
+
+        <div class="p-subhead"><span class="dot"></span>Equipment &amp; startup cost</div>
+        <table class="cost-table">
+          <thead><tr><th>Item</th><th>Estimated cost</th><th>Note</th></tr></thead>
+          <tbody>
+            <tr><td>Motorized nut mill/grinder</td><td class="num">$400–1,200</td><td>Biggest single labor-saving investment</td></tr>
+            <tr><td>Mechanical kneader (optional)</td><td class="num">$600–1,800</td><td>Traditional hand-kneading works but is slow at scale</td></tr>
+            <tr><td>Boiling vats &amp; skimming tools</td><td class="num">$200–600</td><td>Large metal pots, often locally fabricated</td></tr>
+            <tr><td>Filtration/refining setup</td><td class="num">$500–1,500</td><td>Needed to reach cosmetic grade</td></tr>
+            <tr><td>Packaging (jars, tubs, labels)</td><td class="num">$200–600</td><td>Branding matters more here than most templates</td></tr>
+          </tbody>
+        </table>
+        <div class="cost-total"><span class="ct-label">Total realistic starter budget</span><span class="ct-value">$1,900–5,700</span></div>
+
+        <div class="econ-strip">
+          <div class="econ-item"><span class="e-v">Cooperative</span><span class="e-l">model proven at scale across the shea belt</span></div>
+          <div class="econ-item"><span class="e-v">Cosmetic-grade</span><span class="e-l">premium vs. crude export butter</span></div>
+        </div>
+
+        <div class="p-subhead"><span class="dot"></span>Learn it &amp; source equipment</div>
+        <div class="resource-grid">
+          <a class="resource-link" href="https://www.globalshea.com/" target="_blank" rel="noopener"><span class="r-tag org">Org</span><span class="r-text"><strong>Global Shea Alliance</strong>Industry standards, cooperative training &amp; buyer network</span></a>
+          <a class="resource-link" href="https://www.youtube.com/results?search_query=shea+butter+processing+cooperative+ghana+equipment" target="_blank" rel="noopener"><span class="r-tag video">Video</span><span class="r-text"><strong>"Shea butter processing cooperative" search</strong>Full process, women's cooperative case studies</span></a>
+          <a class="resource-link" href="https://www.appropedia.org/Shea_butter_processing" target="_blank" rel="noopener"><span class="r-tag diy">DIY</span><span class="r-text"><strong>Appropedia shea butter processing page</strong>Appropriate-tech equipment references</span></a>
+          <a class="resource-link" href="https://www.alibaba.com/showroom/shea-butter-processing-machine.html" target="_blank" rel="noopener"><span class="r-tag supplier">Supplier</span><span class="r-text"><strong>Alibaba shea processing equipment</strong>Mills &amp; kneaders comparison</span></a>
+        </div>
+
+        <div class="plan-cta"><p><strong>Context:</strong> shea is profiled among the additional transformation candidates in the main report's <a href="forte-economics.html#candidates" target="_blank" rel="noopener">Transformation Candidates section</a>.</p></div>
+      </div>
+    </details>
+
+    <!-- 08 RUBBER -->
+    <details class="plan" id="p8">
+      <summary>
+        <div class="p-head-left"><span class="p-icon">🪣</span><div class="p-title-block"><div class="p-num">Template 08</div><h3>Raw Latex → Basic Rubber Goods</h3></div></div>
+        <span class="p-chevron">+</span>
+      </summary>
+      <div class="plan-body">
+        <p class="p-intro">Applies directly in <strong>Cameroon, Nigeria</strong> and rubber-growing regions of West/Central Africa. Rubber typically leaves as raw latex or block rubber — the realistic small-business entry point is basic molded-rubber goods (mats, seals, simple industrial parts) rather than competing with large tire manufacturers.</p>
+
+        <div class="p-subhead"><span class="dot"></span>The transformation process</div>
+        <ol class="process-list">
+          <li><strong>Coagulate the latex:</strong> Add a coagulant (formic or acetic acid) to fresh liquid latex to solidify it into sheets.</li>
+          <li><strong>Press into sheets:</strong> Roll the coagulated rubber through a mangle/roller to form thin sheets, squeezing out excess water (ribbed smoked sheet, or RSS, is the traditional format).</li>
+          <li><strong>Smoke or air-dry:</strong> Traditionally smoke-dried in a smokehouse for preservation and color; air-drying works for goods that will be re-melted anyway.</li>
+          <li><strong>Compound:</strong> Mix dried rubber with additives (fillers, curing agents) appropriate to the end product — this determines flexibility, durability and cost.</li>
+          <li><strong>Mold:</strong> Use a heated compression mold to shape the compounded rubber into the target product (mats, gaskets, simple industrial seals).</li>
+          <li><strong>Cure &amp; finish:</strong> Vulcanize under heat and pressure to set the final properties, then trim flash (excess material) and inspect.</li>
+        </ol>
+
+        <div class="p-subhead"><span class="dot"></span>Equipment &amp; startup cost</div>
+        <table class="cost-table">
+          <thead><tr><th>Item</th><th>Estimated cost</th><th>Note</th></tr></thead>
+          <tbody>
+            <tr><td>Rolling/pressing mangle</td><td class="num">$500–1,500</td><td>For sheet production</td></tr>
+            <tr><td>Smokehouse or drying chamber</td><td class="num">$400–1,200</td><td>Can be simply constructed locally</td></tr>
+            <tr><td>Compounding mixer</td><td class="num">$800–2,500</td><td>Blends additives into raw rubber</td></tr>
+            <tr><td>Heated compression mold press</td><td class="num">$1,500–4,000</td><td>The core capital item — determines product range</td></tr>
+            <tr><td>Basic curing/vulcanizing setup</td><td class="num">$500–1,500</td><td>Often integrated with the press</td></tr>
+          </tbody>
+        </table>
+        <div class="cost-total"><span class="ct-label">Total realistic starter budget</span><span class="ct-value">$3,700–10,700</span></div>
+
+        <div class="econ-strip">
+          <div class="econ-item"><span class="e-v">Industrial buyers</span><span class="e-l">construction &amp; manufacturing = reliable demand</span></div>
+        </div>
+
+        <div class="p-subhead"><span class="dot"></span>Learn it &amp; source equipment</div>
+        <div class="resource-grid">
+          <a class="resource-link" href="https://www.fao.org/forestry/rubber/en/" target="_blank" rel="noopener"><span class="r-tag org">Org</span><span class="r-text"><strong>FAO rubber sector resources</strong>Smallholder processing standards</span></a>
+          <a class="resource-link" href="https://www.youtube.com/results?search_query=small+scale+rubber+processing+latex+sheet+making" target="_blank" rel="noopener"><span class="r-tag video">Video</span><span class="r-text"><strong>"Small scale rubber processing" search</strong>Latex-to-sheet and molding demonstrations</span></a>
+          <a class="resource-link" href="https://www.alibaba.com/showroom/rubber-molding-machine.html" target="_blank" rel="noopener"><span class="r-tag supplier">Supplier</span><span class="r-text"><strong>Alibaba rubber molding machinery</strong>Compression mold press comparison</span></a>
+          <a class="resource-link" href="https://www.rubberstudy.com/" target="_blank" rel="noopener"><span class="r-tag org">Org</span><span class="r-text"><strong>International Rubber Study Group</strong>Market data &amp; industry standards</span></a>
+        </div>
+
+        <div class="plan-cta"><p><strong>Country deep dive:</strong> rubber's role in Cameroon's export basket is detailed in the <a href="country.html?c=cameroon" target="_blank" rel="noopener">Cameroon report</a>.</p></div>
+      </div>
+    </details>
+
+    <!-- 09 GROUNDNUTS -->
+    <details class="plan" id="p9">
+      <summary>
+        <div class="p-head-left"><span class="p-icon">🥫</span><div class="p-title-block"><div class="p-num">Template 09</div><h3>Groundnuts → Peanut Butter &amp; Protein Flour</h3></div></div>
+        <span class="p-chevron">+</span>
+      </summary>
+      <div class="plan-body">
+        <p class="p-intro">Applies directly in <strong>Nigeria, Senegal</strong> and across the Sahel. Low equipment cost relative to most items on this list, with direct usefulness for both local nutrition programs and packaged-food retail — a genuinely dual-purpose business.</p>
+
+        <div class="p-subhead"><span class="dot"></span>The transformation process</div>
+        <ol class="process-list">
+          <li><strong>Dry &amp; sort:</strong> Sun-dry raw groundnuts, then hand-sort to remove damaged or moldy nuts (critical — aflatoxin contamination is the single biggest food-safety risk in this business).</li>
+          <li><strong>Shell:</strong> Use a manual or motorized sheller to remove the outer shell.</li>
+          <li><strong>Roast:</strong> Roast shelled nuts in a rotating drum roaster until golden — even roasting is essential for flavor and safety.</li>
+          <li><strong>Cool &amp; skin:</strong> Cool the roasted nuts, then rub or blanch to remove the thin red skin.</li>
+          <li><strong>Grind:</strong> Use a colloid mill or stone grinder to produce smooth or crunchy peanut butter, adding salt/sugar per your recipe.</li>
+          <li><strong>For protein flour instead:</strong> Press roasted nuts to extract oil first, then grind the defatted cake into a high-protein flour — useful for nutrition programs and baking.</li>
+          <li><strong>Package:</strong> Jar peanut butter with proper sealing; bag protein flour with moisture-barrier packaging.</li>
+        </ol>
+
+        <div class="p-subhead"><span class="dot"></span>Equipment &amp; startup cost</div>
+        <table class="cost-table">
+          <thead><tr><th>Item</th><th>Estimated cost</th><th>Note</th></tr></thead>
+          <tbody>
+            <tr><td>Groundnut sheller</td><td class="num">$200–700</td><td>Manual or motorized</td></tr>
+            <tr><td>Drum roaster</td><td class="num">$400–1,200</td><td>Even-roast consistency matters for food safety</td></tr>
+            <tr><td>Colloid mill/grinder</td><td class="num">$500–1,500</td><td>Produces the characteristic smooth texture</td></tr>
+            <tr><td>Oil press (for protein-flour route)</td><td class="num">$600–1,800</td><td>Optional, only for the flour variant</td></tr>
+            <tr><td>Jarring/packaging equipment</td><td class="num">$200–600</td><td>Sealing &amp; labeling setup</td></tr>
+          </tbody>
+        </table>
+        <div class="cost-total"><span class="ct-label">Total realistic starter budget</span><span class="ct-value">$1,300–4,000</span></div>
+
+        <div class="econ-strip">
+          <div class="econ-item"><span class="e-v">Low</span><span class="e-l">among the cheapest templates to start</span></div>
+          <div class="econ-item"><span class="e-v">Dual market</span><span class="e-l">nutrition programs + retail snack market</span></div>
+        </div>
+
+        <div class="p-subhead"><span class="dot"></span>Learn it &amp; source equipment</div>
+        <div class="resource-grid">
+          <a class="resource-link" href="https://www.fao.org/food-safety/en/" target="_blank" rel="noopener"><span class="r-tag org">Org</span><span class="r-text"><strong>FAO food safety guidance (aflatoxin)</strong>Essential reading before starting — contamination risk is real</span></a>
+          <a class="resource-link" href="https://www.youtube.com/results?search_query=peanut+butter+processing+machine+small+business" target="_blank" rel="noopener"><span class="r-tag video">Video</span><span class="r-text"><strong>"Peanut butter processing machine" search</strong>Small-business production line demonstrations</span></a>
+          <a class="resource-link" href="https://www.appropedia.org/Peanut_processing" target="_blank" rel="noopener"><span class="r-tag diy">DIY</span><span class="r-text"><strong>Appropedia groundnut processing page</strong>Low-cost sheller &amp; grinder build guides</span></a>
+          <a class="resource-link" href="https://www.alibaba.com/showroom/peanut-butter-making-machine.html" target="_blank" rel="noopener"><span class="r-tag supplier">Supplier</span><span class="r-text"><strong>Alibaba peanut processing equipment</strong>Compare grinder/mill suppliers</span></a>
+        </div>
+
+        <div class="plan-cta"><p><strong>Context:</strong> groundnuts profiled among additional candidates in the main report's <a href="forte-economics.html#candidates" target="_blank" rel="noopener">Transformation Candidates section</a>.</p></div>
+      </div>
+    </details>
+
+    <!-- 10 MAIZE -->
+    <details class="plan" id="p10">
+      <summary>
+        <div class="p-head-left"><span class="p-icon">🌽</span><div class="p-title-block"><div class="p-num">Template 10</div><h3>Maize → Flour, Grits &amp; Composite-Flour Pasta</h3></div></div>
+        <span class="p-chevron">+</span>
+      </summary>
+      <div class="plan-body">
+        <p class="p-intro">Applies directly in <strong>Nigeria, Zambia, Kenya, Ethiopia, South Africa</strong>. Grown everywhere at massive scale but rarely milled to export or premium-retail quality locally — this template also covers the path toward maize-based pasta/spaghetti, a genuine import-substitution stretch goal.</p>
+
+        <div class="p-subhead"><span class="dot"></span>The transformation process</div>
+        <ol class="process-list">
+          <li><strong>Clean &amp; dry:</strong> Sort out debris and damaged kernels; dry to safe storage moisture (below 13%) to prevent mold.</li>
+          <li><strong>Dehull (for refined flour):</strong> Remove the bran and germ using a dehulling machine if producing refined white flour; skip this step for whole-grain meal.</li>
+          <li><strong>Mill:</strong> Pass through a hammer or roller mill to produce flour or grits at your target grind size.</li>
+          <li><strong>Sift &amp; grade:</strong> Sieve to separate flour from coarser grits/bran, producing multiple product grades from one batch.</li>
+          <li><strong>Fortify (optional, high-value):</strong> Blend in vitamins/minerals (common in nutrition-program supply contracts) using a simple dosing/mixing step.</li>
+          <li><strong>Pasta/spaghetti route:</strong> Blend maize flour with wheat flour (typically 20–30% maize) and semolina, then process through a pasta extruder — pure-maize pasta needs specialized gluten-free extrusion, so composite flour is the realistic first product.</li>
+          <li><strong>Package:</strong> Moisture-barrier bags for flour/grits; standard pasta packaging for the extruded product.</li>
+        </ol>
+
+        <div class="p-subhead"><span class="dot"></span>Equipment &amp; startup cost</div>
+        <table class="cost-table">
+          <thead><tr><th>Item</th><th>Estimated cost</th><th>Note</th></tr></thead>
+          <tbody>
+            <tr><td>Cleaning/destoning machine</td><td class="num">$300–900</td><td>Removes debris before milling</td></tr>
+            <tr><td>Dehuller</td><td class="num">$500–1,500</td><td>For refined flour production</td></tr>
+            <tr><td>Hammer mill</td><td class="num">$800–2,500</td><td>Core milling machine</td></tr>
+            <tr><td>Sifter/grading sieves</td><td class="num">$200–600</td><td>Separates flour, grits, bran grades</td></tr>
+            <tr><td>Pasta extruder (stretch goal)</td><td class="num">$3,000–8,000</td><td>Only for the composite-flour pasta product line</td></tr>
+          </tbody>
+        </table>
+        <div class="cost-total"><span class="ct-label">Total realistic starter budget (flour/grits only)</span><span class="ct-value">$1,800–5,500</span></div>
+
+        <div class="econ-strip">
+          <div class="econ-item"><span class="e-v">Multiple products</span><span class="e-l">flour, grits, bran from one production line</span></div>
+          <div class="econ-item"><span class="e-v">Fortification</span><span class="e-l">contracts = stable institutional demand</span></div>
+        </div>
+
+        <div class="p-subhead"><span class="dot"></span>Learn it &amp; source equipment</div>
+        <div class="resource-grid">
+          <a class="resource-link" href="https://www.fao.org/4/t0522e/T0522E00.htm" target="_blank" rel="noopener"><span class="r-tag org">Org</span><span class="r-text"><strong>FAO maize milling technical manual</strong>Full process guide for small-scale mills</span></a>
+          <a class="resource-link" href="https://www.youtube.com/results?search_query=maize+milling+business+hammer+mill+setup" target="_blank" rel="noopener"><span class="r-tag video">Video</span><span class="r-text"><strong>"Maize milling business" search</strong>Small-mill setup &amp; operation walkthroughs</span></a>
+          <a class="resource-link" href="https://www.youtube.com/results?search_query=composite+flour+pasta+extruder+maize+wheat" target="_blank" rel="noopener"><span class="r-tag video">Video</span><span class="r-text"><strong>"Composite flour pasta extruder" search</strong>Maize-wheat blend pasta production demos</span></a>
+          <a class="resource-link" href="https://www.alibaba.com/showroom/maize-milling-machine.html" target="_blank" rel="noopener"><span class="r-tag supplier">Supplier</span><span class="r-text"><strong>Alibaba maize milling equipment</strong>Hammer mills &amp; small extruders compared</span></a>
+        </div>
+
+        <div class="plan-cta"><p><strong>Country deep dive:</strong> maize's role in Zambia's diversification roadmap is detailed in the <a href="country.html?c=zambia" target="_blank" rel="noopener">Zambia report</a>.</p></div>
+      </div>
+    </details>
+
+    <!-- 11 FISH & POULTRY -->
+    <details class="plan" id="p11">
+      <summary>
+        <div class="p-head-left"><span class="p-icon">🐟</span><div class="p-title-block"><div class="p-num">Template 11</div><h3>Fish &amp; Poultry Farming (Import Substitution)</h3></div></div>
+        <span class="p-chevron">+</span>
+      </summary>
+      <div class="plan-body">
+        <p class="p-intro">Applies across <strong>every country in this report</strong> — nearly all of them import frozen fish and poultry despite having the water, feed-crop and climate resources to raise both locally. This is the lowest-capital entry point on the entire list.</p>
+
+        <div class="p-subhead"><span class="dot"></span>The transformation process (catfish pond route)</div>
+        <ol class="process-list">
+          <li><strong>Train first:</strong> Attend a government fisheries-extension or NGO aquaculture course before digging a pond — poor water management is the most common cause of first-year losses.</li>
+          <li><strong>Build one pond:</strong> Start with a single ~200m² earthen or liner pond, sized to your water access and land.</li>
+          <li><strong>Stock fingerlings:</strong> Buy healthy juveniles from a certified hatchery (catfish tolerate lower oxygen conditions than tilapia and are more forgiving for a first attempt).</li>
+          <li><strong>Feed &amp; monitor:</strong> Feed is 60–70% of running cost — secure a reliable local feed miller or supplement with a maize/soy plot to cut input costs.</li>
+          <li><strong>Manage water quality:</strong> Monitor oxygen and ammonia levels; partial water changes prevent the die-offs that end most first attempts.</li>
+          <li><strong>Harvest at maturity:</strong> Typically 5–8 months to harvest weight (800–1,000kg from a 200m² pond).</li>
+          <li><strong>Pre-arrange buyers:</strong> Line up a market vendor, restaurant, or cooperative before harvest so a season's investment isn't sold at a panic discount.</li>
+          <li><strong>Add poultry (parallel track):</strong> Broiler chickens reach market weight in just 6–8 weeks and can run alongside fish farming on the same plot, diversifying cash flow.</li>
+        </ol>
+
+        <div class="p-subhead"><span class="dot"></span>Equipment &amp; startup cost</div>
+        <table class="cost-table">
+          <thead><tr><th>Item</th><th>Estimated cost</th><th>Note</th></tr></thead>
+          <tbody>
+            <tr><td>Starter pond (200m², catfish)</td><td class="num">$800–1,500</td><td>Liner or earthen construction</td></tr>
+            <tr><td>Fingerlings (1,000 juveniles)</td><td class="num">$150–300</td><td>Buy from a certified hatchery only</td></tr>
+            <tr><td>Feed, 6-month cycle</td><td class="num">$400–700</td><td>Largest recurring cost</td></tr>
+            <tr><td>Aeration/water-testing kit</td><td class="num">$100–300</td><td>Prevents the #1 cause of pond failure</td></tr>
+            <tr><td>Poultry starter (100 broilers)</td><td class="num">$150–350</td><td>Optional parallel track</td></tr>
+          </tbody>
+        </table>
+        <div class="cost-total"><span class="ct-label">Total realistic starter budget (fish only)</span><span class="ct-value">$1,450–2,800</span></div>
+
+        <div class="econ-strip">
+          <div class="econ-item"><span class="e-v">30–45%</span><span class="e-l">typical net margin per cycle</span></div>
+          <div class="econ-item"><span class="e-v">$3–5/kg</span><span class="e-l">local market price at harvest</span></div>
+          <div class="econ-item"><span class="e-v">5–8 mo</span><span class="e-l">to harvest (fish), 6–8 wks (poultry)</span></div>
+        </div>
+
+        <div class="p-subhead"><span class="dot"></span>Learn it &amp; source equipment</div>
+        <div class="resource-grid">
+          <a class="resource-link" href="https://www.fao.org/fishery/en/aquaculture" target="_blank" rel="noopener"><span class="r-tag org">Org</span><span class="r-text"><strong>FAO Aquaculture resources</strong>Comprehensive pond management &amp; species guidance</span></a>
+          <a class="resource-link" href="https://www.youtube.com/results?search_query=catfish+pond+farming+for+beginners+africa" target="_blank" rel="noopener"><span class="r-tag video">Video</span><span class="r-text"><strong>"Catfish pond farming for beginners" search</strong>Step-by-step small-pond setup videos</span></a>
+          <a class="resource-link" href="https://www.youtube.com/results?search_query=broiler+chicken+farming+small+scale+startup" target="_blank" rel="noopener"><span class="r-tag video">Video</span><span class="r-text"><strong>"Broiler chicken farming small scale" search</strong>Poultry startup walkthroughs</span></a>
+          <a class="resource-link" href="https://www.worldfishcenter.org/" target="_blank" rel="noopener"><span class="r-tag org">Org</span><span class="r-text"><strong>WorldFish Center</strong>Research-backed smallholder aquaculture programs</span></a>
+        </div>
+
+        <div class="plan-cta"><p><strong>Full detail:</strong> this template is expanded further in the main report's <a href="forte-economics.html#pathways" target="_blank" rel="noopener">Business Pathways section</a> under "Fish &amp; Poultry Rearing."</p></div>
+      </div>
+    </details>
+
+    <!-- 12 TIMBER -->
+    <details class="plan" id="p12">
+      <summary>
+        <div class="p-head-left"><span class="p-icon">🪵</span><div class="p-title-block"><div class="p-num">Template 12</div><h3>Rough Timber → Furniture &amp; Veneer</h3></div></div>
+        <span class="p-chevron">+</span>
+      </summary>
+      <div class="plan-body">
+        <p class="p-intro">Applies directly in <strong>Cameroon, DRC, Ghana</strong>. Roughly 80%+ of timber leaves as sawn wood or raw logs; furniture and veneer products carry several times the value per cubic metre of rough-sawn export timber.</p>
+
+        <div class="p-subhead"><span class="dot"></span>The transformation process</div>
+        <ol class="process-list">
+          <li><strong>Source legally-sawn lumber:</strong> Buy from a licensed sawmill with proper permits — this protects your business and often your access to better wood grades.</li>
+          <li><strong>Kiln or air-dry:</strong> Wood must be dried to 8–12% moisture before furniture-grade use; air-drying takes weeks to months, a small kiln cuts this dramatically.</li>
+          <li><strong>Design &amp; template:</strong> Develop a focused product line (a few chair/table/cabinet designs) with reusable templates/jigs for consistency.</li>
+          <li><strong>Cut &amp; shape:</strong> Use table saws, planers and routers to cut pieces to precise dimensions and profile edges.</li>
+          <li><strong>Join &amp; assemble:</strong> Construct using appropriate joinery (screws, dowels, mortise-and-tenon) depending on product durability requirements.</li>
+          <li><strong>Sand &amp; finish:</strong> Progressive sanding followed by stain/varnish/oil finishing — finish quality is often what separates a premium-priced piece from a commodity one.</li>
+          <li><strong>For veneer instead:</strong> Slice thin sheets from select logs using a veneer slicer, then press onto substrate boards — a different, higher-throughput product line for architectural/furniture-panel markets.</li>
+        </ol>
+
+        <div class="p-subhead"><span class="dot"></span>Equipment &amp; startup cost</div>
+        <table class="cost-table">
+          <thead><tr><th>Item</th><th>Estimated cost</th><th>Note</th></tr></thead>
+          <tbody>
+            <tr><td>Table saw</td><td class="num">$400–1,500</td><td>Core cutting tool</td></tr>
+            <tr><td>Thickness planer</td><td class="num">$500–1,800</td><td>For dimensioning rough lumber</td></tr>
+            <tr><td>Router &amp; bit set</td><td class="num">$200–600</td><td>Edge profiling &amp; joinery</td></tr>
+            <tr><td>Small kiln/drying chamber</td><td class="num">$1,500–4,000</td><td>Dramatically speeds up production cycle</td></tr>
+            <tr><td>Sanding &amp; finishing tools</td><td class="num">$300–800</td><td>Orbital sanders, spray or brush finishing setup</td></tr>
+          </tbody>
+        </table>
+        <div class="cost-total"><span class="ct-label">Total realistic starter budget</span><span class="ct-value">$2,900–8,700</span></div>
+
+        <div class="econ-strip">
+          <div class="econ-item"><span class="e-v">Several×</span><span class="e-l">value per m³ vs. rough-sawn export timber</span></div>
+          <div class="econ-item"><span class="e-v">Legal sourcing</span><span class="e-l">protects both compliance and wood quality</span></div>
+        </div>
+
+        <div class="p-subhead"><span class="dot"></span>Learn it &amp; source equipment</div>
+        <div class="resource-grid">
+          <a class="resource-link" href="https://www.itto.int/" target="_blank" rel="noopener"><span class="r-tag org">Org</span><span class="r-text"><strong>International Tropical Timber Organization</strong>Sustainable sourcing &amp; value-addition guidance</span></a>
+          <a class="resource-link" href="https://www.youtube.com/results?search_query=small+furniture+workshop+startup+woodworking+beginners" target="_blank" rel="noopener"><span class="r-tag video">Video</span><span class="r-text"><strong>"Small furniture workshop startup" search</strong>Beginner woodworking business walkthroughs</span></a>
+          <a class="resource-link" href="https://www.woodworkersguildofamerica.com/" target="_blank" rel="noopener"><span class="r-tag diy">DIY</span><span class="r-text"><strong>Woodworkers Guild of America</strong>Technique tutorials for joinery &amp; finishing</span></a>
+          <a class="resource-link" href="https://www.alibaba.com/showroom/woodworking-machine.html" target="_blank" rel="noopener"><span class="r-tag supplier">Supplier</span><span class="r-text"><strong>Alibaba woodworking machinery</strong>Compare saws, planers &amp; small kilns</span></a>
+        </div>
+
+        <div class="plan-cta"><p><strong>Country deep dive:</strong> see the full timber value-loss arithmetic in the <a href="country.html?c=cameroon" target="_blank" rel="noopener">Cameroon report</a>.</p></div>
+      </div>
+    </details>
+
+    <!-- 13 COPPER -->
+    <details class="plan" id="p13">
+      <summary>
+        <div class="p-head-left"><span class="p-icon">🔌</span><div class="p-title-block"><div class="p-num">Template 13</div><h3>Copper Cathode/Scrap → Wire &amp; Cable</h3></div></div>
+        <span class="p-chevron">+</span>
+      </summary>
+      <div class="plan-body">
+        <p class="p-intro">Applies directly in <strong>Zambia, DRC</strong>. Larger-capital template than most on this list, but the Copperbelt's existing cathode supply means the raw-material sourcing problem most manufacturing businesses face is already solved locally.</p>
+
+        <div class="p-subhead"><span class="dot"></span>The transformation process</div>
+        <ol class="process-list">
+          <li><strong>Source copper cathode or clean scrap:</strong> Buy refined cathode locally, or clean/sort copper scrap if starting smaller — purity determines your product's electrical grade.</li>
+          <li><strong>Melt &amp; cast rod:</strong> Melt cathode in an induction or fuel furnace and continuously cast into wire rod using a rod-casting line.</li>
+          <li><strong>Draw wire:</strong> Pass the rod through a series of progressively smaller dies on a wire-drawing machine to reach target gauge.</li>
+          <li><strong>Anneal:</strong> Heat-treat the drawn wire to restore flexibility lost during drawing (cold-worked copper becomes brittle without this step).</li>
+          <li><strong>Stranding (for cable):</strong> Twist multiple fine wires together on a stranding machine to produce flexible cable cores.</li>
+          <li><strong>Insulate &amp; jacket:</strong> Extrude PVC or other insulation over the conductor, then an outer jacket if producing finished electrical cable.</li>
+          <li><strong>Test &amp; certify:</strong> Electrical continuity and insulation-resistance testing before sale — certification opens the door to construction and utility contracts.</li>
+        </ol>
+
+        <div class="p-subhead"><span class="dot"></span>Equipment &amp; startup cost</div>
+        <table class="cost-table">
+          <thead><tr><th>Item</th><th>Estimated cost</th><th>Note</th></tr></thead>
+          <tbody>
+            <tr><td>Induction melting furnace</td><td class="num">$5,000–15,000</td><td>Scales with capacity — start small</td></tr>
+            <tr><td>Wire-drawing machine</td><td class="num">$3,000–10,000</td><td>Multi-die continuous drawing unit</td></tr>
+            <tr><td>Annealing unit</td><td class="num">$1,500–4,000</td><td>Often integrated into the drawing line</td></tr>
+            <tr><td>Extrusion line (for insulated cable)</td><td class="num">$8,000–20,000</td><td>Significant step-up; consider bare-wire products first</td></tr>
+            <tr><td>Testing equipment</td><td class="num">$500–1,500</td><td>Needed for construction/utility-grade certification</td></tr>
+          </tbody>
+        </table>
+        <div class="cost-total"><span class="ct-label">Total realistic starter budget (bare wire only)</span><span class="ct-value">$10,000–30,500</span></div>
+
+        <div class="econ-strip">
+          <div class="econ-item"><span class="e-v">Local cathode</span><span class="e-l">supply chain already solved in Zambia/DRC</span></div>
+          <div class="econ-item"><span class="e-v">Construction demand</span><span class="e-l">regional building boom = stable buyer base</span></div>
+        </div>
+
+        <div class="p-subhead"><span class="dot"></span>Learn it &amp; source equipment</div>
+        <div class="resource-grid">
+          <a class="resource-link" href="https://www.copperalliance.org/" target="_blank" rel="noopener"><span class="r-tag org">Org</span><span class="r-text"><strong>International Copper Association</strong>Technical standards &amp; manufacturing guidance</span></a>
+          <a class="resource-link" href="https://www.youtube.com/results?search_query=copper+wire+drawing+machine+process+factory" target="_blank" rel="noopener"><span class="r-tag video">Video</span><span class="r-text"><strong>"Copper wire drawing process" search</strong>Factory-line walkthroughs, small to industrial scale</span></a>
+          <a class="resource-link" href="https://www.alibaba.com/showroom/copper-wire-drawing-machine.html" target="_blank" rel="noopener"><span class="r-tag supplier">Supplier</span><span class="r-text"><strong>Alibaba wire-drawing machinery</strong>Compare furnace, drawing &amp; extrusion line suppliers</span></a>
+          <a class="resource-link" href="https://www.zccm-ih.com.zm/" target="_blank" rel="noopener"><span class="r-tag org">Org</span><span class="r-text"><strong>ZCCM-IH (Zambia)</strong>Local cathode sourcing &amp; industry contacts</span></a>
+        </div>
+
+        <div class="plan-cta"><p><strong>Country deep dive:</strong> see the full copper value-chain build-out in the <a href="country.html?c=zambia" target="_blank" rel="noopener">Zambia report</a>.</p></div>
+      </div>
+    </details>
+
+    <!-- 14 GEMSTONES -->
+    <details class="plan" id="p14">
+      <summary>
+        <div class="p-head-left"><span class="p-icon">💎</span><div class="p-title-block"><div class="p-num">Template 14</div><h3>Rough Gemstones → Cut &amp; Polished</h3></div></div>
+        <span class="p-chevron">+</span>
+      </summary>
+      <div class="plan-body">
+        <p class="p-intro">Applies directly in <strong>Zambia (emeralds), South Africa (diamonds)</strong>, and gold/gemstone-producing regions generally. Cutting and polishing captures a genuinely large share of a gemstone's final value — this is a skills-first business more than an equipment-first one.</p>
+
+        <div class="p-subhead"><span class="dot"></span>The transformation process</div>
+        <ol class="process-list">
+          <li><strong>Learn gemology fundamentals first:</strong> Understanding stone grading, inclusions and cutting angles is the actual skill being sold here — invest in training before equipment.</li>
+          <li><strong>Source rough stones:</strong> Buy legally-certified rough from licensed dealers or mining cooperatives — traceable, conflict-free sourcing is increasingly required by international buyers.</li>
+          <li><strong>Plan the cut:</strong> Examine the rough stone under magnification to plan cuts that maximize value while working around inclusions.</li>
+          <li><strong>Preform/shape:</strong> Use a trim saw to remove waste material and rough-shape the stone close to its final form.</li>
+          <li><strong>Facet or cabochon cut:</strong> Use a faceting machine (for transparent stones like emerald) or a cabbing machine (for opaque/cabochon stones) to cut precise facets or smooth domed surfaces.</li>
+          <li><strong>Polish:</strong> Progressive polishing with finer abrasives brings out the stone's full brilliance and color.</li>
+          <li><strong>Grade &amp; certify:</strong> Independent grading/certification significantly increases buyer confidence and price, especially for export sales.</li>
+        </ol>
+
+        <div class="p-subhead"><span class="dot"></span>Equipment &amp; startup cost</div>
+        <table class="cost-table">
+          <thead><tr><th>Item</th><th>Estimated cost</th><th>Note</th></tr></thead>
+          <tbody>
+            <tr><td>Trim saw</td><td class="num">$300–800</td><td>For shaping/waste removal</td></tr>
+            <tr><td>Faceting machine</td><td class="num">$1,500–4,000</td><td>For transparent stones (emerald, etc.)</td></tr>
+            <tr><td>Cabbing machine (alternative)</td><td class="num">$800–2,000</td><td>For cabochon-style cuts on opaque stones</td></tr>
+            <tr><td>Polishing laps &amp; abrasives</td><td class="num">$300–800</td><td>Progressive grit sets</td></tr>
+            <tr><td>Gemology training course</td><td class="num">$500–2,500</td><td>The most important line item on this list</td></tr>
+          </tbody>
+        </table>
+        <div class="cost-total"><span class="ct-label">Total realistic starter budget</span><span class="ct-value">$3,400–10,100</span></div>
+
+        <div class="econ-strip">
+          <div class="econ-item"><span class="e-v">Skill-first</span><span class="e-l">training matters more than equipment here</span></div>
+          <div class="econ-item"><span class="e-v">Certification</span><span class="e-l">unlocks meaningfully higher export prices</span></div>
+        </div>
+
+        <div class="p-subhead"><span class="dot"></span>Learn it &amp; source equipment</div>
+        <div class="resource-grid">
+          <a class="resource-link" href="https://www.gia.edu/" target="_blank" rel="noopener"><span class="r-tag org">Org</span><span class="r-text"><strong>Gemological Institute of America (GIA)</strong>The global standard for gemology training &amp; certification</span></a>
+          <a class="resource-link" href="https://www.youtube.com/results?search_query=gemstone+cutting+faceting+for+beginners+tutorial" target="_blank" rel="noopener"><span class="r-tag video">Video</span><span class="r-text"><strong>"Gemstone cutting faceting for beginners" search</strong>Step-by-step lapidary technique tutorials</span></a>
+          <a class="resource-link" href="https://www.icausa.org/" target="_blank" rel="noopener"><span class="r-tag org">Org</span><span class="r-text"><strong>International Colored Gemstone Association</strong>Industry standards &amp; ethical sourcing guidance</span></a>
+          <a class="resource-link" href="https://www.alibaba.com/showroom/gem-faceting-machine.html" target="_blank" rel="noopener"><span class="r-tag supplier">Supplier</span><span class="r-text"><strong>Alibaba lapidary equipment listings</strong>Faceting &amp; cabbing machine comparison</span></a>
+        </div>
+
+        <div class="plan-cta"><p><strong>Country deep dive:</strong> Zambia's emerald sector is detailed in the <a href="country.html?c=zambia" target="_blank" rel="noopener">Zambia report</a>.</p></div>
+      </div>
+    </details>
+
+    <!-- 15 SESAME -->
+    <details class="plan" id="p15">
+      <summary>
+        <div class="p-head-left"><span class="p-icon">🫙</span><div class="p-title-block"><div class="p-num">Template 15</div><h3>Sesame Seed → Oil &amp; Tahini</h3></div></div>
+        <span class="p-chevron">+</span>
+      </summary>
+      <div class="plan-body">
+        <p class="p-intro">Applies directly in <strong>Ethiopia, Nigeria</strong> and across the Sahel. Ethiopia in particular exports large volumes of raw sesame to Asian and Middle Eastern buyers who then press it into higher-value tahini and sesame oil — sold back into the same regional markets.</p>
+
+        <div class="p-subhead"><span class="dot"></span>The transformation process</div>
+        <ol class="process-list">
+          <li><strong>Clean &amp; sort:</strong> Remove debris, stones and damaged seeds — sesame's small size makes mechanical cleaning far faster than hand-sorting at any real volume.</li>
+          <li><strong>Dehull (optional):</strong> Remove the outer hull for lighter-colored, milder-tasting oil and tahini; hulled sesame commands a price premium.</li>
+          <li><strong>Roast:</strong> Light roasting develops the characteristic nutty flavor — roast time and temperature directly determine final flavor profile.</li>
+          <li><strong>Press for oil:</strong> Use a screw press (cold-press for premium "virgin" oil, or hot-press for higher yield) to extract sesame oil.</li>
+          <li><strong>Grind for tahini instead:</strong> Grind roasted (hulled or unhulled) seeds in a stone or steel-burr mill until smooth — tahini's texture is entirely a function of grind fineness.</li>
+          <li><strong>Filter &amp; settle:</strong> Let pressed oil settle or filter to remove sediment before bottling.</li>
+          <li><strong>Package:</strong> Bottle oil in dark glass (protects against light degradation); jar tahini with a note to stir before use (natural oil separation is normal).</li>
+        </ol>
+
+        <div class="p-subhead"><span class="dot"></span>Equipment &amp; startup cost</div>
+        <table class="cost-table">
+          <thead><tr><th>Item</th><th>Estimated cost</th><th>Note</th></tr></thead>
+          <tbody>
+            <tr><td>Seed cleaner/sorter</td><td class="num">$300–900</td><td>Speeds up processing significantly at volume</td></tr>
+            <tr><td>Dehulling machine (optional)</td><td class="num">$500–1,500</td><td>For premium hulled product</td></tr>
+            <tr><td>Roaster</td><td class="num">$400–1,200</td><td>Drum roaster with temperature control</td></tr>
+            <tr><td>Screw press</td><td class="num">$600–1,800</td><td>Cold-press capable units cost more but access the premium market</td></tr>
+            <tr><td>Stone/burr mill (for tahini)</td><td class="num">$500–1,500</td><td>Determines final tahini texture quality</td></tr>
+          </tbody>
+        </table>
+        <div class="cost-total"><span class="ct-label">Total realistic starter budget</span><span class="ct-value">$2,300–6,900</span></div>
+
+        <div class="econ-strip">
+          <div class="econ-item"><span class="e-v">Dual product</span><span class="e-l">oil + tahini from the same input stream</span></div>
+          <div class="econ-item"><span class="e-v">Middle East</span><span class="e-l">export market pays real premium for quality tahini</span></div>
+        </div>
+
+        <div class="p-subhead"><span class="dot"></span>Learn it &amp; source equipment</div>
+        <div class="resource-grid">
+          <a class="resource-link" href="https://www.fao.org/3/i3169e/i3169e.pdf" target="_blank" rel="noopener"><span class="r-tag org">Org</span><span class="r-text"><strong>FAO oilseed processing guidance</strong>Small-scale pressing technical standards</span></a>
+          <a class="resource-link" href="https://www.youtube.com/results?search_query=tahini+making+process+sesame+grinding+machine" target="_blank" rel="noopener"><span class="r-tag video">Video</span><span class="r-text"><strong>"Tahini making process" search</strong>Sesame grinding &amp; production demonstrations</span></a>
+          <a class="resource-link" href="https://www.youtube.com/results?search_query=sesame+oil+cold+press+small+business+machine" target="_blank" rel="noopener"><span class="r-tag video">Video</span><span class="r-text"><strong>"Sesame oil cold press" search</strong>Small-business press setup walkthroughs</span></a>
+          <a class="resource-link" href="https://www.alibaba.com/showroom/sesame-oil-press-machine.html" target="_blank" rel="noopener"><span class="r-tag supplier">Supplier</span><span class="r-text"><strong>Alibaba sesame processing equipment</strong>Compare press &amp; grinding mill suppliers</span></a>
+        </div>
+
+        <div class="plan-cta"><p><strong>Country deep dive:</strong> sesame's role in Ethiopia's export basket is detailed in the <a href="country.html?c=ethiopia" target="_blank" rel="noopener">Ethiopia report</a>.</p></div>
+      </div>
+    </details>
+
+  </div>
+</main>
+
+<footer class="pl-footer">
+  <div class="wrap">
+    <p>Every template here is a starting checklist, not a guarantee — local regulations, import duties, financing access and market conditions vary significantly by country and region. Get local quotes, talk to an existing small processor in your area before buying equipment, and start smaller than you think you need to. Part of the <a href="forte-economics.html">ForTe Economics</a> report. © Innocent Forteh.</p>
+  </div>
+</footer>
+
+<script>
+  document.querySelectorAll('.plan').forEach(function(d){
+    d.addEventListener('toggle', function(){
+      if(d.open){
+        document.querySelectorAll('.plan').forEach(function(other){
+          if(other !== d) other.open = false;
+        });
+      }
+    });
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Quizzes — Team21 Health Platform</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700;9..144,800&family=Inter+Tight:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<style>
+  .quiz-list{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--rule);border:1px solid var(--rule);margin-bottom:40px}
+  .quiz-link{background:var(--paper);padding:24px;text-decoration:none;color:inherit;cursor:pointer;display:flex;flex-direction:column;gap:8px;transition:background .15s}
+  .quiz-link:hover{background:var(--paper-2)}
+  .quiz-link.done{border-left:3px solid var(--good)}
+  .quiz-link h3{font-family:"Fraunces",serif;font-size:20px;margin:0;font-weight:500;letter-spacing:-.01em}
+  .quiz-link p{font-size:13.5px;color:var(--ink-soft);margin:0;line-height:1.5}
+  .quiz-link .stat{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.08em;color:var(--mute);margin-top:6px}
+  .quiz-link .stat .ok{color:var(--good);font-weight:600}
+  @media (max-width:760px){.quiz-list{grid-template-columns:1fr}}
+
+  .quiz-runner{background:var(--paper);border:1px solid var(--ink);padding:0;display:none}
+  .quiz-runner.show{display:block}
+  .quiz-runner-head{padding:24px 28px;border-bottom:1px solid var(--rule);background:var(--paper-2);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+  .quiz-runner-head h2{font-family:"Fraunces",serif;font-size:24px;margin:0;font-weight:500;line-height:1.2}
+  .quiz-runner-head .progress{font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--mute);letter-spacing:.08em}
+  .quiz-body{padding:28px}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="brand">
+      <div class="brand-mark">T21</div>
+      <div>
+        <div class="brand-name">Team21 Health Platform</div>
+        <div class="brand-sub">Preventive Intelligence</div>
+      </div>
+    </a>
+    <div class="nav-cta" id="navCta"></div>
+  </div>
+</nav>
+
+<main class="page">
+  <header class="page-head">
+    <div>
+      <div class="eyebrow">Test Your Knowledge</div>
+      <h1>Quizzes to check <em>understanding</em>.</h1>
+      <p class="intro">Eight short quizzes covering carcinogens, heart health, sleep, African foods and cooking methods, natural remedies, the sleep cycle, skin & eyes, and kidneys & liver. Each question is followed by a brief explanation citing the source. Your scores are saved to your account if you sign in.</p>
+    </div>
+    <div class="meta">
+      8 QUIZZES<br>
+      ~50 QUESTIONS<br>
+      EXPLANATIONS &amp; SOURCES
+    </div>
+  </header>
+
+  <div id="quizListView">
+    <h2 class="sect">Choose a <em>quiz</em></h2>
+    <div class="quiz-list" id="quizList"></div>
+  </div>
+
+  <div id="quizRunner" class="quiz-runner">
+    <div class="quiz-runner-head">
+      <h2 id="runnerTitle">Quiz</h2>
+      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+        <span class="progress" id="runnerProgress">Question 1 of 6</span>
+        <button class="btn btn-sm" id="exitQuiz">Back to list</button>
+      </div>
+    </div>
+    <div class="quiz-body" id="quizCards"></div>
+    <div class="quiz-score" id="quizScore">
+      <p style="margin-bottom:6px">Your score</p>
+      <div class="pct" id="scorePct">—</div>
+      <h3 id="scoreVerdict"></h3>
+      <p id="scoreSub" style="margin-top:6px"></p>
+      <div style="margin-top:16px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+        <button class="btn btn-sm" id="retryQuiz" style="background:transparent;border-color:var(--paper);color:var(--paper)">Try again</button>
+        <button class="btn btn-sm btn-accent" id="nextFromScore">Back to all quizzes</button>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script src="data.js"></script>
+<script src="data-ext.js"></script>
+<script src="lang-data.js"></script>
+<script src="lang.js"></script>
+<script src="shared.js"></script>
+<script src="components.js"></script>
+<script>
+T21.boot('quizzes.html');
+
+let scoresCache = {};   // {quizId:{score, total, ts}}
+let currentQuiz = null;
+let currentAnswers = {};
+
+async function loadScores(){
+  if(!T21.user || !T21.storage){ scoresCache = {}; return; }
+  try{
+    const r = await T21.storage.get(`t21:${T21.user.email}:quizScores`);
+    if(r && r.value) scoresCache = JSON.parse(r.value);
+  }catch(_){ scoresCache = {}; }
+}
+async function saveScore(quizId, score, total){
+  scoresCache[quizId] = {score, total, ts:Date.now()};
+  if(T21.user && T21.storage){
+    try{ await T21.storage.set(`t21:${T21.user.email}:quizScores`, JSON.stringify(scoresCache)); }catch(_){}
+  }
+}
+
+function renderQuizList(){
+  const fr = window.T21Lang && T21Lang.current==='fr';
+  const wrap = document.getElementById('quizList');
+  wrap.innerHTML = QUIZZES.map(q=>{
+    const tr = fr ? T21Lang.Td('quiz', q.id) : null;
+    const title = (tr && tr.title) || q.title;
+    const intro = (tr && tr.intro) || q.intro;
+    const sc = scoresCache[q.id];
+    const scoreLbl = fr ? 'Dernier score' : 'Last score';
+    const qLbl = fr ? 'questions' : 'questions';
+    const done = sc ? `<span class="ok">${scoreLbl}: ${sc.score}/${sc.total} (${Math.round(sc.score/sc.total*100)}%)</span>` : `${q.questions.length} ${qLbl}`;
+    return `<div class="quiz-link ${sc?'done':''}" data-id="${q.id}">
+      <h3>${title}</h3>
+      <p>${intro}</p>
+      <div class="stat">${done}</div>
+    </div>`;
+  }).join('');
+  wrap.querySelectorAll('.quiz-link').forEach(card=>{
+    card.onclick = ()=> startQuiz(card.dataset.id);
+  });
+}
+
+function startQuiz(id){
+  const fr = window.T21Lang && T21Lang.current==='fr';
+  currentQuiz = QUIZZES.find(q=>q.id===id);
+  currentAnswers = {};
+  document.getElementById('quizListView').style.display = 'none';
+  document.getElementById('quizRunner').classList.add('show');
+  const tr = fr ? T21Lang.Td('quiz', currentQuiz.id) : null;
+  document.getElementById('runnerTitle').textContent = (tr && tr.title) || currentQuiz.title;
+  document.getElementById('quizScore').classList.remove('show');
+  renderQuizCards();
+  document.getElementById('quizRunner').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function renderQuizCards(){
+  const wrap = document.getElementById('quizCards');
+  wrap.innerHTML = currentQuiz.questions.map((q, idx)=>{
+    const opts = q.opts.map((opt, i)=>{
+      const letter = String.fromCharCode(65+i);
+      return `<button class="q-option" data-q="${idx}" data-i="${i}"><span class="letter">${letter}</span> <span>${opt}</span></button>`;
+    }).join('');
+    return `<div class="quiz-card" data-q="${idx}">
+      <div class="quiz-head"><h3>${idx+1}. ${q.q}</h3><span class="quiz-meta">${idx+1} / ${currentQuiz.questions.length}</span></div>
+      <div class="q-options">${opts}</div>
+      <div class="q-explain"><strong>Explanation</strong>${q.exp}</div>
+    </div>`;
+  }).join('');
+
+  wrap.querySelectorAll('.q-option').forEach(btn=>{
+    btn.onclick = ()=>{
+      const qIdx = +btn.dataset.q;
+      const optIdx = +btn.dataset.i;
+      if(currentAnswers[qIdx] !== undefined) return;
+      currentAnswers[qIdx] = optIdx;
+      const card = btn.closest('.quiz-card');
+      const correct = currentQuiz.questions[qIdx].a;
+      card.querySelectorAll('.q-option').forEach((b, i)=>{
+        b.disabled = true;
+        if(i === correct) b.classList.add('correct');
+        else if(i === optIdx) b.classList.add('wrong');
+      });
+      card.querySelector('.q-explain').classList.add('show');
+      updateProgress();
+      if(Object.keys(currentAnswers).length === currentQuiz.questions.length){
+        setTimeout(finishQuiz, 600);
+      }
+    };
+  });
+  updateProgress();
+}
+
+function updateProgress(){
+  const answered = Object.keys(currentAnswers).length;
+  document.getElementById('runnerProgress').textContent = `${answered} / ${currentQuiz.questions.length} answered`;
+}
+
+async function finishQuiz(){
+  let correct = 0;
+  currentQuiz.questions.forEach((q,i)=>{ if(currentAnswers[i] === q.a) correct++; });
+  const total = currentQuiz.questions.length;
+  const pct = Math.round(correct/total*100);
+  document.getElementById('scorePct').textContent = pct + '%';
+  document.getElementById('quizScore').classList.add('show');
+  let verdict = '', sub = '';
+  if(pct >= 90){ verdict = 'Outstanding'; sub = "You know this material at a clinical level. Consider answering questions in the Community Q&A board."; }
+  else if(pct >= 70){ verdict = 'Strong understanding'; sub = "You have the essentials. Review the explanations on what you missed."; }
+  else if(pct >= 50){ verdict = 'Good start'; sub = 'Worth revisiting the related section, then trying again.'; }
+  else{ verdict = 'Worth reviewing'; sub = 'Take a few minutes with the related section, then come back to this quiz.'; }
+  document.getElementById('scoreVerdict').textContent = verdict;
+  document.getElementById('scoreSub').textContent = sub;
+  await saveScore(currentQuiz.id, correct, total);
+  document.getElementById('quizScore').scrollIntoView({behavior:'smooth',block:'center'});
+}
+
+document.getElementById('exitQuiz').addEventListener('click', backToList);
+document.getElementById('nextFromScore').addEventListener('click', backToList);
+document.getElementById('retryQuiz').addEventListener('click', ()=>{
+  currentAnswers = {};
+  document.getElementById('quizScore').classList.remove('show');
+  renderQuizCards();
+});
+
+function backToList(){
+  document.getElementById('quizRunner').classList.remove('show');
+  document.getElementById('quizListView').style.display = 'block';
+  renderQuizList();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+async function init(){
+  await loadScores();
+  renderQuizList();
+}
+window.onUserAuthChange = init;
+init();
+</script>
+</body>
+</html>

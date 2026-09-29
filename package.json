@@ -1,0 +1,13 @@
+{
+  "name": "forte",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Forte — unified Team21 Academy / inno4te platform with public portal and admin console",
+  "type": "module",
+  "scripts": {
+    "registry": "node scripts/build-registry.mjs",
+    "serve": "python3 -m http.server 8080",
+    "admin:password": "node scripts/set-admin-password.mjs"
+  },
+  "license": "UNLICENSED"
+}

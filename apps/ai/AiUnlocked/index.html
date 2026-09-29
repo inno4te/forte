@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Team21 Academy — AI Unlocked Curriculum</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --ink: #0d0d0d;
+    --paper: #f5f1eb;
+    --accent: #e8420a;
+    --gold: #c89a2e;
+    --mid: #4a4a3f;
+    --faint: #e0dbd2;
+    --deep: #0e1a2b;
+    --teal: #0f3d4f;
+    --w1: #1a3a5c;
+    --w2: #1e5c3a;
+    --w3: #5c3a1a;
+    --w4: #5c1a3a;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    line-height: 1.65;
+    overflow-x: hidden;
+  }
+
+  /* ─── HERO ─── */
+  .hero {
+    background: var(--deep);
+    color: var(--paper);
+    padding: 64px 48px 56px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-topbar {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--accent), var(--gold));
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -100px; right: -100px;
+    width: 500px; height: 500px;
+    border-radius: 50%;
+    background: var(--teal);
+    opacity: 0.35;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -80px; left: 5%;
+    width: 280px; height: 280px;
+    border-radius: 50%;
+    background: var(--gold);
+    opacity: 0.07;
+  }
+
+  .hero-inner {
+    position: relative;
+    z-index: 1;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .hero-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 9.5px;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 18px;
+  }
+  .hero-eyebrow::after {
+    content: '';
+    display: block;
+    width: 48px; height: 1px;
+    background: var(--gold);
+    opacity: 0.4;
+  }
+
+  /* Shield icon */
+  .shield {
+    width: 52px; height: 60px;
+    flex-shrink: 0;
+    position: relative;
+    margin-right: 8px;
+  }
+  .shield svg { width: 100%; height: 100%; }
+
+  .hero-head {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    margin-bottom: 20px;
+  }
+
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2.2rem, 5vw, 3.5rem);
+    font-weight: 800;
+    line-height: 1.0;
+    letter-spacing: -0.025em;
+  }
+  .hero h1 em { font-style: normal; color: var(--accent); }
+  .hero h1 .sub {
+    display: block;
+    font-size: 0.48em;
+    font-weight: 600;
+    color: var(--gold);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-top: 6px;
+  }
+
+  .hero-desc {
+    font-size: 14.5px;
+    color: #a8a49c;
+    max-width: 660px;
+    font-weight: 300;
+    line-height: 1.75;
+    margin-bottom: 28px;
+    font-style: italic;
+  }
+
+  .hero-pills {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 32px;
+  }
+  .hero-pill {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 4px;
+    padding: 6px 14px;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 500;
+    color: var(--paper);
+  }
+  .hero-pill span { color: var(--gold); margin-right: 6px; }
+
+  .register-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--accent);
+    color: white;
+    text-decoration: none;
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 15px 32px;
+    border-radius: 6px;
+    box-shadow: 0 4px 24px rgba(232,66,10,0.35);
+    transition: background 0.2s, transform 0.15s;
+    position: relative; z-index: 1;
+  }
+  .register-btn:hover { background: #c93508; transform: translateY(-2px); }
+  .register-btn .btn-icon { font-size: 17px; }
+
+  /* ─── WEEKS ─── */
+  .weeks-wrap {
+    max-width: 900px;
+    margin: 44px auto 0;
+    padding: 0 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .week-card {
+    background: white;
+    border-left: 4px solid transparent;
+    overflow: hidden;
+  }
+  .week-card:first-child { border-radius: 8px 8px 0 0; }
+  .week-card:last-child  { border-radius: 0 0 8px 8px; }
+  .week-card.w1 { border-left-color: var(--w1); }
+  .week-card.w2 { border-left-color: var(--w2); }
+  .week-card.w3 { border-left-color: var(--w3); }
+  .week-card.w4 { border-left-color: var(--w4); }
+
+  .week-header {
+    padding: 20px 24px 16px;
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .week-badge {
+    flex-shrink: 0;
+    width: 44px; height: 44px;
+    border-radius: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Syne', sans-serif;
+    font-size: 9.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    text-align: center;
+    line-height: 1.2;
+    color: white;
+  }
+  .w1 .week-badge { background: var(--w1); }
+  .w2 .week-badge { background: var(--w2); }
+  .w3 .week-badge { background: var(--w3); }
+  .w4 .week-badge { background: var(--w4); }
+
+  .week-title-block { flex: 1; }
+  .week-num  { font-size: 9px; text-transform: uppercase; letter-spacing: 0.18em; color: #999; font-weight: 500; margin-bottom: 3px; }
+  .week-title { font-family: 'Syne', sans-serif; font-size: 1.05rem; font-weight: 700; color: var(--ink); line-height: 1.2; }
+  .week-objective { margin-top: 3px; font-size: 12px; color: var(--mid); font-weight: 300; }
+  .week-toggle { flex-shrink: 0; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; color: #bbb; font-size: 18px; transition: transform 0.25s; margin-top: 4px; }
+  .week-card.open .week-toggle { transform: rotate(180deg); color: var(--accent); }
+
+  .week-body { display: none; padding: 0 24px 24px 84px; }
+  .week-card.open .week-body { display: block; }
+
+  /* days inside weeks */
+  .days-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+  .day-card {
+    background: var(--faint);
+    border-radius: 6px;
+    padding: 14px 16px;
+  }
+  .day-label {
+    font-size: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--gold);
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .day-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 8px;
+    line-height: 1.25;
+  }
+  .day-items { list-style: none; }
+  .day-items li {
+    font-size: 11.5px;
+    color: var(--mid);
+    font-weight: 300;
+    line-height: 1.4;
+    padding: 2px 0 2px 14px;
+    position: relative;
+  }
+  .day-items li::before {
+    content: '·';
+    position: absolute;
+    left: 4px;
+    color: var(--accent);
+    font-weight: 700;
+    font-size: 14px;
+    top: -1px;
+  }
+
+  /* plAIbox highlight */
+  .plaibox-strip {
+    background: var(--ink);
+    color: var(--paper);
+    border-radius: 6px;
+    padding: 12px 16px;
+    font-size: 12px;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .plaibox-strip .pb-label {
+    flex-shrink: 0;
+    font-family: 'Syne', sans-serif;
+    font-size: 7.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--gold);
+    padding-top: 2px;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  /* tools row */
+  .tools-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 14px;
+  }
+  .tool-chip {
+    background: white;
+    border: 1px solid var(--faint);
+    border-radius: 4px;
+    padding: 4px 10px;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--mid);
+  }
+
+  .outcome-box {
+    background: var(--ink);
+    color: var(--paper);
+    border-radius: 5px;
+    padding: 11px 15px;
+    font-size: 12px;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .outcome-box .out-label {
+    flex-shrink: 0;
+    font-family: 'Syne', sans-serif;
+    font-size: 7.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--gold);
+    padding-top: 2px;
+    font-weight: 700;
+  }
+
+  .divider { height: 1px; background: var(--faint); margin: 0 24px; }
+
+  /* ─── FRAMEWORK SECTION ─── */
+  .framework-section {
+    max-width: 900px;
+    margin: 44px auto 0;
+    padding: 0 32px;
+  }
+  .section-eyebrow { font-size: 10px; text-transform: uppercase; letter-spacing: 0.2em; color: var(--accent); font-weight: 600; margin-bottom: 8px; }
+  .section-title { font-family: 'Syne', sans-serif; font-size: 1.4rem; font-weight: 800; color: var(--ink); margin-bottom: 18px; line-height: 1.2; }
+
+  .framework-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 8px;
+  }
+  .fw-card {
+    background: white;
+    border-radius: 8px;
+    padding: 18px;
+    border-top: 3px solid var(--gold);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .fw-card .fw-letter {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: transparent;
+    -webkit-text-stroke: 2px var(--accent);
+    line-height: 1;
+  }
+  .fw-card .fw-word { font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700; color: var(--ink); }
+  .fw-card .fw-desc { font-size: 11.5px; color: var(--mid); font-weight: 300; line-height: 1.4; }
+
+  /* ─── TRANSFORMATION ─── */
+  .transformation {
+    max-width: 900px;
+    margin: 44px auto 0;
+    padding: 0 32px 72px;
+  }
+  .transform-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 8px;
+  }
+  .transform-item {
+    background: var(--ink);
+    color: var(--paper);
+    border-radius: 7px;
+    padding: 12px 14px;
+    font-size: 12.5px;
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+  }
+  .transform-item .tick { color: #4ccc84; font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+
+  /* ─── COMMANDMENTS ─── */
+  .commandments {
+    max-width: 900px;
+    margin: 44px auto 0;
+    padding: 0 32px;
+  }
+  .cmd-box {
+    background: var(--deep);
+    border-radius: 10px;
+    padding: 36px 40px;
+    position: relative;
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .cmd-box::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--accent), var(--gold));
+  }
+  .cmd-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 10px;
+    color: var(--paper);
+  }
+  .cmd-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 2rem;
+    font-weight: 800;
+    color: transparent;
+    -webkit-text-stroke: 1.5px var(--gold);
+    line-height: 1;
+  }
+  .cmd-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .cmd-desc { font-size: 12px; color: #888; font-weight: 300; line-height: 1.5; }
+
+  /* ─── CTA FOOTER ─── */
+  .cta-footer {
+    max-width: 900px;
+    margin: 44px auto 0;
+    padding: 0 32px 72px;
+  }
+  .cta-box {
+    background: var(--deep);
+    border-radius: 10px;
+    padding: 44px 44px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+  .cta-box::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--accent), var(--gold)); }
+  .cta-left { flex: 1; min-width: 260px; }
+  .cta-eyebrow { font-size: 9px; text-transform: uppercase; letter-spacing: 0.2em; color: var(--gold); font-weight: 600; margin-bottom: 10px; }
+  .cta-title { font-family: 'Syne', sans-serif; font-size: 1.5rem; font-weight: 800; color: var(--paper); line-height: 1.15; margin-bottom: 20px; }
+  .cta-title em { font-style: normal; color: var(--accent); }
+  .contact-row { display: flex; flex-direction: column; gap: 8px; }
+  .contact-item { display: flex; align-items: center; gap: 10px; font-size: 14px; color: var(--paper); font-weight: 500; }
+  .contact-item a { color: var(--paper); text-decoration: none; font-family: 'Syne', sans-serif; font-weight: 700; }
+  .contact-item a:hover { color: var(--gold); }
+  .cta-right { flex-shrink: 0; display: flex; flex-direction: column; align-items: flex-end; gap: 16px; }
+  .tagline { font-family: 'Syne', sans-serif; font-size: 0.9rem; font-weight: 700; color: #555; text-transform: uppercase; letter-spacing: 0.08em; text-align: right; line-height: 1.6; }
+  .tagline span { color: var(--gold); display: block; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .hero-inner > * { animation: fadeUp 0.6s ease both; }
+  .hero-eyebrow { animation-delay: 0.05s; }
+  .hero-head    { animation-delay: 0.15s; }
+  .hero-desc    { animation-delay: 0.25s; }
+  .hero-pills   { animation-delay: 0.35s; }
+  .register-btn { animation-delay: 0.45s; }
+
+  @media(max-width:640px){
+    .hero { padding: 48px 24px 40px; }
+    .weeks-wrap, .framework-section, .commandments, .transformation, .cta-footer { padding-left: 20px; padding-right: 20px; }
+    .week-body { padding-left: 20px; }
+    .days-grid { grid-template-columns: 1fr; }
+    .cmd-box { grid-template-columns: 1fr; }
+    .cta-box { flex-direction: column; }
+    .cta-right { align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══ HERO ═══ -->
+<header class="hero">
+  <div class="hero-topbar"></div>
+  <div class="hero-inner">
+    <div class="hero-eyebrow">Team21 Academy · AI Literacy Programme</div>
+
+    <div class="hero-head">
+      <!-- Shield SVG matching original branding -->
+      <div class="shield">
+        <svg viewBox="0 0 52 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M26 2L4 12V30C4 43 14 54 26 58C38 54 48 43 48 30V12L26 2Z" fill="#1a3a5c" stroke="#c89a2e" stroke-width="2"/>
+          <path d="M26 8L10 17V30C10 40 17 49 26 52C35 49 42 40 42 30V17L26 8Z" fill="#0e1a2b"/>
+          <text x="26" y="36" font-family="Syne" font-size="13" font-weight="800" fill="#c89a2e" text-anchor="middle">21</text>
+        </svg>
+      </div>
+      <h1>
+        AI Unlocked
+        <em>Curriculum</em>
+        <span class="sub">Team21 Academy · Complete Learning Guide</span>
+      </h1>
+    </div>
+
+    <p class="hero-desc">
+      A practical, hands-on programme designed to equip learners with the knowledge, tools, and strategic mindset to apply Artificial Intelligence in real-world contexts — from data fundamentals and content creation to entrepreneurship, leadership, and digital innovation.
+    </p>
+
+    <div class="hero-pills">
+      <div class="hero-pill"><span>📅</span> 4 Weeks · 8 Days</div>
+      <div class="hero-pill"><span>🛠</span> Hands-On · PlAIbox Exercises</div>
+      <div class="hero-pill"><span>🌍</span> Bilingual EN/FR</div>
+      <div class="hero-pill"><span>🎓</span> Capstone + Graduation</div>
+      <div class="hero-pill"><span>👥</span> 500+ Alumni Worldwide</div>
+    </div>
+
+    <a class="register-btn" href="https://wa.me/237694294406?text=I%20am%20interested%20in%20AI%20Unlocked" target="_blank">
+      <span class="btn-icon">💬</span> Register on WhatsApp
+    </a>
+  </div>
+</header>
+
+<!-- ═══ WEEKS ═══ -->
+<div class="weeks-wrap">
+
+  <!-- WEEK 1 -->
+  <div class="week-card w1 open">
+    <div class="week-header" onclick="toggle(this)">
+      <div class="week-badge">W1</div>
+      <div class="week-title-block">
+        <div class="week-num">Week 1</div>
+        <div class="week-title">Foundations of Artificial Intelligence</div>
+        <div class="week-objective">Understand how AI works, master prompt engineering, and start applying AI tools immediately.</div>
+      </div>
+      <div class="week-toggle">▾</div>
+    </div>
+    <div class="week-body">
+      <div class="days-grid">
+
+        <div class="day-card">
+          <div class="day-label">Day 1</div>
+          <div class="day-title">Introduction to Data & Core AI Concepts</div>
+          <ul class="day-items">
+            <li>Web Evolution: Web 1.0 → 2.0 → 3.0</li>
+            <li>What is Artificial Intelligence?</li>
+            <li>Machine Learning: supervised, unsupervised, reinforcement</li>
+            <li>AI Types: Generative AI, Predictive AI, GANs, GPTs</li>
+            <li>Narrow AI vs AGI vs ASI</li>
+            <li>AI Success Formula: Data + People + Compute + Algorithms</li>
+            <li>Practical: Gemini, Grok, Suno, Copilot demos</li>
+          </ul>
+        </div>
+
+        <div class="day-card">
+          <div class="day-label">Day 2</div>
+          <div class="day-title">Prompt Engineering</div>
+          <ul class="day-items">
+            <li>The art &amp; science of crafting AI instructions</li>
+            <li>Strategies: Zero-shot, One-shot, Few-shot</li>
+            <li>CLEAR Framework: Persona · Tone · Format · Details · Audience</li>
+            <li>Context window &amp; multi-modal capability</li>
+            <li>AI Tools landscape: ChatGPT, Gemini, Claude, Copilot, Grok, Perplexity</li>
+            <li>Specialized tools: Suno, Ideogram, InVideo, Gamma, NotebookLM, ElevenLabs</li>
+            <li>Team21 AI Commandments: Investigate · Review · Do No Harm</li>
+          </ul>
+        </div>
+
+      </div>
+
+      <div class="plaibox-strip">
+        <span class="pb-label">🧩 PlAIbox W1</span>
+        <span>Build an NGO from scratch using Claude/Gemini/ChatGPT — Articles of Association, HR Manual, Finance Manual, legal docs, staffing structure, funding sources, and a Suno radio spot. Then: generate beneficiary images with Ideogram/Grok, redesign logo with InsMind, pitch via Gamma, practice a funding interview with Gemini voice mode.</span>
+      </div>
+
+      <div class="tools-row">
+        <div class="tool-chip">ChatGPT</div><div class="tool-chip">Gemini</div><div class="tool-chip">Claude</div>
+        <div class="tool-chip">Grok</div><div class="tool-chip">Suno</div><div class="tool-chip">Ideogram</div>
+        <div class="tool-chip">InsMind</div><div class="tool-chip">Gamma</div><div class="tool-chip">InVideo</div>
+        <div class="tool-chip">NotebookLM</div><div class="tool-chip">ElevenLabs</div>
+      </div>
+
+      <div class="outcome-box">
+        <span class="out-label">Outcome</span>
+        <span>Students understand what AI is, where it came from, and how to communicate with it effectively. They leave with working prompts, real AI-generated outputs, and a completed NGO project as proof of mastery.</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- WEEK 2 -->
+  <div class="week-card w2">
+    <div class="week-header" onclick="toggle(this)">
+      <div class="week-badge">W2</div>
+      <div class="week-title-block">
+        <div class="week-num">Week 2</div>
+        <div class="week-title">AI for Creation, Development &amp; Business</div>
+        <div class="week-objective">Use AI to create content, write books, build digital products, and launch or grow a business.</div>
+      </div>
+      <div class="week-toggle">▾</div>
+    </div>
+    <div class="week-body">
+      <div class="days-grid">
+
+        <div class="day-card">
+          <div class="day-label">Day 3</div>
+          <div class="day-title">Content Development &amp; Authoring with AI</div>
+          <ul class="day-items">
+            <li>Multi-modal AI: image, voice, text, video, sensor data</li>
+            <li>Use cases: social media, education, business, healthcare, legal, agriculture</li>
+            <li>Write 2 books: brainstorm titles, 7 chapters, illustrations, cover design</li>
+            <li>AI writing tools: ChatGPT, Claude, Gemini compared</li>
+            <li>Podcast creation with NotebookLM</li>
+            <li>Audiobook production with ElevenLabs</li>
+          </ul>
+        </div>
+
+        <div class="day-card">
+          <div class="day-label">Day 4</div>
+          <div class="day-title">Entrepreneurship with AI</div>
+          <ul class="day-items">
+            <li>Business Model Canvas (BMC) — 9 building blocks</li>
+            <li>ROI Formula &amp; minimum targets</li>
+            <li>SOSTAC Framework: Situation · Objectives · Strategy · Tactics · Action · Control</li>
+            <li>2025 Cameroon Social Media Trends: Facebook, WhatsApp, TikTok, Instagram, LinkedIn</li>
+            <li>Platform-specific selling tactics &amp; ROI data</li>
+            <li>AI Prompt Sheet for entrepreneurs &amp; creators</li>
+            <li>WhatsApp Business setup, broadcast lists, automation</li>
+          </ul>
+        </div>
+
+      </div>
+
+      <div class="plaibox-strip">
+        <span class="pb-label">🧩 PlAIbox W2</span>
+        <span>Scale your NGO: apply for a $750K grant, write &amp; publish a bilingual children's book as PDF + audiobook (ElevenLabs), create a podcast (NotebookLM), post on LinkedIn, launch 2 side businesses with full BMC, recruit IDPs for training, produce a company success video for YouTube, and announce a philanthropic arm.</span>
+      </div>
+
+      <div class="tools-row">
+        <div class="tool-chip">ChatGPT</div><div class="tool-chip">Claude</div><div class="tool-chip">Gemini</div>
+        <div class="tool-chip">NotebookLM</div><div class="tool-chip">ElevenLabs</div><div class="tool-chip">Canva</div>
+        <div class="tool-chip">LinkedIn</div><div class="tool-chip">YouTube</div><div class="tool-chip">Gamma</div>
+        <div class="tool-chip">InVideo</div>
+      </div>
+
+      <div class="outcome-box">
+        <span class="out-label">Outcome</span>
+        <span>Students can create professional digital content, write and publish books, produce podcasts, and design a business strategy using AI — all tied to a live group project and personal side business launch.</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- WEEK 3 -->
+  <div class="week-card w3">
+    <div class="week-header" onclick="toggle(this)">
+      <div class="week-badge">W3</div>
+      <div class="week-title-block">
+        <div class="week-num">Week 3</div>
+        <div class="week-title">Innovation, Architecture &amp; Leadership</div>
+        <div class="week-objective">Think strategically with AI — from engineering and programming to servant leadership and personal growth planning.</div>
+      </div>
+      <div class="week-toggle">▾</div>
+    </div>
+    <div class="week-body">
+      <div class="days-grid">
+
+        <div class="day-card">
+          <div class="day-label">Day 5</div>
+          <div class="day-title">Entrepreneurship, Engineering &amp; Programming with AI</div>
+          <ul class="day-items">
+            <li>Advanced AI applications: Agentic AI systems</li>
+            <li>Build your own AI Business Coach agent</li>
+            <li>CV optimization with STAR method</li>
+            <li>Engineering: From land → building (Mega Agentic Construction Prompt)</li>
+            <li>Programming: Build your first HTML game with AI</li>
+            <li>Income generation: AI-assisted services, courses, digital products</li>
+          </ul>
+        </div>
+
+        <div class="day-card">
+          <div class="day-label">Day 6</div>
+          <div class="day-title">GPTs, Leadership &amp; Personal Growth</div>
+          <ul class="day-items">
+            <li>GPTs &amp; architectural thinking</li>
+            <li>Servant leadership principles</li>
+            <li>Personal mission statement development</li>
+            <li>Team21 Leadership Growth Journey (Mega Agentic Prompt)</li>
+            <li>SWOT analysis across 7 life areas</li>
+            <li>3-Year Personal Growth Plan: Pray · Plan · People</li>
+            <li>OKR framework + life balance audit</li>
+            <li>Group project presentations (15 mins each)</li>
+          </ul>
+        </div>
+
+      </div>
+
+      <div class="plaibox-strip">
+        <span class="pb-label">🧩 PlAIbox W3</span>
+        <span>Use the Mega Agentic Construction Prompt to walk through all 7 stages — from land identification and soil study to architectural drawings, 3D visualization, and full Bill of Quantities in XAF. Separately, complete the Leadership Growth Journey prompt to produce your Personal Mission Statement, SWOT, and 3Ps growth plan.</span>
+      </div>
+
+      <div class="tools-row">
+        <div class="tool-chip">ChatGPT</div><div class="tool-chip">Claude</div><div class="tool-chip">Gemini</div>
+        <div class="tool-chip">Copilot</div><div class="tool-chip">Perplexity</div><div class="tool-chip">AI Studio</div>
+        <div class="tool-chip">Runway ML</div><div class="tool-chip">Grok</div>
+      </div>
+
+      <div class="outcome-box">
+        <span class="out-label">Outcome</span>
+        <span>Students can design agentic AI workflows, build basic digital products with AI assistance, and produce a complete personal leadership blueprint grounded in faith-based servant leadership values.</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- WEEK 4 -->
+  <div class="week-card w4">
+    <div class="week-header" onclick="toggle(this)">
+      <div class="week-badge">W4</div>
+      <div class="week-title-block">
+        <div class="week-num">Week 4</div>
+        <div class="week-title">Capstone — Build, Present &amp; Graduate</div>
+        <div class="week-objective">Present group projects, deliver capstone work, and graduate as a certified AI Unlocked alumni.</div>
+      </div>
+      <div class="week-toggle">▾</div>
+    </div>
+    <div class="week-body">
+      <div class="days-grid">
+
+        <div class="day-card">
+          <div class="day-label">Day 7</div>
+          <div class="day-title">Group Project Presentations (Final)</div>
+          <ul class="day-items">
+            <li>Each group presents their business with BMC + SOSTAC</li>
+            <li>Live social media posts + teasers reviewed</li>
+            <li>Videos and digital products demonstrated</li>
+            <li>Beginning of individual capstone presentations</li>
+            <li>Peer feedback &amp; class discussion</li>
+          </ul>
+        </div>
+
+        <div class="day-card">
+          <div class="day-label">Day 8</div>
+          <div class="day-title">Final Capstone &amp; Graduation</div>
+          <ul class="day-items">
+            <li>Final individual capstone presentations</li>
+            <li>Comments &amp; recommendations from facilitator</li>
+            <li>Certificate of completion ceremony</li>
+            <li>Community: join the Team21 alumni network</li>
+            <li>Next steps: AI Builder Level 2, AI ToT, specialised classes</li>
+          </ul>
+        </div>
+
+      </div>
+
+      <div class="plaibox-strip">
+        <span class="pb-label">🎓 Capstone</span>
+        <span>Each student presents a complete project that integrates skills from all 4 weeks — a live digital product, published content, business plan, or deployed tool that demonstrates real AI mastery. Past examples: published books, functional apps, digital marketing agencies, new businesses, and NGO platforms.</span>
+      </div>
+
+      <div class="outcome-box">
+        <span class="out-label">Outcome</span>
+        <span>Every graduate leaves with a certificate, a portfolio of real AI-built work, and full access to the Team21 alumni community — ready for Level 2, the AI ToT programme, or immediate income generation.</span>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /weeks-wrap -->
+
+<!-- ═══ CLEAR FRAMEWORK ═══ -->
+<section class="framework-section">
+  <div class="section-eyebrow">🎯 Core Methodology</div>
+  <div class="section-title">The CLEAR Prompting Framework</div>
+  <div class="framework-grid">
+    <div class="fw-card">
+      <div class="fw-letter">C</div>
+      <div class="fw-word">Context</div>
+      <div class="fw-desc">Provide background so the AI understands your situation fully before it acts.</div>
+    </div>
+    <div class="fw-card">
+      <div class="fw-letter">L</div>
+      <div class="fw-word">Language &amp; Tone</div>
+      <div class="fw-desc">Specify the communication style — professional, casual, enthusiastic, multilingual.</div>
+    </div>
+    <div class="fw-card">
+      <div class="fw-letter">E</div>
+      <div class="fw-word">Expected Format</div>
+      <div class="fw-desc">Describe the output structure: bullet list, table, essay, PDF, slides, or script.</div>
+    </div>
+    <div class="fw-card">
+      <div class="fw-letter">A</div>
+      <div class="fw-word">Audience</div>
+      <div class="fw-desc">Identify who the output is for — beginners, Gen Z, professionals, or a specific region.</div>
+    </div>
+    <div class="fw-card">
+      <div class="fw-letter">R</div>
+      <div class="fw-word">Role / Persona</div>
+      <div class="fw-desc">Tell the AI who to be: "You are an experienced marketing consultant with 10 years in Cameroon."</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ COMMANDMENTS ═══ -->
+<section class="commandments">
+  <div class="section-eyebrow" style="margin-top:44px;">⚡ Team21 AI Commandments</div>
+  <div class="cmd-box" style="margin-top:12px;">
+    <div class="cmd-item">
+      <div class="cmd-num">01</div>
+      <div class="cmd-title">Investigate</div>
+      <div class="cmd-desc">Understand what you are doing and why before applying any AI tool.</div>
+    </div>
+    <div class="cmd-item">
+      <div class="cmd-num">02</div>
+      <div class="cmd-title">Review</div>
+      <div class="cmd-desc">Always check AI outputs for hallucinations. Keep the human in the loop.</div>
+    </div>
+    <div class="cmd-item">
+      <div class="cmd-num">03</div>
+      <div class="cmd-title">Do No Harm</div>
+      <div class="cmd-desc">Use AI ethically. Do not use it for harmful, deceptive, or dangerous purposes.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ TRANSFORMATION ═══ -->
+<section class="transformation" style="margin-top:44px;">
+  <div class="section-eyebrow">✅ Final Transformation</div>
+  <div class="section-title">What Every AI Unlocked Graduate Holds</div>
+  <div class="transform-grid">
+    <div class="transform-item"><span class="tick">✓</span><span>Mastery of 10+ AI tools</span></div>
+    <div class="transform-item"><span class="tick">✓</span><span>Published books &amp; digital content</span></div>
+    <div class="transform-item"><span class="tick">✓</span><span>A working business plan (BMC + SOSTAC)</span></div>
+    <div class="transform-item"><span class="tick">✓</span><span>Live social media presence &amp; teasers</span></div>
+    <div class="transform-item"><span class="tick">✓</span><span>Podcast &amp; audiobook produced</span></div>
+    <div class="transform-item"><span class="tick">✓</span><span>A personal leadership growth plan</span></div>
+    <div class="transform-item"><span class="tick">✓</span><span>A capstone project &amp; portfolio</span></div>
+    <div class="transform-item"><span class="tick">✓</span><span>Certificate of completion</span></div>
+    <div class="transform-item"><span class="tick">✓</span><span>Access to the Team21 alumni network</span></div>
+  </div>
+</section>
+
+<!-- ═══ CTA FOOTER ═══ -->
+<section class="cta-footer">
+  <div class="cta-box">
+    <div class="cta-left">
+      <div class="cta-eyebrow">📲 Ready to Unlock Your AI Potential?</div>
+      <div class="cta-title">Join the next<br/><em>AI Unlocked cohort.</em></div>
+      <div class="contact-row">
+        <div class="contact-item"><span>📞</span><a href="tel:+237674917169">674 91 71 69</a></div>
+        <div class="contact-item"><span>📞</span><a href="tel:+237694294406">694 29 44 06</a></div>
+        <div class="contact-item"><span>✉️</span><a href="mailto:team21online@gmail.com">team21online@gmail.com</a></div>
+      </div>
+      <a class="register-btn" href="https://wa.me/237694294406?text=I%20am%20interested%20in%20AI%20Unlocked" target="_blank" style="margin-top:24px;">
+        <span class="btn-icon">💬</span> Register on WhatsApp
+      </a>
+    </div>
+    <div class="cta-right">
+      <div class="tagline">
+        Investigate.
+        <span>Understand.</span>
+        Apply.
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  function toggle(header) {
+    const card = header.closest('.week-card');
+    card.classList.toggle('open');
+  }
+</script>
+</body>
+</html>

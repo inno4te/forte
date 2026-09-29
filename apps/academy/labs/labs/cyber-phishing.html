@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Phishing Spotter Lab · Innov8te Labs4Africa</title>
+<meta name="description" content="Inspect emails, click every phishing red flag, and decide whether each message is a scam or safe.">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23FF6A1A'/><text x='50' y='70' font-size='52' text-anchor='middle' fill='black' font-weight='bold'>i8</text></svg>">
+<script>window.PAGE_LABEL = "Lab: Phishing Spotter";</script>
+</head>
+<body>
+
+<header class="site-header">
+  <nav class="wrap nav" aria-label="Primary">
+    <a class="brand" href="../index.html"><span class="brand-mark">i8</span>
+      <span class="brand-name">Innov<span>8</span>te Labs4Africa</span></a>
+    <button class="nav-toggle" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    <ul class="nav-links"><li><a href="../index.html">Home</a></li><li><a href="../index.html#labs">All labs</a></li><li><a href="../about.html">About</a></li></ul>
+  </nav>
+</header>
+
+<section class="lab-hero">
+  <div class="wrap">
+    <div>
+      <a href="../index.html#labs" class="back">← All labs</a>
+      <h1>🛡️ Phishing Spotter Lab</h1>
+      <p>Two emails arrived. One is a scam, one is genuine. Tap the parts of each that look like <b>red flags</b>, then give your verdict. A good analyst catches scams <em>and</em> avoids over-flagging safe mail.</p>
+    </div>
+    <div class="scoreboard">Flags <b id="found">0</b><span>/ <span id="total">0</span></span></div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="inbox-tabs">
+      <button class="chip active" data-tab="m1">✉️ Email 1</button>
+      <button class="chip" data-tab="m2">✉️ Email 2</button>
+    </div>
+
+    <div class="lab-layout">
+      <div>
+        <!-- EMAIL 1 : PHISHING -->
+        <div class="email" id="m1">
+          <div class="head">
+            <div class="row"><b>From:</b> <span class="clue" data-flag="1" data-why="The domain is &lt;b&gt;paypa1-secure.com&lt;/b&gt; — a '1' instead of an 'l'. Attackers register lookalike domains to impersonate trusted brands.">PayPal Security &lt;support@paypa1-secure.com&gt;</span></div>
+            <div class="row"><b>To:</b> <span>you@example.com</span></div>
+            <div class="row"><b>Subject:</b> <span class="clue" data-flag="1" data-why="ALL CAPS, 'URGENT' and '!!!' are designed to panic you into acting without thinking.">URGENT: Your account will be suspended!!!</span></div>
+            <div class="row"><b>Date:</b> <span class="clue" data-why="The date is normal — not a red flag, but checking it is a good habit.">Today, 09:14</span></div>
+          </div>
+          <div class="body-text">
+            <p><span class="clue" data-flag="1" data-why="'Dear Valued Customer' is generic. A real provider holding your account would normally use your name.">Dear Valued Customer,</span></p>
+            <p>We detected unusual activity. <span class="clue" data-flag="1" data-why="A short deadline plus a threat ('permanently closed') pressures you to rush. Legitimate teams give you safe ways to verify at your own pace.">You must verify within 24 hours or your account will be permanently closed.</span></p>
+            <p>👉 <span class="clue" data-flag="1" data-why="The link points to &lt;b&gt;paypal-account-verify.ru&lt;/b&gt; — not paypal.com, and '.ru' has nothing to do with PayPal. Always check the REAL destination before tapping.">http://paypal-account-verify.ru/login</span></p>
+            <p><span class="clue" data-flag="1" data-why="Spelling/grammar errors ('informations', 'do the needfull') are common in phishing. Big companies proofread.">Kindly do the needfull and update your informations immediately.</span></p>
+            <p>Attached: <span class="clue" data-flag="1" data-why="The file ends in &lt;b&gt;.pdf.exe&lt;/b&gt; — a double extension. It looks like a PDF but is actually a program (malware). Never open these.">invoice_8842.pdf.exe</span></p>
+            <p><span class="clue" data-why="A sign-off is normal and not itself a red flag.">Thank you,<br>The PayPal Team</span></p>
+          </div>
+        </div>
+
+        <!-- EMAIL 2 : LEGIT -->
+        <div class="email" id="m2" style="display:none">
+          <div class="head">
+            <div class="row"><b>From:</b> <span class="clue" data-why="The domain is the company's genuine address — no lookalike tricks. Good eye for checking it though!">Jumia &lt;orders@jumia.com.ng&gt;</span></div>
+            <div class="row"><b>To:</b> <span>amina@example.com</span></div>
+            <div class="row"><b>Subject:</b> <span class="clue" data-why="A calm, specific subject with an order number — no panic or threats. Normal.">Your order #JM-48213 has shipped</span></div>
+            <div class="row"><b>Date:</b> <span>Today, 11:02</span></div>
+          </div>
+          <div class="body-text">
+            <p><span class="clue" data-why="It greets Amina by name — a sign the sender genuinely knows the account holder.">Hi Amina,</span></p>
+            <p>Good news! Your order of 2 items has shipped and should arrive by <span class="clue" data-why="Specific, low-pressure delivery info — no artificial deadline. Normal.">Tuesday, 10 June</span>.</p>
+            <p><span class="clue" data-why="It asks you to sign in at the official site you already use, rather than via a suspicious link. Normal and safe behaviour.">You can track it any time by signing in to your account at jumia.com.ng.</span></p>
+            <p><span class="clue" data-why="Clean grammar and a normal unsubscribe option — both signs of a legitimate bulk email.">Thanks for shopping with us. To manage emails, visit your account settings.</span></p>
+            <p>— The Jumia Team</p>
+          </div>
+        </div>
+
+        <div class="feedback" id="fb"></div>
+
+        <div class="lab-actions">
+          <button class="btn btn-primary btn-sm" id="reportBtn">🚩 Report as phishing</button>
+          <button class="btn btn-ghost btn-sm" id="safeBtn">✅ Mark as safe</button>
+          <button class="btn btn-ghost btn-sm" id="reveal">💡 Reveal flags</button>
+        </div>
+      </div>
+
+      <!-- SIDE PANEL -->
+      <div class="panel">
+        <div class="tray-title">What you've spotted</div>
+        <div class="progress"><i id="bar"></i></div>
+        <ul id="findings" style="list-style:none;display:grid;gap:10px;font-size:.86rem"></ul>
+        <p id="empty" style="font-size:.86rem;color:var(--muted)">Tap suspicious parts of the email — your findings appear here with an explanation.</p>
+      </div>
+    </div>
+
+    <div style="margin-top:34px">
+      <h2 style="font-size:1.6rem;margin-bottom:6px">Go deeper</h2>
+      <div class="res-grid">
+        <div class="yt" data-yt="Dk-ZqQ-bfKg" data-title="What is phishing"><img alt=""><span class="play"></span><span class="cap">What is phishing &amp; how to avoid it</span></div>
+        <div class="yt" data-yt="o0btqyGWIQw" data-title="Spot a phishing email"><img alt=""><span class="play"></span><span class="cap">How to spot a phishing email</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer"><div class="footer-bottom">© <span data-year></span> Innov8te Labs4Africa · Innocent Forteh — Paid All Links Foundation. All rights reserved.</div></footer>
+
+<script src="../js/analytics.js"></script>
+<script src="../js/main.js"></script>
+<script>
+(function () {
+  if (window.Analytics) window.Analytics.track("lab", "cyber-phishing");
+  var active = "m1";
+  var m1Flags = document.querySelectorAll('#m1 .clue[data-flag="1"]');
+  var totalFlags = m1Flags.length;
+  document.getElementById("total").textContent = totalFlags;
+  var found = 0, verdicts = {};
+  var fb = document.getElementById("fb"), list = document.getElementById("findings"), empty = document.getElementById("empty"), bar = document.getElementById("bar");
+  function show(good, html){ fb.className = "feedback show "+(good?"good":"bad"); fb.innerHTML = html; }
+
+  // tabs
+  document.querySelectorAll("[data-tab]").forEach(function(t){
+    t.addEventListener("click", function(){
+      document.querySelectorAll("[data-tab]").forEach(function(c){c.classList.remove("active");});
+      t.classList.add("active");
+      active = t.getAttribute("data-tab");
+      document.getElementById("m1").style.display = active==="m1" ? "" : "none";
+      document.getElementById("m2").style.display = active==="m2" ? "" : "none";
+      fb.className = "feedback";
+      // refresh side panel for the active email
+      if (active === "m1") { renderFindings(); }
+      else { list.innerHTML = ""; empty.style.display = ""; empty.textContent = "This message looks routine. Tap anything that seems off — but it may simply be a normal, safe email."; bar.style.width = "0%"; }
+    });
+  });
+
+  function renderFindings(){
+    empty.style.display = found ? "none" : "";
+    empty.textContent = "Tap suspicious parts of the email — your findings appear here with an explanation.";
+    bar.style.width = (found/totalFlags*100) + "%";
+  }
+
+  document.querySelector(".lab-layout").addEventListener("click", function(e){
+    var c = e.target.closest(".clue"); if(!c) return;
+    if (c.getAttribute("data-flag") === "1") {
+      if (c.classList.contains("found")) return;
+      c.classList.add("found"); found++;
+      document.getElementById("found").textContent = found;
+      bar.style.width = (found/totalFlags*100)+"%"; empty.style.display="none";
+      var li=document.createElement("li"); li.style.cssText="background:var(--orange-tint);border:2px solid var(--orange);border-radius:10px;padding:10px 12px";
+      li.innerHTML = "🚩 " + c.getAttribute("data-why"); list.appendChild(li);
+      if (found===totalFlags) show(true, "🎯 <b>You found all "+totalFlags+" red flags in this email.</b> Now give your verdict below.");
+    } else {
+      show(active==="m2", (active==="m2"?"👍 ":"🤔 ") + "<b>Not a red flag.</b> " + c.getAttribute("data-why"));
+    }
+  });
+
+  document.getElementById("reportBtn").addEventListener("click", function(){
+    verdicts[active] = "phish";
+    if (active==="m1") { show(true, "✅ <b>Correct — Email 1 is phishing.</b> You spotted "+found+" of "+totalFlags+" red flags. Reporting and deleting (never clicking) is exactly right. "+(found<totalFlags?"Tap 'Reveal flags' to see any you missed.":"Perfect score!")); if(window.Analytics)window.Analytics.track("action","phishing:m1-correct"); }
+    else { show(false, "❌ <b>Careful — Email 2 is actually legitimate.</b> It uses the real domain, greets you by name, has no threats and no bad link. Over-reporting genuine mail causes problems too. Re-read why each part is normal."); }
+  });
+  document.getElementById("safeBtn").addEventListener("click", function(){
+    verdicts[active] = "safe";
+    if (active==="m2") { show(true, "✅ <b>Correct — Email 2 is safe.</b> Genuine domain, your name, specific order info, no pressure, no suspicious link. You avoided a false alarm — that's a real skill."); if(window.Analytics)window.Analytics.track("action","phishing:m2-correct"); }
+    else { show(false, "❌ <b>That's a trap — Email 1 is phishing.</b> Look again: the lookalike sender domain, the urgent threat, the '.ru' link and the .pdf.exe attachment all give it away."); }
+  });
+
+  document.getElementById("reveal").addEventListener("click", function(){
+    if (active!=="m1") { show(true, "Email 2 has no red flags to reveal — it's a genuine message."); return; }
+    list.innerHTML = ""; m1Flags.forEach(function(c){ c.classList.add("found");
+      var li=document.createElement("li"); li.style.cssText="background:var(--cream-2);border:1px solid var(--line);border-radius:10px;padding:10px 12px";
+      li.innerHTML="🚩 "+c.getAttribute("data-why"); list.appendChild(li); });
+    found=totalFlags; document.getElementById("found").textContent=totalFlags; bar.style.width="100%"; empty.style.display="none";
+    show(true, "All "+totalFlags+" red flags highlighted. These same patterns repeat across almost every phishing attempt.");
+  });
+})();
+</script>
+</body>
+</html>

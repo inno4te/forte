@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Sleep & Recovery — Team21 Health Platform</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700;9..144,800&family=Inter+Tight:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="brand">
+      <div class="brand-mark">T21</div>
+      <div>
+        <div class="brand-name">Team21 Health Platform</div>
+        <div class="brand-sub">Preventive Intelligence</div>
+      </div>
+    </a>
+    <div class="nav-cta" id="navCta"></div>
+  </div>
+</nav>
+
+<main class="page">
+  <header class="page-head" id="sysHead"></header>
+
+  <section>
+    <h2 class="sect">Inside one <em>night</em> of sleep</h2>
+    <p style="max-width:780px;color:var(--ink-soft);margin:0 0 20px">A typical adult cycles through four stages of sleep roughly every 90 minutes, completing 4–6 cycles per night. The composition shifts: deep slow-wave sleep dominates early in the night, REM dominates toward morning. Each stage has distinct biological functions — cutting any of them short has consequences.</p>
+
+    <div class="sleep-cycle">
+      <h4>The four stages of sleep</h4>
+      <div class="sleep-stages">
+        <div class="sleep-stage">
+          <span class="lbl">N1 · LIGHT</span>
+          <span class="nm">Falling asleep</span>
+          <span class="pct">~5% of total</span>
+          <p>The brief transition from waking to sleeping. Heart rate slows; muscles relax; you may experience hypnic jerks. Easily woken.</p>
+        </div>
+        <div class="sleep-stage">
+          <span class="lbl">N2 · LIGHT</span>
+          <span class="nm">Stable sleep</span>
+          <span class="pct">~45% of total</span>
+          <p>The largest portion of sleep. Body temperature drops, heart rate slows further. Sleep spindles and K-complexes consolidate memory and protect from waking.</p>
+        </div>
+        <div class="sleep-stage">
+          <span class="lbl">N3 · DEEP</span>
+          <span class="nm">Slow-wave (deep) sleep</span>
+          <span class="pct">~25% of total · early night</span>
+          <p>The most physically restorative stage. Growth hormone is released, immune memory is forged, and the glymphatic system clears β-amyloid and other metabolic waste from the brain.</p>
+        </div>
+        <div class="sleep-stage">
+          <span class="lbl">REM · DREAM</span>
+          <span class="nm">Rapid Eye Movement</span>
+          <span class="pct">~20–25% · later night</span>
+          <p>Brain activity rivals waking; eyes dart under closed lids; major muscles are paralysed (atonia). The substrate for vivid dreaming, emotional regulation, and creative problem-solving.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="warn">
+      <strong>What chronic short sleep does</strong>
+      Sleeping &lt;6 hours regularly is independently associated with increased risk of cardiovascular disease, hypertension, type 2 diabetes, obesity, depression, anxiety, and reduced immune function. Cognitive performance after several nights of 5-hour sleep is comparable to mild alcohol intoxication — and the people most affected are usually the least aware of it.
+    </div>
+  </section>
+
+  <div class="search-bar">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+    <input type="text" id="sysSearch" placeholder="Search sleep tips — e.g. caffeine, screens, schedule…" />
+  </div>
+
+  <section>
+    <h2 class="sect">How much you <em>need</em></h2>
+    <div class="kv-grid" id="sysKV"></div>
+  </section>
+
+  <section>
+    <h2 class="sect">Nine evidence-based <em>practices</em></h2>
+    <div class="tip-grid" id="sysTips"></div>
+  </section>
+
+  <section style="margin-top:50px">
+    <h2 class="sect">Signs you may have a <em>sleep disorder</em></h2>
+    <ol class="steps">
+      <li><strong>Loud habitual snoring with daytime sleepiness</strong>Possible obstructive sleep apnoea (OSA). An untreated independent risk factor for hypertension, atrial fibrillation, stroke, and accidents. Get a sleep study.</li>
+      <li><strong>Witnessed pauses in breathing during sleep</strong>Stop. Get evaluated. CPAP and other treatments dramatically improve quality of life and reduce CV risk.</li>
+      <li><strong>Restless legs sensations preventing sleep onset</strong>Restless legs syndrome — often treatable. Check iron (ferritin) levels; avoid caffeine and alcohol in the evening.</li>
+      <li><strong>Acting out dreams (kicking, shouting, falling out of bed)</strong>REM sleep behaviour disorder — speak with a clinician; can be an early marker of neurodegenerative disease.</li>
+      <li><strong>Chronic insomnia (≥3 nights/week for ≥3 months)</strong>The first-line treatment is Cognitive Behavioural Therapy for Insomnia (CBT-I), not sleeping pills. Effective and lasting.</li>
+      <li><strong>Excessive daytime sleepiness despite adequate sleep time</strong>Could be narcolepsy, OSA, depression, or other causes. Worth investigating.</li>
+    </ol>
+  </section>
+
+  <section style="margin-top:50px">
+    <h2 class="sect">The seven-day <em>sleep reset</em></h2>
+    <p style="max-width:780px;color:var(--ink-soft);margin:0 0 14px">If your sleep is poor, try this for one week before considering anything else:</p>
+    <ol class="steps">
+      <li><strong>Fix the wake-up time</strong>Same time every day, including weekends. The wake-up time anchors your circadian rhythm more reliably than the bedtime.</li>
+      <li><strong>Get bright morning light</strong>10–30 min of outdoor light within an hour of waking — even on cloudy days. The strongest signal to your internal clock.</li>
+      <li><strong>Cut caffeine after noon</strong>Caffeine has a 5–6 h half-life. A 3 p.m. coffee is still 25% in your system at midnight.</li>
+      <li><strong>Stop alcohol within 3 hours of bed</strong>Alcohol sedates but suppresses REM and fragments the second half of the night.</li>
+      <li><strong>Dim lights and screens 90 min before bed</strong>Switch to warm, low light. Avoid distressing news and emotionally charged conversations.</li>
+      <li><strong>Cool the bedroom (~18°C / 65°F)</strong>Body temperature drops at sleep onset; a cool room facilitates that drop.</li>
+      <li><strong>If awake more than 20 min — leave the bed</strong>Do something calm in dim light until sleepy. Reserves the bed for sleep.</li>
+    </ol>
+  </section>
+
+  <section style="margin-top:50px">
+    <div class="note">
+      <strong>Track your sleep</strong>
+      The Team21 Daily Tracker includes a "7–9 hours of sleep" habit. Across a week or month you will see whether sleep is consistently meeting your target.
+      <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap"><a class="btn btn-sm btn-primary" href="tracker.html">Open tracker →</a><a class="btn btn-sm" href="quizzes.html">Take the sleep quiz</a></div>
+    </div>
+  </section>
+</main>
+
+<script src="data.js"></script>
+<script src="data-ext.js"></script>
+<script src="lang-data.js"></script>
+<script src="lang.js"></script>
+<script src="shared.js"></script>
+<script src="components.js"></script>
+<script src="system-page.js"></script>
+<script>
+T21.boot('sleep.html');
+renderSystemPage('sleep');
+window.onUserAuthChange = ()=> {
+  const t = document.getElementById('sysTips');
+  if(t) refreshBookmarkStates(t);
+};
+</script>
+</body>
+</html>

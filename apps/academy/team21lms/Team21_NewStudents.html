@@ -1,0 +1,1187 @@
+<!doctype html>
+<html lang="en" data-lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Team21 Academy — Courses</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap">
+<style>
+/* ── TOKENS ── */
+:root{
+  --bl:#1749D1;--bl2:#0E2E8A;--blt:#EEF3FF;--blb:#C9D8FA;
+  --ink:#0B0E14;--inks:#3A4150;--mut:#6B7385;
+  --bg:#F5F7FC;--paper:#FFF;--ln:#E3E8F2;
+  --ok:#0E7B45;--warn:#B45309;--bad:#B42318;
+  --card:#FFF;--overlay:rgba(11,14,20,.6);
+  --radius:12px;--shadow:0 2px 14px rgba(11,14,20,.09);
+  --nav-h:58px;
+}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0B0E14;--paper:#131720;--card:#181E2D;--ln:#252B3B;
+  --ink:#F0F2F8;--inks:#A8B0C4;--mut:#5A637A;--blt:#0E1A3D;--blb:#1A2A6B;
+  --overlay:rgba(0,0,0,.7);--shadow:0 2px 14px rgba(0,0,0,.38);
+  color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#0B0E14;--paper:#131720;--card:#181E2D;--ln:#252B3B;
+  --ink:#F0F2F8;--inks:#A8B0C4;--mut:#5A637A;--blt:#0E1A3D;--blb:#1A2A6B;
+  --overlay:rgba(0,0,0,.7);--shadow:0 2px 14px rgba(0,0,0,.38);
+  color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{min-height:100%;background:var(--bg);color:var(--ink);font-family:'Inter',sans-serif;font-size:15px;line-height:1.6}
+body{padding:0}
+a{color:var(--bl);text-decoration:none}
+img{max-width:100%}
+button{cursor:pointer;font-family:'Inter',sans-serif}
+
+/* ── NAV ── */
+.nav{
+  background:var(--ink);position:sticky;top:env(safe-area-inset-top,0px);z-index:200;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 20px;height:var(--nav-h);gap:10px;
+}
+.nav-logo{display:flex;align-items:center;gap:9px;text-decoration:none;flex-shrink:0}
+.nav-logo-text{font-family:'Sora',sans-serif;font-weight:800;font-size:1rem;color:#fff;letter-spacing:-.4px;white-space:nowrap}
+.nav-logo-text span{color:#7AB0FF;font-size:.65em;vertical-align:super;margin-left:2px}
+.nav-links{display:flex;align-items:center;gap:4px}
+.nav-link{color:rgba(255,255,255,.7);font-size:.8rem;font-weight:500;padding:5px 11px;border-radius:6px;transition:background .15s,color .15s;text-decoration:none;white-space:nowrap}
+.nav-link:hover{background:rgba(255,255,255,.1);color:#fff}
+.nav-link.active{background:var(--bl);color:#fff}
+.nav-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
+
+/* Language toggle */
+.lang-toggle{
+  display:flex;align-items:center;background:rgba(255,255,255,.1);border-radius:7px;
+  padding:2px;gap:2px;border:none;
+}
+.lang-btn{
+  background:none;border:none;color:rgba(255,255,255,.6);font-size:.75rem;font-weight:700;
+  padding:4px 10px;border-radius:5px;transition:background .15s,color .15s;letter-spacing:.3px;
+}
+.lang-btn.active{background:var(--bl);color:#fff}
+
+.nav-cta{
+  background:var(--bl);color:#fff;font-size:.8rem;font-weight:700;
+  padding:7px 15px;border-radius:7px;border:none;
+  display:inline-flex;align-items:center;gap:6px;transition:background .15s;white-space:nowrap;
+  text-decoration:none;
+}
+.nav-cta:hover{background:var(--bl2)}
+
+/* ── MOBILE NAV MENU ── */
+.burger{display:none;background:none;border:none;color:#fff;padding:6px;border-radius:6px}
+.burger:hover{background:rgba(255,255,255,.1)}
+.mobile-menu{
+  display:none;position:fixed;inset:var(--nav-h) 0 0 0;background:var(--ink);z-index:190;
+  flex-direction:column;padding:16px 20px;gap:4px;overflow-y:auto;
+}
+.mobile-menu.open{display:flex}
+.mm-link{color:rgba(255,255,255,.8);font-size:.95rem;font-weight:500;padding:12px 14px;border-radius:9px;text-decoration:none;border:none;background:none;text-align:left;width:100%;display:block}
+.mm-link:hover{background:rgba(255,255,255,.08);color:#fff}
+.mm-link.active{background:rgba(23,73,209,.3);color:#7AB0FF}
+.mm-sep{height:1px;background:rgba(255,255,255,.1);margin:8px 0}
+.mm-cta{background:var(--bl);color:#fff;font-weight:700;border-radius:9px;padding:13px 14px;margin-top:8px;width:100%;text-align:center;font-size:.95rem}
+
+/* ── HERO ── */
+.hero{
+  background:linear-gradient(135deg,var(--ink) 0%,#1a2540 55%,#0E2E8A 100%);
+  color:#fff;padding:64px 20px 56px;text-align:center;position:relative;overflow:hidden;
+}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 50% 110%,rgba(23,73,209,.4) 0%,transparent 70%)}
+.hero-inner{position:relative;z-index:1;max-width:700px;margin:0 auto}
+.hero-badge{display:inline-flex;align-items:center;gap:7px;background:rgba(23,73,209,.35);border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.9);font-size:.75rem;font-weight:700;letter-spacing:.5px;text-transform:uppercase;padding:5px 14px;border-radius:99px;margin-bottom:18px}
+.hero h1{font-family:'Sora',sans-serif;font-weight:800;font-size:clamp(1.75rem,5vw,3rem);line-height:1.15;text-wrap:balance;margin-bottom:12px}
+.hero h1 em{font-style:normal;color:#7AB0FF}
+.hero p{font-size:clamp(.9rem,2.5vw,1.05rem);color:rgba(255,255,255,.75);max-width:540px;margin:0 auto 28px;text-wrap:balance}
+.hero-cta{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.btn-primary{background:var(--bl);color:#fff;border:none;font-family:'Inter',sans-serif;font-weight:700;font-size:.9rem;padding:12px 26px;border-radius:9px;transition:background .15s,transform .1s}
+.btn-primary:hover{background:#1a5cf0;transform:translateY(-1px)}
+.btn-outline{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.35);font-family:'Inter',sans-serif;font-weight:700;font-size:.9rem;padding:12px 26px;border-radius:9px;transition:border-color .15s,background .15s;text-decoration:none;display:inline-block}
+.btn-outline:hover{border-color:rgba(255,255,255,.7);background:rgba(255,255,255,.08)}
+
+/* ── STATS ── */
+.stats-strip{background:var(--paper);border-bottom:1px solid var(--ln);display:flex;justify-content:center;flex-wrap:wrap}
+.stat-item{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px 24px;border-right:1px solid var(--ln);text-align:center;min-width:100px}
+.stat-item:last-child{border-right:none}
+.stat-num{font-family:'Sora',sans-serif;font-weight:800;font-size:1.5rem;color:var(--bl);font-variant-numeric:tabular-nums}
+.stat-label{font-size:.7rem;color:var(--mut);text-transform:uppercase;letter-spacing:.5px;font-weight:600}
+
+/* ── SECTIONS ── */
+.section{max-width:1120px;margin:0 auto;padding:56px 20px}
+.section-header{margin-bottom:36px}
+.section-header h2{font-family:'Sora',sans-serif;font-weight:800;font-size:clamp(1.3rem,3vw,1.8rem);color:var(--ink);margin-bottom:6px}
+.section-header p{color:var(--mut);font-size:.9rem;max-width:520px}
+.level-badge{display:inline-block;padding:4px 12px;border-radius:99px;font-size:.72rem;font-weight:700;letter-spacing:.4px;text-transform:uppercase;margin-bottom:14px}
+.level-badge.l1{background:var(--blt);color:var(--bl2)}
+.level-badge.l2{background:#f3e8ff;color:#6B21A8}
+.level-divider{border:none;border-top:1px solid var(--ln);margin:0 auto;max-width:1120px}
+
+/* ── PRICING MODE TOGGLE ── */
+.pricing-toggle{
+  display:flex;align-items:center;gap:12px;margin-bottom:28px;flex-wrap:wrap;
+}
+.delivery-tabs{display:flex;background:var(--ln);border-radius:9px;padding:3px;gap:2px}
+.dtab{background:none;border:none;font-size:.82rem;font-weight:600;color:var(--mut);padding:7px 18px;border-radius:7px;transition:background .15s,color .15s}
+.dtab.on{background:var(--paper);color:var(--bl);box-shadow:0 1px 4px rgba(0,0,0,.1)}
+.pricing-note{font-size:.78rem;color:var(--mut);font-style:italic}
+
+/* ── DISCOUNT BANNER ── */
+.discount-banner{background:linear-gradient(135deg,var(--bl2),var(--bl));border-radius:var(--radius);color:#fff;padding:24px 28px;display:flex;align-items:center;gap:20px;flex-wrap:wrap;margin-bottom:44px}
+.discount-icon{font-size:2.2rem;line-height:1;flex-shrink:0}
+.discount-text h3{font-family:'Sora',sans-serif;font-weight:800;font-size:1.1rem;margin-bottom:3px}
+.discount-text p{font-size:.85rem;color:rgba(255,255,255,.82);max-width:460px}
+.discount-badge{background:rgba(255,255,255,.2);border:1.5px solid rgba(255,255,255,.3);border-radius:8px;padding:8px 18px;text-align:center;flex-shrink:0;margin-left:auto}
+.discount-badge .pct{font-family:'Sora',sans-serif;font-weight:800;font-size:1.8rem;line-height:1}
+.discount-badge .lbl{font-size:.68rem;text-transform:uppercase;letter-spacing:.5px;opacity:.85}
+
+/* ── COURSE GRID ── */
+.course-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:18px}
+.course-card{background:var(--card);border:1.5px solid var(--ln);border-radius:var(--radius);box-shadow:var(--shadow);display:flex;flex-direction:column;overflow:hidden;transition:border-color .2s,box-shadow .2s,transform .15s}
+.course-card:hover{border-color:var(--blb);box-shadow:0 4px 24px rgba(23,73,209,.13);transform:translateY(-2px)}
+.card-accent{height:4px;background:linear-gradient(90deg,var(--bl),#4da6ff)}
+.card-accent.l2{background:linear-gradient(90deg,#7C3AED,#c084fc)}
+.card-accent.exec{background:linear-gradient(90deg,#B45309,#F59E0B)}
+.card-body{padding:18px 18px 14px;flex:1;display:flex;flex-direction:column;gap:9px}
+.card-badges{display:flex;gap:5px;flex-wrap:wrap;align-items:center}
+.tag{font-size:.68rem;font-weight:700;letter-spacing:.3px;text-transform:uppercase;padding:3px 8px;border-radius:99px}
+.tag-l1{background:var(--blt);color:var(--bl2)}
+.tag-l2{background:#f3e8ff;color:#6B21A8}
+.tag-exec{background:#FEF3C7;color:#92400E}
+.tag-virtual{background:#DBEAFE;color:#1e40af}
+.tag-onsite{background:#FCE7F3;color:#9D174D}
+.tag-online{background:#D1FAE5;color:#065F46}
+.card-title{font-family:'Sora',sans-serif;font-weight:700;font-size:1rem;color:var(--ink);line-height:1.3}
+.card-desc{font-size:.83rem;color:var(--mut);line-height:1.55;flex:1}
+.card-prereq{font-size:.76rem;color:var(--mut);padding:7px 9px;background:var(--bg);border-radius:6px;border-left:3px solid var(--blb);display:flex;gap:5px;align-items:flex-start}
+.card-prereq svg{flex-shrink:0;margin-top:2px}
+
+/* Pricing display */
+.card-pricing{margin-top:4px}
+.price-row-card{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:3px}
+.price-label{font-size:.72rem;text-transform:uppercase;letter-spacing:.3px;font-weight:600;color:var(--mut)}
+.price-val{font-family:'Sora',sans-serif;font-weight:800;font-size:1.05rem;color:var(--ink)}
+.price-val.highlighted{color:var(--bl);font-size:1.18rem}
+.price-usd{font-size:.76rem;color:var(--mut);font-weight:400;font-family:'Inter',sans-serif}
+.price-na{font-size:.78rem;color:var(--mut);font-style:italic}
+
+.card-footer{padding:10px 18px 14px;display:flex;gap:8px;border-top:1px solid var(--ln)}
+.btn-enroll{flex:1;background:var(--bl);color:#fff;border:none;border-radius:8px;font-family:'Inter',sans-serif;font-weight:700;font-size:.85rem;padding:10px 14px;transition:background .15s}
+.btn-enroll:hover{background:var(--bl2)}
+.btn-info{background:var(--blt);color:var(--bl);border:none;border-radius:8px;font-family:'Inter',sans-serif;font-weight:700;font-size:.85rem;padding:10px 12px;transition:background .15s;white-space:nowrap}
+.btn-info:hover{background:var(--blb)}
+
+/* ── MODAL ── */
+.modal-overlay{display:none;position:fixed;inset:0;background:var(--overlay);z-index:300;align-items:center;justify-content:center;padding:12px;overflow-y:auto}
+.modal-overlay.open{display:flex}
+.modal{background:var(--paper);border-radius:14px;box-shadow:0 16px 64px rgba(0,0,0,.35);width:100%;max-width:540px;margin:auto;display:flex;flex-direction:column;animation:slideUp .22s ease}
+@keyframes slideUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+.modal-head{padding:20px 22px 14px;border-bottom:1px solid var(--ln);display:flex;justify-content:space-between;align-items:flex-start;gap:12px;background:var(--paper);border-radius:14px 14px 0 0;position:sticky;top:0;z-index:1}
+.modal-title{font-family:'Sora',sans-serif;font-weight:800;font-size:1.05rem;color:var(--ink)}
+.modal-subtitle{font-size:.78rem;color:var(--mut);margin-top:3px}
+.modal-close{background:none;border:none;color:var(--mut);padding:4px 7px;border-radius:6px;font-size:1.1rem;line-height:1;flex-shrink:0}
+.modal-close:hover{background:var(--ln);color:var(--ink)}
+.modal-body{padding:18px 22px}
+.form-group{margin-bottom:14px}
+.form-label{display:block;font-size:.8rem;font-weight:700;color:var(--inks);margin-bottom:5px}
+.form-input,.form-textarea,.form-select{display:block;width:100%;background:var(--bg);border:1.5px solid var(--ln);border-radius:8px;padding:9px 12px;font-family:'Inter',sans-serif;font-size:.88rem;color:var(--ink);outline:none;transition:border-color .15s}
+.form-input:focus,.form-textarea:focus,.form-select:focus{border-color:var(--bl)}
+.form-textarea{min-height:76px;resize:vertical}
+
+/* Delivery choice in modal */
+.delivery-choice{display:flex;gap:8px;margin-bottom:16px}
+.dchoice{flex:1;background:var(--bg);border:2px solid var(--ln);border-radius:9px;padding:11px 10px;text-align:center;font-size:.82rem;font-weight:700;color:var(--mut);transition:border-color .15s,color .15s,background .15s}
+.dchoice.on{background:var(--blt);border-color:var(--bl);color:var(--bl)}
+.dchoice .price{display:block;font-family:'Sora',sans-serif;font-size:1rem;font-weight:800;color:var(--ink);margin-top:3px}
+.dchoice.on .price{color:var(--bl)}
+.dchoice .na{font-size:.75rem;color:var(--mut);font-weight:400}
+
+.registrant-block{background:var(--bg);border:1.5px solid var(--ln);border-radius:9px;padding:12px;margin-bottom:8px;position:relative}
+.registrant-block h4{font-size:.8rem;font-weight:700;color:var(--inks);margin-bottom:9px}
+.reg-row{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.remove-reg{position:absolute;top:10px;right:10px;background:none;border:none;color:var(--mut);font-size:.75rem;font-weight:700;padding:2px 7px;border-radius:5px}
+.remove-reg:hover{color:var(--bad);background:rgba(180,35,24,.08)}
+.add-person-btn{background:none;border:1.5px dashed var(--blb);color:var(--bl);font-family:'Inter',sans-serif;font-weight:700;font-size:.82rem;padding:9px 14px;border-radius:8px;width:100%;display:flex;align-items:center;justify-content:center;gap:6px;transition:background .15s;margin-top:4px}
+.add-person-btn:hover{background:var(--blt)}
+
+.discount-pill{background:linear-gradient(135deg,#d1fae5,#a7f3d0);color:#065F46;font-size:.8rem;font-weight:700;padding:7px 12px;border-radius:8px;text-align:center;margin:8px 0 14px;display:none}
+.discount-pill.show{display:block}
+
+.price-summary{background:var(--blt);border:1.5px solid var(--blb);border-radius:9px;padding:13px;margin-bottom:14px}
+.ps-row{display:flex;justify-content:space-between;align-items:center;font-size:.85rem;color:var(--inks);margin-bottom:5px}
+.ps-row:last-child{margin-bottom:0;font-weight:700;color:var(--ink);font-size:.92rem;border-top:1px solid var(--blb);padding-top:7px;margin-top:4px}
+
+.modal-foot{padding:14px 22px 18px;border-top:1px solid var(--ln)}
+.btn-send{width:100%;background:linear-gradient(135deg,#25D366,#128C7E);color:#fff;border:none;border-radius:9px;font-family:'Inter',sans-serif;font-weight:700;font-size:.92rem;padding:13px 22px;display:flex;align-items:center;justify-content:center;gap:9px;transition:opacity .15s}
+.btn-send:hover{opacity:.9}
+.send-note{font-size:.73rem;color:var(--mut);text-align:center;margin-top:7px}
+
+/* Detail modal */
+.detail-modal .modal-body p,.detail-modal .modal-body li{font-size:.86rem;color:var(--inks);line-height:1.65}
+.detail-modal .modal-body ul{padding-left:16px}
+.detail-modal h4{font-family:'Sora',sans-serif;font-weight:700;font-size:.9rem;color:var(--ink);margin:14px 0 5px}
+.detail-modal h4:first-child{margin-top:0}
+.price-table{width:100%;border-collapse:collapse;font-size:.84rem;margin-top:14px}
+.price-table th{text-align:left;padding:7px 10px;background:var(--bg);font-size:.72rem;text-transform:uppercase;letter-spacing:.3px;color:var(--mut);font-weight:700}
+.price-table td{padding:8px 10px;border-bottom:1px solid var(--ln)}
+.price-table tr:last-child td{border-bottom:none}
+.price-highlight{font-family:'Sora',sans-serif;font-weight:800;color:var(--bl)}
+
+/* ── CONTACT ── */
+.contact-strip{background:var(--ink);color:#fff;text-align:center;padding:48px 20px;margin-top:8px}
+.contact-strip h2{font-family:'Sora',sans-serif;font-weight:800;font-size:clamp(1.2rem,3vw,1.5rem);margin-bottom:10px}
+.contact-strip p{color:rgba(255,255,255,.7);font-size:.9rem;margin-bottom:22px;max-width:500px;margin-inline:auto}
+.wa-link{display:inline-flex;align-items:center;gap:9px;background:#25D366;color:#fff;font-weight:700;font-size:.92rem;padding:12px 26px;border-radius:9px;text-decoration:none;transition:opacity .15s}
+.wa-link:hover{opacity:.9}
+.contact-info{margin-top:18px;font-size:.78rem;color:rgba(255,255,255,.45)}
+
+footer{background:var(--paper);border-top:1px solid var(--ln);padding:18px 20px;text-align:center;font-size:.75rem;color:var(--mut)}
+footer a{color:var(--bl)}
+
+/* ── RESPONSIVE ── */
+@media(max-width:860px){
+  .nav-links{display:none}
+  .burger{display:flex;align-items:center;justify-content:center}
+  .nav-cta{display:none}
+  .stat-item{padding:12px 16px;min-width:80px}
+  .stat-num{font-size:1.25rem}
+}
+@media(max-width:560px){
+  .hero{padding:44px 16px 36px}
+  .hero h1{font-size:1.7rem}
+  .section{padding:36px 16px}
+  .discount-banner{padding:18px 18px}
+  .discount-badge{margin-left:0;width:100%}
+  .reg-row{grid-template-columns:1fr}
+  .course-grid{grid-template-columns:1fr}
+  .delivery-choice{flex-direction:column}
+  .stats-strip{display:grid;grid-template-columns:1fr 1fr}
+  .stat-item{border-right:none;border-bottom:1px solid var(--ln)}
+  .stat-item:nth-child(odd){border-right:1px solid var(--ln)}
+  .modal{border-radius:12px}
+  .modal-head,.modal-body,.modal-foot{padding-inline:16px}
+  .pricing-toggle{flex-direction:column;align-items:flex-start}
+}
+
+/* ── LANG VISIBILITY ── */
+[data-lang="fr"] .t-en,[data-lang="en"] .t-fr{display:none}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav" id="mainNav">
+  <a class="nav-logo" href="index.html">
+    <svg width="32" height="36" viewBox="0 0 34 38" fill="none">
+      <path d="M17 1L2 7.5V19C2 27.5 9 34.5 17 37C25 34.5 32 27.5 32 19V7.5L17 1Z" fill="#0E2E8A" stroke="#1749D1" stroke-width="1.2"/>
+      <line x1="17" y1="9" x2="17" y2="29" stroke="#7AB0FF" stroke-width="1.8" stroke-linecap="round"/>
+      <line x1="8" y1="19" x2="26" y2="19" stroke="#7AB0FF" stroke-width="1.8" stroke-linecap="round"/>
+      <circle cx="17" cy="9" r="2" fill="#1749D1" stroke="#7AB0FF" stroke-width="1.2"/>
+      <circle cx="17" cy="29" r="2" fill="#1749D1" stroke="#7AB0FF" stroke-width="1.2"/>
+      <circle cx="8" cy="19" r="2" fill="#1749D1" stroke="#7AB0FF" stroke-width="1.2"/>
+      <circle cx="26" cy="19" r="2" fill="#1749D1" stroke="#7AB0FF" stroke-width="1.2"/>
+      <circle cx="17" cy="19" r="3.5" fill="#7AB0FF" opacity=".9"/>
+    </svg>
+    <span class="nav-logo-text">Team21<span>ACADEMY</span></span>
+  </a>
+  <div class="nav-links">
+    <a class="nav-link" href="index.html">← <span class="t-en">Platform</span><span class="t-fr">Plateforme</span></a>
+    <a class="nav-link active" href="#"><span class="t-en">Courses</span><span class="t-fr">Cours</span></a>
+    <a class="nav-link" href="#l1">Level 1</a>
+    <a class="nav-link" href="#l2">Level 2</a>
+    <a class="nav-link" href="#exec">Executive</a>
+  </div>
+  <div class="nav-right">
+    <div class="lang-toggle">
+      <button class="lang-btn active" id="btnEn" onclick="setLang('en')">EN</button>
+      <button class="lang-btn" id="btnFr" onclick="setLang('fr')">FR</button>
+    </div>
+    <button class="burger" id="burgerBtn" onclick="toggleMenu()" aria-label="Menu">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M3 6h18M3 12h18M3 18h18" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
+    <a class="nav-cta" href="#" onclick="event.preventDefault();openQuick()">
+      <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M8 1v14M1 8h14" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/></svg>
+      <span class="t-en">Enrol Now</span><span class="t-fr">S'inscrire</span>
+    </a>
+  </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <a class="mm-link" href="index.html" onclick="closeMenu()">← <span class="t-en">Staff Platform</span><span class="t-fr">Plateforme Personnel</span></a>
+  <a class="mm-link active" href="#" onclick="closeMenu()"><span class="t-en">All Courses</span><span class="t-fr">Tous les cours</span></a>
+  <a class="mm-link" href="#l1" onclick="closeMenu()">Level 1 — <span class="t-en">Foundation</span><span class="t-fr">Fondation</span></a>
+  <a class="mm-link" href="#l2" onclick="closeMenu()">Level 2 — <span class="t-en">Advanced</span><span class="t-fr">Avancé</span></a>
+  <a class="mm-link" href="#exec" onclick="closeMenu()">Executive</a>
+  <div class="mm-sep"></div>
+  <div style="display:flex;gap:8px;padding:4px 0">
+    <button class="lang-btn active" id="mmBtnEn" style="flex:1;background:rgba(255,255,255,.1);color:rgba(255,255,255,.7);border-radius:8px;padding:10px" onclick="setLang('en');closeMenu()">EN — English</button>
+    <button class="lang-btn" id="mmBtnFr" style="flex:1;background:rgba(255,255,255,.1);color:rgba(255,255,255,.7);border-radius:8px;padding:10px" onclick="setLang('fr');closeMenu()">FR — Français</button>
+  </div>
+  <a class="mm-link mm-cta" href="#" onclick="event.preventDefault();openQuick();closeMenu()">
+    <span class="t-en">Browse Courses &amp; Enrol</span>
+    <span class="t-fr">Parcourir les cours et s'inscrire</span>
+  </a>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-badge">
+      <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M8 1L1 4.5V9c0 4 3.1 7.3 7 8.5C15 16.3 15 12 15 9V4.5L8 1Z" fill="#7AB0FF" opacity=".8"/></svg>
+      Team21 Academy
+    </div>
+    <h1 class="t-en">Build Real Skills for<br><em>the Digital Economy</em></h1>
+    <h1 class="t-fr">Développez de vraies compétences pour<br><em>l'économie numérique</em></h1>
+    <p class="t-en">Practical, project-based courses in AI, business strategy, and digital tools. Learn from practitioners, build a portfolio, and earn recognised micro-certificates.</p>
+    <p class="t-fr">Des formations pratiques et orientées projet en IA, stratégie d'entreprise et outils numériques. Apprenez des praticiens, construisez un portfolio et obtenez des micro-certificats reconnus.</p>
+    <div class="hero-cta">
+      <button class="btn-primary" onclick="document.getElementById('l1').scrollIntoView({behavior:'smooth'})">
+        <span class="t-en">Browse Courses</span><span class="t-fr">Voir les cours</span>
+      </button>
+      <a class="btn-outline" href="https://wa.me/237694294406" target="_blank">
+        <span class="t-en">Talk to an Advisor</span><span class="t-fr">Parler à un conseiller</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-strip">
+  <div class="stat-item"><span class="stat-num">16+</span><span class="stat-label t-en">Courses</span><span class="stat-label t-fr">Cours</span></div>
+  <div class="stat-item"><span class="stat-num">L1·L2·Exec</span><span class="stat-label t-en">Levels</span><span class="stat-label t-fr">Niveaux</span></div>
+  <div class="stat-item"><span class="stat-num">100%</span><span class="stat-label t-en">Project-Based</span><span class="stat-label t-fr">Par Projets</span></div>
+  <div class="stat-item"><span class="stat-num">10%</span><span class="stat-label t-en">Group Discount</span><span class="stat-label t-fr">Remise Groupe</span></div>
+  <div class="stat-item"><span class="stat-num">Virtual·Onsite</span><span class="stat-label t-en">Delivery</span><span class="stat-label t-fr">Modalités</span></div>
+</div>
+
+<main>
+<!-- DISCOUNT BANNER -->
+<div class="section" style="padding-bottom:0">
+  <div class="discount-banner">
+    <div class="discount-icon">🎓</div>
+    <div class="discount-text">
+      <h3 class="t-en">Register 3 or More — Save 10%</h3>
+      <h3 class="t-fr">Inscrivez 3 personnes ou plus — Économisez 10%</h3>
+      <p class="t-en">Bring your team, cohort, or colleagues and receive an automatic 10% reduction on every registration in the group. Perfect for organisations, schools, and study groups.</p>
+      <p class="t-fr">Amenez votre équipe, cohorte ou collègues et bénéficiez d'une réduction automatique de 10% sur chaque inscription du groupe. Idéal pour les organisations, écoles et groupes d'étude.</p>
+    </div>
+    <div class="discount-badge">
+      <div class="pct">10%</div>
+      <div class="lbl t-en">Group Discount</div>
+      <div class="lbl t-fr">Remise Groupe</div>
+    </div>
+  </div>
+</div>
+
+<!-- PRICING MODE TOGGLE -->
+<div class="section" style="padding-top:32px;padding-bottom:0">
+  <div class="pricing-toggle">
+    <div>
+      <div style="font-size:.8rem;font-weight:700;color:var(--inks);margin-bottom:8px" class="t-en">Show prices for:</div>
+      <div style="font-size:.8rem;font-weight:700;color:var(--inks);margin-bottom:8px" class="t-fr">Afficher les prix pour :</div>
+      <div class="delivery-tabs">
+        <button class="dtab on" id="tabVirtual" onclick="setPriceMode('virtual')">
+          <span class="t-en">Virtual / Online</span><span class="t-fr">Virtuel / En ligne</span>
+        </button>
+        <button class="dtab" id="tabOnsite" onclick="setPriceMode('onsite')">
+          <span class="t-en">Onsite (Face-to-Face)</span><span class="t-fr">Présentiel</span>
+        </button>
+      </div>
+    </div>
+    <div class="pricing-note t-en">Onsite sessions include classroom instruction at our Yaoundé centre.</div>
+    <div class="pricing-note t-fr">Les sessions en présentiel se déroulent dans notre centre à Yaoundé.</div>
+  </div>
+</div>
+
+<!-- L1 -->
+<section class="section" id="l1">
+  <div class="section-header">
+    <span class="level-badge l1">Level 1 — <span class="t-en">Foundation</span><span class="t-fr">Fondation</span></span>
+    <h2 class="t-en">Foundational Courses</h2>
+    <h2 class="t-fr">Cours fondamentaux</h2>
+    <p class="t-en">No prior experience required. Build core digital fluency and practical business skills from the ground up.</p>
+    <p class="t-fr">Aucune expérience préalable requise. Développez vos compétences numériques et professionnelles de façon pratique.</p>
+  </div>
+  <div class="course-grid" id="grid-l1"></div>
+</section>
+
+<hr class="level-divider">
+
+<!-- L2 -->
+<section class="section" id="l2" style="padding-top:52px">
+  <div class="section-header">
+    <span class="level-badge l2">Level 2 — <span class="t-en">Advanced</span><span class="t-fr">Avancé</span></span>
+    <h2 class="t-en">Advanced Specialisations</h2>
+    <h2 class="t-fr">Spécialisations avancées</h2>
+    <p class="t-en">Build on Level 1 with deeper strategy, advanced AI tools, and specialised digital skills. Prerequisites apply.</p>
+    <p class="t-fr">Approfondissez vos connaissances en stratégie, outils IA avancés et compétences numériques spécialisées. Prérequis nécessaires.</p>
+  </div>
+  <div class="course-grid" id="grid-l2"></div>
+</section>
+
+<hr class="level-divider">
+
+<!-- EXECUTIVE -->
+<section class="section" id="exec" style="padding-top:52px">
+  <div class="section-header">
+    <span class="level-badge" style="background:#FEF3C7;color:#92400E">Executive</span>
+    <h2 class="t-en">Executive & Leadership Programmes</h2>
+    <h2 class="t-fr">Programmes Exécutifs et Leadership</h2>
+    <p class="t-en">Tailored for managers, decision-makers, and senior professionals who need strategic AI fluency without deep technical training.</p>
+    <p class="t-fr">Conçus pour les managers, décideurs et cadres supérieurs qui ont besoin d'une maîtrise stratégique de l'IA sans formation technique approfondie.</p>
+  </div>
+  <div class="course-grid" id="grid-exec"></div>
+</section>
+</main>
+
+<!-- CONTACT -->
+<div class="contact-strip">
+  <h2 class="t-en">Questions? We're on WhatsApp.</h2>
+  <h2 class="t-fr">Des questions ? Contactez-nous sur WhatsApp.</h2>
+  <p class="t-en">Our team is available to answer questions about course content, scheduling, group pricing, and corporate training programmes.</p>
+  <p class="t-fr">Notre équipe est disponible pour répondre à vos questions sur le contenu des cours, les horaires, les tarifs de groupe et les programmes de formation en entreprise.</p>
+  <a class="wa-link" href="https://wa.me/237694294406" target="_blank">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" fill="white"/></svg>
+    <span class="t-en">Chat on WhatsApp</span><span class="t-fr">Discuter sur WhatsApp</span>
+  </a>
+  <div class="contact-info">+237 694 294 406 · team21online@gmail.com</div>
+</div>
+
+<footer>
+  &copy; 2026 Team21 Academy · Yaoundé, Cameroon ·
+  <a href="index.html"><span class="t-en">Staff Portal</span><span class="t-fr">Portail Personnel</span></a>
+</footer>
+
+<!-- ── ENROL MODAL ── -->
+<div class="modal-overlay" id="enrol-modal">
+  <div class="modal">
+    <div class="modal-head">
+      <div>
+        <div class="modal-title" id="modal-course-title">Registration</div>
+        <div class="modal-subtitle" id="modal-course-sub"></div>
+      </div>
+      <button class="modal-close" onclick="closeEnrol()">✕</button>
+    </div>
+    <div class="modal-body">
+      <!-- Delivery selection -->
+      <div id="delivery-choice-wrap">
+        <div style="font-size:.8rem;font-weight:700;color:var(--inks);margin-bottom:8px" class="t-en">Select delivery mode:</div>
+        <div style="font-size:.8rem;font-weight:700;color:var(--inks);margin-bottom:8px" class="t-fr">Choisissez le mode de formation :</div>
+        <div class="delivery-choice" id="delivery-choice"></div>
+      </div>
+      <div id="discount-pill" class="discount-pill">
+        <span class="t-en">🎉 10% group discount applied!</span>
+        <span class="t-fr">🎉 Remise groupe de 10% appliquée !</span>
+      </div>
+      <div id="registrants-container"></div>
+      <button class="add-person-btn" onclick="addRegistrant()">
+        <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M8 1v14M1 8h14" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+        <span class="t-en">Add another person</span><span class="t-fr">Ajouter une autre personne</span>
+      </button>
+      <div style="margin-top:14px">
+        <label class="form-label">
+          <span class="t-en">Your question or message (optional)</span>
+          <span class="t-fr">Votre question ou message (optionnel)</span>
+        </label>
+        <textarea class="form-textarea" id="reg-question"></textarea>
+      </div>
+      <div class="price-summary" id="price-summary" style="margin-top:12px"></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-send" onclick="sendToWhatsApp()">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" fill="white"/></svg>
+        <span class="t-en">Send via WhatsApp</span><span class="t-fr">Envoyer via WhatsApp</span>
+      </button>
+      <div class="send-note t-en">Opens WhatsApp with your registration details pre-filled.</div>
+      <div class="send-note t-fr">Ouvre WhatsApp avec vos informations pré-remplies.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── QUICK ENQUIRY MODAL ── -->
+<div class="modal-overlay" id="quick-modal">
+  <div class="modal">
+    <div class="modal-head">
+      <div>
+        <div class="modal-title t-en">Quick Enquiry</div>
+        <div class="modal-title t-fr">Demande rapide</div>
+        <div class="modal-subtitle t-en">Tell us which course interests you</div>
+        <div class="modal-subtitle t-fr">Dites-nous quel cours vous intéresse</div>
+      </div>
+      <button class="modal-close" onclick="document.getElementById('quick-modal').classList.remove('open')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label class="form-label"><span class="t-en">Your name *</span><span class="t-fr">Votre nom *</span></label>
+        <input class="form-input" id="q-name" type="text">
+      </div>
+      <div class="form-group">
+        <label class="form-label"><span class="t-en">Phone number *</span><span class="t-fr">Numéro de téléphone *</span></label>
+        <input class="form-input" id="q-phone" type="tel" placeholder="+237 6XX XXX XXX">
+      </div>
+      <div class="form-group">
+        <label class="form-label"><span class="t-en">Email address</span><span class="t-fr">Adresse e-mail</span></label>
+        <input class="form-input" id="q-email" type="email">
+      </div>
+      <div class="form-group">
+        <label class="form-label"><span class="t-en">Course of interest</span><span class="t-fr">Cours souhaité</span></label>
+        <select class="form-select" id="q-course">
+          <option value=""></option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label"><span class="t-en">Your question</span><span class="t-fr">Votre question</span></label>
+        <textarea class="form-textarea" id="q-question"></textarea>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-send" onclick="sendQuick()">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" fill="white"/></svg>
+        <span class="t-en">Send Enquiry via WhatsApp</span><span class="t-fr">Envoyer via WhatsApp</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ── DETAIL MODAL ── -->
+<div class="modal-overlay" id="detail-modal">
+  <div class="modal detail-modal">
+    <div class="modal-head">
+      <div>
+        <div class="modal-title" id="detail-title"></div>
+        <div class="modal-subtitle" id="detail-sub"></div>
+      </div>
+      <button class="modal-close" onclick="closeDetail()">✕</button>
+    </div>
+    <div class="modal-body" id="detail-body"></div>
+    <div class="modal-foot">
+      <button class="btn-enroll" id="detail-enrol-btn" style="width:100%;padding:13px;border-radius:9px;font-size:.92rem">
+        <span class="t-en">Enrol in This Course</span><span class="t-fr">S'inscrire à ce cours</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* =========================================================
+   DATA
+========================================================= */
+const XAF_USD = 620;
+const WA = '237694294406';
+let LANG = 'en';
+let PRICE_MODE = 'virtual'; // 'virtual' | 'onsite'
+let scrollYBeforeModal = 0;
+
+/* Course schema:
+   feeVirtual — XAF for virtual/online delivery (null = not available)
+   feeOnsite  — XAF for onsite/face-to-face delivery (null = not available)
+   delivery   — array: 'virtual','online','onsite'
+*/
+const COURSES = [
+  /* ── LEVEL 1 ── */
+  {id:'ai-foundations',level:1,accentClass:'',
+   en:{title:'AI Foundations',short:'Master the fundamentals of Artificial Intelligence',
+    desc:'Understand how AI works, what it can and cannot do, and how to use leading AI tools confidently. Covers ChatGPT, Claude, Gemini, and prompt engineering fundamentals.',
+    outcomes:['Explain core AI concepts: LLMs, machine learning, neural networks','Craft effective prompts for text, image, and data tasks','Evaluate AI output critically and avoid common pitfalls','Build a personal AI toolkit for daily productivity'],
+    prereq:null,duration:'4 weeks · 8 sessions'},
+   fr:{title:'Fondements de l\'IA',short:'Maîtrisez les fondamentaux de l\'intelligence artificielle',
+    desc:'Comprenez comment fonctionne l\'IA, ses capacités et ses limites, et apprenez à utiliser les principaux outils IA avec assurance. Couvre ChatGPT, Claude, Gemini et les techniques de prompt.',
+    outcomes:['Expliquer les concepts fondamentaux de l\'IA : LLM, apprentissage automatique, réseaux de neurones','Rédiger des prompts efficaces pour le texte, l\'image et les données','Évaluer les résultats de l\'IA de façon critique','Construire sa boîte à outils IA personnelle'],
+    prereq:null,duration:'4 semaines · 8 séances'},
+   feeVirtual:45000,feeOnsite:55000,delivery:['virtual','online','onsite'],taskCode:'AI-FND'},
+
+  {id:'ai-unlocked',level:1,accentClass:'',
+   en:{title:'AI Unlocked',short:'Unlock practical AI for everyday life and work',
+    desc:'A beginner-friendly deep-dive into using AI tools across daily tasks — writing, research, planning, creativity, and communication. No technical background needed.',
+    outcomes:['Use AI for writing, research, and content creation','Automate repetitive personal and professional tasks','Build a daily AI workflow','Understand AI safety and ethical use'],
+    prereq:null,duration:'3 weeks · 6 sessions'},
+   fr:{title:'IA sans limites',short:'Exploitez l\'IA pour votre vie quotidienne et votre travail',
+    desc:'Une exploration accessible des outils IA pour les tâches du quotidien — rédaction, recherche, planification, créativité et communication. Aucun bagage technique requis.',
+    outcomes:['Utiliser l\'IA pour l\'écriture, la recherche et la création de contenu','Automatiser les tâches répétitives','Construire un flux de travail IA quotidien','Comprendre l\'éthique et la sécurité de l\'IA'],
+    prereq:null,duration:'3 semaines · 6 séances'},
+   feeVirtual:40000,feeOnsite:50000,delivery:['virtual','online','onsite'],taskCode:'AI-UNL'},
+
+  {id:'business-model-canvas',level:1,accentClass:'',
+   en:{title:'Business Model Canvas (BMC)',short:'Design and validate your business model',
+    desc:'Use the Business Model Canvas to structure ideas, identify your value proposition, map customer segments, and stress-test revenue assumptions.',
+    outcomes:['Complete a BMC for an existing or new venture','Identify and prioritise customer segments','Design compelling value propositions','Map revenue streams and cost structures'],
+    prereq:null,duration:'3 weeks · 6 sessions'},
+   fr:{title:'Business Model Canvas (BMC)',short:'Concevez et validez votre modèle d\'affaires',
+    desc:'Utilisez le Business Model Canvas pour structurer vos idées, identifier votre proposition de valeur, cartographier vos segments clients et tester vos hypothèses de revenus.',
+    outcomes:['Compléter un BMC pour une entreprise existante ou nouvelle','Identifier et prioriser les segments clients','Concevoir des propositions de valeur convaincantes','Cartographier les flux de revenus et la structure des coûts'],
+    prereq:null,duration:'3 semaines · 6 séances'},
+   feeVirtual:40000,feeOnsite:50000,delivery:['virtual','onsite'],taskCode:'BMC'},
+
+  {id:'digital-marketing',level:1,accentClass:'',
+   en:{title:'Digital Marketing Essentials',short:'Grow an audience and convert it into customers',
+    desc:'Learn content strategy, social media management, email marketing, and paid advertising. Build and execute a real campaign for a product or cause.',
+    outcomes:['Develop a 30-day content calendar','Set up and optimise Meta and Google ad campaigns','Measure key metrics: CPM, CPC, CTR, ROAS','Build and segment an email list'],
+    prereq:null,duration:'4 weeks · 8 sessions'},
+   fr:{title:'Essentiels du Marketing Digital',short:'Développez une audience et convertissez-la en clients',
+    desc:'Apprenez la stratégie de contenu, la gestion des réseaux sociaux, l\'email marketing et la publicité payante. Construisez et exécutez une vraie campagne.',
+    outcomes:['Élaborer un calendrier de contenu sur 30 jours','Créer et optimiser des campagnes Meta et Google','Mesurer les indicateurs clés : CPM, CPC, CTR, ROAS','Créer et segmenter une liste d\'emails'],
+    prereq:null,duration:'4 semaines · 8 séances'},
+   feeVirtual:45000,feeOnsite:55000,delivery:['virtual','online','onsite'],taskCode:'DM-ESS'},
+
+  {id:'web-design',level:1,accentClass:'',
+   en:{title:'Web Design & Digital Presence',short:'Build and launch a professional website',
+    desc:'Design and publish a professional website using modern tools (WordPress, Wix, Webflow). Covers UX principles, branding, SEO basics, and mobile optimisation.',
+    outcomes:['Design a multi-page website from scratch','Apply UX/UI principles for better user experience','Optimise for search engines and mobile devices','Connect a custom domain and launch live'],
+    prereq:null,duration:'4 weeks · 8 sessions'},
+   fr:{title:'Conception Web & Présence Digitale',short:'Construisez et lancez un site web professionnel',
+    desc:'Concevez et publiez un site web professionnel avec des outils modernes (WordPress, Wix, Webflow). Couvre les principes UX, le branding, les bases du SEO et l\'optimisation mobile.',
+    outcomes:['Concevoir un site web multi-pages de zéro','Appliquer les principes UX/UI pour une meilleure expérience','Optimiser pour les moteurs de recherche et les mobiles','Connecter un domaine personnalisé et lancer en ligne'],
+    prereq:null,duration:'4 semaines · 8 séances'},
+   feeVirtual:45000,feeOnsite:55000,delivery:['virtual','online','onsite'],taskCode:'WEB-DES'},
+
+  {id:'data-literacy',level:1,accentClass:'',
+   en:{title:'Data Literacy & Analytics',short:'Turn raw data into decisions',
+    desc:'Master data fundamentals using Excel/Google Sheets and introductory Python. Clean, visualise, and communicate data-driven insights.',
+    outcomes:['Clean and structure messy datasets','Build pivot tables, charts, and dashboards','Write basic Python/pandas code for data analysis','Present findings to non-technical stakeholders'],
+    prereq:null,duration:'5 weeks · 10 sessions'},
+   fr:{title:'Culture des Données & Analytique',short:'Transformez les données brutes en décisions',
+    desc:'Maîtrisez les fondamentaux des données avec Excel/Google Sheets et Python introductif. Nettoyez, visualisez et communiquez des insights basés sur les données.',
+    outcomes:['Nettoyer et structurer des ensembles de données','Créer des tableaux croisés, graphiques et tableaux de bord','Écrire du code Python/pandas de base','Présenter les résultats à des non-techniciens'],
+    prereq:null,duration:'5 semaines · 10 séances'},
+   feeVirtual:50000,feeOnsite:62000,delivery:['virtual','online','onsite'],taskCode:'DATA-LIT'},
+
+  {id:'notebooklm',level:1,accentClass:'',
+   en:{title:'NotebookLM & AI Research',short:'AI-powered research and knowledge management',
+    desc:'Use Google NotebookLM and similar tools to summarise documents, extract insights, generate study guides, and accelerate research workflows.',
+    outcomes:['Upload and interrogate multiple documents simultaneously','Generate structured summaries and podcast-style briefings','Build a personal knowledge base','Integrate AI research into academic and professional work'],
+    prereq:null,duration:'2 weeks · 4 sessions'},
+   fr:{title:'NotebookLM & Recherche IA',short:'Recherche et gestion des connaissances assistées par l\'IA',
+    desc:'Utilisez Google NotebookLM et des outils similaires pour synthétiser des documents, extraire des insights et accélérer vos flux de recherche.',
+    outcomes:['Interroger plusieurs documents simultanément','Générer des résumés structurés et des briefings podcast','Construire une base de connaissances personnelle','Intégrer la recherche IA dans le travail académique et professionnel'],
+    prereq:null,duration:'2 semaines · 4 séances'},
+   feeVirtual:35000,feeOnsite:42000,delivery:['online','onsite'],taskCode:'NLM'},
+
+  {id:'video-ai',level:1,accentClass:'',
+   en:{title:'AI Video Production (Veo)',short:'Create professional video content with Google Veo',
+    desc:'Learn to generate, edit, and publish AI-assisted video using Google Veo and related tools. Covers scripting, shot prompting, voiceover, and brand storytelling.',
+    outcomes:['Generate coherent video scenes from text prompts','Edit and assemble clips into a branded video','Add AI-generated voiceover and captions','Publish short-form content for social platforms'],
+    prereq:null,duration:'3 weeks · 6 sessions'},
+   fr:{title:'Production Vidéo IA (Veo)',short:'Créez du contenu vidéo professionnel avec Google Veo',
+    desc:'Apprenez à générer, éditer et publier des vidéos assistées par IA avec Google Veo. Couvre le scripting, le prompting visuel, la voix off et le storytelling de marque.',
+    outcomes:['Générer des scènes vidéo cohérentes depuis des prompts','Monter des clips en vidéo de marque','Ajouter une voix off et des sous-titres IA','Publier du contenu court pour les réseaux sociaux'],
+    prereq:null,duration:'3 semaines · 6 séances'},
+   feeVirtual:40000,feeOnsite:50000,delivery:['virtual','online','onsite'],taskCode:'VEO'},
+
+  {id:'entrepreneurship',level:1,accentClass:'',
+   en:{title:'Entrepreneurship & PLAi Framework',short:'Launch a venture using the PLAi methodology',
+    desc:'Team21\'s PLAi framework (Plan, Launch, Analyse, Iterate) guides you through idea validation, MVP development, and early traction — with AI as your co-founder.',
+    outcomes:['Apply the PLAi framework to a real or hypothetical venture','Conduct customer discovery interviews','Build and test a minimum viable product','Pitch your venture with a one-page business case'],
+    prereq:null,duration:'4 weeks · 8 sessions'},
+   fr:{title:'Entrepreneuriat & Framework PLAi',short:'Lancez votre projet avec la méthodologie PLAi',
+    desc:'Le framework PLAi de Team21 (Planifier, Lancer, Analyser, Itérer) vous guide à travers la validation d\'idée, le développement MVP et la traction initiale.',
+    outcomes:['Appliquer le framework PLAi à un projet réel ou hypothétique','Mener des entretiens de découverte client','Construire et tester un produit minimum viable','Pitcher votre projet avec un business case d\'une page'],
+    prereq:null,duration:'4 semaines · 8 séances'},
+   feeVirtual:45000,feeOnsite:55000,delivery:['virtual','onsite'],taskCode:'PLAi'},
+
+  /* ── LEVEL 2 ── */
+  {id:'sostac',level:2,accentClass:'',
+   en:{title:'SOSTAC® Digital Strategy',short:'End-to-end strategy using the SOSTAC® framework',
+    desc:'Master SOSTAC® (Situation, Objectives, Strategy, Tactics, Action, Control) to build a comprehensive digital strategy for an organisation or brand.',
+    outcomes:['Conduct a situational analysis using data and AI','Set SMART digital objectives tied to business goals','Design integrated digital strategies across channels','Build a measurement and optimisation framework'],
+    prereq:'AI Foundations + Digital Marketing Essentials',duration:'5 weeks · 10 sessions'},
+   fr:{title:'Stratégie Digitale SOSTAC®',short:'Stratégie de bout en bout avec le framework SOSTAC®',
+    desc:'Maîtrisez le framework SOSTAC® (Situation, Objectifs, Stratégie, Tactiques, Action, Contrôle) pour construire une stratégie digitale complète.',
+    outcomes:['Réaliser une analyse situationnelle avec données et IA','Définir des objectifs digitaux SMART','Concevoir des stratégies digitales intégrées','Construire un cadre de mesure et d\'optimisation'],
+    prereq:'Fondements IA + Essentiels Marketing Digital',duration:'5 semaines · 10 séances'},
+   feeVirtual:60000,feeOnsite:75000,delivery:['virtual','onsite'],taskCode:'SOSTAC'},
+
+  {id:'advanced-ai',level:2,accentClass:'',
+   en:{title:'Advanced AI Tools & Automation',short:'Build intelligent workflows and AI agents',
+    desc:'Go beyond prompting: build automations with Make/Zapier, create AI agents, integrate APIs, and deploy custom GPTs and Claude projects for real business use cases.',
+    outcomes:['Design and deploy no-code automation workflows','Build and configure custom AI assistants','Integrate AI with external APIs and databases','Measure ROI of automation initiatives'],
+    prereq:'AI Foundations + Data Literacy',duration:'5 weeks · 10 sessions'},
+   fr:{title:'Outils IA Avancés & Automatisation',short:'Construisez des flux intelligents et des agents IA',
+    desc:'Au-delà du prompting : créez des automatisations avec Make/Zapier, des agents IA, intégrez des APIs et déployez des GPT personnalisés pour des cas d\'usage métier réels.',
+    outcomes:['Concevoir et déployer des automatisations sans code','Créer des assistants IA personnalisés','Intégrer l\'IA avec des APIs et bases de données externes','Mesurer le ROI des initiatives d\'automatisation'],
+    prereq:'Fondements IA + Culture des Données',duration:'5 semaines · 10 séances'},
+   feeVirtual:65000,feeOnsite:80000,delivery:['online','onsite'],taskCode:'ADV-AI'},
+
+  {id:'gamma',level:2,accentClass:'',
+   en:{title:'Gamma AI Presentations',short:'Design stunning presentations with Gamma AI',
+    desc:'Master Gamma.app and advanced AI-assisted presentation design. Create visually compelling decks for pitches, reports, and talks that persuade and inspire action.',
+    outcomes:['Generate full slide decks from a brief or document','Customise layouts, themes, and brand colours','Embed live data and interactive elements','Present and share decks professionally'],
+    prereq:'AI Foundations',duration:'2 weeks · 4 sessions'},
+   fr:{title:'Présentations IA avec Gamma',short:'Concevez des présentations percutantes avec Gamma IA',
+    desc:'Maîtrisez Gamma.app et la création de présentations assistée par IA. Créez des slides convaincants pour des pitches, rapports et conférences.',
+    outcomes:['Générer des présentations complètes depuis un brief','Personnaliser les mises en page, thèmes et couleurs','Intégrer des données en direct et éléments interactifs','Présenter et partager des slides professionnellement'],
+    prereq:'Fondements IA',duration:'2 semaines · 4 séances'},
+   feeVirtual:35000,feeOnsite:42000,delivery:['online','onsite'],taskCode:'GAMMA'},
+
+  {id:'capstone',level:2,accentClass:'',
+   en:{title:'Capstone Project',short:'Apply everything in a live, real-world project',
+    desc:'A guided capstone where you design, execute, and present a complete project combining AI, strategy, and digital tools — for a real client or your own venture.',
+    outcomes:['Scope and deliver a real-world digital project','Present results to a panel of practitioners','Earn a Team21 Academy Capstone Certificate','Build a portfolio-ready case study'],
+    prereq:'Any 3 Level 1 courses',duration:'6 weeks · project-based'},
+   fr:{title:'Projet Capstone',short:'Appliquez tout ce que vous avez appris dans un projet réel',
+    desc:'Un projet capstone guidé où vous concevez, exécutez et présentez un projet complet combinant IA, stratégie et outils numériques — pour un vrai client ou votre propre projet.',
+    outcomes:['Cadrer et livrer un projet numérique réel','Présenter les résultats à un panel de praticiens','Obtenir le Certificat Capstone de Team21 Academy','Construire une étude de cas pour votre portfolio'],
+    prereq:'3 cours de Niveau 1 au minimum',duration:'6 semaines · projet'},
+   feeVirtual:55000,feeOnsite:68000,delivery:['virtual','onsite'],taskCode:'CAP'},
+
+  /* ── EXECUTIVE ── */
+  {id:'ai-for-execs',level:'exec',accentClass:'exec',
+   en:{title:'AI for Executives',short:'Strategic AI fluency for leaders and decision-makers',
+    desc:'Designed for senior managers and executives. Understand AI\'s business impact, risks, and opportunities. No coding — pure strategy and leadership application.',
+    outcomes:['Assess AI opportunities and risks for your organisation','Communicate an AI vision to your team and board','Evaluate AI vendors and make informed procurement decisions','Lead responsible AI implementation and governance'],
+    prereq:null,duration:'2 days · immersive workshop'},
+   fr:{title:'IA pour les Dirigeants',short:'Maîtrise stratégique de l\'IA pour les leaders et décideurs',
+    desc:'Conçu pour les cadres supérieurs et dirigeants. Comprenez l\'impact commercial de l\'IA, ses risques et opportunités. Pas de code — stratégie pure et application en leadership.',
+    outcomes:['Évaluer les opportunités et risques IA pour votre organisation','Communiquer une vision IA à votre équipe et conseil d\'administration','Évaluer les fournisseurs IA et prendre des décisions éclairées','Piloter une implémentation IA responsable'],
+    prereq:null,duration:'2 jours · atelier intensif'},
+   feeVirtual:120000,feeOnsite:180000,delivery:['virtual','onsite'],taskCode:'AI-EXEC'},
+
+  {id:'ai-leadership',level:'exec',accentClass:'exec',
+   en:{title:'AI Leadership & Change Management',short:'Lead your team through an AI transformation',
+    desc:'For team leads and change agents. Build the skills to identify automation opportunities, reskill your workforce, manage AI-driven change, and sustain momentum.',
+    outcomes:['Map team tasks and identify AI automation opportunities','Design a workforce reskilling roadmap','Manage resistance to AI adoption','Measure and communicate transformation progress'],
+    prereq:null,duration:'3 days · workshop series'},
+   fr:{title:'Leadership IA & Conduite du Changement',short:'Pilotez votre équipe dans une transformation IA',
+    desc:'Pour les responsables d\'équipe et agents de changement. Développez les compétences pour identifier les opportunités d\'automatisation, requalifier vos équipes et gérer le changement.',
+    outcomes:['Cartographier les tâches et identifier les opportunités d\'automatisation','Concevoir une feuille de route de requalification','Gérer la résistance à l\'adoption de l\'IA','Mesurer et communiquer les progrès de la transformation'],
+    prereq:null,duration:'3 jours · série d\'ateliers'},
+   feeVirtual:150000,feeOnsite:220000,delivery:['virtual','onsite'],taskCode:'AI-LEAD'},
+];
+
+/* =========================================================
+   HELPERS
+========================================================= */
+function t(obj){ return LANG==='fr' ? obj.fr : obj.en; }
+function fmtXAF(n){ return n.toLocaleString('fr-CM')+' XAF'; }
+function fmtUSD(n){ return '≈ $'+(n/XAF_USD).toFixed(0); }
+function getPrice(c){ return PRICE_MODE==='onsite' ? c.feeOnsite : c.feeVirtual; }
+function hasDelivery(c,mode){ return mode==='virtual' ? (c.delivery.includes('virtual')||c.delivery.includes('online')) : c.delivery.includes('onsite'); }
+
+function deliveryTags(c){
+  const tags=[];
+  if(c.delivery.includes('virtual')||c.delivery.includes('online')) tags.push('<span class="tag tag-virtual t-en">Virtual</span><span class="tag tag-virtual t-fr">Virtuel</span>');
+  if(c.delivery.includes('onsite')) tags.push('<span class="tag tag-onsite t-en">Onsite</span><span class="tag tag-onsite t-fr">Présentiel</span>');
+  return tags.join('');
+}
+
+function levelTag(c){
+  if(c.level==='exec') return '<span class="tag tag-exec t-en">Executive</span><span class="tag tag-exec t-fr">Exécutif</span>';
+  return c.level===1
+    ? '<span class="tag tag-l1">L1</span>'
+    : '<span class="tag tag-l2">L2</span>';
+}
+
+/* =========================================================
+   RENDER CARDS
+========================================================= */
+function pricingHtml(c){
+  const vPrice = c.feeVirtual;
+  const oPrice = c.feeOnsite;
+  const isVirtual = PRICE_MODE==='virtual';
+  const highlighted = isVirtual ? vPrice : oPrice;
+  const other = isVirtual ? oPrice : vPrice;
+  const otherLabel = isVirtual
+    ? '<span class="t-en">Onsite</span><span class="t-fr">Présentiel</span>'
+    : '<span class="t-en">Virtual</span><span class="t-fr">Virtuel</span>';
+  const mainLabel = isVirtual
+    ? '<span class="t-en">Virtual</span><span class="t-fr">Virtuel</span>'
+    : '<span class="t-en">Onsite</span><span class="t-fr">Présentiel</span>';
+
+  let html = '<div class="card-pricing">';
+  if(highlighted){
+    html += '<div class="price-row-card"><span class="price-label">'+mainLabel+'</span>';
+    html += '<span><span class="price-val highlighted">'+fmtXAF(highlighted)+'</span> <span class="price-usd">'+fmtUSD(highlighted)+'</span></span></div>';
+  } else {
+    html += '<div class="price-row-card"><span class="price-label">'+mainLabel+'</span><span class="price-na t-en">Not available</span><span class="price-na t-fr">Non disponible</span></div>';
+  }
+  if(other){
+    html += '<div class="price-row-card"><span class="price-label">'+otherLabel+'</span>';
+    html += '<span class="price-val" style="font-size:.9rem">'+fmtXAF(other)+'</span></div>';
+  }
+  html += '</div>';
+  return html;
+}
+
+function renderCard(c){
+  const d = t(c);
+  const prereqHtml = d.prereq
+    ? '<div class="card-prereq"><svg width="11" height="11" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="#7AB0FF" stroke-width="1.5"/><path d="M8 5v4M8 10.5v1" stroke="#7AB0FF" stroke-width="1.5" stroke-linecap="round"/></svg><span class="t-en">Prereq: '+c.en.prereq+'</span><span class="t-fr">Prérequis : '+c.fr.prereq+'</span></div>'
+    : '';
+  return `
+<article class="course-card">
+  <div class="card-accent ${c.accentClass||''}"></div>
+  <div class="card-body">
+    <div class="card-badges">${levelTag(c)}${deliveryTags(c)}</div>
+    <h3 class="card-title">
+      <span class="t-en">${c.en.title}</span>
+      <span class="t-fr">${c.fr.title}</span>
+    </h3>
+    <p class="card-desc">
+      <span class="t-en">${c.en.short}</span>
+      <span class="t-fr">${c.fr.short}</span>
+    </p>
+    ${prereqHtml}
+    ${pricingHtml(c)}
+  </div>
+  <div class="card-footer">
+    <button class="btn-enroll" onclick="openEnrol('${c.id}')">
+      <span class="t-en">Enrol Now</span><span class="t-fr">S'inscrire</span>
+    </button>
+    <button class="btn-info" onclick="openDetail('${c.id}')">
+      <span class="t-en">Details</span><span class="t-fr">Détails</span>
+    </button>
+  </div>
+</article>`;
+}
+
+function renderAll(){
+  document.getElementById('grid-l1').innerHTML = COURSES.filter(c=>c.level===1).map(renderCard).join('');
+  document.getElementById('grid-l2').innerHTML = COURSES.filter(c=>c.level===2).map(renderCard).join('');
+  document.getElementById('grid-exec').innerHTML = COURSES.filter(c=>c.level==='exec').map(renderCard).join('');
+  populateQuickSelect();
+}
+
+function populateQuickSelect(){
+  const sel = document.getElementById('q-course');
+  sel.innerHTML = '<option value=""></option>';
+  const groups = [
+    {label:'Level 1 — Foundation / Fondation', ids: COURSES.filter(c=>c.level===1).map(c=>c.id)},
+    {label:'Level 2 — Advanced / Avancé', ids: COURSES.filter(c=>c.level===2).map(c=>c.id)},
+    {label:'Executive', ids: COURSES.filter(c=>c.level==='exec').map(c=>c.id)},
+  ];
+  groups.forEach(function(g){
+    const og = document.createElement('optgroup');
+    og.label = g.label;
+    g.ids.forEach(function(id){
+      const c = COURSES.find(function(x){return x.id===id;});
+      if(!c) return;
+      const o = document.createElement('option');
+      o.value = c.en.title;
+      o.textContent = LANG==='fr' ? c.fr.title : c.en.title;
+      og.appendChild(o);
+    });
+    sel.appendChild(og);
+  });
+}
+
+/* =========================================================
+   PRICING MODE
+========================================================= */
+function setPriceMode(mode){
+  PRICE_MODE = mode;
+  document.getElementById('tabVirtual').className = 'dtab' + (mode==='virtual'?' on':'');
+  document.getElementById('tabOnsite').className = 'dtab' + (mode==='onsite'?' on':'');
+  renderAll();
+}
+
+/* =========================================================
+   LANGUAGE
+========================================================= */
+function setLang(lang){
+  LANG = lang;
+  document.documentElement.setAttribute('data-lang', lang);
+  // nav buttons
+  document.getElementById('btnEn').className = 'lang-btn' + (lang==='en'?' active':'');
+  document.getElementById('btnFr').className = 'lang-btn' + (lang==='fr'?' active':'');
+  document.getElementById('mmBtnEn').style.background = lang==='en' ? 'rgba(23,73,209,.5)' : 'rgba(255,255,255,.1)';
+  document.getElementById('mmBtnEn').style.color = lang==='en' ? '#fff' : 'rgba(255,255,255,.7)';
+  document.getElementById('mmBtnFr').style.background = lang==='fr' ? 'rgba(23,73,209,.5)' : 'rgba(255,255,255,.1)';
+  document.getElementById('mmBtnFr').style.color = lang==='fr' ? '#fff' : 'rgba(255,255,255,.7)';
+  renderAll();
+}
+
+/* =========================================================
+   MOBILE MENU
+========================================================= */
+function toggleMenu(){
+  const m = document.getElementById('mobileMenu');
+  m.classList.toggle('open');
+  document.body.style.overflow = m.classList.contains('open') ? 'hidden' : '';
+}
+function closeMenu(){
+  document.getElementById('mobileMenu').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+/* =========================================================
+   SCROLL LOCK — preserve position on modal open/close
+========================================================= */
+function lockScroll(){
+  scrollYBeforeModal = window.scrollY;
+  document.body.style.top = '-'+scrollYBeforeModal+'px';
+  document.body.style.position = 'fixed';
+  document.body.style.width = '100%';
+}
+function unlockScroll(){
+  document.body.style.position = '';
+  document.body.style.top = '';
+  document.body.style.width = '';
+  window.scrollTo({top: scrollYBeforeModal, behavior:'instant'});
+}
+
+/* =========================================================
+   ENROL MODAL
+========================================================= */
+let currentCourse = null;
+let modalDelivery = 'virtual';
+let regCount = 0;
+
+function openEnrol(id){
+  currentCourse = COURSES.find(function(c){return c.id===id;});
+  if(!currentCourse) return;
+  const d = t(currentCourse);
+  document.getElementById('modal-course-title').textContent = LANG==='fr' ? 'Inscription — '+currentCourse.fr.title : 'Enrol — '+currentCourse.en.title;
+  document.getElementById('modal-course-sub').textContent = d.duration;
+  document.getElementById('registrants-container').innerHTML = '';
+  document.getElementById('reg-question').value = '';
+  regCount = 0;
+
+  // delivery choice
+  const dcWrap = document.getElementById('delivery-choice-wrap');
+  const dcDiv = document.getElementById('delivery-choice');
+  const hasV = currentCourse.feeVirtual;
+  const hasO = currentCourse.feeOnsite;
+  if(hasV && hasO){
+    dcWrap.style.display = '';
+    dcDiv.innerHTML = `
+      <button class="dchoice on" id="dc-v" onclick="setModalDelivery('virtual')">
+        <span class="t-en">Virtual / Online</span><span class="t-fr">Virtuel / En ligne</span>
+        <span class="price">${fmtXAF(currentCourse.feeVirtual)}</span>
+      </button>
+      <button class="dchoice" id="dc-o" onclick="setModalDelivery('onsite')">
+        <span class="t-en">Onsite</span><span class="t-fr">Présentiel</span>
+        <span class="price">${fmtXAF(currentCourse.feeOnsite)}</span>
+      </button>`;
+    modalDelivery = 'virtual';
+  } else {
+    dcWrap.style.display = 'none';
+    modalDelivery = hasV ? 'virtual' : 'onsite';
+  }
+
+  addRegistrant();
+  updatePriceSummary();
+  lockScroll();
+  document.getElementById('enrol-modal').classList.add('open');
+}
+
+function setModalDelivery(mode){
+  modalDelivery = mode;
+  document.getElementById('dc-v').className = 'dchoice' + (mode==='virtual'?' on':'');
+  document.getElementById('dc-o').className = 'dchoice' + (mode==='onsite'?' on':'');
+  updatePriceSummary();
+}
+
+function closeEnrol(){
+  document.getElementById('enrol-modal').classList.remove('open');
+  unlockScroll();
+}
+
+function addRegistrant(){
+  regCount++;
+  const n = regCount;
+  const c = document.getElementById('registrants-container');
+  const block = document.createElement('div');
+  block.className = 'registrant-block';
+  block.id = 'rb-'+n;
+  block.innerHTML = `
+    <h4><span class="t-en">Person ${n}</span><span class="t-fr">Personne ${n}</span></h4>
+    ${n>1?`<button class="remove-reg" onclick="removeReg(${n})">✕</button>`:''}
+    <div class="reg-row">
+      <div class="form-group" style="margin:0">
+        <label class="form-label"><span class="t-en">Full name *</span><span class="t-fr">Nom complet *</span></label>
+        <input class="form-input" id="rn-${n}" type="text">
+      </div>
+      <div class="form-group" style="margin:0">
+        <label class="form-label"><span class="t-en">Phone *</span><span class="t-fr">Téléphone *</span></label>
+        <input class="form-input" id="rp-${n}" type="tel" placeholder="+237...">
+      </div>
+    </div>
+    <div class="form-group" style="margin-top:9px;margin-bottom:0">
+      <label class="form-label">Email</label>
+      <input class="form-input" id="re-${n}" type="email">
+    </div>`;
+  c.appendChild(block);
+  updatePriceSummary();
+  // apply current lang to newly added block
+  document.documentElement.setAttribute('data-lang', LANG);
+  const inp = block.querySelector('input');
+  if(inp) inp.focus();
+}
+
+function removeReg(n){
+  const el = document.getElementById('rb-'+n);
+  if(el) el.remove();
+  updatePriceSummary();
+}
+
+function countRegs(){ return document.querySelectorAll('.registrant-block').length; }
+
+function modalFee(){
+  return modalDelivery==='onsite' ? currentCourse.feeOnsite : currentCourse.feeVirtual;
+}
+
+function updatePriceSummary(){
+  if(!currentCourse) return;
+  const count = countRegs();
+  const base = modalFee() || 0;
+  const discount = count >= 3 ? 0.10 : 0;
+  const each = Math.round(base*(1-discount));
+  const total = each * count;
+
+  const pill = document.getElementById('discount-pill');
+  pill.className = 'discount-pill'+(count>=3?' show':'');
+
+  const delivLabel = modalDelivery==='onsite'
+    ? (LANG==='fr'?'Présentiel':'Onsite')
+    : (LANG==='fr'?'Virtuel':'Virtual');
+
+  let html = `<div class="ps-row"><span>${LANG==='fr'?'Mode':'Mode'}</span><span>${delivLabel}</span></div>`;
+  html += `<div class="ps-row"><span>${LANG==='fr'?'Frais par personne':'Fee per person'}</span><span>${fmtXAF(base)}</span></div>`;
+  html += `<div class="ps-row"><span>${LANG==='fr'?'Personnes':'Registrants'}</span><span>${count}</span></div>`;
+  if(discount) html += `<div class="ps-row"><span>${LANG==='fr'?'Remise groupe (10%)':'Group discount (10%)'}</span><span style="color:var(--ok)">−${fmtXAF(base*count-total)}</span></div>`;
+  html += `<div class="ps-row"><span>${LANG==='fr'?'Total':'Total'}</span><span>${fmtXAF(total)} <small style="color:var(--mut);font-size:.75rem">${fmtUSD(total)}</small></span></div>`;
+  document.getElementById('price-summary').innerHTML = html;
+}
+
+function sendToWhatsApp(){
+  if(!currentCourse) return;
+  const count = countRegs();
+  const base = modalFee() || 0;
+  const discount = count >= 3 ? 0.10 : 0;
+  const each = Math.round(base*(1-discount));
+  const total = each * count;
+  const courseTitle = LANG==='fr' ? currentCourse.fr.title : currentCourse.en.title;
+  const delivLabel = modalDelivery==='onsite' ? 'Onsite / Présentiel' : 'Virtual / Virtuel';
+  const d = t(currentCourse);
+
+  const regs = [];
+  document.querySelectorAll('.registrant-block').forEach(function(block){
+    const id = block.id.replace('rb-','');
+    const nm = (document.getElementById('rn-'+id)||{}).value||'';
+    const ph = (document.getElementById('rp-'+id)||{}).value||'';
+    const em = (document.getElementById('re-'+id)||{}).value||'';
+    if(nm||ph) regs.push({nm,ph,em});
+  });
+
+  if(!regs.length || !regs[0].nm){
+    alert(LANG==='fr'?'Veuillez saisir au moins le nom de la première personne.':'Please enter at least the first person\'s name.');
+    return;
+  }
+
+  const question = document.getElementById('reg-question').value.trim();
+  let msg = '📚 *Team21 Academy — Course Registration / Inscription*\n\n';
+  msg += '*Course / Cours:* '+courseTitle+'\n';
+  msg += '*Delivery / Modalité:* '+delivLabel+'\n';
+  msg += '*Duration / Durée:* '+d.duration+'\n\n';
+  msg += '*Registrants ('+count+'):*\n';
+  regs.forEach(function(r,i){ msg += (i+1)+'. '+(r.nm||'—')+(r.ph?' · '+r.ph:'')+(r.em?' · '+r.em:'')+'\n'; });
+  msg += '\n*Pricing:*\n';
+  msg += 'Fee per person: '+fmtXAF(each)+'\n';
+  if(discount) msg += '✅ 10% group discount applied\n';
+  msg += '*Total: '+fmtXAF(total)+' ('+fmtUSD(total)+')*\n';
+  if(question) msg += '\n*Question / Note:*\n'+question+'\n';
+  msg += '\nSent via Team21 Academy website.';
+
+  window.open('https://wa.me/'+WA+'?text='+encodeURIComponent(msg),'_blank');
+  closeEnrol();
+}
+
+/* =========================================================
+   DETAIL MODAL
+========================================================= */
+let detailCourseId = null;
+
+function openDetail(id){
+  detailCourseId = id;
+  const c = COURSES.find(function(x){return x.id===id;});
+  if(!c) return;
+  const d = t(c);
+  document.getElementById('detail-title').textContent = d.title;
+  document.getElementById('detail-sub').textContent = 'L'+(c.level==='exec'?'Exec':c.level)+' · '+d.duration;
+
+  const prereqHtml = d.prereq
+    ? `<div class="card-prereq" style="margin-bottom:12px"><svg width="11" height="11" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="#7AB0FF" stroke-width="1.5"/><path d="M8 5v4M8 10.5v1" stroke="#7AB0FF" stroke-width="1.5" stroke-linecap="round"/></svg>
+       <span class="t-en">Prerequisite: ${c.en.prereq}</span><span class="t-fr">Prérequis : ${c.fr.prereq}</span></div>`
+    : '';
+
+  const outcomes = d.outcomes.map(function(o){return '<li>'+o+'</li>';}).join('');
+
+  let priceRows = '';
+  if(c.feeVirtual) priceRows += `<tr><td><span class="t-en">Virtual / Online</span><span class="t-fr">Virtuel / En ligne</span></td><td class="price-highlight">${fmtXAF(c.feeVirtual)}</td><td>${fmtUSD(c.feeVirtual)}</td></tr>`;
+  if(c.feeOnsite) priceRows += `<tr><td><span class="t-en">Onsite (Yaoundé)</span><span class="t-fr">Présentiel (Yaoundé)</span></td><td class="price-highlight">${fmtXAF(c.feeOnsite)}</td><td>${fmtUSD(c.feeOnsite)}</td></tr>`;
+  if(c.feeVirtual && c.feeOnsite){
+    const groupV = Math.round(c.feeVirtual*0.9);
+    const groupO = Math.round(c.feeOnsite*0.9);
+    priceRows += `<tr style="opacity:.7"><td><span class="t-en">Group rate (3+) Virtual</span><span class="t-fr">Tarif groupe (3+) Virtuel</span></td><td>${fmtXAF(groupV)}</td><td>${fmtUSD(groupV)}</td></tr>`;
+    priceRows += `<tr style="opacity:.7"><td><span class="t-en">Group rate (3+) Onsite</span><span class="t-fr">Tarif groupe (3+) Présentiel</span></td><td>${fmtXAF(groupO)}</td><td>${fmtUSD(groupO)}</td></tr>`;
+  }
+
+  document.getElementById('detail-body').innerHTML =
+    prereqHtml +
+    '<h4><span class="t-en">About this course</span><span class="t-fr">À propos de ce cours</span></h4><p>'+d.desc+'</p>'+
+    '<h4><span class="t-en">What you\'ll learn</span><span class="t-fr">Ce que vous apprendrez</span></h4><ul>'+outcomes+'</ul>'+
+    '<h4><span class="t-en">Pricing</span><span class="t-fr">Tarifs</span></h4>'+
+    '<table class="price-table"><thead><tr><th><span class="t-en">Mode</span><span class="t-fr">Modalité</span></th><th>XAF</th><th>USD</th></tr></thead><tbody>'+priceRows+'</tbody></table>';
+
+  document.getElementById('detail-enrol-btn').onclick = function(){
+    closeDetail(); openEnrol(id);
+  };
+  lockScroll();
+  document.getElementById('detail-modal').classList.add('open');
+}
+
+function closeDetail(){
+  document.getElementById('detail-modal').classList.remove('open');
+  unlockScroll();
+}
+
+/* =========================================================
+   QUICK ENQUIRY
+========================================================= */
+function openQuick(){
+  populateQuickSelect();
+  lockScroll();
+  document.getElementById('quick-modal').classList.add('open');
+}
+
+function sendQuick(){
+  const name = document.getElementById('q-name').value.trim();
+  const phone = document.getElementById('q-phone').value.trim();
+  const email = document.getElementById('q-email').value.trim();
+  const course = document.getElementById('q-course').value;
+  const question = document.getElementById('q-question').value.trim();
+  if(!name||!phone){ alert(LANG==='fr'?'Veuillez saisir votre nom et numéro de téléphone.':'Please enter your name and phone number.'); return; }
+  let msg = '👋 *Team21 Academy — Course Enquiry / Demande*\n\n';
+  msg += '*Name / Nom:* '+name+'\n*Phone / Tél:* '+phone+'\n';
+  if(email) msg += '*Email:* '+email+'\n';
+  if(course) msg += '*Course / Cours:* '+course+'\n';
+  if(question) msg += '\n*Question:*\n'+question+'\n';
+  msg += '\nSent via Team21 Academy website.';
+  window.open('https://wa.me/'+WA+'?text='+encodeURIComponent(msg),'_blank');
+  document.getElementById('quick-modal').classList.remove('open');
+  unlockScroll();
+}
+
+/* =========================================================
+   OVERLAY CLICK & KEYBOARD
+========================================================= */
+document.getElementById('enrol-modal').addEventListener('click',function(e){if(e.target===this)closeEnrol();});
+document.getElementById('detail-modal').addEventListener('click',function(e){if(e.target===this)closeDetail();});
+document.getElementById('quick-modal').addEventListener('click',function(e){
+  if(e.target===this){this.classList.remove('open');unlockScroll();}
+});
+document.addEventListener('keydown',function(e){
+  if(e.key==='Escape'){
+    closeEnrol();closeDetail();
+    document.getElementById('quick-modal').classList.remove('open');
+    unlockScroll();
+  }
+});
+
+/* =========================================================
+   INIT
+========================================================= */
+renderAll();
+</script>
+</body>
+</html>

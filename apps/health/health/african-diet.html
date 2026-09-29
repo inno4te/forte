@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>African Diet & Cooking — Team21 Health Platform</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700;9..144,800&family=Inter+Tight:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="brand">
+      <div class="brand-mark">T21</div>
+      <div>
+        <div class="brand-name">Team21 Health Platform</div>
+        <div class="brand-sub">Preventive Intelligence</div>
+      </div>
+    </a>
+    <div class="nav-cta" id="navCta"></div>
+  </div>
+</nav>
+
+<main class="page">
+  <header class="page-head">
+    <div>
+      <div class="eyebrow">Regional Focus · African Diet &amp; Cooking</div>
+      <h1>The African plate, <em>examined</em>.</h1>
+      <p class="intro">Traditional African cuisines contain some of the most nutritionally sophisticated food patterns in the world — abundant leafy greens, legumes, whole grains like fonio, millet and sorghum, fermented foods, and slow-cooked stews. They also include practices that, in their modern industrialised form, drive cardiovascular disease and cancer risk: heavy salt from bouillon cubes, repeatedly reused frying oil, ultra-processed "convenience" foods, and increasingly charred grilled meats. This page maps what to keep, what to change, and how to cook with the best evidence.</p>
+    </div>
+    <div class="meta">
+      40+ FOODS<br>
+      COOKING METHODS RANKED<br>
+      EVIDENCE-BASED
+    </div>
+  </header>
+
+  <section>
+    <h2 class="sect">The food <em>map</em></h2>
+    <p style="max-width:780px;color:var(--ink-soft);margin:0 0 14px">Coloured bars indicate evidence-based health rating. <span style="color:var(--good);font-weight:600">Green</span> — eat freely. <span style="color:var(--accent-3);font-weight:600">Amber</span> — moderate, with caveats. <span style="color:var(--accent);font-weight:600">Red</span> — limit or rethink the preparation.</p>
+    <div class="food-grid" id="foodGrid"></div>
+  </section>
+
+  <section style="margin-top:50px">
+    <h2 class="sect">Cooking methods, <em>ranked</em></h2>
+    <p style="max-width:780px;color:var(--ink-soft);margin:0 0 14px">How you cook matters as much as what you cook. The chemistry of heat, fat, and time determines whether a meal nourishes or damages.</p>
+    <table class="cook-table">
+      <thead>
+        <tr><th>Method</th><th>Rating</th><th>What forms</th><th>Best for</th><th>Notes</th></tr>
+      </thead>
+      <tbody id="cookTbody"></tbody>
+    </table>
+  </section>
+
+  <section style="margin-top:50px">
+    <h2 class="sect">Frying, roasting &amp; the <em>chemistry of heat</em></h2>
+    <div class="info-grid">
+      <div class="info-card">
+        <h4>What deep frying produces</h4>
+        <p>Oil at 175–190°C develops a complex chemistry. Repeatedly heated oil accumulates:</p>
+        <ul>
+          <li><strong>Trans fats</strong> (heart-disease risk)</li>
+          <li><strong>Polar compounds</strong> (regulated above 25%)</li>
+          <li><strong>4-hydroxy-2-nonenal (4-HNE)</strong> — a reactive aldehyde linked to inflammation</li>
+          <li><strong>Acrylamide</strong> (in starchy foods like plantain chips)</li>
+          <li><strong>Polycyclic aromatic hydrocarbons</strong> in the smoke</li>
+        </ul>
+        <p style="margin-top:10px">If you must fry: use fresh oil, don't exceed the smoke point, don't reuse more than once, cook to golden (not brown), and cool the oil between uses. Avoid eating from street stalls where oil is clearly dark and reused for days.</p>
+      </div>
+      <div class="info-card">
+        <h4>What charcoal-grilling produces</h4>
+        <p>Direct-flame meat cookery produces:</p>
+        <ul>
+          <li><strong>Heterocyclic amines (HCAs)</strong> — from amino-acid + creatine + sugar reactions at high temperature; mutagenic in animal models.</li>
+          <li><strong>Polycyclic aromatic hydrocarbons (PAHs)</strong> — from fat dripping onto hot coals; smoke deposits them onto the meat surface.</li>
+        </ul>
+        <p style="margin-top:10px"><strong>Cut HCAs by up to 90%</strong>: marinate first (vinegar, lemon, herbs, garlic, ginger, yoghurt); flip every minute; cook over indirect heat; avoid char; cut off blackened portions before eating; choose chicken or fish over red meat where possible.</p>
+      </div>
+      <div class="info-card">
+        <h4>What roasting and baking produce</h4>
+        <p>Dry-heat cooking of starchy foods (potatoes, plantain chips, bread, biscuits) forms <strong>acrylamide</strong> via the Maillard reaction between asparagine and reducing sugars. Levels rise sharply above ~120°C and with browning.</p>
+        <p><strong>Reduce acrylamide:</strong> cook to golden, not brown. Don't store potatoes in the fridge (raises sugars). Soak raw potato/plantain slices in water for 15–30 min before frying. Toast bread lightly.</p>
+      </div>
+      <div class="info-card">
+        <h4>What smoking and salt-curing produce</h4>
+        <p>Heavy traditional smoking (smoked fish, smoked meat) deposits <strong>PAHs, formaldehyde and nitrosamines</strong> onto the food surface. Heavily salted fish (West African stockfish, Chinese-style salted fish) is associated with stomach cancer at high intake.</p>
+        <p>Use smoked or dried fish as a flavour-base in small amounts — not as a daily staple protein. Rinse and soak before cooking to reduce surface deposits and salt.</p>
+      </div>
+    </div>
+  </section>
+
+  <section style="margin-top:50px">
+    <h2 class="sect">Five <em>swaps</em> that reduce risk without changing your cuisine</h2>
+    <ol class="steps">
+      <li><strong>Cut the bouillon cube in half — or replace it</strong>A single Maggi/Knorr/Royco cube can contain 1.5–2 g sodium. Use half the cube, or substitute with abundant fresh garlic, ginger, onion, scotch bonnet, lemongrass, herbs, lemon, vinegar. The complexity of flavour increases.</li>
+      <li><strong>Pair refined staples with vegetables and protein</strong>Eba, fufu, gari and white rice spike blood glucose. The simplest fix: cut portion sizes by a quarter and double the vegetable side. Add beans, fish, or boiled egg to slow glucose rise.</li>
+      <li><strong>Boil, steam or slow-cook more; deep-fry less</strong>Most traditional African soups — egusi, ogbono, palm-nut, groundnut, ndolé, mafe — are slow-cooked stews. They're already among the healthiest preparations in any cuisine. Lean into them.</li>
+      <li><strong>Treat suya, kebabs and "well-done" grilled meat as occasional</strong>Marinate first. Don't eat the charred crust. Choose chicken or fish over fatty red meat. Pair with abundant vegetables — fibre helps clear gut-toxic carcinogen metabolites faster.</li>
+      <li><strong>Replace sugary "malt" drinks and SSBs with hibiscus or water</strong>Bissap/sobolo/zobo (hibiscus), lightly sweetened or unsweetened, has measurable BP-lowering effects. Save the malt drink for occasional treats.</li>
+    </ol>
+  </section>
+
+  <section style="margin-top:50px">
+    <h2 class="sect">The traditional pattern worth <em>defending</em></h2>
+    <p style="max-width:780px;color:var(--ink-soft);font-size:15px;line-height:1.7">Many traditional African food patterns — built around legumes, leafy greens, whole grains, fermented foods, fish, modest quantities of meat, and slow-cooked stews — closely resemble the Mediterranean and Okinawan diets that show the strongest evidence in long-lived populations. The damage to cardiometabolic health is largely a recent phenomenon driven by ultra-processed imports, palm-oil deep frying, sugary drinks, and the displacement of fonio/sorghum/millet/yam by white rice and instant noodles. The opportunity is enormous: small adjustments to preparation and a return to traditional staples can produce outsized benefits.</p>
+  </section>
+
+  <section style="margin-top:50px">
+    <div class="note">
+      <strong>See related sections</strong>
+      <div style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap"><a class="btn btn-sm" href="natural-remedies.html">Natural remedies</a><a class="btn btn-sm" href="heart.html">Heart health</a><a class="btn btn-sm" href="carcinogens.html">Carcinogens</a><a class="btn btn-sm" href="quizzes.html">Take the cooking quiz</a></div>
+    </div>
+  </section>
+</main>
+
+<script src="data.js"></script>
+<script src="data-ext.js"></script>
+<script src="lang-data.js"></script>
+<script src="lang.js"></script>
+<script src="shared.js"></script>
+<script src="components.js"></script>
+<script>
+T21.boot('african-diet.html');
+
+const _afFR = window.T21Lang && T21Lang.current==='fr';
+const _tagLabels = _afFR
+  ? {good:'À manger', mid:'Prudence', bad:'Limiter'}
+  : {good:'Eat', mid:'Caution', bad:'Limit'};
+
+const fg = document.getElementById('foodGrid');
+fg.innerHTML = AFRICAN_FOODS.map(f=>{
+  const tr = _afFR ? T21Lang.Td('africanFood', f.nm) : null;
+  const nm = (tr && tr.nm) || f.nm;
+  const desc = (tr && tr.desc) || f.desc;
+  const why = (tr && tr.why) || f.why;
+  return `
+  <div class="food-row ${f.cat}">
+    <h5>${nm}<span class="tag">${_tagLabels[f.cat]}</span></h5>
+    <p>${desc}</p>
+    <span class="why">${why}</span>
+  </div>`;
+}).join('');
+
+const tbody = document.getElementById('cookTbody');
+tbody.innerHTML = COOKING_METHODS.map(m=>{
+  const tr = _afFR ? T21Lang.Td('cooking', m.method) : null;
+  const mname = (tr && tr.method) || m.method;
+  const forms = (tr && tr.forms) || m.forms;
+  const use = (tr && tr.use) || m.use;
+  const notes = (tr && tr.notes) || m.notes;
+  return `
+  <tr>
+    <td><span class="rank">${mname}</span></td>
+    <td><span class="pill ${m.cls}">${m.rating}</span></td>
+    <td>${forms}</td>
+    <td>${use}</td>
+    <td>${notes}</td>
+  </tr>`;
+}).join('');
+</script>
+</body>
+</html>

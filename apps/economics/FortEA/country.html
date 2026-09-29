@@ -1,0 +1,1564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Country Report — ForTe Economics</title>
+<meta name="description" content="A five-part deep research report: history, economy, resources, governance and roadmap.">
+<style>
+:root{
+  --ink:#f3efe6; --ink-dim:#b9b3a6; --ink-faint:#7d786e;
+  --bg:#14161a; --bg-raised:#1b1e23; --bg-card:#20242a; --line:#33373d;
+  --cobalt:#5b7fff; --copper:#e0873c; --verdigris:#57a68f; --alert:#e0574c; --gold:#e8b23d;
+  --serif:'Fraunces', Georgia, serif; --sans:'Inter', -apple-system, sans-serif; --mono:'IBM Plex Mono', monospace;
+  --maxw:980px;
+}
+*{box-sizing:border-box; margin:0; padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg); color:var(--ink); font-family:var(--sans); line-height:1.65; -webkit-font-smoothing:antialiased; overflow-x:hidden;}
+@media (prefers-reduced-motion: reduce){ *{animation-duration:.01ms !important; transition-duration:.01ms !important;} }
+a{color:inherit;}
+.wrap{max-width:var(--maxw); margin:0 auto; padding:0 24px;}
+h1,h2,h3,h4{font-family:var(--serif); font-weight:600; letter-spacing:-0.01em; color:var(--ink);}
+::selection{background:var(--cobalt); color:#fff;}
+
+/* ---- top bar ---- */
+.topbar{position:sticky; top:0; z-index:50; background:rgba(20,22,26,0.9); backdrop-filter:blur(10px); border-bottom:1px solid var(--line);}
+.topbar-inner{max-width:var(--maxw); margin:0 auto; padding:12px 20px; display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;}
+.tb-back{font-family:var(--mono); font-size:12px; color:var(--ink-dim); text-decoration:none; display:flex; align-items:center; gap:6px; white-space:nowrap;}
+.tb-back:hover{color:var(--ink);}
+.tb-brand{font-family:var(--serif); font-weight:700; font-size:15px; white-space:nowrap;}
+.tb-brand .mark{color:var(--copper); font-style:italic;}
+.tb-switch{position:relative; margin-left:auto;}
+.tb-switch select{
+  max-width:min(220px, 44vw);
+  background:var(--bg-card); border:1px solid var(--line); color:var(--ink); padding:8px 14px; border-radius:100px;
+  font-family:var(--mono); font-size:12.5px; cursor:pointer;
+}
+@media (max-width:640px){
+  .topbar-inner{padding:10px 16px;}
+  .tb-brand{display:none;}
+  .tb-back{font-size:11.5px;}
+  .tb-switch{margin-left:0;}
+  .tb-switch select{max-width:none; font-size:12px; padding:8px 12px;}
+}
+
+/* ---- header / hero ---- */
+.c-hero{padding:56px 0 0; border-bottom:1px solid var(--line);}
+.c-hero-top{display:flex; align-items:center; gap:16px; margin-bottom:18px; flex-wrap:wrap;}
+.c-flag-big{font-size:52px; line-height:1;}
+.c-hero h1{font-size:clamp(30px,4.5vw,46px); line-height:1.05;}
+.c-hero .c-tagline{font-family:var(--mono); font-size:12.5px; color:var(--copper); text-transform:uppercase; letter-spacing:.08em; margin-top:6px;}
+.c-quicklede{color:var(--ink-dim); font-size:16px; max-width:70ch; margin:20px 0 28px;}
+
+/* live counter strip, specific to this country */
+.live-strip{
+  display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line); border:1px solid var(--line); border-radius:16px;
+  overflow:hidden; margin-bottom:0;
+}
+.live-cell{background:var(--bg-raised); padding:22px 20px;}
+.live-cell .lc-label{font-family:var(--mono); font-size:10.5px; text-transform:uppercase; letter-spacing:.07em; color:var(--ink-faint); margin-bottom:8px; display:flex; align-items:center; gap:6px;}
+.live-cell .lc-label .pulse{width:6px; height:6px; border-radius:50%; background:var(--alert); animation:pulse 1.6s ease-in-out infinite; flex-shrink:0;}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.4;transform:scale(1.3);}}
+.live-cell .lc-value{font-family:var(--mono); font-size:clamp(20px,2.6vw,28px); font-weight:600; font-variant-numeric:tabular-nums;}
+.live-cell.pop .lc-value{color:var(--verdigris);}
+.live-cell.loss .lc-value{color:var(--copper);}
+.live-cell.death .lc-value{color:var(--alert);}
+@media (max-width:700px){ .live-strip{grid-template-columns:1fr;} }
+
+/* stat rail */
+.stat-rail{display:flex; gap:0; flex-wrap:wrap; margin:26px 0 40px; border-top:1px solid var(--line); padding-top:22px;}
+.stat-rail .sr-item{flex:1; min-width:130px; padding-right:20px;}
+.stat-rail .sr-item .v{font-family:var(--mono); font-size:19px; color:var(--gold); font-weight:600;}
+.stat-rail .sr-item .l{font-size:11px; color:var(--ink-faint); text-transform:uppercase; letter-spacing:.05em; margin-top:4px;}
+
+/* ---- tab nav ---- */
+.tabnav{position:sticky; top:57px; z-index:40; background:var(--bg); border-bottom:1px solid var(--line); overflow-x:auto; -ms-overflow-style:none; scrollbar-width:none;}
+.tabnav::-webkit-scrollbar{display:none;}
+.tabnav-inner{max-width:var(--maxw); margin:0 auto; padding:0 24px; display:flex; gap:4px; white-space:nowrap;}
+.tab-btn{
+  font-family:var(--mono); font-size:12.5px; padding:16px 16px; background:none; border:none; color:var(--ink-faint);
+  cursor:pointer; border-bottom:2px solid transparent; transition:color .2s, border-color .2s; flex-shrink:0;
+}
+.tab-btn:hover{color:var(--ink-dim);}
+.tab-btn.active{color:var(--ink); border-bottom-color:var(--cobalt);}
+
+/* ---- content ---- */
+.c-content{padding:44px 0 90px;}
+.tab-panel{display:none;}
+.tab-panel.active{display:block; animation:fadein .3s ease;}
+@keyframes fadein{from{opacity:0; transform:translateY(6px);}to{opacity:1; transform:translateY(0);}}
+
+.page-marker{
+  font-family:var(--mono); font-size:11px; text-transform:uppercase; letter-spacing:.1em; color:var(--ink-faint);
+  margin-bottom:10px; display:flex; align-items:center; gap:10px;
+}
+.page-marker::before{content:""; width:20px; height:1px; background:var(--copper); display:inline-block;}
+.tab-panel h2{font-size:clamp(24px,3.2vw,32px); margin-bottom:22px; line-height:1.15;}
+.tab-panel h3{font-size:19px; margin:32px 0 14px;}
+.tab-panel p{color:var(--ink-dim); font-size:15.5px; margin-bottom:16px;}
+.tab-panel p strong{color:var(--ink);}
+.pullquote{
+  font-family:var(--serif); font-style:italic; font-size:20px; line-height:1.5; color:var(--ink);
+  border-left:3px solid var(--copper); padding:4px 0 4px 22px; margin:28px 0;
+}
+.info-table{width:100%; border-collapse:collapse; font-size:14px; margin:18px 0 24px;}
+.info-table th{text-align:left; font-family:var(--mono); font-size:10.5px; text-transform:uppercase; letter-spacing:.07em; color:var(--ink-faint); padding:0 12px 10px 0; border-bottom:1px solid var(--line); font-weight:500;}
+.info-table td{padding:11px 12px 11px 0; border-bottom:1px solid rgba(51,55,61,.6); color:var(--ink-dim); vertical-align:top;}
+.info-table td:first-child{color:var(--ink); font-weight:500;}
+.info-table .num{font-family:var(--mono); color:var(--gold);}
+.tag{font-family:var(--mono); font-size:10px; padding:2px 8px; border-radius:100px; text-transform:uppercase; letter-spacing:.04em; display:inline-block; white-space:nowrap;}
+.tag.raw{color:var(--alert); border:1px solid rgba(224,87,76,.4); background:rgba(224,87,76,.08);}
+.tag.semi{color:var(--gold); border:1px solid rgba(232,178,61,.4); background:rgba(232,178,61,.08);}
+.tag.proc{color:var(--verdigris); border:1px solid rgba(87,166,143,.4); background:rgba(87,166,143,.08);}
+.callout{background:var(--bg-card); border:1px solid var(--line); border-left:3px solid var(--cobalt); border-radius:0 12px 12px 0; padding:20px 24px; margin:24px 0;}
+.callout p{margin-bottom:0; font-size:14.5px;}
+.callout .co-label{font-family:var(--mono); font-size:10.5px; text-transform:uppercase; letter-spacing:.07em; color:var(--cobalt); margin-bottom:8px; display:block;}
+.roadmap-list{list-style:none; counter-reset:rstep; display:flex; flex-direction:column; gap:16px; margin:20px 0;}
+.roadmap-list li{counter-increment:rstep; display:flex; gap:16px;}
+.roadmap-list li::before{
+  content:counter(rstep); font-family:var(--mono); font-size:13px; color:var(--verdigris);
+  border:1px solid rgba(87,166,143,.45); background:rgba(87,166,143,.08); width:28px; height:28px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center; flex-shrink:0;
+}
+.roadmap-list li div h5{font-size:15px; margin-bottom:4px; color:var(--ink); font-weight:600;}
+.roadmap-list li div p{font-size:14px; margin-bottom:0;}
+.two-col{display:grid; grid-template-columns:1fr 1fr; gap:28px; margin:22px 0;}
+@media (max-width:700px){ .two-col{grid-template-columns:1fr;} }
+.mini-card{background:var(--bg-card); border:1px solid var(--line); border-radius:12px; padding:20px;}
+.mini-card h5{font-size:14.5px; margin-bottom:8px; color:var(--ink);}
+.mini-card p{font-size:13.5px; margin-bottom:0;}
+.timeline{border-left:2px solid var(--line); padding-left:24px; margin:20px 0 20px 6px; display:flex; flex-direction:column; gap:22px;}
+.timeline-item{position:relative;}
+.timeline-item::before{content:""; position:absolute; left:-30px; top:5px; width:9px; height:9px; border-radius:50%; background:var(--cobalt); border:2px solid var(--bg);}
+.timeline-item .t-year{font-family:var(--mono); font-size:12px; color:var(--copper); margin-bottom:4px;}
+.timeline-item h5{font-size:15px; margin-bottom:4px;}
+.timeline-item p{font-size:13.8px; margin-bottom:0;}
+.news-link-list{display:flex; flex-direction:column; gap:10px; margin:18px 0;}
+.news-link-list a{
+  display:block; padding:14px 18px; border:1px solid var(--line); border-radius:10px; text-decoration:none;
+  color:var(--ink-dim); font-size:14px; background:var(--bg-card); transition:border-color .2s;
+}
+.news-link-list a:hover{border-color:var(--copper);}
+.news-link-list a strong{color:var(--ink); display:block; margin-bottom:3px; font-size:14.5px;}
+.cta-block{
+  margin-top:48px; padding:32px; border-radius:16px; text-align:center;
+  background:radial-gradient(ellipse 500px 300px at 50% -20%, rgba(91,127,255,0.18), transparent 60%), var(--bg-raised);
+  border:1px solid var(--line);
+}
+.cta-block h3{font-size:22px; margin-bottom:12px;}
+.cta-block p{max-width:52ch; margin:0 auto 22px;}
+.btn{
+  font-family:var(--sans); font-weight:600; font-size:14px; text-decoration:none; padding:13px 22px; border-radius:100px;
+  display:inline-flex; align-items:center; gap:8px; transition:transform .18s ease; cursor:pointer; border:1px solid transparent; margin:4px;
+}
+.btn-primary{background:var(--cobalt); color:#0d1020;}
+.btn-primary:hover{transform:translateY(-2px);}
+.btn-ghost{border-color:var(--line); color:var(--ink);}
+.btn-ghost:hover{border-color:var(--ink-dim); transform:translateY(-2px);}
+
+footer.c-footer{border-top:1px solid var(--line); padding:36px 0; text-align:center;}
+footer.c-footer p{color:var(--ink-faint); font-size:12.5px;}
+footer.c-footer a{color:var(--ink-dim); text-decoration:underline;}
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="forte-soft.css">
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <a href="forte-economics.html#cases" class="tb-back">← Back to main report</a>
+    <span class="tb-brand">ForTe <span class="mark">Economics</span></span>
+    <div class="tb-switch">
+      <select id="country-switch" aria-label="Switch country report"></select>
+    </div>
+  </div>
+</div>
+
+<header class="c-hero">
+  <div class="wrap">
+    <div class="c-hero-top">
+      <span class="c-flag-big" id="c-flag">🏳️</span>
+      <div>
+        <h1 id="c-name">Loading…</h1>
+        <div class="c-tagline" id="c-tagline"></div>
+      </div>
+    </div>
+    <p class="c-quicklede" id="c-lede"></p>
+
+    <div class="live-strip">
+      <div class="live-cell pop">
+        <div class="lc-label"><span class="pulse"></span>Live population</div>
+        <div class="lc-value" id="live-pop">0</div>
+      </div>
+      <div class="live-cell loss">
+        <div class="lc-label"><span class="pulse"></span>Value lost to raw export today</div>
+        <div class="lc-value" id="live-loss">$0</div>
+      </div>
+      <div class="live-cell death">
+        <div class="lc-label"><span class="pulse"></span>Est. poverty-linked deaths today</div>
+        <div class="lc-value" id="live-death">0</div>
+      </div>
+    </div>
+
+    <div class="stat-rail" id="stat-rail"><!-- filled by JS --></div>
+  </div>
+</header>
+
+<nav class="tabnav">
+  <div class="tabnav-inner">
+    <button class="tab-btn active" data-tab="overview">01 · Overview &amp; History</button>
+    <button class="tab-btn" data-tab="economy">02 · Economy &amp; Debt</button>
+    <button class="tab-btn" data-tab="resources">03 · Resources &amp; Value Chains</button>
+    <button class="tab-btn" data-tab="governance">04 · Governance &amp; News</button>
+    <button class="tab-btn" data-tab="roadmap">05 · Roadmap &amp; Action</button>
+  </div>
+</nav>
+
+<main class="c-content wrap">
+  <div class="tab-panel active" id="panel-overview"></div>
+  <div class="tab-panel" id="panel-economy"></div>
+  <div class="tab-panel" id="panel-resources"></div>
+  <div class="tab-panel" id="panel-governance"></div>
+  <div class="tab-panel" id="panel-roadmap"></div>
+</main>
+
+<footer class="c-footer">
+  <p>© Innocent Forteh · ForTe Economics · Part of the ten-country Africa Extraction Report. <a href="forte-economics.html">Return to the full site →</a></p>
+</footer>
+
+<script id="country-data-script">
+const COUNTRIES = {
+
+cameroon: {
+  flag:"🇨🇲", name:"Cameroon", tagline:"Central Africa · Oil, Cocoa, Timber",
+  lede:"Africa's linguistic and cultural crossroads — French and English official, over 250 languages spoken — sits on oil, world-class cocoa, and one of the continent's largest rainforests, yet borrowed at 10.6% interest in December 2025 just to cover a liquidity gap.",
+  clock:{pop:29300000, rate:0.026, dailyLossUSD:2500000, dailyDeaths:246},
+  stats:[["43 yrs","Paul Biya's presidency, since 1982"],["10.6%","Dec 2025 borrowing rate"],["77.5%","Of exports from 5 raw commodities"],["1M+","Internally displaced (Anglophone crisis)"]],
+  sections:{
+    overview:`
+      <div class="page-marker">Page 1 of 5</div>
+      <h2>A country stitched from two colonial empires, still negotiating the seam</h2>
+      <p>Cameroon's modern shape is a product of a rare double colonial inheritance. German Kamerun was carved up after World War I between France and Britain as League of Nations mandates; French Cameroun became independent on 1 January 1960 under Ahmadou Ahidjo, and a year later the southern part of British Cameroons voted in a UN-supervised plebiscite to join it, forming the bilingual federation that still defines the country's English/French fault line today. The northern part of British Cameroons voted instead to join Nigeria — a decision whose long shadow includes present-day border and identity tensions.</p>
+      <p>Ahidjo ruled as a one-party strongman until 1982, when he unexpectedly resigned and handed power to his prime minister, <strong>Paul Biya</strong> — who has now governed continuously for 43 years, making him one of the longest-serving heads of state in the world. Biya abolished the federal system in 1972 in favor of a unitary state, a move many Anglophone Cameroonians trace as the origin of today's marginalization grievances. Multiparty elections were nominally restored in 1992, but Biya's Cameroon People's Democratic Movement has never lost a presidential election since.</p>
+      <div class="pullquote">"We are not fighting against the French language or against the French-speaking Cameroonians. We are fighting against a system, a system of marginalization." — a recurring refrain from Anglophone civil society since 2016</div>
+      <p>The <strong>Anglophone Crisis</strong> ignited in late 2016 when lawyers and teachers in the Northwest and Southwest regions protested the imposition of French-trained judges and francophone teachers in English-speaking courts and classrooms. Government response escalated the protests into an armed separatist insurgency by 2017, seeking an independent state of "Ambazonia." The conflict has since displaced over a million people internally and driven tens of thousands into exile in Nigeria, while consuming a security budget that competes directly with development spending.</p>
+      <p>The <strong>October 2025 presidential election</strong> — Biya's eighth term bid at age 92 — was followed by opposition claims of victory, contested results, and unrest that further destabilized the country's political and fiscal footing, compounding the succession uncertainty that has hung over Cameroon for over a decade.</p>
+      <h3>Geography &amp; people</h3>
+      <div class="two-col">
+        <div class="mini-card"><h5>Physical geography</h5><p>Spans from Sahelian savanna in the Far North to dense equatorial rainforest in the South and East — the second-largest rainforest reserve in Africa after the DRC's — plus a volcanic coastal strip anchored by Mount Cameroon, the region's highest peak.</p></div>
+        <div class="mini-card"><h5>Demography</h5><p>Over 250 ethnic groups and languages; roughly 40% of the population is under 15. Yaoundé (political capital) and Douala (economic capital and main port) anchor a rapidly urbanizing population still majority-rural in the north.</p></div>
+      </div>
+    `,
+    economy:`
+      <div class="page-marker">Page 2 of 5</div>
+      <h2>A government perpetually one liquidity gap away from expensive borrowing</h2>
+      <p>Cameroon has been under continuous IMF-supported adjustment since 2021, cycling through an Extended Credit Facility, Extended Fund Facility, and a Resilience and Sustainability Facility layered on top — three concurrent programs, each with its own conditionality and review schedule. The stated logic is to smooth fiscal consolidation while building climate resilience; in practice, oil royalties routed through the state hydrocarbons company <strong>SNH</strong> have repeatedly landed below the revenue projections each program was built around, and non-oil tax collection has similarly missed its own targets year after year.</p>
+      <p>When the resulting fiscal gap needs covering, the state has increasingly turned to commercial, non-concessional borrowing rather than deeper structural reform. A December 2025 external loan carried a <strong>10.58% effective interest rate</strong> — extraordinarily expensive by sovereign-debt standards, and a rate that mathematically guarantees the next year's budget starts from a worse position than this one's.</p>
+      <table class="info-table">
+        <thead><tr><th>Fiscal indicator</th><th>Status</th><th>Why it matters</th></tr></thead>
+        <tbody>
+          <tr><td>Public debt-to-GDP</td><td class="num">~40%</td><td>Manageable on paper; the problem is the rising cost of servicing it</td></tr>
+          <tr><td>IMF programs running concurrently</td><td class="num">3</td><td>Signals persistent, not cyclical, fiscal strain</td></tr>
+          <tr><td>Dec 2025 commercial loan rate</td><td class="num">10.58%</td><td>Far above concessional multilateral rates (~1-2%)</td></tr>
+          <tr><td>Anglophone crisis fiscal cost</td><td class="num">Ongoing</td><td>Security spending crowds out productive investment</td></tr>
+        </tbody>
+      </table>
+      <div class="callout"><span class="co-label">The mechanism, plainly</span><p>Oil revenue underperforms → the budget gap must be filled → commercial lenders charge a premium for a government whose own revenue projections keep missing → next year's debt service is higher → less is left for the health, education and infrastructure spending that would actually grow the tax base. Every part of that chain is documented in Cameroon's own IMF Article IV consultations.</p></div>
+      <h3>Where the state's money actually goes</h3>
+      <p>Debt service, security spending tied to both the Anglophone conflict and Boko Haram-linked instability in the Far North, and a large public-sector wage bill dominate recurrent expenditure, leaving a comparatively thin envelope for the capital investment — roads, power, irrigation, processing infrastructure — that would let Cameroon's raw exports actually become the value-added economy the roadmap in Page 5 describes.</p>
+    `,
+    resources:`
+      <div class="page-marker">Page 3 of 5</div>
+      <h2>The export basket: 20 goods, one overwhelmingly raw trade position</h2>
+      <table class="info-table">
+        <thead><tr><th>Export</th><th>2024 value / note</th><th>Share of exports</th><th>Form it leaves in</th></tr></thead>
+        <tbody>
+          <tr><td>Crude petroleum</td><td class="num">$2.1–3.5B</td><td>37–48%</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Cocoa beans</td><td class="num">≈$1.0B</td><td>18.4%</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Liquefied natural gas</td><td class="num">≈$421M</td><td>10.2%</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Sawn wood &amp; logs</td><td class="num">$678M</td><td>7.3%</td><td><span class="tag semi">Semi</span></td></tr>
+          <tr><td>Cocoa butter, paste &amp; fat</td><td class="num">≈$620M</td><td>8.6%</td><td><span class="tag semi">Semi</span></td></tr>
+          <tr><td>Bananas / plantains</td><td class="num">$543M</td><td>3.8%</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Cotton (raw lint)</td><td class="num">$354M</td><td>2–5%</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Natural rubber</td><td class="num">Regionally significant</td><td>&lt;2%</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Robusta coffee</td><td class="num">Declining volumes</td><td>&lt;1%</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Refined aluminium (Alucam)</td><td class="num">Alumina-based, Édéa smelter</td><td>Minor</td><td><span class="tag proc">Processed</span></td></tr>
+          <tr><td>Crude palm oil</td><td class="num">Mostly regional trade</td><td>Minor</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Raw tobacco leaf</td><td class="num">Northern regions</td><td>Minor</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Arabica coffee</td><td class="num">Western highlands</td><td>Minor</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Gum arabic</td><td class="num">Sahel belt</td><td>Minor</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Groundnuts (peanuts)</td><td class="num">Regional/cross-border trade</td><td>Minor</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Raw sugar / sugarcane</td><td class="num">Sosucam plantations</td><td>Minor</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Artisanal &amp; industrial gold</td><td class="num">East region, largely informal</td><td>Minor, growing</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Wood veneer &amp; plywood</td><td class="num">A small step up from raw logs</td><td>Minor</td><td><span class="tag semi">Semi</span></td></tr>
+          <tr><td>Fish &amp; seafood (coastal)</td><td class="num">Douala/Kribi coast</td><td>Minor</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Kaolin &amp; industrial clays</td><td class="num">Nascent minerals sector</td><td>Minor</td><td><span class="tag raw">Raw</span></td></tr>
+        </tbody>
+      </table>
+      <p>The top five items alone generated about <strong>77.5%</strong> of Cameroon's $7.3B in total 2024 export earnings — and across all 20 goods listed here, all but the aluminium ingots and wood veneer leave the country in essentially raw or barely-transformed form. That concentration is the single biggest structural vulnerability in the entire economy: a bad cocoa harvest, an oil-price dip, or a timber-export policy change in a buyer country can each independently swing the national trade balance.</p>
+      <h3>What Cameroon is actually losing</h3>
+      <p><strong>Cocoa:</strong> the world's 4th-largest producer ships 180,000–250,000 tonnes of beans a year, almost entirely at the raw farm-gate export price. Global cocoa value-chain research consistently finds producing countries capture roughly 6-7% of a chocolate bar's final retail value — the beans themselves are typically worth less than a tenth of what the finished confectionery sells for once roasted, conched, tempered and branded, almost entirely outside Africa.</p>
+      <div class="callout"><span class="co-label">The arithmetic</span><p>Raw beans: ~$4,400/tonne at export. The same tonne, once processed into finished chocolate: $25,000–35,000+. That is a <strong style="color:var(--copper)">6-8×</strong> value multiple created entirely after the bean leaves Cameroonian soil.</p></div>
+      <p><strong>Timber:</strong> Cameroon holds 22.5 million hectares of rainforest, 17.5 million commercially exploitable — yet trade data shows roughly 82% of what leaves does so as sawn wood and 18% as raw logs, rather than furniture, flooring, veneer or engineered panel products, whose finished value runs several multiples higher per cubic metre.</p>
+      <p><strong>Oil and gas:</strong> crude and LNG were roughly half of 2024 export earnings, yet Cameroon still imports refined fuel it could in principle produce domestically — and SNH's declining production combined with revenue transfers that have repeatedly undershot budget projections means the state doesn't even fully capture the value of the barrel it does export before it leaves the ground.</p>
+      <h3>What building the value chain actually takes</h3>
+      <div class="two-col">
+        <div class="mini-card"><h5>01 · Infrastructure</h5><p>Grinding and conching facilities near Douala/Yaoundé for cocoa; sawmill-to-furniture and veneer plants in the East and South; reliable power and rail/road links from forest and farm belts to port.</p></div>
+        <div class="mini-card"><h5>02 · Financing</h5><p>Processing plants need 7-10 year patient capital, not the short-tenor 10.6% commercial loans the state currently relies on — blended concessional and private-equity lines are the realistic route.</p></div>
+        <div class="mini-card"><h5>03 · Skills</h5><p>Chocolate conching, furniture-grade wood finishing and refinery operation all require technical/vocational pipelines Cameroon does not yet run at national scale.</p></div>
+        <div class="mini-card"><h5>04 · Policy</h5><p>A published, fixed-timetable rule requiring a rising minimum share of cocoa and timber processed domestically before export licensing — predictable enough for investors to plan around.</p></div>
+      </div>
+      <p style="margin-top:20px;"><strong>The narrative shift:</strong> a country that sells $1B of raw cocoa beans is a commodity exporter subject to whatever price futures markets in London and Abidjan set that week. A country that processes even 30-40% of that crop into butter, paste and finished chocolate is a manufacturing economy with pricing power, a broader tax base, and skilled jobs that don't disappear when the harvest is poor.</p>
+    `,
+    governance:`
+      <div class="page-marker">Page 4 of 5</div>
+      <h2>Governance: a corruption index frozen for three decades</h2>
+      <p>Cameroon's Transparency International Corruption Perceptions Index score has averaged roughly 23.4 out of 100 over the past three decades — not a crisis moment, but a structural condition the political system has not meaningfully moved in a generation. In December 2025 the country's score was measured at 26/100, essentially flat year-on-year, ranking 142nd of 182 countries assessed.</p>
+      <div class="pullquote">In April 2026, Pope Leo XIV directly urged Cameroonian authorities to "break the chains of corruption" during a state visit — a rare instance of a corruption critique reaching the level of a papal address rather than a domestic news cycle footnote.</div>
+      <h3>The unresolved Glencore case</h3>
+      <p>Commodity trading giant Glencore pleaded guilty in both the United States and United Kingdom to bribing officials across several African oil-producing states — including, per court filings, Cameroon's national hydrocarbons company SNH, the same entity this report's Economy page identifies as chronically under-delivering projected oil royalties. No corresponding Cameroonian domestic prosecution has followed the international guilty pleas, a gap civil-society monitors have repeatedly flagged.</p>
+      <p>A 2025 UNCAC Coalition civil-society review found that despite 23 final judgments for public-funds misappropriation issued in 2023 alone — spanning the Ministry of Finance and the Douala Port Authority — the country's Special Criminal Court, created specifically to prosecute high-level corruption, remains dogged by allegations of selective prosecution that spare politically connected figures.</p>
+      <h3>Political timeline</h3>
+      <div class="timeline">
+        <div class="timeline-item"><div class="t-year">1960–61</div><h5>Independence and reunification</h5><p>French Cameroun independent Jan 1960; British Southern Cameroons joins by plebiscite in Oct 1961, forming the bilingual federation.</p></div>
+        <div class="timeline-item"><div class="t-year">1972</div><h5>Federal system abolished</h5><p>Ahidjo replaces the federation with a unitary state — a decision Anglophone civil society still cites as the root of marginalization grievances.</p></div>
+        <div class="timeline-item"><div class="t-year">1982</div><h5>Biya takes power</h5><p>Ahidjo resigns unexpectedly; Prime Minister Paul Biya becomes president and has governed continuously since.</p></div>
+        <div class="timeline-item"><div class="t-year">2016–17</div><h5>Anglophone Crisis begins</h5><p>Lawyer and teacher protests over francophone imposition in English-speaking courts and schools escalate into an armed separatist insurgency.</p></div>
+        <div class="timeline-item"><div class="t-year">2025</div><h5>Contested eighth-term election</h5><p>Biya, 92, seeks an eighth term; disputed results trigger unrest and further political uncertainty amid unresolved succession questions.</p></div>
+      </div>
+      <h3>Current news &amp; further reading</h3>
+      <div class="news-link-list">
+        <a href="https://www.africanews.com/2026/04/15/pope-urges-cameroon-authorities-to-examine-conscience/" target="_blank" rel="noopener"><strong>Pope Leo XIV urges Cameroon to "break the chains of corruption"</strong>Africanews, April 2026</a>
+        <a href="https://uncaccoalition.org/uncacparallelreportcameroon/" target="_blank" rel="noopener"><strong>Civil society flags weak enforcement of anti-corruption framework</strong>UNCAC Coalition, September 2025</a>
+        <a href="https://allafrica.com/stories/202206030426.html" target="_blank" rel="noopener"><strong>The unresolved "Glencore Scandal" at Cameroon's state oil company</strong>AllAfrica</a>
+        <a href="https://tradingeconomics.com/cameroon/corruption-index" target="_blank" rel="noopener"><strong>Corruption Index stagnant at 26/100 for a second year</strong>Trading Economics / Transparency International, December 2025</a>
+      </div>
+    `,
+    roadmap:`
+      <div class="page-marker">Page 5 of 5</div>
+      <h2>The roadmap beyond the trap</h2>
+      <ol class="roadmap-list">
+        <li><div><h5>Publish full SNH oil-revenue contracts</h5><p>Under EITI standards, so royalty shortfalls can be audited against actual production, not simply assumed or disputed after the fact.</p></div></li>
+        <li><div><h5>Convert the Anglophone crisis into a negotiated devolution settlement</h5><p>The fiscal bleed from prolonged conflict — security spending, displacement costs, lost regional productivity — costs more than most reform packages this report proposes would save.</p></div></li>
+        <li><div><h5>Build a domestic Treasury-bill and bond market</h5><p>Deep enough to end reliance on 10%+ commercial loans for routine liquidity gaps, the single most expensive habit in the current fiscal pattern.</p></div></li>
+        <li><div><h5>Mandate a rising share of cocoa and timber processed domestically</h5><p>Phased over a fixed, published timetable, so investors in processing capacity can plan around a predictable policy rather than an ad hoc export ban.</p></div></li>
+        <li><div><h5>Establish an independent electoral and succession framework</h5><p>So leadership transition stops being a fiscal and security risk event in itself — see the Leadership section of the full report for the servant-leadership model this implies.</p></div></li>
+      </ol>
+      <h3>Build something: a pathway that fits Cameroon specifically</h3>
+      <div class="callout">
+        <span class="co-label">Cocoa micro-processing</span>
+        <p>Small artisan processors are already turning farm-gate beans into cocoa powder, butter and simple chocolate bars for regional markets using compact, mid-cost equipment — a $3,000–8,000 roaster/grinder setup on 1 tonne of beans (~$4,000-4,500) yields roughly 950kg of saleable product at 2-3× the raw bean price. Source directly from a local cooperative, master fermentation/drying quality control, and target regional B2B buyers (bakeries, cosmetics makers) before attempting retail chocolate bars. Full step-by-step guide in the Business Pathways section of the main report.</p>
+      </div>
+      <p style="margin-top:18px;"><a href="business-plans.html" target="_blank" rel="noopener" style="color:var(--verdigris); font-size:13.5px; text-decoration:underline;">See the full step-by-step business plan for this — equipment costs, process, and how-to videos →</a></p>
+
+      <div class="cta-block">
+        <h3>This is one country. The pattern repeats across the continent.</h3>
+        <p>Read the full ten-country report, run the value-chain simulator, and see exactly how much is lost every day this pattern continues — then join the Reset.</p>
+        <a href="https://wa.me/237674917169?text=I%27m%20joining%20the%20ForTe%20Economics%20Reset%20after%20reading%20the%20Cameroon%20report.%20Here%27s%20one%20thing%20I%27m%20committing%20to%3A%20" class="btn btn-primary" target="_blank" rel="noopener">Message +237 674 917 169 on WhatsApp →</a>
+        <a href="forte-economics.html#simulator" class="btn btn-ghost">Run the value-chain simulator</a>
+      </div>
+    `
+  }
+},
+
+drc: {
+  flag:"🇨🇩", name:"Democratic Republic of Congo", tagline:"Central Africa · Cobalt, Copper",
+  lede:"Supplies roughly 70% of the world's cobalt — the mineral inside every smartphone and EV battery on earth — yet the IMF rates its debt-carrying capacity 'weak,' and in February 2025 the government suspended cobalt exports outright just to arrest a price collapse it had no power to prevent.",
+  clock:{pop:111900000, rate:0.031, dailyLossUSD:6000000, dailyDeaths:1014},
+  stats:[["70%","World cobalt supply"],["2.33","IMF debt-capacity composite score"],["2×","Deadliest conflict since WWII, 1996-2003"],["9%","Mining's average share of GDP"]],
+  sections:{
+    overview:`
+      <div class="page-marker">Page 1 of 5</div>
+      <h2>The paradox at the center of the continent: staggering wealth, staggering war</h2>
+      <p>No country better illustrates the gap between resource wealth and human outcome than the DRC. Belgian Congo — ruled first as King Leopold II's personal property under a regime of forced rubber extraction so brutal it is estimated to have killed millions, then as a formal Belgian colony — became independent on 30 June 1960. Independence hero <strong>Patrice Lumumba</strong>, the country's first elected prime minister, was assassinated within months, with Belgian and US intelligence involvement later confirmed by official inquiries — a founding trauma that shaped decades of subsequent instability.</p>
+      <p><strong>Mobutu Sese Seko</strong> seized power in 1965 with US and Belgian backing during the Cold War, renamed the country Zaire, and ruled as a kleptocratic dictator for 32 years, personally amassing a fortune estimated in the billions while the state's infrastructure and institutions atrophied. His 1997 overthrow, amid the regional chaos following the Rwandan genocide, triggered the <strong>First and Second Congo Wars</strong> (1996-2003) — a conflict drawing in nine African nations and dozens of armed groups, estimated to have caused several million deaths, mostly from disease and displacement rather than direct combat, making it the deadliest conflict globally since World War II.</p>
+      <div class="pullquote">The DRC has been described, accurately, as "cobalt-rich and dollar-poor" — a country whose mineral wealth shows up in everyone's global-supply-chain forecasts except its own citizens' household budgets.</div>
+      <p>Joseph Kabila governed from 2001 (following his father Laurent-Désiré Kabila's assassination) until 2019, when <strong>Félix Tshisekedi</strong> took office in the country's first-ever peaceful transfer of power since independence — though the 2018 election itself was widely disputed. Conflict in the mineral-rich east, particularly involving the M23 rebel group with documented Rwandan backing, has continued into the 2020s, with a Doha-mediated peace framework advancing in 2025.</p>
+      <h3>Geography &amp; resources</h3>
+      <div class="two-col">
+        <div class="mini-card"><h5>Scale</h5><p>Africa's second-largest country by area, spanning the Congo River basin — the world's second-largest rainforest after the Amazon — with Kinshasa as one of the world's fastest-growing megacities.</p></div>
+        <div class="mini-card"><h5>Mineral endowment</h5><p>Holds an estimated 50%+ of the world's known cobalt reserves, is the second-largest copper producer on the continent, and hosts significant gold, tin, tungsten, tantalum and diamond deposits — a mineral base comparable to few countries anywhere.</p></div>
+      </div>
+    `,
+    economy:`
+      <div class="page-marker">Page 2 of 5</div>
+      <h2>An economy with world-dominant mineral supply and a "weak" credit rating</h2>
+      <p>The IMF's own composite debt-carrying-capacity indicator rates the DRC "weak," at a score of 2.33 — a striking classification for a country supplying roughly 70% of the world's cobalt, the mineral now essential to lithium-ion battery chemistry powering the global electric-vehicle transition. The disconnect is structural: mining contributed roughly 9% of GDP and 9% of foreign direct investment over 2013-18, according to World Bank analysis, but only about <strong>6.3% of fiscal revenue in 2016</strong> — a gap between what the resource is worth and what the state actually captures.</p>
+      <table class="info-table">
+        <thead><tr><th>Indicator</th><th>Value</th><th>What it reveals</th></tr></thead>
+        <tbody>
+          <tr><td>IMF debt-capacity score</td><td class="num">2.33 ("weak")</td><td>Limits how much the country can safely borrow even against real mineral wealth</td></tr>
+          <tr><td>Cobalt's fiscal revenue capture (2016)</td><td class="num">6.3%</td><td>A wide gap between resource value and state revenue</td></tr>
+          <tr><td>Feb 2025 cobalt export suspension</td><td class="num">Total halt</td><td>Shows how little pricing power even the dominant global supplier holds</td></tr>
+        </tbody>
+      </table>
+      <div class="callout"><span class="co-label">The February 2025 export suspension, explained</span><p>Facing a collapse in global cobalt prices driven by oversupply (much of it from Indonesian nickel-cobalt byproduct competing with Congolese primary cobalt), the government suspended cobalt exports outright to try to stabilize prices. The episode is a case study in a core argument of this report: supplying 70% of a commodity does not automatically confer pricing power if you don't also control the refining and market infrastructure downstream of extraction.</p></div>
+      <h3>Minerals-for-infrastructure: the SICOMINES model</h3>
+      <p>A landmark 2008 agreement, later renegotiated, swapped Chinese-financed roads, hospitals and infrastructure for mining rights via the SICOMINES joint venture — a resource-for-infrastructure barter model since replicated elsewhere on the continent. Congolese civil-society organizations have long argued the original terms undervalued the mineral concessions relative to the infrastructure delivered, and an independent, published valuation audit remains a leading governance-reform demand.</p>
+    `,
+    resources:`
+      <div class="page-marker">Page 3 of 5</div>
+      <h2>The export basket: 20 goods, world-dominant mineral supply, near-zero domestic refining</h2>
+      <table class="info-table">
+        <thead><tr><th>Export</th><th>Global position / note</th><th>Role in economy</th><th>Form it leaves in</th></tr></thead>
+        <tbody>
+          <tr><td>Cobalt (ore &amp; concentrate)</td><td class="num">≈70% of world supply</td><td>~9% of GDP average</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Copper (cathode &amp; concentrate)</td><td class="num">2nd-largest African producer</td><td>Main current-account earner</td><td><span class="tag semi">Semi</span></td></tr>
+          <tr><td>Gold (artisanal &amp; industrial)</td><td class="num">Regionally significant</td><td>Largely untaxed/smuggled share</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Tin, tungsten, tantalum (3T)</td><td class="num">Conflict-zone sourced</td><td>Smuggled via Uganda/Rwanda to UAE</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Rough diamonds</td><td class="num">Historic top-10 global producer</td><td>Kasai region</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Crude oil (Muanda offshore)</td><td class="num">Small but real producer</td><td>Coastal Bas-Congo</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Coltan (columbite-tantalite)</td><td class="num">Major global source</td><td>Electronics-grade ore, conflict-linked</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Manganese</td><td class="num">Emerging producer</td><td>Growing battery-metal interest</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Zinc ore</td><td class="num">Katanga belt</td><td>Minor but present</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Raw coffee (Uele/Kivu)</td><td class="num">Historic Robusta &amp; Arabica producer</td><td>Smallholder-grown</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Crude palm oil</td><td class="num">Original birthplace of Congo palm belt</td><td>Regional trade</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Natural rubber</td><td class="num">Equateur province</td><td>Colonial-era plantations</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Timber &amp; logs</td><td class="num">2nd-largest rainforest reserve</td><td>Largely unprocessed export</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Cassava &amp; cassava products</td><td class="num">Regional cross-border trade</td><td>Food-security crop</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Cocoa beans</td><td class="num">Small but growing</td><td>Eastern &amp; northern provinces</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Charcoal &amp; fuelwood</td><td class="num">Major informal regional trade</td><td>Significant deforestation driver</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Freshwater fish</td><td class="num">Congo River &amp; Lake Tanganyika</td><td>Regional food trade</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Quinine / cinchona bark</td><td class="num">Historic colonial-era export</td><td>Niche pharmaceutical input</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Raw tea (Kivu highlands)</td><td class="num">Small-scale production</td><td>Regional trade</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Hydroelectric power (regional export)</td><td class="num">Inga Dam potential, underdeveloped</td><td>Sold to neighbouring grids</td><td><span class="tag proc">Processed</span></td></tr>
+        </tbody>
+      </table>
+      <h3>What the DRC is actually losing</h3>
+      <p>A battery-grade EV cell traces back almost entirely to Congolese-mined cobalt — yet the refining step that actually feeds battery gigafactories, converting raw ore into cobalt sulphate, happens overwhelmingly in China and a handful of other processing hubs, not in Katanga or Lualaba where the ore is dug up.</p>
+      <div class="callout"><span class="co-label">The arithmetic</span><p>Raw cobalt ore/concentrate: ≈$30-45/kg. The same kilogram's worth, embedded in a finished EV battery pack: ≈$300-500+. The DRC supplies <strong style="color:var(--copper)">70% of world cobalt</strong> and captures near-zero share of world refining capacity.</p></div>
+      <p><strong>3T minerals:</strong> artisanal gold, tin, tungsten and tantalum from the conflict-affected east are routinely smuggled through Uganda and Rwanda before reaching UAE processing and trading hubs — meaning the state loses not only the processing margin but the export tax and customs revenue on the raw material itself, twice over. Analysts estimate elite capture and illicit flows divert a substantial share of potential mineral revenue away from public investment entirely.</p>
+      <h3>What building the value chain actually takes</h3>
+      <div class="two-col">
+        <div class="mini-card"><h5>01 · Power infrastructure</h5><p>Cobalt sulphate conversion plants require enormous, stable electricity — the single biggest constraint in the Katanga/Lualaba grid today. Refinery build-out and grid investment are inseparable projects.</p></div>
+        <div class="mini-card"><h5>02 · Transparent financing</h5><p>Future minerals-for-infrastructure deals need published pricing benchmarks and independent valuation — the core complaint against SICOMINES — so financing doesn't quietly become a second extraction channel.</p></div>
+        <div class="mini-card"><h5>03 · Formalizing artisanal mining</h5><p>Bringing the smuggled 10-20% of cobalt output into the legal, taxable economy requires trained cooperative management and safety supervision at thousands of small sites.</p></div>
+        <div class="mini-card"><h5>04 · Binding local-processing quotas</h5><p>A legally fixed, rising minimum share of cobalt required to leave as sulphate rather than ore — enforceable at the export terminal, where compliance is easiest to verify.</p></div>
+      </div>
+    `,
+    governance:`
+      <div class="page-marker">Page 4 of 5</div>
+      <h2>Elite capture in a state still rebuilding basic institutions after decades of war</h2>
+      <p>Analysts assessing the DRC's mineral economy in 2026 estimate that elite capture diverts somewhere between 30-50% of potential resource revenue away from public investment — miners in eastern DRC routinely report bribe demands of hundreds of dollars monthly simply to hold an operating permit, a tax the formal state never sees and cannot budget against.</p>
+      <div class="pullquote">A country supplying 70% of the world's cobalt still runs a debt-carrying capacity the IMF rates "weak" — the clearest possible illustration that mineral abundance and fiscal health are not the same thing without functioning institutions in between.</div>
+      <h3>The eastern conflict and the 2025 peace framework</h3>
+      <p>The M23 rebel group's resurgence in North and South Kivu, with documented Rwandan military backing per UN Group of Experts reporting, displaced hundreds of thousands more Congolese through 2024-25 and directly disrupted mining-region governance and tax collection. A Doha-mediated peace framework advanced through 2025, alongside a broader Washington-brokered agreement between Kinshasa and Kigali — a genuine diplomatic opening, though implementation on the ground has lagged the paper agreements, a familiar pattern in the region's conflict history.</p>
+      <h3>Political timeline</h3>
+      <div class="timeline">
+        <div class="timeline-item"><div class="t-year">1960</div><h5>Independence, and Lumumba's assassination</h5><p>Belgian Congo becomes independent; first PM Patrice Lumumba assassinated within months amid Cold War intervention.</p></div>
+        <div class="timeline-item"><div class="t-year">1965-97</div><h5>Mobutu's Zaire</h5><p>32-year kleptocratic dictatorship under US/Belgian Cold War backing; state institutions hollowed out.</p></div>
+        <div class="timeline-item"><div class="t-year">1996-2003</div><h5>First &amp; Second Congo Wars</h5><p>Nine nations drawn in; deadliest conflict globally since WWII, mostly from disease and displacement.</p></div>
+        <div class="timeline-item"><div class="t-year">2019</div><h5>First peaceful transfer of power</h5><p>Félix Tshisekedi succeeds Joseph Kabila — the country's first peaceful transition since independence, though the underlying election was contested.</p></div>
+        <div class="timeline-item"><div class="t-year">2025</div><h5>Cobalt export suspension &amp; peace framework</h5><p>February export halt amid price collapse; Doha/Washington-mediated frameworks advance toward resolving the eastern conflict.</p></div>
+      </div>
+      <h3>Current news &amp; further reading</h3>
+      <div class="news-link-list">
+        <a href="https://www.africansecurityanalysis.com/reports" target="_blank" rel="noopener"><strong>Africa's China debt flows turn negative</strong>ONE Data analysis — African countries now repay more than they receive in new disbursement, January 2026</a>
+        <a href="https://www.jaynevytours.com/most-corrupt-country-in-africa.html" target="_blank" rel="noopener"><strong>Elite capture of DRC mineral wealth estimated at 30-50% of revenue</strong>2026 corruption assessment</a>
+      </div>
+    `,
+    roadmap:`
+      <div class="page-marker">Page 5 of 5</div>
+      <h2>The roadmap beyond the trap</h2>
+      <ol class="roadmap-list">
+        <li><div><h5>Require a rising, legally binding cobalt-processing quota</h5><p>A fixed share must become battery precursor material domestically before export licenses are granted — enforceable at the point every shipment already has to clear.</p></div></li>
+        <li><div><h5>Commission an independent, published SICOMINES audit</h5><p>Renegotiate any terms found to be below fair market value for the minerals exchanged.</p></div></li>
+        <li><div><h5>Formalize artisanal and small-scale mining supply chains</h5><p>Bringing the smuggled 10-20% of cobalt output into the legal, taxable economy while improving miner safety standards.</p></div></li>
+        <li><div><h5>Redirect security spending freed by the 2025 peace framework</h5><p>Toward eastern reconstruction and mine-site governance rather than continued military expenditure.</p></div></li>
+        <li><div><h5>Capitalize a sovereign minerals fund</h5><p>Ring-fenced by law from short-term budget raids, funding health and education directly from cobalt and copper windfalls.</p></div></li>
+      </ol>
+      <h3>Build something: a pathway that fits the DRC specifically</h3>
+      <div class="callout">
+        <span class="co-label">Formalized artisanal mining cooperatives</span>
+        <p>Individual or small-group artisanal miners can access dramatically better prices, safety standards and legal protection by formalizing into registered cooperatives that sell directly to certified buyers rather than intermediary traders — a model already proven at pilot scale in parts of Lualaba province, and one that captures a meaningfully larger share of the value chain for the people doing the actual digging.</p>
+      </div>
+      <p style="margin-top:18px;"><a href="business-plans.html" target="_blank" rel="noopener" style="color:var(--verdigris); font-size:13.5px; text-decoration:underline;">See the full step-by-step business plan for this — equipment costs, process, and how-to videos →</a></p>
+
+      <div class="cta-block">
+        <h3>This is one country. The pattern repeats across the continent.</h3>
+        <p>Read the full ten-country report, run the value-chain simulator, and see exactly how much is lost every day this pattern continues — then join the Reset.</p>
+        <a href="https://wa.me/237674917169?text=I%27m%20joining%20the%20ForTe%20Economics%20Reset%20after%20reading%20the%20DRC%20report.%20Here%27s%20one%20thing%20I%27m%20committing%20to%3A%20" class="btn btn-primary" target="_blank" rel="noopener">Message +237 674 917 169 on WhatsApp →</a>
+        <a href="forte-economics.html#simulator" class="btn btn-ghost">Run the value-chain simulator</a>
+      </div>
+    `
+  }
+},
+
+nigeria: {
+  flag:"🇳🇬", name:"Nigeria", tagline:"West Africa · Crude Oil",
+  lede:"Africa's largest economy and most populous nation earned roughly 90% of its export income from crude oil for decades — while importing most of the refined fuel its own people burn, paying a processing markup on its own resource, twice.",
+  clock:{pop:232700000, rate:0.024, dailyLossUSD:15000000, dailyDeaths:2117},
+  stats:[["~90%","Historic oil share of exports"],["650k bpd","Dangote refinery capacity"],["142nd","2025 corruption ranking, of 182"],["2023","Subsidy removal & naira float"]],
+  sections:{
+    overview:`
+      <div class="page-marker">Page 1 of 5</div>
+      <h2>Africa's giant: 230 million people, a federation built to hold them together</h2>
+      <p>Nigeria's roughly 230 million people make it Africa's most populous nation by a wide margin and one of the most populous countries on earth — with a median age under 18, its youth population alone will shape global demographics for decades. British colonial rule amalgamated a vast, ethnically and religiously diverse territory — over 250 ethnic groups, split roughly between a Muslim-majority north and Christian-majority south — into a single administrative unit in 1914, a fusion of convenience whose fault lines have run through Nigerian politics ever since.</p>
+      <p>Independence arrived in 1960. Within seven years, ethnic and regional tensions — compounded by the discovery of oil in the Niger Delta and disputes over its revenue — erupted into the <strong>Nigerian Civil War (1967-1970)</strong>, when the southeastern region attempted to secede as the Republic of Biafra. The war killed an estimated one to three million people, most from famine caused by a federal blockade, and remains one of the most searing episodes in modern African history, still shaping regional political grievances today.</p>
+      <div class="pullquote">A series of military coups and juntas governed Nigeria for most of the period between 1966 and 1999, interrupted only briefly by civilian rule — oil-revenue capture was, throughout, a central prize and driver of military factionalism.</div>
+      <p>Democracy returned in 1999 with the election of Olusegun Obasanjo, beginning what is now Nigeria's longest continuous period of civilian, multiparty government. The capital moved from Lagos to the purpose-built city of <strong>Abuja</strong> in 1991, partly to sit at a more neutral, central point between the country's regional and religious blocs. <strong>Bola Tinubu</strong> has been president since 2023, presiding over the most consequential economic reforms — subsidy removal and currency float — in a generation.</p>
+      <p>In the northeast, the <strong>Boko Haram</strong> insurgency, active since 2009, has killed tens of thousands and displaced millions, adding a persistent security and humanitarian burden layered on top of the country's economic challenges.</p>
+    `,
+    economy:`
+      <div class="page-marker">Page 2 of 5</div>
+      <h2>The 2023 reforms: necessary, brutal, and unfinished</h2>
+      <p>For decades, Nigeria's federal government spent enormous and rising sums subsidizing domestic fuel prices — by 2023, subsidy spending was consuming a share of the federal budget larger than health and education combined, while an artificially fixed exchange rate created a lucrative arbitrage for those with access to official-rate dollars, starving the country of the foreign-currency liquidity a market-clearing rate would have provided.</p>
+      <p>President Tinubu removed the fuel subsidy and floated the naira almost immediately upon taking office in 2023 — corrections that most economists agreed were structurally necessary, but which landed as a severe inflation shock on a population with almost no cushion against sudden price increases in fuel, transport and food.</p>
+      <table class="info-table">
+        <thead><tr><th>Indicator</th><th>Status</th><th>Why it matters</th></tr></thead>
+        <tbody>
+          <tr><td>Historic export dependence on oil</td><td class="num">~85-90%</td><td>Extreme vulnerability to a single commodity's global price</td></tr>
+          <tr><td>Tax-to-GDP ratio</td><td class="num">Among world's lowest</td><td>State has almost no non-oil fiscal cushion</td></tr>
+          <tr><td>Subsidy removal &amp; naira float</td><td class="num">2023</td><td>Necessary but painful correction to a decade of unsustainable practice</td></tr>
+          <tr><td>Dangote refinery capacity</td><td class="num">650,000 bpd</td><td>First serious structural move to end the crude-export/fuel-import round trip</td></tr>
+        </tbody>
+      </table>
+      <div class="callout"><span class="co-label">The oil-theft dimension</span><p>Tens of thousands of barrels per day have historically been lost to pipeline vandalism, illegal bunkering and organized theft in the Niger Delta — revenue that never reaches an export manifest or the treasury at all, compounding the value already lost to the crude-export/refined-import round trip.</p></div>
+      <h3>NNPC accounting reform</h3>
+      <p>The state oil company's historic opacity around production volumes, cost deductions and remittances to the federation account has made it difficult even for Nigerian legislators to verify how much of the country's own resource wealth is collected before any policy debate about how to spend it can even begin — a transparency reform that remains only partially complete.</p>
+    `,
+    resources:`
+      <div class="page-marker">Page 3 of 5</div>
+      <h2>The export basket: 20 goods, one commodity dominating, almost all leaving raw</h2>
+      <table class="info-table">
+        <thead><tr><th>Export</th><th>Typical share / note</th><th>Note</th><th>Form it leaves in</th></tr></thead>
+        <tbody>
+          <tr><td>Crude petroleum</td><td class="num">≈85-90%</td><td>Bonny Light &amp; other blends, largely unrefined</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Liquefied natural gas</td><td class="num">Growing share</td><td>NLNG Bonny Island, still lightly value-added</td><td><span class="tag semi">Semi</span></td></tr>
+          <tr><td>Cocoa beans</td><td class="num">Minor but rising</td><td>Africa's 4th-largest producer</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Refined petroleum products</td><td class="num">Net importer</td><td>Dangote refinery beginning to reverse this</td><td><span class="tag proc">Processed (import)</span></td></tr>
+          <tr><td>Urea &amp; nitrogen fertiliser</td><td class="num">Rapidly growing</td><td>Dangote Fertiliser, gas-based</td><td><span class="tag proc">Processed</span></td></tr>
+          <tr><td>Raw cashew nuts</td><td class="num">Top-5 global grower</td><td>Shelled mostly abroad</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Sesame seed</td><td class="num">Major regional exporter</td><td>Sold raw to Asian crushers</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Cotton (raw lint)</td><td class="num">Declining from historic highs</td><td>Northern growing belt</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Ginger (dried &amp; raw)</td><td class="num">World's top producer, by volume</td><td>Kaduna state anchor crop</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Crude palm oil &amp; kernel</td><td class="num">Historic top producer, now importer too</td><td>Undercapacity refining</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Rubber (natural, raw)</td><td class="num">South-South plantations</td><td>Sold as raw latex/block</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Groundnuts (raw &amp; cake)</td><td class="num">Historic "groundnut pyramids" crop</td><td>Northern trade</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Gum arabic</td><td class="num">Top-3 global exporter</td><td>Sahel belt</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Hides &amp; skins</td><td class="num">Large livestock base</td><td>Mostly untanned export</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Cassava chips &amp; pellets</td><td class="num">World's top cassava producer</td><td>Animal-feed grade, low value</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Yam &amp; yam products</td><td class="num">World's top producer</td><td>Mostly regional/diaspora trade</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Timber &amp; sawn wood</td><td class="num">Declining reserve base</td><td>Southern forest belt</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Tin ore (cassiterite)</td><td class="num">Plateau State</td><td>Historic mining belt, underdeveloped</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Artisanal &amp; industrial gold</td><td class="num">Growing, largely informal</td><td>Zamfara &amp; other states</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Fintech &amp; tech services</td><td class="num">Africa's largest tech-funding hub</td><td>A rare non-commodity growth pillar</td><td><span class="tag proc">Processed</span></td></tr>
+        </tbody>
+      </table>
+      <h3>What Nigeria is actually losing</h3>
+      <p>For most of the last two decades Nigeria exported crude oil and then imported the majority of its own petrol, diesel and kerosene back — paying international refiners' margins, freight and insurance twice on the same barrel of oil. Chronically under-maintained state refineries in Port Harcourt, Warri and Kaduna ran at a fraction of nameplate capacity for years, meaning the refining step of Nigeria's largest export happened almost entirely offshore.</p>
+      <div class="callout"><span class="co-label">The round trip</span><p>1 barrel of crude exported at world price → refined abroad into petrol, diesel, jet fuel → <strong style="color:var(--copper)">re-imported</strong> at refined-product price plus freight, insurance, and margin. Every barrel that follows this path pays a foreign refiner's profit that a domestic refinery would otherwise capture.</p></div>
+      <h3>What building the value chain actually takes</h3>
+      <div class="two-col">
+        <div class="mini-card"><h5>01 · Refining at true scale</h5><p>The 650,000 bpd Dangote refinery is the first structural move in a generation — the task now is securing enough domestically-sourced crude supply to run it near capacity, plus rehabilitating the state refineries.</p></div>
+        <div class="mini-card"><h5>02 · Private capital, public certainty</h5><p>Refining and petrochemicals need long-horizon private investment; government's job is guaranteeing predictable domestic crude allocation and fuel-pricing policy so investors aren't exposed to the next subsidy reversal.</p></div>
+        <div class="mini-card"><h5>03 · Domestic supply obligation</h5><p>A binding requirement that a rising share of Nigerian-produced crude be sold to domestic refiners at transparent, market-linked pricing.</p></div>
+        <div class="mini-card"><h5>04 · Regional fuel export hub</h5><p>A fully-supplied domestic refining sector positions Nigeria to export refined product to West African neighbours instead of importing alongside them.</p></div>
+      </div>
+      <p style="margin-top:20px;"><strong>The narrative shift:</strong> a Nigeria that imports the fuel it could refine from its own crude is, functionally, subsidizing other countries' refining industries with its own resource. A Nigeria that refines at scale converts the same barrel into fuel-price stability, refining-sector jobs, and a genuine shot at becoming West Africa's supplier rather than its competitor for the same imported product.</p>
+    `,
+    governance:`
+      <div class="page-marker">Page 4 of 5</div>
+      <h2>A 2025 corruption ranking behind 33 African peers</h2>
+      <p>Transparency International's 2025 assessment placed Nigeria 142nd of 182 countries, scoring 26/100 — trailing Ghana, South Africa, Tanzania, Kenya and Egypt among African peers. The organization attributed the stagnation to weakening institutions and declining political will rather than a lack of resources or capacity, a distinction worth sitting with: Nigeria has produced world-class technocrats and reformers at senior government level repeatedly; the gap is institutional durability, not talent.</p>
+      <div class="pullquote">Africa's largest economy, with among the continent's deepest talent pools in finance and technology, still ranks behind smaller, poorer neighbors on the same corruption index — evidence that GDP size and institutional integrity are separate variables entirely.</div>
+      <h3>Fiscal refinancing pressure ahead of 2027</h3>
+      <p>Chatham House's 2026 Africa outlook flags Nigeria among the large economies approaching a domestic or external refinancing inflection point in 2026 — the same fiscal exposure pattern already visible in Ghana, Zambia and Ethiopia's recent debt distress, layered on top of the political pressure building toward the 2027 general election.</p>
+      <h3>Political timeline</h3>
+      <div class="timeline">
+        <div class="timeline-item"><div class="t-year">1960</div><h5>Independence</h5><p>Britain's amalgamated 1914 territory becomes independent Nigeria, spanning over 250 ethnic groups.</p></div>
+        <div class="timeline-item"><div class="t-year">1967-70</div><h5>Civil War / Biafra</h5><p>Southeastern secession attempt triggers a war killing 1-3 million, mostly from famine caused by federal blockade.</p></div>
+        <div class="timeline-item"><div class="t-year">1966-99</div><h5>Military era</h5><p>Coups and juntas govern for most of this period; oil-revenue control a central driver of military factionalism.</p></div>
+        <div class="timeline-item"><div class="t-year">1999</div><h5>Return to democracy</h5><p>Olusegun Obasanjo's election begins Nigeria's longest continuous period of civilian rule.</p></div>
+        <div class="timeline-item"><div class="t-year">2023</div><h5>Tinubu's reforms</h5><p>Fuel subsidy removed and naira floated almost immediately — necessary corrections that triggered a severe inflation shock.</p></div>
+      </div>
+      <h3>Current news &amp; further reading</h3>
+      <div class="news-link-list">
+        <a href="https://allafrica.com/stories/202602100247.html" target="_blank" rel="noopener"><strong>Nigeria drops to 142nd in 2025 corruption ranking</strong>AllAfrica / Transparency International, February 2026</a>
+        <a href="https://www.chathamhouse.org/2026/01/africa-2026-global-uncertainty-demands-regional-leadership" target="_blank" rel="noopener"><strong>Nigeria heads toward 2027 election amid fiscal refinancing pressure</strong>Chatham House, January 2026</a>
+      </div>
+    `,
+    roadmap:`
+      <div class="page-marker">Page 5 of 5</div>
+      <h2>The roadmap beyond the trap</h2>
+      <ol class="roadmap-list">
+        <li><div><h5>Expand the non-oil tax net</h5><p>Broadening formal-sector and digital-economy taxation rather than repeatedly returning to oil and subsidy levers as the only fiscal tools available.</p></div></li>
+        <li><div><h5>Scale domestic refining capacity</h5><p>So Nigeria stops exporting crude and re-importing refined fuel at a processing markup on its own resource — building directly on the Dangote refinery precedent.</p></div></li>
+        <li><div><h5>Ring-fence subsidy-removal savings</h5><p>Into transparent, targeted cash transfers, with public reporting that closes the trust gap left by past leakages.</p></div></li>
+        <li><div><h5>Back agriculture and fintech/tech exports</h5><p>With the same policy priority historically reserved for oil — Nigeria's tech sector already shows what's possible without a mineral windfall.</p></div></li>
+        <li><div><h5>Complete NNPC accounting reform</h5><p>Publish reconciled production and remittance figures on a fixed schedule, closing the historic opacity gap.</p></div></li>
+      </ol>
+      <h3>Build something: a pathway that fits Nigeria specifically</h3>
+      <div class="callout">
+        <span class="co-label">Cassava &amp; corn flour micro-milling</span>
+        <p>Nigeria grows more cassava than any country on earth, yet post-harvest spoilage within 48 hours wastes a huge share of the crop before it reaches a market. A village-level flash-drying and milling operation turning cassava into high-quality cassava flour (HQCF) — shelf-stable for months, usable in bread, biscuits and industrial starch — is one of the lowest-capital, highest-impact small-business entry points available, detailed further in the Business Pathways section of the main report.</p>
+      </div>
+      <p style="margin-top:18px;"><a href="business-plans.html" target="_blank" rel="noopener" style="color:var(--verdigris); font-size:13.5px; text-decoration:underline;">See the full step-by-step business plan for this — equipment costs, process, and how-to videos →</a></p>
+
+      <div class="cta-block">
+        <h3>This is one country. The pattern repeats across the continent.</h3>
+        <p>Read the full ten-country report, run the value-chain simulator, and see exactly how much is lost every day this pattern continues — then join the Reset.</p>
+        <a href="https://wa.me/237674917169?text=I%27m%20joining%20the%20ForTe%20Economics%20Reset%20after%20reading%20the%20Nigeria%20report.%20Here%27s%20one%20thing%20I%27m%20committing%20to%3A%20" class="btn btn-primary" target="_blank" rel="noopener">Message +237 674 917 169 on WhatsApp →</a>
+        <a href="forte-economics.html#simulator" class="btn btn-ghost">Run the value-chain simulator</a>
+      </div>
+    `
+  }
+},
+
+ghana: {
+  flag:"🇬🇭", name:"Ghana", tagline:"West Africa · Gold, Cocoa",
+  lede:"The first Sub-Saharan African country to win independence, and often held up as West Africa's democratic success story — yet defaulted on its external debt in December 2022, and still processes under 30% of the world's second-largest cocoa crop into anything more valuable than raw beans.",
+  clock:{pop:34400000, rate:0.019, dailyLossUSD:3000000, dailyDeaths:110},
+  stats:[["1957","First Sub-Saharan African independence"],["2022","External debt default"],["<30%","Cocoa processed domestically"],["5.7%","2024 real GDP growth"]],
+  sections:{
+    overview:`
+      <div class="page-marker">Page 1 of 5</div>
+      <h2>The independence pioneer, still writing the next chapter of that promise</h2>
+      <p>Ghana — the former Gold Coast — became the first Sub-Saharan African country to gain independence from colonial rule, on 6 March 1957, under the charismatic pan-Africanist leader <strong>Kwame Nkrumah</strong>. Nkrumah's vision extended well beyond Ghana's own borders: he was a founding architect of the Organisation of African Unity and a leading voice for continental political and economic union, believing individual African states would remain vulnerable to exactly the extraction dynamics this report documents unless they coordinated as a bloc.</p>
+      <p>Nkrumah was overthrown in a 1966 military coup, beginning a turbulent quarter-century of alternating civilian and military rule, including two periods under <strong>Jerry Rawlings</strong> — first as a coup leader in 1979 and 1981, later as an elected civilian president after Ghana's return to multiparty democracy in 1992. That 1992 transition proved durable: Ghana has now held multiple peaceful, competitive elections and power transfers between its two main parties, earning a reputation as one of the more stable democracies in the region.</p>
+      <div class="pullquote">John Mahama returned to the presidency in January 2025 after winning the December 2024 election — his second, non-consecutive term, itself a marker of Ghana's now-routine practice of alternating governing parties through the ballot box rather than the barracks.</div>
+      <h3>Geography &amp; economy at a glance</h3>
+      <div class="two-col">
+        <div class="mini-card"><h5>Physical geography</h5><p>Coastal savanna and forest belt hosting the historic Gold Coast trading forts, transitioning to Sahelian conditions in the north; Accra anchors a rapidly growing coastal urban corridor.</p></div>
+        <div class="mini-card"><h5>Economic base</h5><p>Gold, cocoa and, more recently, offshore oil (Jubilee and TEN fields) form the traditional export core, alongside a growing services and digital economy in Accra.</p></div>
+      </div>
+    `,
+    economy:`
+      <div class="page-marker">Page 2 of 5</div>
+      <h2>The 2022 default, and a genuinely encouraging 2025 recovery</h2>
+      <p>Ghana defaulted on its external debt in December 2022, following years of rising deficits, expensive Eurobond borrowing in the 2010s, and a currency depreciation that made servicing dollar-denominated debt increasingly unaffordable. Domestic debt was restructured through 2023, and Eurobonds were finally exchanged with creditors in October 2024 — nearly two years after the crisis began, a delay that itself carried real economic cost in lost market access and elevated risk premiums.</p>
+      <table class="info-table">
+        <thead><tr><th>Indicator</th><th>Status</th><th>Why it matters</th></tr></thead>
+        <tbody>
+          <tr><td>External default</td><td class="num">December 2022</td><td>Triggered by unsustainable Eurobond-heavy borrowing</td></tr>
+          <tr><td>Eurobond restructuring completed</td><td class="num">October 2024</td><td>Nearly 2 years of restricted market access in between</td></tr>
+          <tr><td>2025 inflation</td><td class="num">Single digits</td><td>First time since 2021 — a genuine stabilization marker</td></tr>
+          <tr><td>2024 real GDP growth</td><td class="num">5.7%</td><td>Among the stronger growth rates in the region</td></tr>
+        </tbody>
+      </table>
+      <div class="callout"><span class="co-label">The encouraging part, stated plainly</span><p>By late 2025 the IMF was reporting single-digit inflation for the first time since 2021, stronger gold and cocoa export earnings, and a materially improved debt trajectory. This is genuine evidence that disciplined fiscal reform can work — the open question, addressed in the Roadmap page, is whether the discipline outlasts the current IMF program.</p></div>
+      <h3>The energy-sector arrears problem</h3>
+      <p>Unpaid arrears to independent power producers (IPPs) have repeatedly re-created fiscal holes even as headline debt numbers improve — a recurring pattern where one sector's unresolved liabilities quietly undermine progress made elsewhere in the budget.</p>
+    `,
+    resources:`
+      <div class="page-marker">Page 3 of 5</div>
+      <h2>The export basket: 20 goods, the world's #2 cocoa grower still exporting mostly beans</h2>
+      <table class="info-table">
+        <thead><tr><th>Export</th><th>Global position / note</th><th>Note</th><th>Form it leaves in</th></tr></thead>
+        <tbody>
+          <tr><td>Gold</td><td class="num">Africa's #1 producer</td><td>Overtook cocoa as top export earner</td><td><span class="tag semi">Semi</span></td></tr>
+          <tr><td>Cocoa beans</td><td class="num">World's #2 producer</td><td>Processed share under 30%</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Crude oil</td><td class="num">Jubilee &amp; TEN fields</td><td>Weakened by declining production</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Timber &amp; wood products</td><td class="num">Regionally significant</td><td>Mostly rough-sawn</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Manganese ore</td><td class="num">Top-10 global producer</td><td>Nsuta mines</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Bauxite</td><td class="num">Sizeable reserves</td><td>Largely unrefined</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Diamonds (industrial &amp; gem)</td><td class="num">Historic producer, declining</td><td>Alluvial, small-scale</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Raw cashew nuts</td><td class="num">Growing exporter</td><td>Shelled mostly abroad</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Cocoa butter, paste &amp; liquor</td><td class="num">Existing processing base</td><td>Higher-value than raw beans</td><td><span class="tag semi">Semi</span></td></tr>
+          <tr><td>Natural rubber</td><td class="num">Western region plantations</td><td>Raw latex/block export</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Tuna &amp; other fish</td><td class="num">Regional fishing fleet</td><td>Tema canning, limited scale</td><td><span class="tag semi">Semi</span></td></tr>
+          <tr><td>Raw tobacco leaf</td><td class="num">Small but present</td><td>Northern regions</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Kola nuts</td><td class="num">Historic regional export</td><td>West African trade networks</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Shea nuts &amp; butter</td><td class="num">Northern "shea belt"</td><td>Mostly crude/unrefined</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Fresh pineapple</td><td class="num">Established EU horticulture trade</td><td>A genuine value-add success story</td><td><span class="tag semi">Semi</span></td></tr>
+          <tr><td>Banana (fresh)</td><td class="num">EU-oriented plantations</td><td>Fair-trade certified volumes</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Yam</td><td class="num">Major regional/diaspora export</td><td>Mostly unprocessed</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Crude palm oil</td><td class="num">Growing domestic demand too</td><td>Undercapacity refining</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Salt</td><td class="num">Coastal solar salt production</td><td>Ada &amp; Keta lagoons</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Aluminium ingots (VALCO)</td><td class="num">Tema smelter, underused capacity</td><td>Imported alumina input</td><td><span class="tag proc">Processed</span></td></tr>
+        </tbody>
+      </table>
+      <h3>What Ghana is actually losing</h3>
+      <p>Ghana grows roughly a fifth of the world's cocoa, yet processes under 30% of it domestically into butter, liquor or finished chocolate. COCOBOD, the state cocoa marketing board, sets a guaranteed farm-gate price for growers — a genuine social protection that has kept Ghanaian cocoa farming more stable than in some neighboring countries — but that guaranteed price is still set against a raw-bean benchmark, not the confectionery-shelf price the beans eventually generate once roasted and branded, overwhelmingly in Europe.</p>
+      <div class="callout"><span class="co-label">The arithmetic</span><p><strong style="color:var(--copper)">≈20%</strong> of world cocoa supply grown in Ghana → <strong style="color:var(--copper)">&lt;30%</strong> processed domestically before export → most of the remaining margin captured by European chocolate manufacturers who roast, conch and brand the rest.</p></div>
+      <p><strong>Gold:</strong> Ghana overtook South Africa as Africa's top gold producer, but the sector's growth has run largely on royalty and tax terms negotiated with multinational mining firms decades ago — meaning production volume has surged while the state's proportional revenue share has not kept pace.</p>
+      <h3>What building the value chain actually takes</h3>
+      <div class="two-col">
+        <div class="mini-card"><h5>01 · Grinding &amp; conching capacity</h5><p>Ghana already hosts several cocoa-processing plants; the gap is scaling conching-and-moulding capacity so finished chocolate, not just intermediate liquor, is what leaves port.</p></div>
+        <div class="mini-card"><h5>02 · COCOBOD balance-sheet reform</h5><p>Separating farmer-price guarantee financing from processing-plant investment financing so one doesn't crowd out the other.</p></div>
+        <div class="mini-card"><h5>03 · A rising minimum grind ratio</h5><p>A published, phased requirement that a growing share of the annual crop be ground domestically before raw-bean export licenses are issued.</p></div>
+        <div class="mini-card"><h5>04 · Direct-to-brand partnerships</h5><p>Long-term supply agreements with confectionery brands for Ghana-processed cocoa products, capturing origin-branding premiums.</p></div>
+      </div>
+    `,
+    governance:`
+      <div class="page-marker">Page 4 of 5</div>
+      <h2>A genuine democratic strength, alongside an unresolved commodity-concentration risk</h2>
+      <p>Ghana consistently outperforms most regional peers on governance indices and has never experienced the kind of prolonged authoritarian entrenchment seen in several other case studies in this report. Its 2025 corruption ranking sits notably ahead of Nigeria and several other African economies — a genuine institutional strength worth naming clearly, even within a report focused on structural economic vulnerability.</p>
+      <div class="pullquote">The lesson of Ghana's 2022 default is not that democracy failed — it's that political stability alone doesn't protect a country from commodity concentration and unsustainable borrowing if the underlying export structure never changes.</div>
+      <h3>Political timeline</h3>
+      <div class="timeline">
+        <div class="timeline-item"><div class="t-year">1957</div><h5>Independence</h5><p>First Sub-Saharan African nation to gain independence, under Kwame Nkrumah.</p></div>
+        <div class="timeline-item"><div class="t-year">1966-92</div><h5>Coup era</h5><p>Alternating military and civilian rule, including Jerry Rawlings' two periods of leadership.</p></div>
+        <div class="timeline-item"><div class="t-year">1992</div><h5>Return to multiparty democracy</h5><p>Begins Ghana's now-established pattern of competitive, peaceful elections and power transfers.</p></div>
+        <div class="timeline-item"><div class="t-year">2022</div><h5>External debt default</h5><p>Unsustainable Eurobond-era borrowing catches up with the state; restructuring takes until late 2024.</p></div>
+        <div class="timeline-item"><div class="t-year">2025</div><h5>Mahama returns, stabilization begins</h5><p>Single-digit inflation for the first time since 2021; stronger gold and cocoa exports.</p></div>
+      </div>
+      <h3>Current news &amp; further reading</h3>
+      <div class="news-link-list">
+        <a href="https://www.imf.org/en/Countries/GHA" target="_blank" rel="noopener"><strong>IMF reports Ghana's first single-digit inflation since 2021</strong>IMF Country Data, late 2025</a>
+      </div>
+    `,
+    roadmap:`
+      <div class="page-marker">Page 5 of 5</div>
+      <h2>The roadmap beyond the trap</h2>
+      <ol class="roadmap-list">
+        <li><div><h5>Legislate the 2025 stabilization gains into a binding fiscal rule</h5><p>One that survives beyond the current IMF program's end date, rather than reverting once external monitoring eases.</p></div></li>
+        <li><div><h5>Raise domestic cocoa processing well above the current sub-30% share</h5><p>Ghana grows the beans; someone else keeps most of the chocolate margin — closing that gap is the single highest-leverage move available.</p></div></li>
+        <li><div><h5>Resolve the energy-sector arrears cycle permanently</h5><p>Rather than repeatedly deferring IPP debt into the next fiscal year.</p></div></li>
+        <li><div><h5>Diversify export earnings into services and the digital economy</h5><p>So two commodities no longer set the country's entire fiscal weather.</p></div></li>
+        <li><div><h5>Establish an independent debt management office</h5><p>Empowered to block a repeat of the pre-2022 non-concessional borrowing pattern.</p></div></li>
+      </ol>
+      <h3>Build something: a pathway that fits Ghana specifically</h3>
+      <div class="callout">
+        <span class="co-label">Cocoa powder &amp; butter micro-processing</span>
+        <p>The exact same small-scale cocoa processing pathway detailed for Cameroon applies directly in Ghana, with an even larger raw-bean base to draw on — start with cocoa powder and butter (simpler equipment, reliable regional B2B demand from bakeries and cosmetics makers) before attempting finished chocolate bars. Full step-by-step guide in the Business Pathways section of the main report.</p>
+      </div>
+      <p style="margin-top:18px;"><a href="business-plans.html" target="_blank" rel="noopener" style="color:var(--verdigris); font-size:13.5px; text-decoration:underline;">See the full step-by-step business plan for this — equipment costs, process, and how-to videos →</a></p>
+
+      <div class="cta-block">
+        <h3>This is one country. The pattern repeats across the continent.</h3>
+        <p>Read the full ten-country report, run the value-chain simulator, and see exactly how much is lost every day this pattern continues — then join the Reset.</p>
+        <a href="https://wa.me/237674917169?text=I%27m%20joining%20the%20ForTe%20Economics%20Reset%20after%20reading%20the%20Ghana%20report.%20Here%27s%20one%20thing%20I%27m%20committing%20to%3A%20" class="btn btn-primary" target="_blank" rel="noopener">Message +237 674 917 169 on WhatsApp →</a>
+        <a href="forte-economics.html#simulator" class="btn btn-ghost">Run the value-chain simulator</a>
+      </div>
+    `
+  }
+},
+
+egypt: {
+  flag:"🇪🇬", name:"Egypt", tagline:"North Africa · Suez Canal, Gas",
+  lede:"Home to one of the world's oldest continuous civilizations and one of its most strategically vital waterways — yet one of the IMF's largest borrowers, having devalued its currency three times since 2016 while a military-owned economic footprint competes with the private firms reform programs are meant to unlock.",
+  clock:{pop:116500000, rate:0.016, dailyLossUSD:4000000, dailyDeaths:164},
+  stats:[["3×","Currency devaluations since 2016"],["~90%","Public debt-to-GDP"],["2024","Suez revenue shock from Red Sea attacks"],["1952","Free Officers coup ends the monarchy"]],
+  sections:{
+    overview:`
+      <div class="page-marker">Page 1 of 5</div>
+      <h2>From pharaohs to the Free Officers: a state that has always run through Cairo</h2>
+      <p>Egypt's modern political history is dominated by the legacy of the <strong>1952 Free Officers coup</strong>, which ended the British-aligned monarchy and installed a republic under Gamal Abdel Nasser — a pan-Arabist leader whose nationalization of the Suez Canal in 1956 triggered a brief war with Britain, France and Israel, and whose broader vision of state-led industrialization and Arab unity shaped Egyptian politics for a generation.</p>
+      <p>Nasser's successor Anwar Sadat reversed course diplomatically, signing the 1979 Camp David peace treaty with Israel — a historic but domestically controversial move that led to his assassination by Islamist militants in 1981. <strong>Hosni Mubarak</strong> then governed for three decades under a state of emergency, until mass protests during the 2011 Arab Spring forced his resignation. A brief, turbulent period of Muslim Brotherhood governance under Mohamed Morsi followed, ending in a 2013 military takeover led by <strong>Abdel Fattah el-Sisi</strong>, who has governed since, first as a general and then through disputed elections as president.</p>
+      <div class="pullquote">A country whose economy has been shaped by three currency devaluations since 2016 also sits on one of the most strategically indispensable waterways on Earth — a reminder that geographic leverage and fiscal health are not automatically the same thing.</div>
+      <h3>Geography &amp; the Canal</h3>
+      <div class="two-col">
+        <div class="mini-card"><h5>The Nile and the desert</h5><p>Over 95% of Egypt's population lives along the Nile River and its delta, concentrated in a fraction of the country's total land area — one of the most extreme population-to-habitable-land ratios on earth.</p></div>
+        <div class="mini-card"><h5>The Suez Canal</h5><p>Carries roughly 12% of global trade by volume in a normal year, generating billions in transit-fee revenue — and, as 2024's Red Sea shipping attacks proved, exposing Egypt's hard-currency earnings directly to Middle Eastern geopolitics it does not control.</p></div>
+      </div>
+    `,
+    economy:`
+      <div class="page-marker">Page 2 of 5</div>
+      <h2>Three devaluations, one recurring cycle</h2>
+      <p>Egypt is among the IMF's largest borrowers globally, having sought Fund support repeatedly since 2016 as recurring balance-of-payments crises forced successive currency devaluations. A large military-owned economic footprint — spanning construction, food production, and infrastructure contracting — competes directly with private firms for financing and government contracts, dulling exactly the private-sector-led growth that each reform program is nominally designed to unlock.</p>
+      <table class="info-table">
+        <thead><tr><th>Indicator</th><th>Status</th><th>Why it matters</th></tr></thead>
+        <tbody>
+          <tr><td>Currency devaluations since 2016</td><td class="num">3×</td><td>Signals a recurring, not resolved, balance-of-payments vulnerability</td></tr>
+          <tr><td>Public debt-to-GDP</td><td class="num">~90%</td><td>Among the highest debt burdens of any major African economy</td></tr>
+          <tr><td>Suez Canal revenue, 2024</td><td class="num">Sharply reduced</td><td>Red Sea shipping attacks cut transit traffic on a key earner</td></tr>
+          <tr><td>New Administrative Capital cost</td><td class="num">Tens of billions</td><td>Major capital commitment to non-export-generating infrastructure</td></tr>
+        </tbody>
+      </table>
+      <div class="callout"><span class="co-label">The mega-project opportunity cost</span><p>The New Administrative Capital, a purpose-built government city east of Cairo, has drawn many tens of billions of dollars in financing — much from state and Gulf sources — for administrative buildings and residential towers that do not directly generate export earnings or hard currency. Every dollar committed to prestige infrastructure is a dollar not available for the export-manufacturing capacity that could actually reduce the recurring need for IMF support.</p></div>
+      <h3>The familiar cycle</h3>
+      <p>Currency shock → IMF program → Gulf bridge financing → partial reform → renewed vulnerability the next time an external shock (a war, a shipping-route disruption, a global rate hike) arrives. Breaking that cycle, rather than repeating it a fourth time, is the central challenge addressed on the Roadmap page.</p>
+    `,
+    resources:`
+      <div class="page-marker">Page 3 of 5</div>
+      <h2>The earnings basket: 20 sources, geography as an asset that geopolitics can switch off</h2>
+      <table class="info-table">
+        <thead><tr><th>Earner</th><th>Role / note</th><th>Vulnerability</th><th>Form it leaves in</th></tr></thead>
+        <tbody>
+          <tr><td>Suez Canal transit fees</td><td class="num">Major hard-currency source</td><td>Collapsed with Red Sea attacks (2024)</td><td><span class="tag semi">Service</span></td></tr>
+          <tr><td>Crude oil &amp; natural gas</td><td class="num">Mixed exporter/importer</td><td>Domestic demand competes with export</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Raw cotton &amp; textiles</td><td class="num">Historic strength, eroded</td><td>Competes with cheaper Asian manufacturing</td><td><span class="tag semi">Semi</span></td></tr>
+          <tr><td>Tourism receipts</td><td class="num">Major hard-currency source</td><td>Highly sensitive to regional instability</td><td><span class="tag semi">Service</span></td></tr>
+          <tr><td>Remittances</td><td class="num">Largest single inflow</td><td>Dependent on Gulf labour-market conditions</td><td><span class="tag semi">Transfer</span></td></tr>
+          <tr><td>Nitrogen fertiliser</td><td class="num">Major gas-based export</td><td>Vulnerable to domestic gas shortages</td><td><span class="tag proc">Processed</span></td></tr>
+          <tr><td>Cement</td><td class="num">Regional exporter</td><td>Energy-intensive, gas-dependent</td><td><span class="tag proc">Processed</span></td></tr>
+          <tr><td>Fresh oranges &amp; citrus</td><td class="num">World's top orange exporter</td><td>A genuine value-added success</td><td><span class="tag semi">Semi</span></td></tr>
+          <tr><td>Potatoes</td><td class="num">Major EU winter supplier</td><td>Seasonal, price-volatile</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Rice</td><td class="num">Nile Delta production</td><td>Export bans used to manage local supply</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Ready-made garments</td><td class="num">Growing manufacturing sector</td><td>Competes with lower-cost Asian producers</td><td><span class="tag proc">Processed</span></td></tr>
+          <tr><td>Iron &amp; steel products</td><td class="num">Regional supplier</td><td>Energy-cost sensitive</td><td><span class="tag proc">Processed</span></td></tr>
+          <tr><td>Petrochemicals &amp; plastics</td><td class="num">Growing downstream sector</td><td>Feedstock-gas dependent</td><td><span class="tag proc">Processed</span></td></tr>
+          <tr><td>Ceramics &amp; tiles</td><td class="num">Regional building-materials hub</td><td>Energy-intensive</td><td><span class="tag proc">Processed</span></td></tr>
+          <tr><td>Pharmaceuticals</td><td class="num">Regional generics producer</td><td>Import-dependent on active ingredients</td><td><span class="tag proc">Processed</span></td></tr>
+          <tr><td>Furniture (Damietta cluster)</td><td class="num">Established woodworking hub</td><td>Import-dependent on raw timber</td><td><span class="tag proc">Processed</span></td></tr>
+          <tr><td>Frozen &amp; processed vegetables</td><td class="num">Growing agribusiness sector</td><td>Water-intensive, Nile-dependent</td><td><span class="tag proc">Processed</span></td></tr>
+          <tr><td>Marble &amp; granite</td><td class="num">Eastern Desert quarries</td><td>Mostly cut, not finished</td><td><span class="tag semi">Semi</span></td></tr>
+          <tr><td>Phosphates</td><td class="num">Red Sea &amp; Nile Valley deposits</td><td>Largely unrefined export</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Foreign direct investment (Suez zone)</td><td class="num">Growing manufacturing FDI</td><td>Competes with Gulf-financed alternatives</td><td><span class="tag proc">Processed</span></td></tr>
+        </tbody>
+      </table>
+      <h3>What Egypt is actually losing</h3>
+      <p>Egypt has among the world's best long-staple cotton, but a garment and textile industry that once anchored North African manufacturing has ceded significant market share to lower-cost Asian producers — in part because military-affiliated firms crowd out the private capital that would otherwise modernize the sector's machinery and logistics.</p>
+      <div class="callout"><span class="co-label">The compounding shock</span><p><strong style="color:var(--copper)">3 devaluations</strong> since 2016, plus the 2024 Red Sea shock cutting Suez transit revenue sharply, together produce a <strong style="color:var(--alert)">repeat cycle</strong> of crisis, bailout, and partial reform rather than a durable exit from it.</p></div>
+      <h3>What building the value chain actually takes</h3>
+      <div class="two-col">
+        <div class="mini-card"><h5>01 · Export-zone manufacturing</h5><p>Redirect the financing discipline used for the New Administrative Capital toward Suez Canal Economic Zone manufacturing capacity that directly earns export revenue.</p></div>
+        <div class="mini-card"><h5>02 · Equity, not repeat bailouts</h5><p>Convert Gulf financial relationships from recurring currency-support deposits into direct equity stakes in ports, manufacturing and logistics assets.</p></div>
+        <div class="mini-card"><h5>03 · Textile modernization</h5><p>Technical upgrading of Egypt's garment sector to compete on quality and speed-to-market for European buyers, leveraging proximity Asian competitors cannot match.</p></div>
+        <div class="mini-card"><h5>04 · Genuine private-sector parity</h5><p>Binding rules requiring military-affiliated commercial entities to compete for contracts on the same terms as private firms — the IMF's own repeated, largely unmet request.</p></div>
+      </div>
+    `,
+    governance:`
+      <div class="page-marker">Page 4 of 5</div>
+      <h2>A security state whose economic footprint competes with its own reform program</h2>
+      <p>The core governance tension in Egypt's economy is structural rather than a matter of individual corruption cases: a military-affiliated commercial sector large enough to shape entire industries (construction, food, infrastructure) sits outside normal competitive and transparency norms, meaning even well-designed IMF-backed private-sector reforms run into an uneven playing field the government itself controls.</p>
+      <div class="pullquote">Every IMF program since 2016 has included private-sector-parity conditions. Every program has also required renewal — a pattern that suggests the conditions are being negotiated, but not durably met.</div>
+      <h3>Political timeline</h3>
+      <div class="timeline">
+        <div class="timeline-item"><div class="t-year">1952</div><h5>Free Officers coup</h5><p>Nasser's revolution ends the monarchy; Suez Canal nationalized in 1956, triggering a brief war.</p></div>
+        <div class="timeline-item"><div class="t-year">1979</div><h5>Camp David peace treaty</h5><p>Sadat's historic but domestically controversial peace with Israel; assassinated in 1981.</p></div>
+        <div class="timeline-item"><div class="t-year">1981-2011</div><h5>Mubarak era</h5><p>Three decades of rule under a continuous state of emergency.</p></div>
+        <div class="timeline-item"><div class="t-year">2011-13</div><h5>Arab Spring &amp; aftermath</h5><p>Mubarak's fall, brief Muslim Brotherhood government under Morsi, then military takeover under el-Sisi.</p></div>
+        <div class="timeline-item"><div class="t-year">2024</div><h5>Red Sea shipping shock</h5><p>Regional conflict cuts Suez Canal transit revenue sharply, exposing the vulnerability of a single-corridor income source.</p></div>
+      </div>
+      <h3>Current news &amp; further reading</h3>
+      <div class="news-link-list">
+        <a href="https://www.imf.org/en/Countries/EGY" target="_blank" rel="noopener"><strong>IMF Egypt program reviews and Article IV consultations</strong>IMF Country Data</a>
+      </div>
+    `,
+    roadmap:`
+      <div class="page-marker">Page 5 of 5</div>
+      <h2>The roadmap beyond the trap</h2>
+      <ol class="roadmap-list">
+        <li><div><h5>Shrink the military and state-owned commercial footprint</h5><p>So private firms can compete for financing and contracts on genuinely equal terms.</p></div></li>
+        <li><div><h5>Pause new prestige mega-projects</h5><p>Redirect capital toward export-oriented manufacturing and logistics instead.</p></div></li>
+        <li><div><h5>Build a dedicated Suez Canal revenue stabilization fund</h5><p>To absorb geopolitical shipping shocks without triggering a fresh currency crisis each time.</p></div></li>
+        <li><div><h5>Broaden the tax base beyond regressive consumption taxes</h5><p>Which fall hardest on lower-income households least able to absorb them.</p></div></li>
+        <li><div><h5>Convert Gulf financial support into productive equity investment</h5><p>Rather than repeated balance-of-payments bailouts that solve nothing structurally.</p></div></li>
+      </ol>
+      <h3>Build something: a pathway that fits Egypt specifically</h3>
+      <div class="callout">
+        <span class="co-label">Textile &amp; garment finishing workshops</span>
+        <p>Egypt's long-staple cotton is a genuine global input advantage; small-to-mid-scale garment finishing operations targeting European fast-fashion and premium buyers can capture margin currently lost to Asian competitors, leveraging Egypt's proximity to European markets as a speed-to-market advantage larger competitors can't match.</p>
+      </div>
+      <p style="margin-top:18px;"><a href="business-plans.html" target="_blank" rel="noopener" style="color:var(--verdigris); font-size:13.5px; text-decoration:underline;">See the full step-by-step business plan for this — equipment costs, process, and how-to videos →</a></p>
+
+      <div class="cta-block">
+        <h3>This is one country. The pattern repeats across the continent.</h3>
+        <p>Read the full ten-country report, run the value-chain simulator, and see exactly how much is lost every day this pattern continues — then join the Reset.</p>
+        <a href="https://wa.me/237674917169?text=I%27m%20joining%20the%20ForTe%20Economics%20Reset%20after%20reading%20the%20Egypt%20report.%20Here%27s%20one%20thing%20I%27m%20committing%20to%3A%20" class="btn btn-primary" target="_blank" rel="noopener">Message +237 674 917 169 on WhatsApp →</a>
+        <a href="forte-economics.html#simulator" class="btn btn-ghost">Run the value-chain simulator</a>
+      </div>
+    `
+  }
+},
+
+tunisia: {
+  flag:"🇹🇳", name:"Tunisia", tagline:"North Africa · Phosphate, Olive Oil",
+  lede:"Where the 2011 Arab Spring began — and where a president rejected IMF loan terms in 2023 rather than repeat the austerity many blame for the unrest that started here. A country still negotiating what homegrown reform actually looks like.",
+  clock:{pop:12300000, rate:0.007, dailyLossUSD:800000, dailyDeaths:8},
+  stats:[["2010","Birthplace of the Arab Spring"],["2023","IMF loan terms rejected"],["Top-5","Historic global phosphate exporter"],["76.5 yrs","Africa's highest life expectancy"]],
+  sections:{
+    overview:`
+      <div class="page-marker">Page 1 of 5</div>
+      <h2>Where a fruit vendor's death changed the region — and the reckoning is still unfinished</h2>
+      <p>Tunisia holds a unique place in modern history: the self-immolation of street vendor Mohamed Bouazizi in December 2010, protesting police harassment and economic desperation, ignited the protests that toppled President <strong>Zine El Abidine Ben Ali</strong> — who had ruled since 1987 — and cascaded into the wider Arab Spring across the region. Tunisia's subsequent transition to a competitive multiparty democracy, culminating in a new constitution in 2014, was for years held up as the Arab Spring's one genuine democratic success story, in contrast to civil war or restored authoritarianism elsewhere.</p>
+      <p>That democratic experiment has since faced serious strain. President <strong>Kais Saied</strong>, elected in 2019, moved in July 2021 to suspend parliament and assume extraordinary executive powers, later ratified through a controversial 2022 constitutional referendum — a shift critics describe as a rollback of the very democratic gains Tunisia's revolution produced, while Saied has framed it as necessary to break years of political paralysis.</p>
+      <div class="pullquote">Tunisia was independent from France in 1956 under Habib Bourguiba, a modernizing leader who introduced some of the Arab world's most progressive family and women's rights laws — a legacy still visible in Tunisian civil society today, even amid the current political contraction.</div>
+      <h3>Geography &amp; demographics</h3>
+      <div class="two-col">
+        <div class="mini-card"><h5>Mediterranean geography</h5><p>The smallest of the Maghreb states, with a Mediterranean coastline that anchors both its tourism industry and its historic trading role between Europe and Africa.</p></div>
+        <div class="mini-card"><h5>Human development</h5><p>Tunisia has Africa's highest life expectancy at 76.5 years and among the continent's most educated populations — a human-capital base that makes its ongoing economic stagnation particularly costly.</p></div>
+      </div>
+    `,
+    economy:`
+      <div class="page-marker">Page 2 of 5</div>
+      <h2>2023: rejecting the deal, and the vacuum that followed</h2>
+      <p>In 2023, President Saied publicly rejected the conditions attached to a nearly $2 billion IMF loan — including subsidy cuts he characterized as foreign "diktats" — a rare and consequential act of open defiance toward Fund conditionality. The move resonated with a population still viscerally connected to the austerity grievances that sparked 2011, but it left Tunisia relying on central bank financing and bilateral loans without an anchoring reform program.</p>
+      <table class="info-table">
+        <thead><tr><th>Indicator</th><th>Status</th><th>Why it matters</th></tr></thead>
+        <tbody>
+          <tr><td>2023 IMF deal</td><td class="num">Rejected</td><td>No anchoring reform program has replaced it since</td></tr>
+          <tr><td>Phosphate output</td><td class="num">Well below historic peak</td><td>Once a top-5 global exporter, now producing a fraction of capacity</td></tr>
+          <tr><td>Tourism concentration</td><td class="num">Narrow seasonal/coastal band</td><td>Limits the sector's ability to anchor broader recovery</td></tr>
+        </tbody>
+      </table>
+      <div class="callout"><span class="co-label">The trap between two bad options</span><p>Tunisia's economy is stuck between externally imposed austerity that risks the same social unrest that triggered the 2011 revolution, or unanchored borrowing that postpones adjustment while eroding investor confidence. Finding a third, homegrown path — addressed on the Roadmap page — is the central economic challenge of the Saied era.</p></div>
+      <h3>The trust deficit</h3>
+      <p>Years of political volatility since 2021 — parliament's suspension, a contested constitutional referendum, and periodic crackdowns on opposition figures and journalists — have compounded the economic uncertainty, making foreign direct investment harder to attract even where genuine opportunities exist.</p>
+    `,
+    resources:`
+      <div class="page-marker">Page 3 of 5</div>
+      <h2>The export basket: 20 goods, a phosphate giant that stopped mining its own advantage</h2>
+      <table class="info-table">
+        <thead><tr><th>Export</th><th>Historic position / note</th><th>Current state</th><th>Form it leaves in</th></tr></thead>
+        <tbody>
+          <tr><td>Phosphate &amp; derivatives</td><td class="num">Once top-5 global exporter</td><td>Output collapsed from basin unrest</td><td><span class="tag semi">Semi</span></td></tr>
+          <tr><td>Olive oil</td><td class="num">Among world's top exporters</td><td>Mostly sold in bulk, not bottled/branded</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Textiles &amp; garments</td><td class="num">EU-oriented contract manufacturing</td><td>Low-margin subcontracting model</td><td><span class="tag semi">Semi</span></td></tr>
+          <tr><td>Tourism receipts</td><td class="num">Major hard-currency source</td><td>Narrow coastal/seasonal concentration</td><td><span class="tag semi">Service</span></td></tr>
+          <tr><td>Automotive wire harnesses</td><td class="num">Major EU auto-supply-chain role</td><td>Genuine value-added manufacturing</td><td><span class="tag proc">Processed</span></td></tr>
+          <tr><td>Electrical &amp; electronic components</td><td class="num">EU nearshoring beneficiary</td><td>Growing sector</td><td><span class="tag proc">Processed</span></td></tr>
+          <tr><td>Fresh dates (deglet nour)</td><td class="num">World's top-value date exporter</td><td>A genuine premium success story</td><td><span class="tag semi">Semi</span></td></tr>
+          <tr><td>Citrus fruit</td><td class="num">Cap Bon region</td><td>Mostly fresh, unprocessed</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Leather &amp; footwear</td><td class="num">EU contract manufacturing</td><td>Low-margin subcontracting</td><td><span class="tag semi">Semi</span></td></tr>
+          <tr><td>Ceramics &amp; tiles</td><td class="num">Regional Mediterranean supplier</td><td>Energy-cost sensitive</td><td><span class="tag proc">Processed</span></td></tr>
+          <tr><td>Chemical fertilisers</td><td class="num">Phosphate-derived</td><td>Gabès industrial complex</td><td><span class="tag proc">Processed</span></td></tr>
+          <tr><td>Wine</td><td class="num">Historic Mediterranean producer</td><td>Small but branded volumes</td><td><span class="tag proc">Processed</span></td></tr>
+          <tr><td>Marble &amp; construction stone</td><td class="num">Regional building-materials trade</td><td>Mostly cut, not finished</td><td><span class="tag semi">Semi</span></td></tr>
+          <tr><td>Fish &amp; seafood</td><td class="num">Mediterranean fishing fleet</td><td>Mostly fresh/frozen export</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Zinc &amp; lead ore</td><td class="num">Small mining sector</td><td>Largely unrefined</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Essential oils (rosemary, myrtle)</td><td class="num">Niche cosmetics-input export</td><td>Growing niche sector</td><td><span class="tag semi">Semi</span></td></tr>
+          <tr><td>Pharmaceuticals (generics)</td><td class="num">Regional North African hub</td><td>Growing sector</td><td><span class="tag proc">Processed</span></td></tr>
+          <tr><td>Aircraft parts (aerospace subcontracting)</td><td class="num">Airbus/Boeing supply-chain role</td><td>A genuine high-value niche</td><td><span class="tag proc">Processed</span></td></tr>
+          <tr><td>Cork products</td><td class="num">Northwestern cork oak forests</td><td>Mostly raw/semi-processed</td><td><span class="tag semi">Semi</span></td></tr>
+          <tr><td>Esparto grass (alfa)</td><td class="num">Historic paper-pulp input export</td><td>Declining niche</td><td><span class="tag raw">Raw</span></td></tr>
+        </tbody>
+      </table>
+      <h3>What Tunisia is actually losing</h3>
+      <p>Tunisia once ranked among the world's top five phosphate rock exporters, feeding fertilizer production globally, with the state-owned Gafsa Phosphate Company as the anchor employer of an entire region. Chronic labour disputes, environmental grievances and underinvestment since 2011 have cut output well below historic capacity — value lost not to global price shifts, but to a domestic bargain between the state and mining communities that was never durably renegotiated after the revolution.</p>
+      <div class="callout"><span class="co-label">The arithmetic</span><p><strong style="color:var(--copper)">Top-5</strong> global phosphate exporter, historically → output collapse from unresolved Gafsa basin conflict → <strong style="color:var(--alert)">idle capacity</strong> in a sector still not durably restructured, more than a decade after the crisis began.</p></div>
+      <p><strong>Olive oil:</strong> Tunisia is consistently among the world's largest producers and exporters, yet the great majority leaves in bulk tanker shipments to be bottled and branded in Italy and Spain — meaning the retail "extra virgin" premium European consumers pay is captured almost entirely outside Tunisia.</p>
+      <h3>What building the value chain actually takes</h3>
+      <div class="two-col">
+        <div class="mini-card"><h5>01 · Fertiliser &amp; bottling plants</h5><p>Phosphate-to-fertiliser processing at Gabès and Gafsa, and olive-oil bottling lines near production regions, to capture margin currently exported in bulk form.</p></div>
+        <div class="mini-card"><h5>02 · Negotiated social investment</h5><p>Mining investment tied explicitly to Gafsa basin community infrastructure and jobs — treating the social settlement as part of the capital plan, not an afterthought.</p></div>
+        <div class="mini-card"><h5>03 · Homegrown, negotiated adjustment</h5><p>A domestically designed subsidy-reform path a Tunisian government can defend publicly as its own — the missing piece since 2023.</p></div>
+        <div class="mini-card"><h5>04 · Branded EU olive-oil exports</h5><p>Direct branded-bottle contracts with EU retailers instead of bulk tanker sales to Italian and Spanish bottlers.</p></div>
+      </div>
+    `,
+    governance:`
+      <div class="page-marker">Page 4 of 5</div>
+      <h2>A democracy under real strain, from the country that first tried to build one</h2>
+      <p>Tunisia's trajectory since 2021 — parliament's suspension, rule by presidential decree, a contested referendum entrenching executive power — represents a genuine rollback from the pluralistic system built after 2011, even as the government maintains the moves were necessary to escape years of paralysis under the prior parliamentary system. Independent journalists, opposition politicians and civil-society figures have faced prosecution under broadly worded laws critics say are used to suppress dissent.</p>
+      <div class="pullquote">The country that proved authoritarianism could be overthrown by ordinary people is now the test case for whether a democracy, once built, can quietly recentralize power without a coup — a distinction that matters enormously for how the rest of the region reads Tunisia's example.</div>
+      <h3>Political timeline</h3>
+      <div class="timeline">
+        <div class="timeline-item"><div class="t-year">1956</div><h5>Independence</h5><p>From France, under modernizing leader Habib Bourguiba.</p></div>
+        <div class="timeline-item"><div class="t-year">1987-2011</div><h5>Ben Ali era</h5><p>24-year rule ends when Bouazizi's self-immolation triggers protests that topple the government.</p></div>
+        <div class="timeline-item"><div class="t-year">2011-2021</div><h5>Democratic transition</h5><p>New constitution (2014), competitive multiparty elections — the Arab Spring's most-cited democratic success.</p></div>
+        <div class="timeline-item"><div class="t-year">2021-22</div><h5>Saied's power consolidation</h5><p>Parliament suspended; new constitution via contested referendum entrenches presidential power.</p></div>
+        <div class="timeline-item"><div class="t-year">2023</div><h5>IMF deal rejected</h5><p>Saied rejects loan conditions, leaving the economy without an anchoring reform program.</p></div>
+      </div>
+      <h3>Current news &amp; further reading</h3>
+      <div class="news-link-list">
+        <a href="https://www.imf.org/en/Countries/TUN" target="_blank" rel="noopener"><strong>IMF Tunisia Article IV consultations and program status</strong>IMF Country Data</a>
+      </div>
+    `,
+    roadmap:`
+      <div class="page-marker">Page 5 of 5</div>
+      <h2>The roadmap beyond the trap</h2>
+      <ol class="roadmap-list">
+        <li><div><h5>Rebuild phosphate output through negotiated Gafsa basin agreements</h5><p>Rather than top-down production mandates that have repeatedly triggered shutdowns and unrest.</p></div></li>
+        <li><div><h5>Design a homegrown subsidy-reform path</h5><p>Targeted cash transfers replacing blanket subsidies, preserving legitimacy while closing the fiscal gap an external program would otherwise force.</p></div></li>
+        <li><div><h5>Diversify tourism into higher-value and off-season markets</h5><p>Rather than competing purely on volume in a narrow coastal, seasonal band.</p></div></li>
+        <li><div><h5>Restore judicial independence and rule-of-law guarantees</h5><p>Investors consistently cite as a precondition for renewed confidence.</p></div></li>
+        <li><div><h5>Pursue deeper Maghreb regional trade integration</h5><p>So a small domestic market is no longer the ceiling on industrial scale.</p></div></li>
+      </ol>
+      <h3>Build something: a pathway that fits Tunisia specifically</h3>
+      <div class="callout">
+        <span class="co-label">Branded olive oil bottling</span>
+        <p>A small-scale bottling and labeling operation targeting direct EU retail contracts — rather than selling to Italian and Spanish bulk buyers — captures a meaningfully larger share of the "extra virgin" premium European consumers already pay for Mediterranean olive oil, using Tunisia's genuine quality advantage as the selling point.</p>
+      </div>
+      <p style="margin-top:18px;"><a href="business-plans.html" target="_blank" rel="noopener" style="color:var(--verdigris); font-size:13.5px; text-decoration:underline;">See the full step-by-step business plan for this — equipment costs, process, and how-to videos →</a></p>
+
+      <div class="cta-block">
+        <h3>This is one country. The pattern repeats across the continent.</h3>
+        <p>Read the full ten-country report, run the value-chain simulator, and see exactly how much is lost every day this pattern continues — then join the Reset.</p>
+        <a href="https://wa.me/237674917169?text=I%27m%20joining%20the%20ForTe%20Economics%20Reset%20after%20reading%20the%20Tunisia%20report.%20Here%27s%20one%20thing%20I%27m%20committing%20to%3A%20" class="btn btn-primary" target="_blank" rel="noopener">Message +237 674 917 169 on WhatsApp →</a>
+        <a href="forte-economics.html#simulator" class="btn btn-ghost">Run the value-chain simulator</a>
+      </div>
+    `
+  }
+},
+
+kenya: {
+  flag:"🇰🇪", name:"Kenya", tagline:"East Africa · Tea, Horticulture, Tech",
+  lede:"The country that built M-Pesa and proved value creation doesn't require a mineral windfall — yet still lost an estimated $4.7 billion to corruption in a single year, and watched a Gen-Z-led protest movement overturn a Finance Bill the government itself proposed.",
+  clock:{pop:56400000, rate:0.020, dailyLossUSD:3500000, dailyDeaths:178},
+  stats:[["#1","World's top black-tea exporter"],["$4.7B","Estimated annual corruption loss"],["2024","Finance Bill reversed by protest"],["1963","Independence under Jomo Kenyatta"]],
+  sections:{
+    overview:`
+      <div class="page-marker">Page 1 of 5</div>
+      <h2>From Mau Mau to M-Pesa: a country that keeps reinventing its own leverage</h2>
+      <p>Kenya's independence movement, culminating in 1963 under founding president <strong>Jomo Kenyatta</strong>, followed one of colonial Africa's most brutal suppression campaigns — the British response to the Mau Mau uprising in the 1950s involved detention camps and abuses whose full scale only became widely acknowledged decades later, including a 2013 British government settlement with Kenyan victims. Kenyatta's presidency, and that of his successor <strong>Daniel arap Moi</strong> (1978-2002), consolidated a one-party state that persisted until multiparty politics returned in the early 1990s under domestic and international pressure.</p>
+      <p>Kenya's post-2002 democratic era has not been free of crisis: the disputed 2007 presidential election triggered ethnic-based post-election violence that killed over 1,000 people and displaced hundreds of thousands, a trauma that directly shaped the comprehensive 2010 constitution — which devolved significant power and budget authority to 47 newly created county governments, a genuine structural reform aimed at reducing the winner-take-all stakes of national politics.</p>
+      <div class="pullquote">Kenya built the mobile-money platform M-Pesa into a globally studied fintech success story largely without extractive-commodity dependence — proof, cited throughout this report, that a different growth model is possible when policy consistently backs it.</div>
+      <h3>Geography &amp; economic base</h3>
+      <div class="two-col">
+        <div class="mini-card"><h5>Geographic diversity</h5><p>Spans coastal Indian Ocean lowlands, the fertile Rift Valley highlands (Kenya's agricultural heartland), and arid northern rangelands — a diversity that supports both tea/horticulture exports and a growing tourism sector around its wildlife reserves.</p></div>
+        <div class="mini-card"><h5>Nairobi as regional hub</h5><p>"Silicon Savannah" — Nairobi hosts a genuine East African fintech and tech ecosystem, alongside UN regional headquarters and a diplomatic community that makes Kenya a de facto regional capital.</p></div>
+      </div>
+    `,
+    economy:`
+      <div class="page-marker">Page 2 of 5</div>
+      <h2>The SGR, opaque debt, and a citizen movement that forced a fiscal reversal</h2>
+      <p>The Chinese-financed Standard Gauge Railway (SGR), connecting Mombasa to Nairobi, became a symbol of a wider problem: loan terms that were never fully disclosed to the Kenyan public, financing a project whose freight revenue has consistently underperformed the projections used to justify the original borrowing. The opacity itself — not just the underperformance — became the political flashpoint.</p>
+      <table class="info-table">
+        <thead><tr><th>Indicator</th><th>Status</th><th>Why it matters</th></tr></thead>
+        <tbody>
+          <tr><td>SGR freight revenue</td><td class="num">Underperforming projections</td><td>Debt-service obligation remains largely intact against weaker income</td></tr>
+          <tr><td>Estimated annual corruption loss</td><td class="num">$4.7B / 7.8% of GDP</td><td>Larger than most single sectors of the economy</td></tr>
+          <tr><td>2024 Finance Bill</td><td class="num">Reversed by protest</td><td>Rare case of citizen mobilization directly overturning fiscal policy</td></tr>
+        </tbody>
+      </table>
+      <div class="callout"><span class="co-label">The 2024 Finance Bill protests</span><p>When the government proposed a 2024 Finance Bill raising taxes to meet its own debt obligations, youth-led "Gen Z" protests — organized substantially over social media, without traditional party or union backing — forced a full reversal. It was a rare, documented case of citizen mobilization directly overturning a specific fiscal decision, and a clear signal of how thin public trust in government borrowing and spending had worn.</p></div>
+      <h3>The fintech counter-example</h3>
+      <p>M-Pesa and the broader Kenyan fintech ecosystem demonstrate a genuinely different growth model: value creation requiring almost no physical capital or mineral endowment, only connectivity, consistent policy support, and skill — a template this report's Roadmap page argues should be extended deliberately into agriculture and trade.</p>
+    `,
+    resources:`
+      <div class="page-marker">Page 3 of 5</div>
+      <h2>The export basket: 20 goods, the world's top tea exporter selling almost entirely unbranded</h2>
+      <table class="info-table">
+        <thead><tr><th>Export</th><th>Global position / note</th><th>Note</th><th>Form it leaves in</th></tr></thead>
+        <tbody>
+          <tr><td>Tea</td><td class="num">World's top black-tea exporter</td><td>Sold loose-leaf at Mombasa auction</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Cut flowers</td><td class="num">Top-3 global cut-flower exporter</td><td>Flown fresh, minimal local packaging value</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Coffee</td><td class="num">Renowned specialty-grade beans</td><td>Sold green, roasted almost entirely abroad</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Fintech &amp; tech services</td><td class="num">Regional hub ("Silicon Savannah")</td><td>A rare non-commodity growth pillar</td><td><span class="tag proc">Processed</span></td></tr>
+          <tr><td>Fresh avocados</td><td class="num">Africa's top exporter, fast-growing</td><td>Mostly fresh, minimal processing</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Macadamia nuts</td><td class="num">Top-3 global producer</td><td>Shelled mostly abroad</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>French beans &amp; vegetables</td><td class="num">EU horticulture supplier</td><td>Air-freighted fresh</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Titanium ore (mineral sands)</td><td class="num">Kwale mines</td><td>Exported as raw ore</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Soda ash</td><td class="num">Lake Magadi, major global producer</td><td>Semi-refined industrial input</td><td><span class="tag semi">Semi</span></td></tr>
+          <tr><td>Pyrethrum extract</td><td class="num">Historic top global producer</td><td>Natural insecticide input</td><td><span class="tag semi">Semi</span></td></tr>
+          <tr><td>Khat / miraa</td><td class="num">Regional export (Somalia, UK historically)</td><td>Sold fresh, no processing</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Sisal fibre</td><td class="num">Historic plantation crop</td><td>Rope &amp; twine industrial input</td><td><span class="tag semi">Semi</span></td></tr>
+          <tr><td>Nile perch &amp; fish fillets</td><td class="num">Lake Victoria fishery</td><td>EU-certified filleting plants</td><td><span class="tag semi">Semi</span></td></tr>
+          <tr><td>Leather &amp; hides</td><td class="num">Large livestock base</td><td>Mostly wet-blue, not finished</td><td><span class="tag semi">Semi</span></td></tr>
+          <tr><td>Cement</td><td class="num">Regional East African supplier</td><td>Genuine value-added sector</td><td><span class="tag proc">Processed</span></td></tr>
+          <tr><td>Coconut products (coir, copra)</td><td class="num">Coastal region</td><td>Mostly raw/semi-processed</td><td><span class="tag semi">Semi</span></td></tr>
+          <tr><td>Raw macadamia oil</td><td class="num">Emerging cosmetics-input export</td><td>Growing niche</td><td><span class="tag semi">Semi</span></td></tr>
+          <tr><td>Chilli &amp; spices</td><td class="num">Growing horticulture export</td><td>Mostly dried/raw</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Iron &amp; steel scrap</td><td class="num">Regional recycling trade</td><td>Feeds neighbouring mills</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Wattle bark extract (tannin)</td><td class="num">Historic leather-tanning input</td><td>Niche industrial export</td><td><span class="tag semi">Semi</span></td></tr>
+        </tbody>
+      </table>
+      <h3>What Kenya is actually losing</h3>
+      <p>Kenya is the world's leading exporter of black tea by volume, sold overwhelmingly loose-leaf through the Mombasa Tea Auction to international blenders and packers, who then brand, package and mark it up for supermarket shelves worldwide. The auction system gives Kenyan smallholders — who produce the majority of the country's tea through cooperative factories — reliable market access, but it also fixes their position at the lowest-margin end of a chain that ends in a branded box selling for many multiples of the auction price.</p>
+      <div class="callout"><span class="co-label">The arithmetic</span><p><strong style="color:var(--copper)">#1</strong> world exporter of black tea by volume → auction-sold loose-leaf, largely unbranded → <strong style="color:var(--alert)">blender's margin</strong> captured by international packers, not Kenyan growers.</p></div>
+      <h3>What building the value chain actually takes</h3>
+      <div class="two-col">
+        <div class="mini-card"><h5>01 · Packaging &amp; blending plants</h5><p>Domestic tea-blending and retail-packaging facilities near Mombasa and Kericho, so more of the crop leaves branded and boxed rather than as loose-leaf auction lots.</p></div>
+        <div class="mini-card"><h5>02 · Cooperative-owned processing</h5><p>Financing structures letting smallholder tea and coffee cooperatives co-own processing and branding infrastructure, not just sell the raw crop.</p></div>
+        <div class="mini-card"><h5>03 · Roasting, blending &amp; export marketing</h5><p>Technical training paired with export marketing capacity to sell Kenyan-branded product directly, not through intermediary traders.</p></div>
+        <div class="mini-card"><h5>04 · Leverage the fintech advantage</h5><p>Use Kenya's globally-recognised mobile-money infrastructure to build direct farmer-to-buyer digital marketplaces, cutting out intermediary margin layers.</p></div>
+      </div>
+      <p style="margin-top:20px;"><strong>The narrative shift:</strong> a country that already built M-Pesa without a mineral windfall has demonstrated it can create value-added, branded, technology-driven industries from nothing. Applying that same builder's instinct to tea, coffee and flowers — its actual biggest exports — is the more natural next chapter than another SGR-style bet on unverified freight projections.</p>
+    `,
+    governance:`
+      <div class="page-marker">Page 4 of 5</div>
+      <h2>$4.7 billion a year — and a generation that decided to say so, loudly</h2>
+      <p>Kenya's own Ethics and Anti-Corruption Commission put the annual loss to corruption at roughly KSh 608 billion (approximately $4.7B) in 2024 figures — 7.8% of GDP, larger than most individual economic sectors. That figure gives the 2024 Finance Bill protests their full context: citizens were being asked to pay more tax into a system already documented, by the government's own oversight body, as losing that scale of public money elsewhere.</p>
+      <div class="pullquote">Chatham House's 2026 Africa outlook tracks the digitally networked youth movement first visible in Kenya's 2024 protests continuing into Madagascar, Morocco, Tanzania and Togo — a genuinely regional phenomenon of a generation demanding fiscal accountability through direct, decentralized mobilization rather than traditional party politics.</div>
+      <h3>Political timeline</h3>
+      <div class="timeline">
+        <div class="timeline-item"><div class="t-year">1963</div><h5>Independence</h5><p>Under Jomo Kenyatta, following the suppressed Mau Mau uprising of the 1950s.</p></div>
+        <div class="timeline-item"><div class="t-year">1978-2002</div><h5>Moi era</h5><p>One-party rule persists until multiparty politics returns in the early 1990s.</p></div>
+        <div class="timeline-item"><div class="t-year">2007-08</div><h5>Post-election violence</h5><p>Disputed election triggers ethnic violence killing over 1,000; directly shapes the 2010 constitutional reform.</p></div>
+        <div class="timeline-item"><div class="t-year">2010</div><h5>New constitution &amp; devolution</h5><p>Power and budget authority devolved to 47 county governments.</p></div>
+        <div class="timeline-item"><div class="t-year">2024</div><h5>Gen-Z protests reverse Finance Bill</h5><p>Youth-led, digitally organized mobilization forces a full policy reversal.</p></div>
+      </div>
+      <h3>Current news &amp; further reading</h3>
+      <div class="news-link-list">
+        <a href="https://www.freiheit.org/kenya/africas-100b-corruption-crisis-can-intl-court-help" target="_blank" rel="noopener"><strong>Kenya loses an estimated $4.7B a year to corruption — 7.8% of GDP</strong>Friedrich Naumann Foundation, May 2025</a>
+        <a href="https://www.chathamhouse.org/2026/01/africa-2026-global-uncertainty-demands-regional-leadership" target="_blank" rel="noopener"><strong>Gen-Z mobilization continues into 2026 across Kenya and peers</strong>Chatham House, January 2026</a>
+      </div>
+    `,
+    roadmap:`
+      <div class="page-marker">Page 5 of 5</div>
+      <h2>The roadmap beyond the trap</h2>
+      <ol class="roadmap-list">
+        <li><div><h5>Publish full terms of Chinese and other non-Paris-Club loans</h5><p>Starting with the SGR, to close the opacity that fuelled the 2024 protests.</p></div></li>
+        <li><div><h5>Institutionalize citizen fiscal oversight</h5><p>Participatory budget review, not just crisis-triggered reversal — the appetite the Finance Bill protests demonstrated should have a permanent channel.</p></div></li>
+        <li><div><h5>Restructure SGR-linked obligations against actual freight revenue</h5><p>Rather than the original, unmet projections.</p></div></li>
+        <li><div><h5>Treat tech and fintech as a genuine diversification pillar</h5><p>With matching infrastructure and skills investment, not just a talking point.</p></div></li>
+        <li><div><h5>Move tea and horticulture exports up the value chain</h5><p>Branded, processed goods rather than raw commodity-auction sales.</p></div></li>
+      </ol>
+      <h3>Build something: a pathway that fits Kenya specifically</h3>
+      <div class="callout">
+        <span class="co-label">AI-powered farmer advisory micro-service</span>
+        <p>Using accessible AI tools to offer smallholder tea and coffee farmers simple, local-language crop-disease identification or planting-schedule advice via WhatsApp — a genuinely new service category barely possible five years ago, and a natural extension of Kenya's existing fintech and mobile-first infrastructure advantage.</p>
+      </div>
+      <p style="margin-top:18px;"><a href="business-plans.html" target="_blank" rel="noopener" style="color:var(--verdigris); font-size:13.5px; text-decoration:underline;">See the full step-by-step business plan for this — equipment costs, process, and how-to videos →</a></p>
+
+      <div class="cta-block">
+        <h3>This is one country. The pattern repeats across the continent.</h3>
+        <p>Read the full ten-country report, run the value-chain simulator, and see exactly how much is lost every day this pattern continues — then join the Reset.</p>
+        <a href="https://wa.me/237674917169?text=I%27m%20joining%20the%20ForTe%20Economics%20Reset%20after%20reading%20the%20Kenya%20report.%20Here%27s%20one%20thing%20I%27m%20committing%20to%3A%20" class="btn btn-primary" target="_blank" rel="noopener">Message +237 674 917 169 on WhatsApp →</a>
+        <a href="forte-economics.html#simulator" class="btn btn-ghost">Run the value-chain simulator</a>
+      </div>
+    `
+  }
+},
+
+ethiopia: {
+  flag:"🇪🇹", name:"Ethiopia", tagline:"East Africa · Coffee, Hydropower",
+  lede:"The birthplace of Arabica coffee, never fully colonized, and home to Africa's largest hydropower project — self-financed, proving Ethiopians can mobilize capital themselves — yet its Eurobond default in 2021 made it the first African sovereign to test the G20's new debt-resolution framework.",
+  clock:{pop:132700000, rate:0.025, dailyLossUSD:5000000, dailyDeaths:375},
+  stats:[["2021","First Common Framework debt case"],["Never","fully colonized (except 1936-41)"],["GERD","Largely self-financed, not debt-driven"],["2019","Abiy Ahmed's Nobel Peace Prize"]],
+  sections:{
+    overview:`
+      <div class="page-marker">Page 1 of 5</div>
+      <h2>The exception to Africa's colonial story — and a modern history of its own upheavals</h2>
+      <p>Ethiopia holds a singular place in African history as the continent's only nation never subjected to sustained European colonial rule, successfully repelling an Italian invasion at the Battle of Adwa in 1896 — a victory that made Ethiopia a symbol of African sovereignty and resistance decades before most of the continent gained independence. A brief Italian occupation from 1936-1941 during the fascist era was the exception, ended by British-assisted liberation during World War II.</p>
+      <p>Emperor <strong>Haile Selassie</strong> ruled from 1930 until a 1974 military coup installed the <strong>Derg</strong>, a brutal Marxist-Leninist junta that ruled through famine, civil war and a campaign of political terror known as the Red Terror until 1991. The Ethiopian People's Revolutionary Democratic Front (EPRDF), led first by Meles Zenawi, then governed for over two decades, presiding over rapid infrastructure-led growth alongside continued authoritarian control.</p>
+      <div class="pullquote"><strong>Abiy Ahmed</strong> became prime minister in 2018 promising sweeping political liberalization, and won the 2019 Nobel Peace Prize for ending the decades-long stalemate with Eritrea — an extraordinary international reception followed, within two years, by the outbreak of a devastating civil war in Tigray.</div>
+      <p>The <strong>Tigray War (2020-2022)</strong>, fought between federal forces (allied with Eritrea) and the Tigray People's Liberation Front, killed an estimated several hundred thousand people through combat, famine and disease, and directly compounded Ethiopia's existing fiscal strain into full debt distress. A November 2022 peace agreement ended the active conflict, though reconstruction and reconciliation remain incomplete.</p>
+      <h3>Geography &amp; the highland advantage</h3>
+      <div class="two-col">
+        <div class="mini-card"><h5>The highland plateau</h5><p>Ethiopia's high-altitude central plateau provides ideal conditions for Arabica coffee, its signature crop, alongside substantial hydropower potential from the Blue Nile and other highland rivers.</p></div>
+        <div class="mini-card"><h5>Addis Ababa's regional role</h5><p>Host city of the African Union headquarters, making Ethiopia's capital a de facto continental diplomatic center even amid domestic conflict and debt distress.</p></div>
+      </div>
+    `,
+    economy:`
+      <div class="page-marker">Page 2 of 5</div>
+      <h2>The first Common Framework test case — and the GERD counter-example</h2>
+      <p>Ethiopia became the first African sovereign to seek debt treatment under the G20's newly created Common Framework in 2021, as the Tigray conflict compounded existing fiscal strain built up during years of ambitious, infrastructure-heavy state-led growth. A Eurobond default followed, and a birr devaluation arrived in 2024 as part of an IMF-backed reform program addressing the underlying imbalances.</p>
+      <table class="info-table">
+        <thead><tr><th>Indicator</th><th>Status</th><th>Why it matters</th></tr></thead>
+        <tbody>
+          <tr><td>Common Framework debt case</td><td class="num">First in Africa, 2021</td><td>Tested an untried international debt-resolution mechanism</td></tr>
+          <tr><td>Birr devaluation</td><td class="num">2024</td><td>Part of IMF-backed reform addressing currency overvaluation</td></tr>
+          <tr><td>GERD financing</td><td class="num">Largely domestic</td><td>Proof large infrastructure need not automatically mean external debt</td></tr>
+        </tbody>
+      </table>
+      <div class="callout"><span class="co-label">The Grand Ethiopian Renaissance Dam, financed differently</span><p>Africa's largest hydropower project — roughly $4-5 billion — was funded substantially through domestic treasury bonds, a mandatory public-employee contribution scheme, and diaspora fundraising, rather than conventional external debt. It stands as this report's clearest counter-example: Ethiopia has, when the political will and a unifying national project existed, mobilized large-scale domestic capital without a new foreign loan.</p></div>
+      <h3>Why the contrast matters</h3>
+      <p>The same country that defaulted on a Eurobond in 2021 also self-financed a multi-billion-dollar dam. That is not a contradiction — it's evidence that Ethiopia's debt distress is a policy and conflict-driven outcome, not a demonstration that the country lacks the capacity to mobilize its own capital when it chooses to.</p>
+    `,
+    resources:`
+      <div class="page-marker">Page 3 of 5</div>
+      <h2>The export basket: 20 goods, the birthplace of coffee, exporting most of it green</h2>
+      <table class="info-table">
+        <thead><tr><th>Export</th><th>Global position / note</th><th>Note</th><th>Form it leaves in</th></tr></thead>
+        <tbody>
+          <tr><td>Coffee (green beans)</td><td class="num">Africa's top producer, birthplace of Arabica</td><td>Roasted almost entirely abroad</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Oilseeds (sesame, etc.)</td><td class="num">Major regional exporter</td><td>Sold unprocessed to crushing plants abroad</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Khat</td><td class="num">Regional export (E. Africa/Gulf)</td><td>Sold fresh, no processing stage</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Textiles &amp; leather</td><td class="num">Emerging industrial-park sector</td><td>Growing, still largely contract manufacturing</td><td><span class="tag semi">Semi</span></td></tr>
+          <tr><td>Cut flowers (roses)</td><td class="num">Africa's #2 flower exporter</td><td>Genuine EU horticulture success</td><td><span class="tag semi">Semi</span></td></tr>
+          <tr><td>Live animals &amp; livestock</td><td class="num">Africa's largest livestock herd</td><td>Exported live, not as meat product</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Hides &amp; skins</td><td class="num">Major regional producer</td><td>Mostly wet-blue, not finished leather</td><td><span class="tag semi">Semi</span></td></tr>
+          <tr><td>Chickpeas &amp; pulses</td><td class="num">Major regional exporter</td><td>Sold raw/dried</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Gold (artisanal &amp; industrial)</td><td class="num">Growing sector</td><td>Largely informal, untaxed share</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Gum &amp; resins (frankincense, myrrh)</td><td class="num">Historic Horn of Africa export</td><td>Sold raw to perfume/incense makers</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Spices (cardamom, ginger)</td><td class="num">Regional producer</td><td>Mostly dried/raw</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Honey &amp; beeswax</td><td class="num">Africa's top honey producer</td><td>Mostly unprocessed export</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Sesame oil cake</td><td class="num">Crushing byproduct</td><td>Animal-feed grade export</td><td><span class="tag semi">Semi</span></td></tr>
+          <tr><td>Cotton (raw lint)</td><td class="num">Growing production base</td><td>Feeds domestic textile parks</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Cement</td><td class="num">Regional East African supplier</td><td>Genuine value-added sector</td><td><span class="tag proc">Processed</span></td></tr>
+          <tr><td>Potash</td><td class="num">Danakil Depression deposits</td><td>Early-stage development</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Vegetables (onions, etc.)</td><td class="num">Regional Horn of Africa trade</td><td>Mostly fresh</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Beeswax-based cosmetics inputs</td><td class="num">Niche emerging export</td><td>Small volumes</td><td><span class="tag semi">Semi</span></td></tr>
+          <tr><td>Natural gas (Ogaden basin)</td><td class="num">Early-stage development</td><td>Undeveloped potential</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Hydroelectric power (regional export)</td><td class="num">GERD-driven growth</td><td>Sold to neighbouring grids</td><td><span class="tag proc">Processed</span></td></tr>
+        </tbody>
+      </table>
+      <h3>What Ethiopia is actually losing</h3>
+      <p>Ethiopia is the birthplace of Arabica coffee and Africa's largest producer, yet the overwhelming majority of its crop is exported as unroasted green beans through the Ethiopian Commodity Exchange. The roasting stage — where a coffee's flavour, brand identity and the largest share of retail price are actually created — happens almost entirely in importing countries. A bag of specialty Ethiopian-origin beans can retail for many multiples of the green-bean export price once roasted and branded by a foreign roastery.</p>
+      <div class="callout"><span class="co-label">The arithmetic</span><p>Green bean exported via commodity exchange → roasted abroad, branded as single-origin specialty coffee → <strong style="color:var(--copper)">retail multiple</strong> captured almost entirely by foreign roasters, not Ethiopian growers or exporters.</p></div>
+      <h3>What building the value chain actually takes</h3>
+      <div class="two-col">
+        <div class="mini-card"><h5>01 · Roasting &amp; export-packaging plants</h5><p>Domestic roasting facilities near Addis Ababa and growing regions, with export-grade packaging, so branded roasted coffee — not just green beans — reaches international buyers.</p></div>
+        <div class="mini-card"><h5>02 · The GERD model, applied to processing</h5><p>The same diaspora-bond and domestic-mobilization approach used for the dam, redirected toward financing coffee-roasting and textile-processing capacity instead of new external loans.</p></div>
+        <div class="mini-card"><h5>03 · Q-grading &amp; roastery training</h5><p>Specialty-coffee grading certification and roastery operation training, so quality control and flavour-profile branding happen domestically.</p></div>
+        <div class="mini-card"><h5>04 · Direct specialty-roaster partnerships</h5><p>Long-term contracts with specialty coffee brands for origin-roasted Ethiopian coffee, capturing the "single-origin" premium at home.</p></div>
+      </div>
+      <p style="margin-top:20px;"><strong>The narrative shift:</strong> Ethiopia is often described through its debt crisis and conflict. But the GERD proves something specific: when Ethiopians choose to finance something themselves, they can. A national roasting and branding push for coffee — using the same self-financing muscle the dam already proved exists — would apply that lesson to the export the whole world already associates with Ethiopia by name.</p>
+    `,
+    governance:`
+      <div class="page-marker">Page 4 of 5</div>
+      <h2>From Nobel Peace Prize to civil war within two years</h2>
+      <p>Few recent African leadership trajectories illustrate the gap between international reception and domestic reality as starkly as Abiy Ahmed's. His 2019 Nobel Peace Prize, awarded for the Eritrea peace deal, arrived amid genuine hope for Ethiopia's political liberalization after decades of EPRDF authoritarian rule. Within roughly eighteen months, the federal government's conflict with the Tigray region — rooted in longstanding tensions over ethnic federalism and TPLF's marginalization after Abiy's rise — escalated into full civil war.</p>
+      <div class="pullquote">The Tigray War killed an estimated several hundred thousand people through combat, famine and disease before a November 2022 peace agreement — a reminder that political liberalization and ethnic-federal stability are not automatically the same project, even under a genuinely reform-minded leader.</div>
+      <h3>Political timeline</h3>
+      <div class="timeline">
+        <div class="timeline-item"><div class="t-year">1896</div><h5>Battle of Adwa</h5><p>Ethiopia repels Italian colonization, becoming a symbol of African sovereignty.</p></div>
+        <div class="timeline-item"><div class="t-year">1974-91</div><h5>The Derg era</h5><p>Marxist military junta rules through famine and the Red Terror after overthrowing Haile Selassie.</p></div>
+        <div class="timeline-item"><div class="t-year">2018-19</div><h5>Abiy Ahmed's reforms &amp; Nobel Prize</h5><p>Political liberalization promised; Eritrea peace deal wins the Nobel Peace Prize.</p></div>
+        <div class="timeline-item"><div class="t-year">2020-22</div><h5>Tigray War</h5><p>Devastating civil war compounds existing fiscal strain into full debt distress.</p></div>
+        <div class="timeline-item"><div class="t-year">2021</div><h5>First Common Framework case</h5><p>Ethiopia becomes the first African country to seek debt treatment under the new G20 mechanism.</p></div>
+      </div>
+      <h3>Current news &amp; further reading</h3>
+      <div class="news-link-list">
+        <a href="https://www.imf.org/en/Countries/ETH" target="_blank" rel="noopener"><strong>IMF Ethiopia debt restructuring and program status</strong>IMF Country Data</a>
+      </div>
+    `,
+    roadmap:`
+      <div class="page-marker">Page 5 of 5</div>
+      <h2>The roadmap beyond the trap</h2>
+      <ol class="roadmap-list">
+        <li><div><h5>Complete the remaining debt restructuring transparently, on a fixed timeline</h5><p>Avoiding the multi-year drift seen in comparable cases elsewhere on the continent.</p></div></li>
+        <li><div><h5>Extend the GERD self-financing model to other strategic infrastructure</h5><p>Diaspora bonds and domestic capital mobilization, instead of defaulting to external borrowing by habit.</p></div></li>
+        <li><div><h5>Build domestic coffee roasting and branding capacity</h5><p>So more of the world's coffee margin is captured before the bean ever leaves the country.</p></div></li>
+        <li><div><h5>Pursue durable political settlement in conflict-affected regions</h5><p>To redirect security spending toward reconstruction rather than continued containment.</p></div></li>
+        <li><div><h5>Create an independent fiscal council</h5><p>With authority to flag unsustainable borrowing before it becomes a crisis, not after.</p></div></li>
+      </ol>
+      <h3>Build something: a pathway that fits Ethiopia specifically</h3>
+      <div class="callout">
+        <span class="co-label">Small-batch specialty coffee roasting</span>
+        <p>A compact roastery targeting Addis Ababa's growing café culture and export-ready specialty buyers can capture a meaningfully larger share of the green-bean-to-retail markup than raw export alone — the same roasting and Q-grading skills detailed in the Resources page above, achievable at genuinely small business scale.</p>
+      </div>
+      <p style="margin-top:18px;"><a href="business-plans.html" target="_blank" rel="noopener" style="color:var(--verdigris); font-size:13.5px; text-decoration:underline;">See the full step-by-step business plan for this — equipment costs, process, and how-to videos →</a></p>
+
+      <div class="cta-block">
+        <h3>This is one country. The pattern repeats across the continent.</h3>
+        <p>Read the full ten-country report, run the value-chain simulator, and see exactly how much is lost every day this pattern continues — then join the Reset.</p>
+        <a href="https://wa.me/237674917169?text=I%27m%20joining%20the%20ForTe%20Economics%20Reset%20after%20reading%20the%20Ethiopia%20report.%20Here%27s%20one%20thing%20I%27m%20committing%20to%3A%20" class="btn btn-primary" target="_blank" rel="noopener">Message +237 674 917 169 on WhatsApp →</a>
+        <a href="forte-economics.html#simulator" class="btn btn-ghost">Run the value-chain simulator</a>
+      </div>
+    `
+  }
+},
+
+zambia: {
+  flag:"🇿🇲", name:"Zambia", tagline:"Southern Africa · Copper",
+  lede:"Became the first African country to default during the COVID-19 era in November 2020 — a four-year restructuring ordeal that revealed a structural flaw in the global debt-resolution system as much as a domestic policy failure, all while copper drove 70-75% of exports.",
+  clock:{pop:21000000, rate:0.028, dailyLossUSD:2000000, dailyDeaths:96},
+  stats:[["2020","First pandemic-era African default"],["4 yrs","To restructure $13.3B in debt"],["70-75%","Copper's share of exports"],["CCC+","S&P rating, Dec 2025"]],
+  sections:{
+    overview:`
+      <div class="page-marker">Page 1 of 5</div>
+      <h2>From one-party copper state to a genuine, if fragile, multiparty democracy</h2>
+      <p>Zambia gained independence from Britain in 1964 under founding president <strong>Kenneth Kaunda</strong>, who governed a one-party state — built substantially on copper-mining revenue — until 1991, when a currency and debt crisis alongside mounting popular pressure forced multiparty elections, which Kaunda lost. That peaceful transfer of power set a precedent Zambia has broadly maintained since, distinguishing it from several regional peers where founding liberation parties never relinquished power through the ballot box.</p>
+      <p><strong>Hakainde Hichilema</strong>, an opposition figure and businessman who ran for president multiple times over nearly two decades before finally winning in 2021, inherited a country already in default — his administration's central task since taking office has been navigating the Common Framework restructuring process detailed on the Economy page, while trying to demonstrate that democratic transition itself can be part of the fiscal-credibility story international creditors respond to.</p>
+      <div class="pullquote">Zambia's copper wealth built both its post-independence prosperity and its post-independence vulnerability — the same resource that funded Kaunda's welfare state also left the economy with almost no buffer when global copper prices moved against it.</div>
+      <h3>Geography &amp; the Copperbelt</h3>
+      <div class="two-col">
+        <div class="mini-card"><h5>The Copperbelt region</h5><p>A geological extension of the DRC's mineral-rich Katanga belt, hosting Zambia's major copper and cobalt mining operations and urban centers built almost entirely around the mining industry.</p></div>
+        <div class="mini-card"><h5>Agricultural potential</h5><p>Zambia has substantial underutilized arable land and water resources, positioning agriculture as a genuine diversification opportunity beyond copper, addressed directly in the Roadmap page.</p></div>
+      </div>
+    `,
+    economy:`
+      <div class="page-marker">Page 2 of 5</div>
+      <h2>The default that exposed a flaw in the global system, not just a national one</h2>
+      <p>Zambia defaulted on its external debt in November 2020, becoming the first African sovereign default of the pandemic era. Copper — driving 70-75% of export revenue and 13% of GDP — left the economy fully exposed when prices weakened during the global COVID-19 demand shock. What followed was a four-year restructuring ordeal under the newly created G20 Common Framework, repeatedly stalled by disputes between Chinese official creditors and Eurobond holders over "comparable treatment" of competing claims.</p>
+      <table class="info-table">
+        <thead><tr><th>Indicator</th><th>Status</th><th>Why it matters</th></tr></thead>
+        <tbody>
+          <tr><td>Default date</td><td class="num">November 2020</td><td>First African pandemic-era sovereign default</td></tr>
+          <tr><td>Restructuring duration</td><td class="num">4 years</td><td>Years of restricted market access and elevated risk premiums</td></tr>
+          <tr><td>Total debt restructured</td><td class="num">$13.3B</td><td>Scale of the fiscal hole the copper-price shock exposed</td></tr>
+          <tr><td>S&amp;P rating, Dec 2025</td><td class="num">CCC+</td><td>Improving, but still deep sub-investment grade</td></tr>
+        </tbody>
+      </table>
+      <div class="callout"><span class="co-label">The IMF's own diagnosis</span><p>The Fund's technical governance report names "consistently high fiscal deficits, inefficient public investment and weak controls on spending" as direct drivers of the imbalances that led to the 2020 default — an admission from the IMF itself that governance, not just copper prices, caused the crisis.</p></div>
+      <h3>The restructuring delay itself, as a cost</h3>
+      <p>The four years between default and resolution were not merely inconvenient — years of restricted market access and elevated risk premiums on any new borrowing represent a direct, quantifiable cost of a debt-resolution system where "comparable treatment" disputes between bondholders and a bilateral creditor were allowed to stall for years without a binding timetable.</p>
+    `,
+    resources:`
+      <div class="page-marker">Page 3 of 5</div>
+      <h2>The export basket: 20 goods, 70-75% still concentrated in one unprocessed metal</h2>
+      <table class="info-table">
+        <thead><tr><th>Export</th><th>Share of exports / note</th><th>Note</th><th>Form it leaves in</th></tr></thead>
+        <tbody>
+          <tr><td>Copper (cathode &amp; concentrate)</td><td class="num">70-75%</td><td>13% of GDP; Africa's #2 producer</td><td><span class="tag semi">Semi</span></td></tr>
+          <tr><td>Cobalt (by-product of copper)</td><td class="num">Minor but growing</td><td>Feeds the same battery-metal demand as DRC</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Maize &amp; agricultural produce</td><td class="num">Regional food-security role</td><td>Vulnerable to the same drought hitting hydropower</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Gemstones (emeralds)</td><td class="num">World's top emerald source (with Colombia)</td><td>Largely exported rough, cut abroad</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Raw tobacco leaf</td><td class="num">Regional producer</td><td>Sold unprocessed to blenders abroad</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Cotton (raw lint)</td><td class="num">Eastern &amp; Southern provinces</td><td>Ginned only lightly before export</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Sugar</td><td class="num">Regional exporter</td><td>A genuine value-added success story</td><td><span class="tag proc">Processed</span></td></tr>
+          <tr><td>Cashew nuts (Western Province)</td><td class="num">Emerging producer</td><td>Shelled mostly abroad</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Amethyst &amp; other gemstones</td><td class="num">Kalomo mines</td><td>Largely exported rough</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Timber &amp; sawn wood</td><td class="num">Western/North-Western provinces</td><td>Mostly rough-sawn</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Cement</td><td class="num">Regional Southern African supplier</td><td>Genuine value-added sector</td><td><span class="tag proc">Processed</span></td></tr>
+          <tr><td>Fertiliser (nitrogen-based)</td><td class="num">Growing domestic production</td><td>Import-substitution success</td><td><span class="tag proc">Processed</span></td></tr>
+          <tr><td>Zinc &amp; lead ore</td><td class="num">Copperbelt byproduct</td><td>Sold largely as concentrate</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Manganese</td><td class="num">Growing sector</td><td>Emerging battery-metal interest</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Coffee (Northern Province)</td><td class="num">Small-scale production</td><td>Sold green, roasted abroad</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Honey</td><td class="num">Growing niche export</td><td>Mostly unprocessed</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Hydroelectric power (regional export)</td><td class="num">Kariba &amp; Kafue Gorge</td><td>Sold to SAPP regional grid</td><td><span class="tag proc">Processed</span></td></tr>
+          <tr><td>Flowers &amp; horticultural produce</td><td class="num">Small but growing</td><td>Fresh, air-freighted</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Groundnuts</td><td class="num">Smallholder crop</td><td>Mostly regional trade</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Soya beans</td><td class="num">Growing commercial crop</td><td>Sold raw to regional crushers</td><td><span class="tag raw">Raw</span></td></tr>
+        </tbody>
+      </table>
+      <h3>What Zambia is actually losing</h3>
+      <p>Zambia exports the majority of its copper as cathode and concentrate rather than finished wire, tube or wound-copper products used directly in construction and electronics manufacturing — a further-processing stage largely built out in China and other importing markets instead of the Copperbelt itself. Copper's dominance of the export basket is precisely why the 2020 default happened when prices weakened: there was no other major revenue stream to absorb the shock.</p>
+      <div class="callout"><span class="co-label">The arithmetic</span><p><strong style="color:var(--copper)">70-75%</strong> of exports concentrated in one metal + a price dip during the 2020 pandemic demand shock = the <strong style="color:var(--alert)">first African</strong> pandemic-era sovereign default.</p></div>
+      <p><strong>Emeralds:</strong> Zambia is, with Colombia, one of the world's two dominant sources of emeralds, yet the great majority are exported as rough stones rather than cut and polished domestically — a smaller-scale but real echo of the copper pattern in the gemstone sector.</p>
+      <h3>What building the value chain actually takes</h3>
+      <div class="two-col">
+        <div class="mini-card"><h5>01 · Wire rod &amp; fabrication plants</h5><p>Copper wire-rod and cable-fabrication facilities on the Copperbelt so cathode is turned into finished electrical product before it leaves.</p></div>
+        <div class="mini-card"><h5>02 · Transparent, collateral-disclosed borrowing</h5><p>A public loan registry disclosing any resource-collateralized borrowing terms in real time — directly addressing the opacity that complicated the restructuring.</p></div>
+        <div class="mini-card"><h5>03 · Metallurgical fabrication training</h5><p>Technical training in wire-drawing, cable manufacturing and gemstone cutting/polishing — skills currently exported along with the raw material.</p></div>
+        <div class="mini-card"><h5>04 · Diversification-linked mining royalties</h5><p>A share of copper royalty revenue statutorily earmarked for agriculture and solar-energy investment.</p></div>
+      </div>
+    `,
+    governance:`
+      <div class="page-marker">Page 4 of 5</div>
+      <h2>Macroeconomic stabilization without yet translating into livelihood gains</h2>
+      <p>Zambia's improving credit rating and completed restructuring represent genuine technical achievements — but Chatham House's 2026 Africa outlook specifically flags that this stabilization has not yet translated into improved household livelihoods, alongside concern that constitutional reforms under discussion ahead of the country's August 2026 elections may be structured to specifically benefit the sitting president's re-election prospects.</p>
+      <div class="pullquote">A country can exit sovereign default and still not have solved the underlying question of whether ordinary citizens feel the difference — the gap between a credit-rating upgrade and a household's daily reality is exactly the gap this report's roadmaps are designed to close.</div>
+      <h3>Political timeline</h3>
+      <div class="timeline">
+        <div class="timeline-item"><div class="t-year">1964</div><h5>Independence</h5><p>Kenneth Kaunda becomes founding president, governing a one-party copper-funded state.</p></div>
+        <div class="timeline-item"><div class="t-year">1991</div><h5>Multiparty transition</h5><p>Currency/debt crisis and popular pressure force elections; Kaunda loses, sets a precedent for peaceful transfer.</p></div>
+        <div class="timeline-item"><div class="t-year">2020</div><h5>External default</h5><p>First African pandemic-era sovereign default, triggered by copper-price collapse.</p></div>
+        <div class="timeline-item"><div class="t-year">2021</div><h5>Hichilema elected</h5><p>Opposition figure wins after multiple prior attempts, inherits the default and restructuring process.</p></div>
+        <div class="timeline-item"><div class="t-year">2024</div><h5>Restructuring completed</h5><p>Four years after default, $13.3B in debt finally restructured.</p></div>
+      </div>
+      <h3>Current news &amp; further reading</h3>
+      <div class="news-link-list">
+        <a href="https://www.imf.org/en/publications/cr/issues/2023/01/09/zambia-technical-assistance-report-diagnostic-report-on-governance-and-corruption-527982" target="_blank" rel="noopener"><strong>IMF's own diagnostic ties Zambia's default directly to weak spending controls</strong>IMF Staff Country Reports</a>
+        <a href="https://www.chathamhouse.org/2026/01/africa-2026-global-uncertainty-demands-regional-leadership" target="_blank" rel="noopener"><strong>Zambia heads to August 2026 polls amid stalled livelihood gains</strong>Chatham House, January 2026</a>
+      </div>
+    `,
+    roadmap:`
+      <div class="page-marker">Page 5 of 5</div>
+      <h2>The roadmap beyond the trap</h2>
+      <ol class="roadmap-list">
+        <li><div><h5>Adopt a transparent, copper-revenue-linked borrowing framework</h5><p>Ruling out the kind of opaque collateralized lending that complicated the last restructuring.</p></div></li>
+        <li><div><h5>Fast-track domestic cathode and copper-wire processing capacity</h5><p>So more of the metal's value is captured before export.</p></div></li>
+        <li><div><h5>Diversify power generation into solar</h5><p>Given Zambia's resource endowment, to reduce drought-driven hydropower vulnerability.</p></div></li>
+        <li><div><h5>Push for G20 Common Framework reform</h5><p>Alongside peer nations, so future restructurings take months rather than years.</p></div></li>
+        <li><div><h5>Reinvest copper windfalls into agriculture</h5><p>Already 20% of GDP and 59% of the labour force — to build resilience beyond mining.</p></div></li>
+      </ol>
+      <h3>Build something: a pathway that fits Zambia specifically</h3>
+      <div class="callout">
+        <span class="co-label">Fish farming on the Copperbelt's water resources</span>
+        <p>Zambia's substantial water resources support small-scale aquaculture as a genuine diversification entry point away from mining-dependent employment — the same catfish/tilapia pond model detailed in the Business Pathways section of the main report, directly targeting import-substitution of the frozen fish currently brought in from abroad.</p>
+      </div>
+      <p style="margin-top:18px;"><a href="business-plans.html" target="_blank" rel="noopener" style="color:var(--verdigris); font-size:13.5px; text-decoration:underline;">See the full step-by-step business plan for this — equipment costs, process, and how-to videos →</a></p>
+
+      <div class="cta-block">
+        <h3>This is one country. The pattern repeats across the continent.</h3>
+        <p>Read the full ten-country report, run the value-chain simulator, and see exactly how much is lost every day this pattern continues — then join the Reset.</p>
+        <a href="https://wa.me/237674917169?text=I%27m%20joining%20the%20ForTe%20Economics%20Reset%20after%20reading%20the%20Zambia%20report.%20Here%27s%20one%20thing%20I%27m%20committing%20to%3A%20" class="btn btn-primary" target="_blank" rel="noopener">Message +237 674 917 169 on WhatsApp →</a>
+        <a href="forte-economics.html#simulator" class="btn btn-ghost">Run the value-chain simulator</a>
+      </div>
+    `
+  }
+},
+
+southafrica: {
+  flag:"🇿🇦", name:"South Africa", tagline:"Southern Africa · Platinum, Gold, Coal",
+  lede:"The continent's most industrialized economy, home to a genuine automotive manufacturing sector — yet carries the world's highest measured income inequality, and a state-utility debt crisis has shaved measurable GDP growth points off the economy for over a decade.",
+  clock:{pop:63200000, rate:0.010, dailyLossUSD:4500000, dailyDeaths:77},
+  stats:[["~63","Gini coefficient, world's highest"],["1994","First democratic election"],[">45%","Youth unemployment"],["~70%","World platinum supply"]],
+  sections:{
+    overview:`
+      <div class="page-marker">Page 1 of 5</div>
+      <h2>From apartheid to the world's most closely watched democratic transition</h2>
+      <p>South Africa's modern history is inseparable from <strong>apartheid</strong>, the system of institutionalized racial segregation formally established in 1948 by the National Party government, which entrenched white minority rule over the country's Black, Coloured and Indian majority through decades of forced removals, pass laws, and the systematic denial of political and economic rights. Resistance — led by the African National Congress and figures including <strong>Nelson Mandela</strong>, imprisoned for 27 years — combined domestic uprising with an internationally significant global sanctions and divestment movement.</p>
+      <p>Mandela's release in 1990 and the negotiated end of apartheid culminated in South Africa's first fully democratic election in 1994, which Mandela's ANC won decisively, beginning three decades of continuous ANC governance. Mandela's decision to serve only a single term, and his emphasis on truth-and-reconciliation over retribution through the Truth and Reconciliation Commission, remain widely cited globally as a model of transitional leadership — directly referenced in this report's Leadership section.</p>
+      <div class="pullquote">The ANC lost its outright parliamentary majority for the first time in the 2024 election, forming a Government of National Unity coalition with several former opposition parties — the most significant political realignment since 1994, whose durability the 2026 municipal elections are widely seen as the first real test of.</div>
+      <h3>Geography &amp; economic anchors</h3>
+      <div class="two-col">
+        <div class="mini-card"><h5>Three capitals</h5><p>Uniquely divides governmental functions across Pretoria (administrative), Cape Town (legislative) and Bloemfontein (judicial) — a legacy of the 1910 Union compromise between competing colonial and Boer power centers.</p></div>
+        <div class="mini-card"><h5>Mineral &amp; industrial base</h5><p>The Witwatersrand gold fields built the country's original industrial base; today's economy also anchors on platinum-group metals, coal, and a genuine automotive manufacturing sector hosting BMW, Mercedes and Toyota plants.</p></div>
+      </div>
+    `,
+    economy:`
+      <div class="page-marker">Page 2 of 5</div>
+      <h2>Eskom: how one utility's debt crisis became a national growth drag</h2>
+      <p>Chronic power cuts from the state utility Eskom's debt burden and deferred maintenance crisis have shaved measurable percentage points off annual GDP growth for over a decade — "load-shedding," the rolling blackouts implemented to prevent full grid collapse, became a defining feature of South African daily life and business planning through the 2010s and into the 2020s, with the mining and manufacturing sectors among the hardest hit.</p>
+      <table class="info-table">
+        <thead><tr><th>Indicator</th><th>Status</th><th>Why it matters</th></tr></thead>
+        <tbody>
+          <tr><td>Gini coefficient</td><td class="num">~63</td><td>World's highest measured income inequality</td></tr>
+          <tr><td>Youth unemployment</td><td class="num">&gt;45%</td><td>Among the highest rates globally, a persistent social pressure point</td></tr>
+          <tr><td>Eskom's operational impact</td><td class="num">Multi-year drag</td><td>Load-shedding has directly curtailed mining and manufacturing output</td></tr>
+          <tr><td>2024 election result</td><td class="num">ANC majority lost</td><td>First coalition government since 1994, the GNU</td></tr>
+        </tbody>
+      </table>
+      <div class="callout"><span class="co-label">The compounding effect</span><p>Unlike a pure commodity-price problem, South Africa's mining and refining sector has been directly constrained by its own domestic power crisis — smelters have had to curtail operations during periods of severe load-shedding, meaning the country has at times been unable to even fully process the ore it already has the refining capacity for.</p></div>
+      <h3>The Zondo Commission's unfinished business</h3>
+      <p>The Judicial Commission of Inquiry into State Capture, chaired by Deputy Chief Justice Raymond Zondo, documented extensive corruption during the Jacob Zuma presidency (2009-2018) — implicating senior officials, state-owned enterprises, and private consulting firms in a systematic looting of public resources. Full implementation of the Commission's procurement-reform recommendations remains incomplete years after its final report.</p>
+    `,
+    resources:`
+      <div class="page-marker">Page 3 of 5</div>
+      <h2>The export basket: 20 goods, dominant platinum supply, incomplete beneficiation</h2>
+      <table class="info-table">
+        <thead><tr><th>Export</th><th>Global position / note</th><th>Note</th><th>Form it leaves in</th></tr></thead>
+        <tbody>
+          <tr><td>Platinum-group metals</td><td class="num">≈70% of world supply</td><td>Mostly refined to bullion, not end-use parts</td><td><span class="tag semi">Semi</span></td></tr>
+          <tr><td>Gold</td><td class="num">Historic top producer, now mid-tier</td><td>Refined domestically to bullion standard</td><td><span class="tag semi">Semi</span></td></tr>
+          <tr><td>Thermal &amp; coking coal</td><td class="num">Major exporter via Richards Bay</td><td>Exported raw for power/steel use abroad</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Motor vehicles &amp; parts</td><td class="num">Africa's leading auto manufacturer</td><td>Genuine value-added manufacturing sector</td><td><span class="tag proc">Processed</span></td></tr>
+          <tr><td>Iron ore</td><td class="num">Top-10 global exporter</td><td>Sishen mines, largely unrefined</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Manganese ore</td><td class="num">World's largest reserves</td><td>Mostly exported as raw ore</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Chrome ore &amp; ferrochrome</td><td class="num">World's top chrome producer</td><td>Partial domestic smelting</td><td><span class="tag semi">Semi</span></td></tr>
+          <tr><td>Citrus fruit</td><td class="num">World's #2 exporter</td><td>A genuine value-added success</td><td><span class="tag semi">Semi</span></td></tr>
+          <tr><td>Wine</td><td class="num">Established global brand presence</td><td>Genuine finished-product export</td><td><span class="tag proc">Processed</span></td></tr>
+          <tr><td>Macadamia nuts</td><td class="num">World's top producer</td><td>Shelled mostly domestically</td><td><span class="tag semi">Semi</span></td></tr>
+          <tr><td>Wool</td><td class="num">Major Merino producer</td><td>Mostly greasy/raw, not spun</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Diamonds (rough &amp; polished)</td><td class="num">Historic De Beers heartland</td><td>Growing local cutting industry</td><td><span class="tag semi">Semi</span></td></tr>
+          <tr><td>Aluminium ingots</td><td class="num">Hillside/Bayside smelters</td><td>Imported alumina feedstock</td><td><span class="tag proc">Processed</span></td></tr>
+          <tr><td>Maize</td><td class="num">Regional Southern African supplier</td><td>Sold mostly unprocessed</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Sugar</td><td class="num">KwaZulu-Natal industry</td><td>Genuine value-added sector</td><td><span class="tag proc">Processed</span></td></tr>
+          <tr><td>Fruit juice concentrates</td><td class="num">Growing agroprocessing sector</td><td>Higher-value than raw fruit</td><td><span class="tag proc">Processed</span></td></tr>
+          <tr><td>Titanium minerals</td><td class="num">KwaZulu-Natal &amp; Eastern Cape</td><td>Largely unrefined export</td><td><span class="tag raw">Raw</span></td></tr>
+          <tr><td>Vanadium</td><td class="num">Top-3 global producer</td><td>Battery/steel-alloy input</td><td><span class="tag semi">Semi</span></td></tr>
+          <tr><td>Steel &amp; steel products</td><td class="num">Africa's largest steel industry</td><td>Constrained by Eskom power costs</td><td><span class="tag proc">Processed</span></td></tr>
+          <tr><td>Fishmeal &amp; fish products</td><td class="num">West Coast fishing industry</td><td>Genuine processed export</td><td><span class="tag proc">Processed</span></td></tr>
+        </tbody>
+      </table>
+      <h3>What South Africa is actually losing</h3>
+      <p>South Africa supplies around 70% of the world's platinum, used heavily in catalytic converters and, increasingly, hydrogen fuel-cell technology. Domestic refining takes ore to bullion standard, but the highest-value final stage — fabrication into catalytic-converter components and fuel-cell membrane electrode assemblies — happens mostly at the automakers and technology firms who buy the refined metal, overwhelmingly outside Africa. South Africa captures the mining and refining margin but not the manufacturing margin on its own signature export.</p>
+      <div class="callout"><span class="co-label">The compounded loss</span><p>Load-shedding has cost measurable GDP growth points annually for over a decade → mine and smelter output directly curtailed by unreliable grid power → a <strong style="color:var(--alert)">compounded loss</strong> on top of the unfinished-value-chain gap in platinum.</p></div>
+      <h3>What building the value chain actually takes</h3>
+      <div class="two-col">
+        <div class="mini-card"><h5>01 · Grid reliability first</h5><p>Every beneficiation ambition is downstream of Eskom's operational fix — renewable IPP build-out and grid stability are the precondition, not a separate policy track.</p></div>
+        <div class="mini-card"><h5>02 · Beneficiation-linked mining rights</h5><p>Mining license renewals tied to demonstrated investment in local fabrication capacity, not just extraction and bullion refining.</p></div>
+        <div class="mini-card"><h5>03 · Advanced manufacturing training</h5><p>Precision-fabrication and hydrogen-technology engineering training, positioning South Africa to manufacture fuel-cell components domestically.</p></div>
+        <div class="mini-card"><h5>04 · Auto-sector linkage</h5><p>Leverage South Africa's existing world-class automotive base — BMW, Mercedes, Toyota plants already here — as the anchor customer for domestically fabricated catalytic components.</p></div>
+      </div>
+      <p style="margin-top:20px;"><strong>The narrative shift:</strong> South Africa already has what most of this report's countries are trying to build — a real manufacturing sector, in autos. The platinum story shows the same country stopping one stage short on its own flagship mineral. Fixing Eskom and linking platinum refining to the existing auto base doesn't require inventing an industry from nothing — it requires connecting two industries South Africa already has.</p>
+    `,
+    governance:`
+      <div class="page-marker">Page 4 of 5</div>
+      <h2>A 2024 political realignment whose durability the 2026 elections will test</h2>
+      <p>The ANC's loss of its outright parliamentary majority in the 2024 general election — the first time since 1994 — forced the formation of a Government of National Unity coalition spanning historically opposed parties. Analysts widely regard South Africa's 2026 municipal elections as the first genuine test of whether this realignment reflects a lasting shift in voter sentiment or a temporary arrangement, with service-delivery performance and Eskom's operational trajectory cited as the deciding local issues.</p>
+      <div class="pullquote">South Africa has the institutions — a robust judiciary, a free press, the Zondo Commission's own thorough documentation of state capture — that many countries in this report lack. Its central governance challenge is less about building accountability mechanisms from scratch than about ensuring the ones that already exist are fully acted upon.</div>
+      <h3>Political timeline</h3>
+      <div class="timeline">
+        <div class="timeline-item"><div class="t-year">1948</div><h5>Apartheid formalized</h5><p>National Party institutionalizes systematic racial segregation and minority rule.</p></div>
+        <div class="timeline-item"><div class="t-year">1990-94</div><h5>Negotiated transition</h5><p>Mandela's release, and South Africa's first fully democratic election, won decisively by the ANC.</p></div>
+        <div class="timeline-item"><div class="t-year">2009-18</div><h5>State capture era</h5><p>Systematic corruption under the Zuma presidency, later documented in detail by the Zondo Commission.</p></div>
+        <div class="timeline-item"><div class="t-year">2018</div><h5>Ramaphosa succeeds Zuma</h5><p>Cyril Ramaphosa becomes president amid promises of anti-corruption reform.</p></div>
+        <div class="timeline-item"><div class="t-year">2024</div><h5>ANC loses majority, GNU formed</h5><p>Most significant political realignment since 1994; coalition government begins.</p></div>
+      </div>
+      <h3>Current news &amp; further reading</h3>
+      <div class="news-link-list">
+        <a href="https://www.chathamhouse.org/2026/01/africa-2026-global-uncertainty-demands-regional-leadership" target="_blank" rel="noopener"><strong>Local elections seen as first real test of the Government of National Unity</strong>Chatham House, 2026 outlook</a>
+      </div>
+    `,
+    roadmap:`
+      <div class="page-marker">Page 5 of 5</div>
+      <h2>The roadmap beyond the trap</h2>
+      <ol class="roadmap-list">
+        <li><div><h5>Complete Eskom's operational restructuring and renewable build-out</h5><p>To permanently end load-shedding's drag on growth — the precondition for nearly every other reform on this list.</p></div></li>
+        <li><div><h5>Implement outstanding Zondo Commission procurement recommendations</h5><p>Closing the leakages state capture exposed, years after the Commission's final report.</p></div></li>
+        <li><div><h5>Expand Black-owned participation in mineral beneficiation specifically</h5><p>Not only extraction licensing, addressing the deeper value-chain gap this report identifies.</p></div></li>
+        <li><div><h5>Redesign the education-to-employment pipeline</h5><p>Directly against the drivers of youth unemployment above 45%, township by township.</p></div></li>
+        <li><div><h5>Use South Africa's G20 and BRICS platform</h5><p>To champion continent-wide reform of IMF quota and voting-share structures.</p></div></li>
+      </ol>
+      <h3>Build something: a pathway that fits South Africa specifically</h3>
+      <div class="callout">
+        <span class="co-label">Precision component fabrication for the auto sector</span>
+        <p>Small-scale precision fabrication workshops supplying catalytic-converter and automotive component parts to South Africa's existing BMW, Mercedes and Toyota manufacturing plants represent a genuine entry point into value-added manufacturing, leveraging an industrial customer base that already exists rather than requiring export-market development from zero.</p>
+      </div>
+      <p style="margin-top:18px;"><a href="business-plans.html" target="_blank" rel="noopener" style="color:var(--verdigris); font-size:13.5px; text-decoration:underline;">See the full step-by-step business plan for this — equipment costs, process, and how-to videos →</a></p>
+
+      <div class="cta-block">
+        <h3>This is one country. The pattern repeats across the continent.</h3>
+        <p>Read the full ten-country report, run the value-chain simulator, and see exactly how much is lost every day this pattern continues — then join the Reset.</p>
+        <a href="https://wa.me/237674917169?text=I%27m%20joining%20the%20ForTe%20Economics%20Reset%20after%20reading%20the%20South%20Africa%20report.%20Here%27s%20one%20thing%20I%27m%20committing%20to%3A%20" class="btn btn-primary" target="_blank" rel="noopener">Message +237 674 917 169 on WhatsApp →</a>
+        <a href="forte-economics.html#simulator" class="btn btn-ghost">Run the value-chain simulator</a>
+      </div>
+    `
+  }
+}
+
+};
+
+</script>
+<script id="render-script">
+(function(){
+  // ---------- Resolve which country to show ----------
+  const params = new URLSearchParams(window.location.search);
+  const validKeys = Object.keys(COUNTRIES);
+  let key = params.get('c');
+  if(!validKeys.includes(key)) key = 'cameroon';
+  const data = COUNTRIES[key];
+
+  // ---------- Populate header ----------
+  document.title = data.name + ' — Full Report | ForTe Economics';
+  document.getElementById('c-flag').textContent = data.flag;
+  document.getElementById('c-name').textContent = data.name;
+  document.getElementById('c-tagline').textContent = data.tagline;
+  document.getElementById('c-lede').textContent = data.lede;
+
+  const statRail = document.getElementById('stat-rail');
+  statRail.innerHTML = data.stats.map(function(s){
+    return '<div class="sr-item"><div class="v">'+s[0]+'</div><div class="l">'+s[1]+'</div></div>';
+  }).join('');
+
+  // ---------- Populate tab panels ----------
+  document.getElementById('panel-overview').innerHTML = data.sections.overview;
+  document.getElementById('panel-economy').innerHTML = data.sections.economy;
+  document.getElementById('panel-resources').innerHTML = data.sections.resources;
+  document.getElementById('panel-governance').innerHTML = data.sections.governance;
+  document.getElementById('panel-roadmap').innerHTML = data.sections.roadmap;
+
+  // Cross-links specific to certain countries
+  if(key === 'cameroon'){
+    document.getElementById('panel-roadmap').innerHTML += '<div class="callout" style="border-left-color:var(--verdigris); margin-top:8px;"><span class="co-label" style="color:var(--verdigris);">Worked policy example</span><p>Cameroon\'s mining sector is the fully worked example in ForTe Economics\' <a href="policy-paper.html" target="_blank" rel="noopener" style="color:var(--verdigris); text-decoration:underline;">full Policy Paper for governments</a> — including a documented ~700× gap between reported and recorded gold exports, and a step-by-step reform roadmap.</p></div>';
+  }
+  if(key === 'nigeria'){
+    document.getElementById('panel-roadmap').innerHTML += '<div class="callout" style="border-left-color:var(--copper); margin-top:8px;"><span class="co-label" style="color:var(--copper);">Success study</span><p>Nigeria\'s refining turnaround is the central case in ForTe Economics\' <a href="dangote.html" target="_blank" rel="noopener" style="color:var(--copper); text-decoration:underline;">deep study of the Dangote method</a> — backward integration, in the words of the person who has spent the most capital proving it works.</p></div>';
+  }
+
+  // ---------- Country switcher dropdown ----------
+  const switchEl = document.getElementById('country-switch');
+  const labels = {
+    cameroon:"🇨🇲 Cameroon", drc:"🇨🇩 DR Congo", nigeria:"🇳🇬 Nigeria", ghana:"🇬🇭 Ghana",
+    egypt:"🇪🇬 Egypt", tunisia:"🇹🇳 Tunisia", kenya:"🇰🇪 Kenya", ethiopia:"🇪🇹 Ethiopia",
+    zambia:"🇿🇲 Zambia", southafrica:"🇿🇦 South Africa"
+  };
+  switchEl.innerHTML = validKeys.map(function(k){
+    return '<option value="'+k+'"'+(k===key?' selected':'')+'>'+ (labels[k] || COUNTRIES[k].name) +'</option>';
+  }).join('');
+  switchEl.addEventListener('change', function(){
+    window.location.href = 'country.html?c=' + switchEl.value;
+  });
+
+  // ---------- Tab switching ----------
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const panels = {
+    overview: document.getElementById('panel-overview'),
+    economy: document.getElementById('panel-economy'),
+    resources: document.getElementById('panel-resources'),
+    governance: document.getElementById('panel-governance'),
+    roadmap: document.getElementById('panel-roadmap')
+  };
+  tabBtns.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      tabBtns.forEach(function(b){ b.classList.remove('active'); });
+      Object.values(panels).forEach(function(p){ p.classList.remove('active'); });
+      btn.classList.add('active');
+      panels[btn.dataset.tab].classList.add('active');
+      window.scrollTo({top: document.querySelector('.c-hero').offsetHeight - 40, behavior:'smooth'});
+    });
+  });
+
+  // ---------- Live counters, specific to this country ----------
+  const BASELINE = new Date('2026-01-01T00:00:00Z').getTime();
+  const c = data.clock;
+
+  function fmtInt(n){ return Math.round(n).toLocaleString('en-US'); }
+  function fmtUSDShort(n){
+    if(n >= 1e9) return '$' + (n/1e9).toFixed(2) + 'B';
+    if(n >= 1e6) return '$' + (n/1e6).toFixed(2) + 'M';
+    if(n >= 1e3) return '$' + (n/1e3).toFixed(0) + 'K';
+    return '$' + Math.round(n);
+  }
+
+  const popEl = document.getElementById('live-pop');
+  const lossEl = document.getElementById('live-loss');
+  const deathEl = document.getElementById('live-death');
+
+  function tick(){
+    const now = Date.now();
+    const yearsElapsed = (now - BASELINE) / (365.25 * 24 * 3600 * 1000);
+    const livePop = c.pop * Math.pow(1 + c.rate, yearsElapsed);
+
+    const d = new Date(now);
+    const secondsSinceMidnightUTC = d.getUTCHours()*3600 + d.getUTCMinutes()*60 + d.getUTCSeconds() + d.getUTCMilliseconds()/1000;
+    const dayFraction = secondsSinceMidnightUTC / 86400;
+
+    const lossToday = c.dailyLossUSD * dayFraction;
+    const deathsToday = c.dailyDeaths * dayFraction;
+
+    popEl.textContent = fmtInt(livePop);
+    lossEl.textContent = fmtUSDShort(lossToday);
+    deathEl.textContent = fmtInt(deathsToday);
+  }
+
+  tick();
+  setInterval(tick, 1000);
+})();
+
+</script>
+
+<script src="forte-soft.js"></script>
+</body>
+</html>

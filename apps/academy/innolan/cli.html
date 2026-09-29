@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>IOS CLI Simulator · inno4te Networking Academy</title>
+<link rel="stylesheet" href="css/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%231F6FEB'/><text x='50' y='68' font-size='44' text-anchor='middle' fill='white' font-weight='bold'>i4</text></svg>">
+</head>
+<body>
+<header class="site-header">
+  <nav class="wrap nav">
+    <a class="brand" href="index.html"><span class="brand-mark">i4</span><span class="brand-name">inno<em>4</em>te Networking Academy</span></a>
+    <button class="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li><li><a href="simulator.html">Simulator</a></li>
+      <li><a href="exams.html">Exams</a></li><li><a href="cli.html" class="active">CLI</a></li><li><a href="subnetting.html">Subnetting</a></li>
+    </ul>
+  </nav>
+</header>
+
+<div class="cli-wrap" style="height:calc(100vh - 68px)">
+  <!-- Terminal -->
+  <div class="cli-screen" id="cliScreen">
+    <div class="cli-output" id="cliOutput"></div>
+    <div class="cli-input-row">
+      <span class="cli-prompt" id="cliPrompt">Router&gt;</span>
+      <input class="cli-input" id="cliInput" type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Type a command or '?' for help…" aria-label="CLI input">
+    </div>
+  </div>
+
+  <!-- Help sidebar -->
+  <div class="cli-help">
+    <div class="panel-header"><h3>IOS Command Reference</h3></div>
+    <div class="tab-row">
+      <button class="tab active" data-helpcat="basic">Basic</button>
+      <button class="tab" data-helpcat="config">Config</button>
+      <button class="tab" data-helpcat="routing">Routing</button>
+      <button class="tab" data-helpcat="show">Show</button>
+    </div>
+    <div id="helpContent" style="font-size:.82rem;line-height:1.7;color:var(--text-2)"></div>
+
+    <hr style="border:none;border-top:1px solid var(--border);margin:14px 0">
+    <div style="font-size:.78rem;color:var(--text-3)">
+      <b style="color:var(--text-2)">Tips:</b><br>
+      ↑/↓ arrow keys navigate command history<br>
+      Tab auto-completes commands<br>
+      Type <code>?</code> anytime for context help<br>
+      Type <code>clear log</code> to clear the screen<br>
+      Abbreviate: <code>sh ip int bri</code> works
+    </div>
+  </div>
+</div>
+
+<script>
+// Help content
+var helpData = {
+  basic: [
+    ["enable / en","Enter privileged EXEC mode (Router#)"],
+    ["disable","Return to user EXEC mode (Router>)"],
+    ["exit / end","Exit current mode or return to EXEC"],
+    ["?","Show available commands in current mode"],
+    ["ping [ip]","Test connectivity to a host"],
+    ["reload","Restart the device"],
+    ["clear log","Clear terminal output"]
+  ],
+  config: [
+    ["configure terminal","Enter global configuration mode"],
+    ["hostname [name]","Set device hostname"],
+    ["interface gi0/0","Enter interface configuration"],
+    ["ip address [ip] [mask]","Assign IP to interface"],
+    ["no shutdown","Bring interface up"],
+    ["shutdown","Shut down interface"],
+    ["description [text]","Set interface description"],
+    ["no ip address","Remove IP from interface"],
+    ["vlan [id]","Create/configure a VLAN (switch)"],
+    ["switchport mode access","Set port as access mode"],
+    ["switchport access vlan [id]","Assign VLAN to port"],
+    ["write / copy run start","Save configuration"]
+  ],
+  routing: [
+    ["ip route [net] [mask] [nh]","Add a static route"],
+    ["router ospf [pid]","Enter OSPF config mode"],
+    ["router rip","Enter RIP config mode"],
+    ["router eigrp [asn]","Enter EIGRP config mode"],
+    ["network [ip] [wildcard]","Add OSPF network statement"],
+    ["passive-interface [if]","Suppress OSPF hellos on interface"]
+  ],
+  show: [
+    ["show ip interface brief","Summary of all interfaces"],
+    ["show interfaces","Detailed interface statistics"],
+    ["show ip route","Display routing table"],
+    ["show running-config","Current active configuration"],
+    ["show version","IOS version and hardware info"],
+    ["show vlan brief","VLAN table (switch)"],
+    ["show cdp neighbors","Directly connected Cisco devices"],
+    ["show arp","ARP table"],
+    ["show mac address-table","MAC address table (switch)"],
+    ["show ip ospf","OSPF process information"],
+    ["show ip protocols","All active routing protocols"],
+    ["show clock","System clock"]
+  ]
+};
+document.querySelectorAll("[data-helpcat]").forEach(function(tab){
+  tab.addEventListener("click", function(){
+    document.querySelectorAll("[data-helpcat]").forEach(function(t){t.classList.remove("active");});
+    tab.classList.add("active");
+    var cat = tab.getAttribute("data-helpcat");
+    var html = helpData[cat].map(function(r){
+      return '<div style="margin-bottom:7px"><span style="color:var(--cyan);font-family:var(--mono);font-size:.8rem">'+r[0]+'</span><br><span style="color:var(--text-3)">'+r[1]+'</span></div>';
+    }).join("");
+    document.getElementById("helpContent").innerHTML = html;
+  });
+});
+// init first tab
+document.querySelector("[data-helpcat='basic']").click();
+</script>
+<script src="js/cli-engine.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/main.js"></script>
+<footer class="site-footer"><div class="footer-bottom">&copy; <span data-year></span> inno4te Networking Academy &middot; Innocent Forteh &mdash; Paid All Links Foundation. All rights reserved.</div></footer>
+</body>
+</html>

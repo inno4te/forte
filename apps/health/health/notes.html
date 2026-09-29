@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>My Notes — Team21 Health Platform</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700;9..144,800&family=Inter+Tight:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<style>
+  .notes-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--rule);border:1px solid var(--rule)}
+  .note-card{background:var(--paper);padding:22px;display:flex;flex-direction:column;gap:8px;transition:background .15s}
+  .note-card:hover{background:var(--paper-2)}
+  .note-card .meta{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--mute);letter-spacing:.05em}
+  .note-card .meta a{color:var(--accent);text-decoration:underline;cursor:pointer}
+  .note-card h3{font-family:"Fraunces",serif;font-size:20px;margin:0;font-weight:500;letter-spacing:-.01em;line-height:1.2}
+  .note-card .body{font-size:14px;color:var(--ink-soft);line-height:1.55;white-space:pre-wrap;word-break:break-word}
+  .note-card .actions{display:flex;gap:8px;margin-top:8px}
+  .empty{text-align:center;padding:60px 20px;color:var(--mute)}
+  .empty h3{font-family:"Fraunces",serif;font-size:24px;color:var(--ink);font-weight:500;margin:0 0 8px}
+  .bookmarks-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule);margin-top:20px}
+  .bookmark{background:var(--paper);padding:14px 18px;font-size:13.5px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+  .bookmark .nm{font-family:"Fraunces",serif;font-size:15px;font-weight:500}
+  .bookmark .rm{font-size:11px;background:none;border:none;color:var(--mute);cursor:pointer;letter-spacing:.08em;text-transform:uppercase}
+  .bookmark .rm:hover{color:var(--accent)}
+  @media (max-width:760px){.notes-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="brand">
+      <div class="brand-mark">T21</div>
+      <div>
+        <div class="brand-name">Team21 Health Platform</div>
+        <div class="brand-sub">Preventive Intelligence</div>
+      </div>
+    </a>
+    <div class="nav-cta" id="navCta"></div>
+  </div>
+</nav>
+
+<main class="page">
+  <header class="page-head">
+    <div>
+      <div class="eyebrow">Your account · Private</div>
+      <h1>My <em>notes</em> &amp; bookmarks.</h1>
+      <p class="intro">Everything you've saved across the platform — your private notes, the topics you've bookmarked, and the questions you've submitted. Visible only to you.</p>
+    </div>
+    <div class="meta">
+      PRIVATE · ENCRYPTED-AT-REST<br>
+      EDIT · PRINT · EXPORT
+    </div>
+  </header>
+
+  <div id="loginNeeded" class="login-prompt" style="display:none">
+    <h3>Sign in to view your notes</h3>
+    <p>Your notes, bookmarks and submitted questions are saved to your free Team21 account.</p>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+      <button class="btn btn-primary" onclick="T21.openAuth('login')">Sign in</button>
+      <button class="btn" onclick="T21.openAuth('register')">Create account</button>
+    </div>
+  </div>
+
+  <div id="signedInView" style="display:none">
+    <section>
+      <div style="display:flex;justify-content:space-between;align-items:end;gap:16px;flex-wrap:wrap;margin-bottom:16px">
+        <h2 class="sect" style="margin:0">Your <em>notes</em></h2>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn btn-sm" id="newNote">+ New note</button>
+          <button class="btn btn-sm" id="printNotes">Print all notes</button>
+        </div>
+      </div>
+      <div id="notesList" class="notes-grid"></div>
+    </section>
+
+    <section style="margin-top:50px">
+      <h2 class="sect">Your <em>bookmarks</em></h2>
+      <p style="color:var(--ink-soft);max-width:780px;margin:0 0 10px">Topics and proposals you've starred — click any to revisit.</p>
+      <div id="bookmarksList" class="bookmarks-list"></div>
+    </section>
+
+    <section style="margin-top:50px">
+      <h2 class="sect">Your <em>questions</em></h2>
+      <p style="color:var(--ink-soft);max-width:780px;margin:0 0 14px">A history of every question you have submitted, public or private.</p>
+      <div id="myQuestions"></div>
+    </section>
+  </div>
+</main>
+
+<script src="data.js"></script>
+<script src="lang-data.js"></script>
+<script src="lang.js"></script>
+<script src="shared.js"></script>
+<script src="components.js"></script>
+<script>
+T21.boot('notes.html');
+
+async function refreshAll(){
+  await refreshNotes();
+  await refreshBookmarksList();
+  await refreshMyQuestions();
+}
+window.refreshNotes = renderNotes;
+
+async function renderNotes(){
+  if(!T21.user) return;
+  const notes = await loadNotes();
+  const wrap = document.getElementById('notesList');
+  if(!notes.length){
+    wrap.innerHTML = `<div class="empty" style="grid-column:1/-1"><h3>No notes yet</h3><p>Click "+ New note" or add a note on any topic page to start your private journal.</p></div>`;
+    return;
+  }
+  wrap.innerHTML = notes.map(n => `
+    <article class="note-card" data-id="${n.id}">
+      <div class="meta">${new Date(n.updated||n.created).toLocaleString()} ${n.topicName? ' · <a data-jump="'+(n.topicId||'')+'">'+n.topicName+'</a>':''}</div>
+      <h3>${n.title || '(untitled)'}</h3>
+      <div class="body">${(n.body||'').replace(/</g,'&lt;')}</div>
+      <div class="actions">
+        <button class="action-btn" data-edit="${n.id}">Edit</button>
+        <button class="action-btn" data-del="${n.id}">Delete</button>
+      </div>
+    </article>
+  `).join('');
+  wrap.querySelectorAll('[data-edit]').forEach(b => b.onclick = ()=>{
+    const note = notes.find(n=>n.id===b.dataset.edit);
+    openNoteEditor({topicId:note.topicId, topicName:note.topicName, existing:note});
+  });
+  wrap.querySelectorAll('[data-del]').forEach(b => b.onclick = async ()=>{
+    if(!confirm('Delete this note?')) return;
+    await deleteNote(b.dataset.del);
+    T21.toast('Deleted');
+    renderNotes();
+  });
+}
+
+async function refreshBookmarksList(){
+  if(!T21.user || !T21.storage){ document.getElementById('bookmarksList').innerHTML=''; return; }
+  let ids = [];
+  try{ const r = await T21.storage.get(`t21:${T21.user.email}:bookmarks`); if(r && r.value) ids = JSON.parse(r.value); }catch(_){}
+  if(!ids.length){
+    document.getElementById('bookmarksList').innerHTML = `<div class="empty" style="grid-column:1/-1"><h3>No bookmarks yet</h3><p>Star any topic or proposal to keep it here for quick reference.</p></div>`;
+    return;
+  }
+  // Build lookup from TOPICS and PROPOSALS
+  const lookup = {};
+  Object.values(TOPICS).flat().forEach(t => lookup[t.id] = {name:t.name, page: pageForTopic(t.id)});
+  PROPOSALS.forEach((p,i)=> lookup['proposal-'+i] = {name:p.h, page:'proposals.html'});
+  const wrap = document.getElementById('bookmarksList');
+  wrap.innerHTML = ids.map(id=>{
+    const info = lookup[id] || {name:id, page:'index.html'};
+    return `<div class="bookmark"><a class="nm" href="${info.page}">${info.name}</a><button class="rm" data-rm="${id}">Remove</button></div>`;
+  }).join('');
+  wrap.querySelectorAll('[data-rm]').forEach(btn => btn.onclick = async ()=>{
+    let list=[]; try{ const r=await T21.storage.get(`t21:${T21.user.email}:bookmarks`); if(r&&r.value) list=JSON.parse(r.value); }catch(_){}
+    list = list.filter(x=>x!==btn.dataset.rm);
+    await T21.storage.set(`t21:${T21.user.email}:bookmarks`, JSON.stringify(list));
+    refreshBookmarksList();
+    T21.toast('Bookmark removed');
+  });
+}
+
+function pageForTopic(id){
+  if(TOPICS.diet.some(t=>t.id===id)) return 'carcinogens.html';
+  if(TOPICS.additives.some(t=>t.id===id)) return 'additives.html';
+  if(TOPICS.environment.some(t=>t.id===id)) return 'lifestyle.html';
+  if(TOPICS.lifestyle.some(t=>t.id===id)) return 'lifestyle.html';
+  if(TOPICS.occupational.some(t=>t.id===id)) return 'lifestyle.html';
+  return 'index.html';
+}
+
+async function refreshMyQuestions(){
+  if(!T21.user) return;
+  const qs = await loadQuestions('mine');
+  const wrap = document.getElementById('myQuestions');
+  if(!qs.length){ wrap.innerHTML = `<div class="empty"><h3>No questions yet</h3><p>Use the "Ask question" button on any topic, or post in the Community Q&amp;A board.</p></div>`; return; }
+  wrap.innerHTML = qs.map(q=>`
+    <article style="background:var(--paper);border:1px solid var(--rule);padding:20px;margin-bottom:1px">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--mute);letter-spacing:.05em">${new Date(q.created).toLocaleString()}${q.topicName? ' · '+q.topicName:''}</div>
+      <h3 style="font-family:'Fraunces',serif;margin:6px 0 4px;font-weight:500;font-size:20px">${q.title}</h3>
+      ${q.body? `<div style="font-size:14px;color:var(--ink-soft);white-space:pre-wrap;line-height:1.55">${q.body.replace(/</g,'&lt;')}</div>`:''}
+      <div style="font-size:11px;color:var(--mute);margin-top:8px;letter-spacing:.05em;text-transform:uppercase">${(q.answers||[]).length} answer${(q.answers||[]).length===1?'':'s'}</div>
+    </article>
+  `).join('');
+}
+
+document.getElementById('newNote').addEventListener('click', ()=> openNoteEditor({}));
+document.getElementById('printNotes').addEventListener('click', async ()=>{
+  const notes = await loadNotes();
+  const w = window.open('','_blank','width=900,height=1100');
+  const body = notes.map(n=>`
+    <article style="border-bottom:1px solid #ccc;padding:12px 0">
+      <div style="font-size:11px;color:#666;letter-spacing:.05em">${new Date(n.updated||n.created).toLocaleString()}${n.topicName? ' · '+n.topicName:''}</div>
+      <h3 style="font-family:Georgia,serif;margin:6px 0;font-size:18px">${n.title || '(untitled)'}</h3>
+      <div style="white-space:pre-wrap;font-size:13px;line-height:1.55">${(n.body||'').replace(/</g,'&lt;')}</div>
+    </article>`).join('');
+  w.document.write(`<!doctype html><html><head><title>Team21 — My Notes</title>
+  <style>body{font-family:Georgia,serif;color:#111;padding:30px;max-width:900px;margin:0 auto}
+  h1{font-size:24px;margin:0 0 4px} .sub{color:#666;font-size:13px;margin-bottom:18px}
+  .footer{margin-top:24px;font-size:11px;color:#666;border-top:1px solid #ccc;padding-top:12px}
+  </style></head><body>
+  <h1>Team21 Health Platform — My Notes</h1>
+  <div class="sub">${T21.user.email} · Generated ${new Date().toLocaleString()}</div>
+  ${body || '<p>No notes.</p>'}
+  <div class="footer"><strong>Disclaimer:</strong> Informational use only. Not medical advice. © Innocent Forteh · Team21 Health Platform.</div>
+  <script>window.onload=()=>window.print()<\/script>
+  </body></html>`);
+  w.document.close();
+});
+
+function reflect(){
+  const u = T21.user;
+  document.getElementById('loginNeeded').style.display = u ? 'none' : 'block';
+  document.getElementById('signedInView').style.display = u ? 'block' : 'none';
+  if(u) refreshAll();
+}
+window.onUserAuthChange = reflect;
+setTimeout(reflect, 200);
+</script>
+</body>
+</html>

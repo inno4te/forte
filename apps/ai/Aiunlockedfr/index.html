@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Team21 Academy — Curriculum IA Déverrouillée</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --ink: #0d0d0d;
+    --paper: #f5f1eb;
+    --accent: #e8420a;
+    --gold: #c89a2e;
+    --mid: #4a4a3f;
+    --faint: #e0dbd2;
+    --deep: #0e1a2b;
+    --teal: #0f3d4f;
+    --w1: #1a3a5c;
+    --w2: #1e5c3a;
+    --w3: #5c3a1a;
+    --w4: #5c1a3a;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--paper); color: var(--ink); font-family: 'DM Sans', sans-serif; font-size: 15px; line-height: 1.65; overflow-x: hidden; }
+
+  .hero { background: var(--deep); color: var(--paper); padding: 64px 48px 56px; position: relative; overflow: hidden; }
+  .hero-topbar { position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, var(--accent), var(--gold)); }
+  .hero::before { content: ''; position: absolute; top: -100px; right: -100px; width: 500px; height: 500px; border-radius: 50%; background: var(--teal); opacity: 0.35; }
+  .hero::after { content: ''; position: absolute; bottom: -80px; left: 5%; width: 280px; height: 280px; border-radius: 50%; background: var(--gold); opacity: 0.07; }
+  .hero-inner { position: relative; z-index: 1; max-width: 900px; margin: 0 auto; }
+  .hero-eyebrow { display: flex; align-items: center; gap: 12px; font-size: 9.5px; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold); margin-bottom: 18px; }
+  .hero-eyebrow::after { content: ''; display: block; width: 48px; height: 1px; background: var(--gold); opacity: 0.4; }
+  .shield { width: 52px; height: 60px; flex-shrink: 0; margin-right: 8px; }
+  .shield svg { width: 100%; height: 100%; }
+  .hero-head { display: flex; align-items: flex-start; gap: 20px; margin-bottom: 20px; }
+  .hero h1 { font-family: 'Syne', sans-serif; font-size: clamp(2.2rem, 5vw, 3.5rem); font-weight: 800; line-height: 1.0; letter-spacing: -0.025em; }
+  .hero h1 em { font-style: normal; color: var(--accent); }
+  .hero h1 .sub { display: block; font-size: 0.48em; font-weight: 600; color: var(--gold); letter-spacing: 0.06em; text-transform: uppercase; margin-top: 6px; }
+  .hero-desc { font-size: 14.5px; color: #a8a49c; max-width: 660px; font-weight: 300; line-height: 1.75; margin-bottom: 28px; font-style: italic; }
+  .hero-pills { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 32px; }
+  .hero-pill { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 4px; padding: 6px 14px; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 500; color: var(--paper); }
+  .hero-pill span { color: var(--gold); margin-right: 6px; }
+  .register-btn { display: inline-flex; align-items: center; gap: 10px; background: var(--accent); color: white; text-decoration: none; font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 15px 32px; border-radius: 6px; box-shadow: 0 4px 24px rgba(232,66,10,0.35); transition: background 0.2s, transform 0.15s; position: relative; z-index: 1; }
+  .register-btn:hover { background: #c93508; transform: translateY(-2px); }
+  .register-btn .btn-icon { font-size: 17px; }
+
+  .weeks-wrap { max-width: 900px; margin: 44px auto 0; padding: 0 32px; display: flex; flex-direction: column; gap: 2px; }
+  .week-card { background: white; border-left: 4px solid transparent; overflow: hidden; }
+  .week-card:first-child { border-radius: 8px 8px 0 0; }
+  .week-card:last-child  { border-radius: 0 0 8px 8px; }
+  .week-card.w1 { border-left-color: var(--w1); }
+  .week-card.w2 { border-left-color: var(--w2); }
+  .week-card.w3 { border-left-color: var(--w3); }
+  .week-card.w4 { border-left-color: var(--w4); }
+  .week-header { padding: 20px 24px 16px; display: flex; align-items: flex-start; gap: 16px; cursor: pointer; user-select: none; }
+  .week-badge { flex-shrink: 0; width: 44px; height: 44px; border-radius: 7px; display: flex; align-items: center; justify-content: center; font-family: 'Syne', sans-serif; font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; text-align: center; line-height: 1.2; color: white; }
+  .w1 .week-badge { background: var(--w1); }
+  .w2 .week-badge { background: var(--w2); }
+  .w3 .week-badge { background: var(--w3); }
+  .w4 .week-badge { background: var(--w4); }
+  .week-title-block { flex: 1; }
+  .week-num  { font-size: 9px; text-transform: uppercase; letter-spacing: 0.18em; color: #999; font-weight: 500; margin-bottom: 3px; }
+  .week-title { font-family: 'Syne', sans-serif; font-size: 1.05rem; font-weight: 700; color: var(--ink); line-height: 1.2; }
+  .week-objective { margin-top: 3px; font-size: 12px; color: var(--mid); font-weight: 300; }
+  .week-toggle { flex-shrink: 0; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; color: #bbb; font-size: 18px; transition: transform 0.25s; margin-top: 4px; }
+  .week-card.open .week-toggle { transform: rotate(180deg); color: var(--accent); }
+  .week-body { display: none; padding: 0 24px 24px 84px; }
+  .week-card.open .week-body { display: block; }
+
+  .days-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 8px; margin-bottom: 16px; }
+  .day-card { background: var(--faint); border-radius: 6px; padding: 14px 16px; }
+  .day-label { font-size: 8px; text-transform: uppercase; letter-spacing: 0.15em; color: var(--gold); font-weight: 700; margin-bottom: 6px; }
+  .day-title { font-family: 'Syne', sans-serif; font-size: 12.5px; font-weight: 700; color: var(--ink); margin-bottom: 8px; line-height: 1.25; }
+  .day-items { list-style: none; }
+  .day-items li { font-size: 11.5px; color: var(--mid); font-weight: 300; line-height: 1.4; padding: 2px 0 2px 14px; position: relative; }
+  .day-items li::before { content: '·'; position: absolute; left: 4px; color: var(--accent); font-weight: 700; font-size: 14px; top: -1px; }
+
+  .plaibox-strip { background: var(--ink); color: var(--paper); border-radius: 6px; padding: 12px 16px; font-size: 12px; display: flex; align-items: flex-start; gap: 10px; margin-bottom: 10px; }
+  .plaibox-strip .pb-label { flex-shrink: 0; font-family: 'Syne', sans-serif; font-size: 7.5px; text-transform: uppercase; letter-spacing: 0.15em; color: var(--gold); padding-top: 2px; font-weight: 700; white-space: nowrap; }
+
+  .tools-row { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+  .tool-chip { background: white; border: 1px solid var(--faint); border-radius: 4px; padding: 4px 10px; font-size: 11px; font-weight: 500; color: var(--mid); }
+
+  .outcome-box { background: var(--ink); color: var(--paper); border-radius: 5px; padding: 11px 15px; font-size: 12px; display: flex; align-items: flex-start; gap: 10px; }
+  .outcome-box .out-label { flex-shrink: 0; font-family: 'Syne', sans-serif; font-size: 7.5px; text-transform: uppercase; letter-spacing: 0.15em; color: var(--gold); padding-top: 2px; font-weight: 700; }
+
+  .divider { height: 1px; background: var(--faint); margin: 0 24px; }
+
+  .framework-section { max-width: 900px; margin: 44px auto 0; padding: 0 32px; }
+  .section-eyebrow { font-size: 10px; text-transform: uppercase; letter-spacing: 0.2em; color: var(--accent); font-weight: 600; margin-bottom: 8px; }
+  .section-title { font-family: 'Syne', sans-serif; font-size: 1.4rem; font-weight: 800; color: var(--ink); margin-bottom: 18px; line-height: 1.2; }
+  .framework-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 8px; }
+  .fw-card { background: white; border-radius: 8px; padding: 18px; border-top: 3px solid var(--gold); display: flex; flex-direction: column; gap: 8px; }
+  .fw-card .fw-letter { font-family: 'Syne', sans-serif; font-size: 1.8rem; font-weight: 800; color: transparent; -webkit-text-stroke: 2px var(--accent); line-height: 1; }
+  .fw-card .fw-word { font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700; color: var(--ink); }
+  .fw-card .fw-desc { font-size: 11.5px; color: var(--mid); font-weight: 300; line-height: 1.4; }
+
+  .commandments { max-width: 900px; margin: 44px auto 0; padding: 0 32px; }
+  .cmd-box { background: var(--deep); border-radius: 10px; padding: 36px 40px; position: relative; overflow: hidden; display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .cmd-box::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--accent), var(--gold)); }
+  .cmd-item { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 10px; color: var(--paper); }
+  .cmd-num { font-family: 'Syne', sans-serif; font-size: 2rem; font-weight: 800; color: transparent; -webkit-text-stroke: 1.5px var(--gold); line-height: 1; }
+  .cmd-title { font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700; color: var(--gold); text-transform: uppercase; letter-spacing: 0.06em; }
+  .cmd-desc { font-size: 12px; color: #888; font-weight: 300; line-height: 1.5; }
+
+  .transformation { max-width: 900px; margin: 44px auto 0; padding: 0 32px; }
+  .transform-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 8px; }
+  .transform-item { background: var(--ink); color: var(--paper); border-radius: 7px; padding: 12px 14px; font-size: 12.5px; display: flex; gap: 8px; align-items: flex-start; }
+  .transform-item .tick { color: #4ccc84; font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+
+  .cta-footer { max-width: 900px; margin: 44px auto 0; padding: 0 32px 72px; }
+  .cta-box { background: var(--deep); border-radius: 10px; padding: 44px 44px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: space-between; gap: 32px; flex-wrap: wrap; }
+  .cta-box::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--accent), var(--gold)); }
+  .cta-left { flex: 1; min-width: 260px; }
+  .cta-eyebrow { font-size: 9px; text-transform: uppercase; letter-spacing: 0.2em; color: var(--gold); font-weight: 600; margin-bottom: 10px; }
+  .cta-title { font-family: 'Syne', sans-serif; font-size: 1.5rem; font-weight: 800; color: var(--paper); line-height: 1.15; margin-bottom: 20px; }
+  .cta-title em { font-style: normal; color: var(--accent); }
+  .contact-row { display: flex; flex-direction: column; gap: 8px; }
+  .contact-item { display: flex; align-items: center; gap: 10px; font-size: 14px; color: var(--paper); font-weight: 500; }
+  .contact-item a { color: var(--paper); text-decoration: none; font-family: 'Syne', sans-serif; font-weight: 700; }
+  .contact-item a:hover { color: var(--gold); }
+  .cta-right { flex-shrink: 0; display: flex; flex-direction: column; align-items: flex-end; gap: 16px; }
+  .tagline { font-family: 'Syne', sans-serif; font-size: 0.9rem; font-weight: 700; color: #555; text-transform: uppercase; letter-spacing: 0.08em; text-align: right; line-height: 1.6; }
+  .tagline span { color: var(--gold); display: block; }
+
+  @keyframes fadeUp { from { opacity:0; transform:translateY(18px); } to { opacity:1; transform:translateY(0); } }
+  .hero-inner > * { animation: fadeUp 0.6s ease both; }
+  .hero-eyebrow { animation-delay:0.05s; } .hero-head { animation-delay:0.15s; } .hero-desc { animation-delay:0.25s; } .hero-pills { animation-delay:0.35s; } .register-btn { animation-delay:0.45s; }
+
+  @media(max-width:640px){
+    .hero { padding:48px 24px 40px; }
+    .weeks-wrap,.framework-section,.commandments,.transformation,.cta-footer { padding-left:20px; padding-right:20px; }
+    .week-body { padding-left:20px; }
+    .days-grid { grid-template-columns:1fr; }
+    .cmd-box { grid-template-columns:1fr; }
+    .cta-box { flex-direction:column; }
+    .cta-right { align-items:flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-topbar"></div>
+  <div class="hero-inner">
+    <div class="hero-eyebrow">Team21 Academy · Programme de Littératie en IA</div>
+    <div class="hero-head">
+      <div class="shield">
+        <svg viewBox="0 0 52 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M26 2L4 12V30C4 43 14 54 26 58C38 54 48 43 48 30V12L26 2Z" fill="#1a3a5c" stroke="#c89a2e" stroke-width="2"/>
+          <path d="M26 8L10 17V30C10 40 17 49 26 52C35 49 42 40 42 30V17L26 8Z" fill="#0e1a2b"/>
+          <text x="26" y="36" font-family="Syne" font-size="13" font-weight="800" fill="#c89a2e" text-anchor="middle">21</text>
+        </svg>
+      </div>
+      <h1>
+        IA Déverrouillée
+        <em>Curriculum</em>
+        <span class="sub">Team21 Academy · Guide Complet d'Apprentissage</span>
+      </h1>
+    </div>
+    <p class="hero-desc">
+      Un programme pratique et immersif conçu pour équiper les apprenants des connaissances, outils et état d'esprit stratégique nécessaires pour appliquer l'Intelligence Artificielle dans des contextes réels — des fondamentaux des données à la création de contenu, en passant par l'entrepreneuriat, le leadership et l'innovation numérique.
+    </p>
+    <div class="hero-pills">
+      <div class="hero-pill"><span>📅</span> 4 Semaines · 8 Jours</div>
+      <div class="hero-pill"><span>🛠</span> Pratique · Exercices PlAIbox</div>
+      <div class="hero-pill"><span>🌍</span> Bilingue FR/EN</div>
+      <div class="hero-pill"><span>🎓</span> Capstone + Remise de Certificats</div>
+      <div class="hero-pill"><span>👥</span> 500+ Alumni dans le Monde</div>
+    </div>
+    <a class="register-btn" href="https://wa.me/237694294406?text=Je%20suis%20int%C3%A9ress%C3%A9%20par%20IA%20D%C3%A9verrouill%C3%A9e" target="_blank">
+      <span class="btn-icon">💬</span> S'inscrire sur WhatsApp
+    </a>
+  </div>
+</header>
+
+<div class="weeks-wrap">
+
+  <!-- S1 -->
+  <div class="week-card w1 open">
+    <div class="week-header" onclick="toggle(this)">
+      <div class="week-badge">S1</div>
+      <div class="week-title-block">
+        <div class="week-num">Semaine 1</div>
+        <div class="week-title">Fondements de l'Intelligence Artificielle</div>
+        <div class="week-objective">Comprendre le fonctionnement de l'IA, maîtriser l'ingénierie des prompts et commencer à appliquer les outils IA immédiatement.</div>
+      </div>
+      <div class="week-toggle">▾</div>
+    </div>
+    <div class="week-body">
+      <div class="days-grid">
+        <div class="day-card">
+          <div class="day-label">Jour 1</div>
+          <div class="day-title">Introduction aux Données &amp; Concepts Fondamentaux de l'IA</div>
+          <ul class="day-items">
+            <li>Évolution du Web : Web 1.0 → 2.0 → 3.0</li>
+            <li>Qu'est-ce que l'Intelligence Artificielle ?</li>
+            <li>Machine Learning : supervisé, non supervisé, par renforcement</li>
+            <li>Types d'IA : GenAI, Prédictive, GAN, GPT</li>
+            <li>IA Étroite vs IAG vs IAS</li>
+            <li>Formule du succès IA : Données + Personnes + Calcul + Algorithmes</li>
+            <li>Pratique : démos Gemini, Grok, Suno, Copilot</li>
+          </ul>
+        </div>
+        <div class="day-card">
+          <div class="day-label">Jour 2</div>
+          <div class="day-title">Ingénierie des Prompts</div>
+          <ul class="day-items">
+            <li>L'art et la science de formuler des instructions efficaces</li>
+            <li>Stratégies : Zéro-shot, Un-shot, Few-shot</li>
+            <li>Cadre CLEAR : Contexte · Langage · Attendu · Audience · Rôle</li>
+            <li>Fenêtre de contexte &amp; capacité multi-modale</li>
+            <li>Panorama des outils : ChatGPT, Gemini, Claude, Copilot, Grok, Perplexity</li>
+            <li>Outils spécialisés : Suno, Ideogram, InVideo, Gamma, NotebookLM, ElevenLabs</li>
+            <li>Commandements Team21 : Investiguer · Vérifier · Ne Pas Nuire</li>
+          </ul>
+        </div>
+      </div>
+      <div class="plaibox-strip">
+        <span class="pb-label">🧩 PlAIbox S1</span>
+        <span>Créer une ONG de A à Z avec Claude/Gemini/ChatGPT — Statuts, Manuel RH, Manuel Financier, documents juridiques, organigramme, sources de financement, et spot radio Suno. Puis : générer des photos de bénéficiaires avec Ideogram/Grok, refaire le logo avec InsMind, pitcher via Gamma, simuler un entretien avec Gemini vocal.</span>
+      </div>
+      <div class="tools-row">
+        <div class="tool-chip">ChatGPT</div><div class="tool-chip">Gemini</div><div class="tool-chip">Claude</div>
+        <div class="tool-chip">Grok</div><div class="tool-chip">Suno</div><div class="tool-chip">Ideogram</div>
+        <div class="tool-chip">InsMind</div><div class="tool-chip">Gamma</div><div class="tool-chip">InVideo</div>
+        <div class="tool-chip">NotebookLM</div><div class="tool-chip">ElevenLabs</div>
+      </div>
+      <div class="outcome-box">
+        <span class="out-label">Résultat</span>
+        <span>Les apprenants comprennent ce qu'est l'IA, d'où elle vient et comment communiquer avec elle efficacement. Ils repartent avec des prompts fonctionnels, des productions IA réelles et un projet ONG complet comme preuve de maîtrise.</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- S2 -->
+  <div class="week-card w2">
+    <div class="week-header" onclick="toggle(this)">
+      <div class="week-badge">S2</div>
+      <div class="week-title-block">
+        <div class="week-num">Semaine 2</div>
+        <div class="week-title">IA pour la Création, le Développement &amp; les Affaires</div>
+        <div class="week-objective">Utiliser l'IA pour créer du contenu, écrire des livres, produire des produits numériques et lancer ou développer une entreprise.</div>
+      </div>
+      <div class="week-toggle">▾</div>
+    </div>
+    <div class="week-body">
+      <div class="days-grid">
+        <div class="day-card">
+          <div class="day-label">Jour 3</div>
+          <div class="day-title">Création de Contenu &amp; Rédaction avec l'IA</div>
+          <ul class="day-items">
+            <li>IA multi-modale : image, voix, texte, vidéo, données capteurs</li>
+            <li>Cas d'usage : réseaux sociaux, éducation, santé, agriculture, droit</li>
+            <li>Écrire 2 livres : titres, 7 chapitres, illustrations, couverture</li>
+            <li>Comparaison des outils d'écriture : ChatGPT, Claude, Gemini</li>
+            <li>Création de podcast avec NotebookLM</li>
+            <li>Production d'audiobook avec ElevenLabs</li>
+          </ul>
+        </div>
+        <div class="day-card">
+          <div class="day-label">Jour 4</div>
+          <div class="day-title">Entrepreneuriat avec l'IA</div>
+          <ul class="day-items">
+            <li>Business Model Canvas (BMC) — 9 blocs fondamentaux</li>
+            <li>Formule ROI &amp; objectifs minimaux</li>
+            <li>Cadre SOSTAC : Situation · Objectifs · Stratégie · Tactiques · Action · Contrôle</li>
+            <li>Tendances Réseaux Sociaux Cameroun 2025 : Facebook, WhatsApp, TikTok, Instagram, LinkedIn</li>
+            <li>Tactiques de vente par plateforme &amp; données ROI</li>
+            <li>Fiche de prompts IA pour entrepreneurs &amp; créateurs</li>
+            <li>WhatsApp Business : catalogues, listes de diffusion, automatisation</li>
+          </ul>
+        </div>
+      </div>
+      <div class="plaibox-strip">
+        <span class="pb-label">🧩 PlAIbox S2</span>
+        <span>Faire évoluer votre ONG : demande de subvention 750K$, rédiger et publier un livre bilingue pour enfants en PDF + audiobook (ElevenLabs), créer un podcast (NotebookLM), publier sur LinkedIn, lancer 2 activités secondaires avec BMC complet, recruter des PDI, produire une vidéo de succès pour YouTube, et annoncer un bras philanthropique.</span>
+      </div>
+      <div class="tools-row">
+        <div class="tool-chip">ChatGPT</div><div class="tool-chip">Claude</div><div class="tool-chip">Gemini</div>
+        <div class="tool-chip">NotebookLM</div><div class="tool-chip">ElevenLabs</div><div class="tool-chip">Canva</div>
+        <div class="tool-chip">LinkedIn</div><div class="tool-chip">YouTube</div><div class="tool-chip">Gamma</div>
+        <div class="tool-chip">InVideo</div>
+      </div>
+      <div class="outcome-box">
+        <span class="out-label">Résultat</span>
+        <span>Les apprenants peuvent créer du contenu numérique professionnel, écrire et publier des livres, produire des podcasts et concevoir une stratégie commerciale avec l'IA — le tout lié à un projet de groupe en cours et au lancement d'une activité secondaire personnelle.</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- S3 -->
+  <div class="week-card w3">
+    <div class="week-header" onclick="toggle(this)">
+      <div class="week-badge">S3</div>
+      <div class="week-title-block">
+        <div class="week-num">Semaine 3</div>
+        <div class="week-title">Innovation, Architecture &amp; Leadership</div>
+        <div class="week-objective">Penser stratégiquement avec l'IA — de l'ingénierie et la programmation au leadership serviteur et à la planification de croissance personnelle.</div>
+      </div>
+      <div class="week-toggle">▾</div>
+    </div>
+    <div class="week-body">
+      <div class="days-grid">
+        <div class="day-card">
+          <div class="day-label">Jour 5</div>
+          <div class="day-title">Entrepreneuriat, Ingénierie &amp; Programmation avec l'IA</div>
+          <ul class="day-items">
+            <li>Applications IA avancées : systèmes agentiques</li>
+            <li>Construire votre propre agent Coach Business IA</li>
+            <li>Optimisation de CV avec la méthode STAR</li>
+            <li>Ingénierie : Du terrain à la maison (Prompt Agentic Construction)</li>
+            <li>Programmation : Créer votre premier jeu HTML avec l'IA</li>
+            <li>Génération de revenus : services IA, cours, produits numériques</li>
+          </ul>
+        </div>
+        <div class="day-card">
+          <div class="day-label">Jour 6</div>
+          <div class="day-title">GPTs, Leadership &amp; Croissance Personnelle</div>
+          <ul class="day-items">
+            <li>GPTs &amp; pensée architecturale</li>
+            <li>Principes du leadership serviteur</li>
+            <li>Développement de votre mission personnelle</li>
+            <li>Parcours Leadership Team21 (Prompt Agentic)</li>
+            <li>Analyse SWOT sur 7 domaines de vie</li>
+            <li>Plan de Croissance Personnelle sur 3 ans : Prier · Planifier · Personnes</li>
+            <li>Cadre OKR + audit équilibre de vie</li>
+            <li>Présentations de projets de groupe (15 min chacune)</li>
+          </ul>
+        </div>
+      </div>
+      <div class="plaibox-strip">
+        <span class="pb-label">🧩 PlAIbox S3</span>
+        <span>Utiliser le Prompt Agentic Construction pour parcourir les 7 étapes — identification du terrain, étude du sol, dessins architecturaux, visualisation 3D et Bordereau de Quantités complet en FCFA. Séparément, compléter le Parcours Leadership pour produire votre Mission, SWOT et Plan de Croissance 3P.</span>
+      </div>
+      <div class="tools-row">
+        <div class="tool-chip">ChatGPT</div><div class="tool-chip">Claude</div><div class="tool-chip">Gemini</div>
+        <div class="tool-chip">Copilot</div><div class="tool-chip">Perplexity</div><div class="tool-chip">AI Studio</div>
+        <div class="tool-chip">Runway ML</div><div class="tool-chip">Grok</div>
+      </div>
+      <div class="outcome-box">
+        <span class="out-label">Résultat</span>
+        <span>Les apprenants peuvent concevoir des flux de travail agentiques, créer des produits numériques de base avec l'IA et produire un plan de leadership personnel complet ancré dans les valeurs du leadership serviteur.</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- S4 -->
+  <div class="week-card w4">
+    <div class="week-header" onclick="toggle(this)">
+      <div class="week-badge">S4</div>
+      <div class="week-title-block">
+        <div class="week-num">Semaine 4</div>
+        <div class="week-title">Projet Final — Construire, Présenter &amp; Diplômer</div>
+        <div class="week-objective">Présenter les projets de groupe, livrer le projet capstone et être certifié alumnus IA Déverrouillée.</div>
+      </div>
+      <div class="week-toggle">▾</div>
+    </div>
+    <div class="week-body">
+      <div class="days-grid">
+        <div class="day-card">
+          <div class="day-label">Jour 7</div>
+          <div class="day-title">Présentations Finales des Projets de Groupe</div>
+          <ul class="day-items">
+            <li>Chaque groupe présente son entreprise avec BMC + SOSTAC</li>
+            <li>Publications réseaux sociaux &amp; teasers examinés en direct</li>
+            <li>Vidéos et produits numériques démontrés</li>
+            <li>Début des présentations capstone individuelles</li>
+            <li>Retours des pairs &amp; discussion de classe</li>
+          </ul>
+        </div>
+        <div class="day-card">
+          <div class="day-label">Jour 8</div>
+          <div class="day-title">Capstone Final &amp; Remise des Diplômes</div>
+          <ul class="day-items">
+            <li>Présentations capstone individuelles finales</li>
+            <li>Commentaires &amp; recommandations du formateur</li>
+            <li>Cérémonie de remise des certificats</li>
+            <li>Rejoindre le réseau des alumni Team21</li>
+            <li>Prochaines étapes : Level 2, AI ToT, classes spécialisées</li>
+          </ul>
+        </div>
+      </div>
+      <div class="plaibox-strip">
+        <span class="pb-label">🎓 Capstone</span>
+        <span>Chaque apprenant présente un projet complet qui intègre les compétences des 4 semaines — un produit numérique en ligne, du contenu publié, un plan d'affaires ou un outil déployé qui démontre une vraie maîtrise de l'IA. Exemples passés : livres publiés, applications fonctionnelles, agences de marketing numérique, nouvelles entreprises, plateformes ONG.</span>
+      </div>
+      <div class="outcome-box">
+        <span class="out-label">Résultat</span>
+        <span>Chaque diplômé repart avec un certificat, un portfolio de travaux créés avec l'IA, et un accès complet à la communauté alumni Team21 — prêt pour le Niveau 2, le programme AI ToT ou la génération de revenus immédiate.</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- CLEAR FRAMEWORK -->
+<section class="framework-section">
+  <div class="section-eyebrow">🎯 Méthodologie Centrale</div>
+  <div class="section-title">Le Cadre de Prompting CLEAR</div>
+  <div class="framework-grid">
+    <div class="fw-card">
+      <div class="fw-letter">C</div>
+      <div class="fw-word">Contexte</div>
+      <div class="fw-desc">Fournissez des informations de fond pour que l'IA comprenne pleinement votre situation.</div>
+    </div>
+    <div class="fw-card">
+      <div class="fw-letter">L</div>
+      <div class="fw-word">Langage &amp; Ton</div>
+      <div class="fw-desc">Précisez le style de communication souhaité — professionnel, décontracté, enthousiaste, multilingue.</div>
+    </div>
+    <div class="fw-card">
+      <div class="fw-letter">E</div>
+      <div class="fw-word">Format Attendu</div>
+      <div class="fw-desc">Décrivez la structure de sortie : liste, tableau, essai, PDF, diaporama ou script.</div>
+    </div>
+    <div class="fw-card">
+      <div class="fw-letter">A</div>
+      <div class="fw-word">Audience</div>
+      <div class="fw-desc">Identifiez le destinataire — débutants, Gen Z, professionnels, ou une région spécifique.</div>
+    </div>
+    <div class="fw-card">
+      <div class="fw-letter">R</div>
+      <div class="fw-word">Rôle / Persona</div>
+      <div class="fw-desc">Dites à l'IA qui incarner : « Tu es un expert en marketing avec 10 ans d'expérience au Cameroun. »</div>
+    </div>
+  </div>
+</section>
+
+<!-- COMMANDEMENTS -->
+<section class="commandments">
+  <div class="section-eyebrow" style="margin-top:44px;">⚡ Commandements Team21 IA</div>
+  <div class="cmd-box" style="margin-top:12px;">
+    <div class="cmd-item">
+      <div class="cmd-num">01</div>
+      <div class="cmd-title">Investiguer</div>
+      <div class="cmd-desc">Comprendre ce que vous faites et pourquoi avant d'appliquer tout outil IA.</div>
+    </div>
+    <div class="cmd-item">
+      <div class="cmd-num">02</div>
+      <div class="cmd-title">Vérifier</div>
+      <div class="cmd-desc">Toujours vérifier les sorties IA pour les hallucinations. Maintenir l'humain dans la boucle.</div>
+    </div>
+    <div class="cmd-item">
+      <div class="cmd-num">03</div>
+      <div class="cmd-title">Ne Pas Nuire</div>
+      <div class="cmd-desc">Utiliser l'IA de manière éthique. Ne jamais l'utiliser à des fins nuisibles ou trompeuses.</div>
+    </div>
+  </div>
+</section>
+
+<!-- TRANSFORMATION -->
+<section class="transformation" style="margin-top:44px;">
+  <div class="section-eyebrow">✅ Transformation Finale</div>
+  <div class="section-title">Ce Que Chaque Diplômé IA Déverrouillée Possède</div>
+  <div class="transform-grid">
+    <div class="transform-item"><span class="tick">✓</span><span>Maîtrise de 10+ outils IA</span></div>
+    <div class="transform-item"><span class="tick">✓</span><span>Livres &amp; contenu numérique publiés</span></div>
+    <div class="transform-item"><span class="tick">✓</span><span>Un plan d'affaires opérationnel (BMC + SOSTAC)</span></div>
+    <div class="transform-item"><span class="tick">✓</span><span>Présence active sur les réseaux sociaux</span></div>
+    <div class="transform-item"><span class="tick">✓</span><span>Podcast &amp; audiobook produits</span></div>
+    <div class="transform-item"><span class="tick">✓</span><span>Un plan de croissance personnelle en leadership</span></div>
+    <div class="transform-item"><span class="tick">✓</span><span>Un projet capstone &amp; portfolio</span></div>
+    <div class="transform-item"><span class="tick">✓</span><span>Certificat de réussite</span></div>
+    <div class="transform-item"><span class="tick">✓</span><span>Accès au réseau alumni Team21</span></div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-footer">
+  <div class="cta-box">
+    <div class="cta-left">
+      <div class="cta-eyebrow">📲 Prêt à Déverrouiller Votre Potentiel IA ?</div>
+      <div class="cta-title">Rejoignez la prochaine<br/><em>cohorte IA Déverrouillée.</em></div>
+      <div class="contact-row">
+        <div class="contact-item"><span>📞</span><a href="tel:+237674917169">674 91 71 69</a></div>
+        <div class="contact-item"><span>📞</span><a href="tel:+237694294406">694 29 44 06</a></div>
+        <div class="contact-item"><span>✉️</span><a href="mailto:team21online@gmail.com">team21online@gmail.com</a></div>
+      </div>
+      <a class="register-btn" href="https://wa.me/237694294406?text=Je%20suis%20int%C3%A9ress%C3%A9%20par%20IA%20D%C3%A9verrouill%C3%A9e" target="_blank" style="margin-top:24px;">
+        <span class="btn-icon">💬</span> S'inscrire sur WhatsApp
+      </a>
+    </div>
+    <div class="cta-right">
+      <div class="tagline">
+        Investiguer.
+        <span>Comprendre.</span>
+        Appliquer.
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  function toggle(header) {
+    const card = header.closest('.week-card');
+    card.classList.toggle('open');
+  }
+</script>
+</body>
+</html>

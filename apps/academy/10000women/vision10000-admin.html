@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vision 10,000 — Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --plum-950:#1c0a22; --plum-900:#2a0f33; --plum-800:#3a1544;
+    --magenta-500:#e0367f; --magenta-400:#f0568f; --rose-300:#f6a8c4;
+    --gold-400:#d9b26a; --gold-300:#e8cd94; --ivory-50:#fbf7f5;
+    --glass-fill: rgba(255,255,255,0.08); --glass-border: rgba(255,255,255,0.16);
+    --ok:#4fd18b; --warn:#f0b84a; --err:#f0568f;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    font-family:'Manrope',sans-serif; color:var(--ivory-50); min-height:100vh;
+    background: radial-gradient(circle at 15% 0%, #3a1544 0%, #240c2c 45%, #170718 100%);
+  }
+  h1,h2,h3{font-family:'Fraunces',serif; font-weight:700;}
+  button{font-family:inherit; cursor:pointer;}
+  input, select{font-family:inherit;}
+  ::selection{background:var(--magenta-500); color:#fff;}
+
+  /* ---------- Login screen ---------- */
+  #loginScreen{min-height:100vh; display:flex; align-items:center; justify-content:center; padding:24px;}
+  .login-card{
+    width:100%; max-width:380px; padding:40px 34px; border-radius:26px;
+    background: linear-gradient(135deg, rgba(255,255,255,0.14), rgba(255,255,255,0.06));
+    backdrop-filter: blur(18px); border:1px solid var(--glass-border);
+    box-shadow: 0 24px 60px rgba(28,10,34,0.5);
+  }
+  .login-card .mark{width:44px; height:44px; border-radius:50%; margin-bottom:18px;
+    background: conic-gradient(from 210deg, var(--magenta-400), var(--gold-400), var(--rose-300), var(--magenta-400));}
+  .login-card h1{font-size:1.4rem; margin-bottom:4px;}
+  .login-card p{opacity:0.65; font-size:0.86rem; margin-bottom:26px;}
+  .field{margin-bottom:16px;}
+  .field label{display:block; font-size:0.72rem; font-weight:700; letter-spacing:0.05em; text-transform:uppercase; color:var(--gold-300); margin-bottom:7px;}
+  .field input, .field select{
+    width:100%; padding:12px 14px; border-radius:12px; background:rgba(255,255,255,0.08);
+    border:1px solid var(--glass-border); color:var(--ivory-50); font-size:0.94rem;
+  }
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center; gap:8px;
+    padding:13px 22px; border-radius:999px; border:none; font-weight:700; font-size:0.88rem;
+    transition: transform .2s, box-shadow .2s;
+  }
+  .btn-primary{color:#2a0f1c; width:100%;
+    background: linear-gradient(135deg, var(--gold-300), var(--gold-400) 55%, var(--magenta-400));
+    box-shadow:0 10px 26px rgba(217,178,106,0.3);}
+  .btn-primary:hover{transform:translateY(-2px);}
+  .btn-ghost{background:rgba(255,255,255,0.08); border:1px solid var(--glass-border); color:var(--ivory-50);}
+  .btn-ghost:hover{background:rgba(255,255,255,0.15);}
+  .btn-sm{padding:8px 16px; font-size:0.78rem;}
+  .btn-danger{background:rgba(240,86,143,0.18); border:1px solid rgba(240,86,143,0.4); color:#fff;}
+  .login-error{color:var(--err); font-size:0.82rem; margin-top:12px; min-height:1.2em;}
+  .login-hint{margin-top:22px; font-size:0.74rem; opacity:0.5; line-height:1.5;}
+
+  /* ---------- Dashboard shell ---------- */
+  #dashboard{display:none; min-height:100vh;}
+  #dashboard.show{display:flex;}
+  .sidebar{
+    width:230px; flex-shrink:0; padding:26px 18px; border-right:1px solid var(--glass-border);
+    display:flex; flex-direction:column; gap:4px;
+  }
+  .sidebar .brand{display:flex; align-items:center; gap:10px; margin-bottom:28px; padding:0 8px;}
+  .sidebar .brand .mark{width:30px; height:30px; border-radius:50%; flex-shrink:0;
+    background: conic-gradient(from 210deg, var(--magenta-400), var(--gold-400), var(--rose-300), var(--magenta-400));}
+  .sidebar .brand span{font-family:'Fraunces',serif; font-weight:700; font-size:1.02rem;}
+  .navitem{
+    display:flex; align-items:center; gap:10px; padding:11px 14px; border-radius:12px;
+    font-size:0.88rem; font-weight:600; opacity:0.7; transition:all .2s; border:none; background:transparent; color:var(--ivory-50); text-align:left; width:100%;
+  }
+  .navitem:hover{opacity:1; background:rgba(255,255,255,0.06);}
+  .navitem.active{opacity:1; background:rgba(255,255,255,0.1); box-shadow:inset 0 0 0 1px var(--glass-border);}
+  .sidebar .spacer{flex:1;}
+  .sidebar .logout{opacity:0.55; font-size:0.8rem; padding:11px 14px;}
+  .sidebar .logout:hover{opacity:1;}
+  .sidebar .credit{opacity:0.35; font-size:0.7rem; padding:6px 14px 2px;}
+
+  .main{flex:1; padding:32px 40px; overflow-x:auto;}
+  .view{display:none;}
+  .view.active{display:block; animation:fadeIn .3s ease;}
+  @keyframes fadeIn{from{opacity:0;} to{opacity:1;}}
+  .view-head{display:flex; align-items:center; justify-content:space-between; margin-bottom:26px; flex-wrap:wrap; gap:14px;}
+  .view-head h2{font-size:1.5rem;}
+  .view-head p{opacity:0.6; font-size:0.86rem; margin-top:4px;}
+
+  .card{
+    background: linear-gradient(135deg, rgba(255,255,255,0.09), rgba(255,255,255,0.04));
+    border:1px solid var(--glass-border); border-radius:20px; padding:22px;
+  }
+  .stat-grid{display:grid; grid-template-columns:repeat(auto-fit, minmax(170px,1fr)); gap:16px; margin-bottom:26px;}
+  .stat-card .n{font-family:'Fraunces',serif; font-size:1.9rem; font-weight:700; color:var(--gold-300);}
+  .stat-card .l{font-size:0.76rem; opacity:0.65; margin-top:4px;}
+
+  table{width:100%; border-collapse:collapse; font-size:0.85rem;}
+  thead th{
+    text-align:left; font-size:0.68rem; letter-spacing:0.05em; text-transform:uppercase;
+    opacity:0.55; padding:10px 12px; border-bottom:1px solid var(--glass-border); white-space:nowrap;
+  }
+  tbody td{padding:12px; border-bottom:1px solid rgba(255,255,255,0.06); vertical-align:middle;}
+  tbody tr:hover{background:rgba(255,255,255,0.03);}
+  .pill{display:inline-block; padding:4px 11px; border-radius:999px; font-size:0.72rem; font-weight:700;}
+  .pill.paid{background:rgba(79,209,139,0.18); color:var(--ok);}
+  .pill.pending{background:rgba(240,184,74,0.18); color:var(--warn);}
+  .pill.waived{background:rgba(224,54,127,0.18); color:var(--rose-300);}
+  select.inline-select, input.inline-input{
+    background:rgba(255,255,255,0.07); border:1px solid var(--glass-border); color:var(--ivory-50);
+    border-radius:9px; padding:6px 9px; font-size:0.8rem; max-width:170px;
+  }
+  select.inline-select option{color:#111;}
+  .toolbar{display:flex; gap:12px; flex-wrap:wrap; margin-bottom:18px; align-items:center;}
+  .toolbar input, .toolbar select{
+    background:rgba(255,255,255,0.07); border:1px solid var(--glass-border); color:var(--ivory-50);
+    border-radius:12px; padding:10px 14px; font-size:0.86rem;
+  }
+  .toolbar select option{color:#111;}
+  .table-wrap{overflow-x:auto;}
+  .empty-state{padding:40px; text-align:center; opacity:0.6; font-size:0.9rem;}
+  .toast{
+    position:fixed; bottom:24px; right:24px; padding:13px 22px; border-radius:14px; font-size:0.85rem; font-weight:700;
+    background:rgba(20,10,25,0.92); border:1px solid var(--glass-border); opacity:0; transform:translateY(16px);
+    transition:all .3s ease; pointer-events:none; z-index:400;
+  }
+  .toast.show{opacity:1; transform:translateY(0);}
+  .toast.err{color:var(--err);}
+  .toast.ok{color:var(--ok);}
+
+  .mini-form{display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:12px; margin-bottom:16px;}
+  .mini-form input, .mini-form select{
+    background:rgba(255,255,255,0.07); border:1px solid var(--glass-border); color:var(--ivory-50);
+    border-radius:10px; padding:10px 12px; font-size:0.85rem;
+  }
+  .mentor-card{display:flex; justify-content:space-between; align-items:center; padding:14px 16px; border-radius:14px; background:rgba(255,255,255,0.04); margin-bottom:10px;}
+  .mentor-thumb{
+    width:38px; height:38px; border-radius:50%; flex-shrink:0; background-size:cover; background-position:center;
+    background-color:rgba(255,255,255,0.08); border:1px solid var(--glass-border);
+    display:flex; align-items:center; justify-content:center; font-size:0.68rem; font-weight:700; opacity:0.85;
+  }
+  .mentor-card .mname{font-weight:700; font-size:0.9rem;}
+  .mentor-card .mmeta{font-size:0.76rem; opacity:0.6;}
+  .coord-row{display:flex; align-items:center; gap:14px; padding:12px 0; border-bottom:1px solid rgba(255,255,255,0.06);}
+  .coord-row .rname{width:110px; font-weight:700; font-size:0.86rem; flex-shrink:0;}
+  .coord-row input{flex:1;}
+
+  @media (max-width:860px){
+    #dashboard.show{flex-direction:column;}
+    .sidebar{width:100%; flex-direction:row; overflow-x:auto; border-right:none; border-bottom:1px solid var(--glass-border);}
+    .sidebar .brand{display:none;}
+    .sidebar .spacer{display:none;}
+    .main{padding:22px 18px;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ LOGIN ============ -->
+<div id="loginScreen">
+  <div class="login-card">
+    <div class="mark"></div>
+    <h1>Vision 10,000 — Admin</h1>
+    <p>Team21 Academy × Liberty Tech</p>
+    <div class="field">
+      <label>Username</label>
+      <input type="text" id="loginUser" autocomplete="username">
+    </div>
+    <div class="field">
+      <label>Password</label>
+      <input type="password" id="loginPass" autocomplete="current-password">
+    </div>
+    <button class="btn btn-primary" onclick="doLogin()">Log in</button>
+    <div class="login-error" id="loginError"></div>
+    <div class="login-hint">Connected to the Vision 10,000 Apps Script backend.</div>
+  </div>
+</div>
+
+<!-- ============ DASHBOARD ============ -->
+<div id="dashboard">
+  <div class="sidebar">
+    <div class="brand"><div class="mark"></div><span>Vision 10,000</span></div>
+    <button class="navitem active" data-view="overview" onclick="showView('overview')">Overview</button>
+    <button class="navitem" data-view="registrations" onclick="showView('registrations')">Registrations</button>
+    <button class="navitem" data-view="mentors" onclick="showView('mentors')">Mentors</button>
+    <button class="navitem" data-view="coordinators" onclick="showView('coordinators')">Region coordinators</button>
+    <button class="navitem" data-view="settings" onclick="showView('settings')">Settings</button>
+    <div class="spacer"></div>
+    <button class="navitem logout" onclick="doLogout()">Log out</button>
+    <div class="credit">© Innocent Forteh</div>
+  </div>
+
+  <div class="main">
+
+    <!-- OVERVIEW -->
+    <div class="view active" id="view-overview">
+      <div class="view-head">
+        <div><h2>Overview</h2><p>Live status of Vision 10,000 registrations.</p></div>
+        <button class="btn btn-ghost btn-sm" onclick="loadOverview()">Refresh</button>
+      </div>
+      <div class="stat-grid" id="statGrid">
+        <div class="card stat-card"><div class="n">—</div><div class="l">Women registered</div></div>
+        <div class="card stat-card"><div class="n">—</div><div class="l">Spots remaining</div></div>
+        <div class="card stat-card"><div class="n">—</div><div class="l">Fee waivers requested</div></div>
+        <div class="card stat-card"><div class="n">—</div><div class="l">Mentors assigned</div></div>
+      </div>
+      <div class="card">
+        <h3 style="font-size:1.02rem; margin-bottom:14px;">Registrations by region</h3>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Region</th><th>Registered</th><th>Coordinators</th></tr></thead>
+            <tbody id="regionSummaryBody"><tr><td colspan="3" class="empty-state">Loading…</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- REGISTRATIONS -->
+    <div class="view" id="view-registrations">
+      <div class="view-head">
+        <div><h2>Registrations</h2><p>View who's registering, assign mentors, and mark fee status.</p></div>
+        <div style="display:flex; gap:10px;">
+          <button class="btn btn-ghost btn-sm" onclick="exportCsv()">Export CSV</button>
+          <button class="btn btn-ghost btn-sm" onclick="loadRegistrations()">Refresh</button>
+        </div>
+      </div>
+      <div class="toolbar">
+        <input type="text" id="regSearch" placeholder="Search name, phone, email…" oninput="filterRegistrations()">
+        <select id="regRegionFilter" onchange="filterRegistrations()">
+          <option value="">All regions</option>
+        </select>
+      </div>
+      <div class="card table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th><th>Region</th><th>Phone</th><th>Occupation</th>
+              <th>Registration fee</th><th>Certificate</th><th>Mentor</th>
+            </tr>
+          </thead>
+          <tbody id="regTableBody"><tr><td colspan="7" class="empty-state">Log in and this will load automatically.</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- MENTORS -->
+    <div class="view" id="view-mentors">
+      <div class="view-head">
+        <div><h2>Mentors</h2><p>This roster feeds the public mentor list and the assignment dropdowns above.</p></div>
+        <button class="btn btn-ghost btn-sm" onclick="loadMentors()">Refresh</button>
+      </div>
+      <div class="card">
+        <h3 style="font-size:0.95rem; margin-bottom:12px;">Add a mentor</h3>
+        <div class="mini-form">
+          <input type="text" id="newMentorName" placeholder="Full name">
+          <select id="newMentorRegion"><option value="">Region</option></select>
+          <input type="text" id="newMentorRole" placeholder="Role (e.g. AI trainer)">
+          <input type="text" id="newMentorPhone" placeholder="Phone">
+          <input type="email" id="newMentorEmail" placeholder="Email">
+          <input type="url" id="newMentorPhoto" placeholder="Photo URL (optional)">
+        </div>
+        <button class="btn btn-primary btn-sm" style="width:auto;" onclick="addMentor()">Add mentor</button>
+      </div>
+      <div style="height:20px;"></div>
+      <div id="mentorList"></div>
+    </div>
+
+    <!-- COORDINATORS -->
+    <div class="view" id="view-coordinators">
+      <div class="view-head">
+        <div><h2>Region coordinators</h2><p>Whoever's mobilising and training women in each region. Shown on the public site.</p></div>
+        <button class="btn btn-ghost btn-sm" onclick="loadCoordinators()">Refresh</button>
+      </div>
+      <div class="card" id="coordList"></div>
+    </div>
+
+    <!-- SETTINGS -->
+    <div class="view" id="view-settings">
+      <div class="view-head"><div><h2>Settings</h2><p>Manage the admin login.</p></div></div>
+      <div class="card" style="max-width:420px;">
+        <h3 style="font-size:0.95rem; margin-bottom:14px;">Change admin password</h3>
+        <div class="field"><label>New password</label><input type="password" id="newAdminPass"></div>
+        <button class="btn btn-primary btn-sm" style="width:auto;" onclick="changePassword()">Update password</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* =========================================================================
+   Paste the same Apps Script /exec URL used in vision10000-women.html.
+   ========================================================================= */
+const VISION_API_ENDPOINT = "https://script.google.com/macros/s/AKfycbxza1kxasfh4114BBwxiKnFm7EP2e8v_Ur-QpRjm0sJUhymhA3BnbIv2jSZfb1l05Qm1w/exec";
+
+const REGIONS = ["Adamawa","Centre","East","Far North","Littoral","North","Northwest","South","Southwest","West"];
+
+let creds = { username: '', password: '' };
+let allRegistrations = [];
+let allMentors = [];
+
+function toast(msg, kind){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast show' + (kind ? ' ' + kind : '');
+  setTimeout(()=> t.classList.remove('show'), 3200);
+}
+
+/* ---------------- API helper ---------------- */
+async function api(action, extra){
+  if(!VISION_API_ENDPOINT){
+    toast('Set VISION_API_ENDPOINT in this file first.', 'err');
+    return { result: 'error', message: 'No endpoint configured' };
+  }
+  const body = Object.assign({ action, username: creds.username, password: creds.password }, extra || {});
+  try{
+    const res = await fetch(VISION_API_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' }, // avoids a CORS preflight Apps Script can't answer
+      body: JSON.stringify(body)
+    });
+    return await res.json();
+  } catch(err){
+    console.error(err);
+    toast('Could not reach the backend — check the endpoint and your connection.', 'err');
+    return { result: 'error', message: String(err) };
+  }
+}
+
+/* ---------------- Login ---------------- */
+async function doLogin(){
+  const username = document.getElementById('loginUser').value.trim();
+  const password = document.getElementById('loginPass').value;
+  const errEl = document.getElementById('loginError');
+  errEl.textContent = '';
+  if(!username || !password){ errEl.textContent = 'Enter a username and password.'; return; }
+  creds = { username, password };
+  const data = await api('adminLogin');
+  if(data.result === 'success'){
+    sessionStorage.setItem('v10k_admin_user', username);
+    sessionStorage.setItem('v10k_admin_pass', password);
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('dashboard').classList.add('show');
+    initDashboard();
+  } else {
+    errEl.textContent = data.message || 'Login failed.';
+  }
+}
+function doLogout(){
+  sessionStorage.removeItem('v10k_admin_user');
+  sessionStorage.removeItem('v10k_admin_pass');
+  creds = { username:'', password:'' };
+  document.getElementById('dashboard').classList.remove('show');
+  document.getElementById('loginScreen').style.display = 'flex';
+}
+(function tryResume(){
+  const u = sessionStorage.getItem('v10k_admin_user');
+  const p = sessionStorage.getItem('v10k_admin_pass');
+  if(u && p){
+    creds = { username:u, password:p };
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('dashboard').classList.add('show');
+    initDashboard();
+  }
+})();
+
+/* ---------------- Nav ---------------- */
+function showView(name){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.querySelectorAll('.navitem').forEach(n=>n.classList.remove('active'));
+  document.getElementById('view-'+name).classList.add('active');
+  document.querySelector('.navitem[data-view="'+name+'"]').classList.add('active');
+  if(name === 'overview') loadOverview();
+  if(name === 'registrations') loadRegistrations();
+  if(name === 'mentors') loadMentors();
+  if(name === 'coordinators') loadCoordinators();
+}
+
+function initDashboard(){
+  const filterSel = document.getElementById('regRegionFilter');
+  const mentorSel = document.getElementById('newMentorRegion');
+  REGIONS.forEach(r=>{
+    filterSel.insertAdjacentHTML('beforeend', `<option value="${r}">${r}</option>`);
+    mentorSel.insertAdjacentHTML('beforeend', `<option value="${r}">${r}</option>`);
+  });
+  loadOverview();
+}
+
+/* ---------------- Overview ---------------- */
+async function loadOverview(){
+  const [regData, mentorData] = await Promise.all([
+    api('listRegistrations'),
+    api('listMentors')
+  ]);
+  if(regData.result !== 'success'){ toast(regData.message || 'Could not load registrations', 'err'); return; }
+  allRegistrations = regData.rows || [];
+  allMentors = mentorData.rows || [];
+
+  const total = allRegistrations.length;
+  const left = Math.max(10000 - total, 0);
+  const waivers = allRegistrations.filter(r => r['Fee Waiver Requested'] === 'Yes').length;
+  const assigned = allRegistrations.filter(r => r['Assigned Mentor']).length;
+
+  const cards = document.querySelectorAll('#statGrid .stat-card');
+  cards[0].querySelector('.n').textContent = total.toLocaleString();
+  cards[1].querySelector('.n').textContent = left.toLocaleString();
+  cards[2].querySelector('.n').textContent = waivers.toLocaleString();
+  cards[3].querySelector('.n').textContent = assigned.toLocaleString();
+
+  const coordData = await api('listCoordinators');
+  const coordMap = {};
+  (coordData.rows || []).forEach(c => coordMap[c['Region']] = c['Coordinators']);
+
+  const body = document.getElementById('regionSummaryBody');
+  body.innerHTML = '';
+  REGIONS.forEach(r=>{
+    const count = allRegistrations.filter(x => x['Region'] === r).length;
+    body.insertAdjacentHTML('beforeend', `<tr><td>${r}</td><td>${count}</td><td style="opacity:.7">${coordMap[r] || '—'}</td></tr>`);
+  });
+}
+
+/* ---------------- Registrations ---------------- */
+async function loadRegistrations(){
+  const data = await api('listRegistrations');
+  if(data.result !== 'success'){ toast(data.message || 'Could not load registrations', 'err'); return; }
+  allRegistrations = data.rows || [];
+  const mentorData = await api('listMentors');
+  allMentors = mentorData.rows || [];
+  renderRegistrations(allRegistrations);
+}
+
+function filterRegistrations(){
+  const q = document.getElementById('regSearch').value.toLowerCase();
+  const region = document.getElementById('regRegionFilter').value;
+  let rows = allRegistrations;
+  if(region) rows = rows.filter(r => r['Region'] === region);
+  if(q) rows = rows.filter(r => (r['First Name']+' '+r['Last Name']+' '+r['Phone']+' '+r['Email']).toLowerCase().includes(q));
+  renderRegistrations(rows);
+}
+
+function feeSelect(id, field, current){
+  const opts = ['Pending','Paid','Waived'];
+  return `<select class="inline-select" onchange="updateFee('${id}','${field}',this.value)">
+    ${opts.map(o=>`<option value="${o}" ${o===current?'selected':''}>${o}</option>`).join('')}
+  </select>`;
+}
+
+function mentorSelect(id, region, current){
+  const relevant = allMentors.filter(m => m['Region'] === region);
+  const pool = relevant.length ? relevant : allMentors;
+  return `<select class="inline-select" onchange="updateMentorAssignment('${id}',this.value)">
+    <option value="">— none —</option>
+    ${pool.map(m=>`<option value="${m['Name']}" ${m['Name']===current?'selected':''}>${m['Name']}</option>`).join('')}
+  </select>`;
+}
+
+function renderRegistrations(rows){
+  const body = document.getElementById('regTableBody');
+  if(!rows.length){ body.innerHTML = '<tr><td colspan="7" class="empty-state">No registrations found.</td></tr>'; return; }
+  body.innerHTML = rows.map(r => `
+    <tr>
+      <td><strong>${r['First Name']||''} ${r['Last Name']||''}</strong></td>
+      <td>${r['Region']||''}</td>
+      <td>${r['Phone']||''}</td>
+      <td>${r['Occupation']||''}</td>
+      <td>${feeSelect(r['ID'],'registration', r['Registration Fee Status']||'Pending')}</td>
+      <td>${feeSelect(r['ID'],'certificate', r['Certificate Fee Status']||'Pending')}</td>
+      <td>${mentorSelect(r['ID'], r['Region'], r['Assigned Mentor']||'')}</td>
+    </tr>
+  `).join('');
+}
+
+async function updateFee(id, field, status){
+  const data = await api('updateFeeStatus', { id, field, status });
+  if(data.result === 'success') toast('Fee status updated', 'ok');
+  else toast(data.message || 'Could not update', 'err');
+}
+async function updateMentorAssignment(id, mentorName){
+  const data = await api('assignMentor', { id, mentorName });
+  if(data.result === 'success') toast('Mentor assigned', 'ok');
+  else toast(data.message || 'Could not assign mentor', 'err');
+}
+
+function exportCsv(){
+  if(!allRegistrations.length){ toast('Nothing to export yet', 'err'); return; }
+  const headers = Object.keys(allRegistrations[0]);
+  const lines = [headers.join(',')].concat(
+    allRegistrations.map(r => headers.map(h => `"${String(r[h]||'').replace(/"/g,'""')}"`).join(','))
+  );
+  const blob = new Blob([lines.join('\n')], { type:'text/csv' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'vision10000-registrations.csv';
+  a.click();
+}
+
+/* ---------------- Mentors ---------------- */
+async function loadMentors(){
+  const data = await api('listMentors');
+  if(data.result !== 'success'){ toast(data.message || 'Could not load mentors', 'err'); return; }
+  allMentors = data.rows || [];
+  const el = document.getElementById('mentorList');
+  if(!allMentors.length){ el.innerHTML = '<div class="empty-state card">No mentors yet — add the first one above.</div>'; return; }
+  el.innerHTML = allMentors.map(m => {
+    const photo = (m['Photo URL'] || '').trim();
+    const initials = (m['Name']||'?').split(' ').map(s=>s[0]).join('').slice(0,2).toUpperCase();
+    const thumb = photo
+      ? `<div class="mentor-thumb" style="background-image:url('${photo.replace(/'/g,'%27')}')"></div>`
+      : `<div class="mentor-thumb">${initials}</div>`;
+    return `
+    <div class="mentor-card">
+      <div style="display:flex; align-items:center; gap:12px;">
+        ${thumb}
+        <div>
+          <div class="mname">${m['Name']}</div>
+          <div class="mmeta">${m['Role']||'Mentor'} · ${m['Region']||'—'} ${m['Phone'] ? '· '+m['Phone'] : ''}</div>
+        </div>
+      </div>
+      <button class="btn btn-danger btn-sm" onclick="removeMentor('${m['ID']}')">Remove</button>
+    </div>`;
+  }).join('');
+}
+async function addMentor(){
+  const name = document.getElementById('newMentorName').value.trim();
+  if(!name){ toast('Mentor name is required', 'err'); return; }
+  const data = await api('addMentor', {
+    name,
+    region: document.getElementById('newMentorRegion').value,
+    role: document.getElementById('newMentorRole').value,
+    phone: document.getElementById('newMentorPhone').value,
+    email: document.getElementById('newMentorEmail').value,
+    photo: document.getElementById('newMentorPhoto').value
+  });
+  if(data.result === 'success'){
+    toast('Mentor added', 'ok');
+    ['newMentorName','newMentorRole','newMentorPhone','newMentorEmail','newMentorPhoto'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('newMentorRegion').value = '';
+    loadMentors();
+  } else toast(data.message || 'Could not add mentor', 'err');
+}
+async function removeMentor(id){
+  const data = await api('deleteMentor', { id });
+  if(data.result === 'success'){ toast('Mentor removed', 'ok'); loadMentors(); }
+  else toast(data.message || 'Could not remove mentor', 'err');
+}
+
+/* ---------------- Coordinators ---------------- */
+async function loadCoordinators(){
+  const data = await api('listCoordinators');
+  if(data.result !== 'success'){ toast(data.message || 'Could not load coordinators', 'err'); return; }
+  const el = document.getElementById('coordList');
+  el.innerHTML = (data.rows || []).map(c => `
+    <div class="coord-row">
+      <div class="rname">${c['Region']}</div>
+      <input type="text" class="inline-input" style="max-width:none;" value="${c['Coordinators']||''}"
+        onchange="saveCoordinator('${c['Region']}', this.value)">
+    </div>
+  `).join('');
+}
+async function saveCoordinator(region, coordinators){
+  const data = await api('updateCoordinators', { region, coordinators });
+  if(data.result === 'success') toast('Coordinators updated', 'ok');
+  else toast(data.message || 'Could not update', 'err');
+}
+
+/* ---------------- Settings ---------------- */
+async function changePassword(){
+  const newPassword = document.getElementById('newAdminPass').value;
+  if(!newPassword || newPassword.length < 4){ toast('Password must be at least 4 characters', 'err'); return; }
+  const data = await api('changeAdminPassword', { newPassword });
+  if(data.result === 'success'){
+    creds.password = newPassword;
+    sessionStorage.setItem('v10k_admin_pass', newPassword);
+    document.getElementById('newAdminPass').value = '';
+    toast('Password updated', 'ok');
+  } else toast(data.message || 'Could not update password', 'err');
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,1023 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Team21 Academy — AI Unlocked Level 2: OPERATE</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+:root{--p:#1a237e;--a:#f97316;--g:#10b981;--bg:#f8fafc;--txt:#1e293b;--mu:#64748b;--bd:#e2e8f0;--rd:#ef4444;--gr:linear-gradient(135deg,#1a237e,#283593,#1565c0)}
+*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--txt)}
+/* LOGIN */
+#LS{display:flex;align-items:center;justify-content:center;min-height:100vh;background:var(--gr);position:fixed;inset:0;z-index:1000}
+.lbox{background:#fff;border-radius:20px;padding:48px 40px;width:380px;max-width:90vw;box-shadow:0 25px 60px rgba(0,0,0,.3);text-align:center}
+.lbr{font-size:2rem;font-weight:900;color:var(--p);letter-spacing:-1px;margin-bottom:2px}.lsub{font-size:.78rem;color:var(--mu);margin-bottom:16px}
+.lbdg{display:inline-block;background:var(--a);color:#fff;font-size:.68rem;font-weight:700;padding:3px 10px;border-radius:20px;margin-bottom:18px;text-transform:uppercase;letter-spacing:1px}
+.fg{margin-bottom:13px;text-align:left}.fg label{font-size:.75rem;font-weight:600;color:var(--mu);text-transform:uppercase;display:block;margin-bottom:4px}
+.fg input{width:100%;padding:11px 13px;border:2px solid var(--bd);border-radius:9px;font-size:.92rem}.fg input:focus{outline:none;border-color:var(--p)}
+.lbtn{width:100%;padding:13px;background:var(--gr);color:#fff;border:none;border-radius:9px;font-size:.98rem;font-weight:700;cursor:pointer;margin-top:4px}
+#lerr{color:var(--rd);font-size:.82rem;margin-top:9px;display:none}
+/* APP */
+#APP{display:none}
+/* HEADER */
+.hdr{background:var(--gr);color:#fff;padding:0 22px;height:62px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 18px rgba(0,0,0,.2)}
+.hbr{font-weight:900;font-size:1.05rem}.hbr span{color:var(--a)}.ha{display:flex;align-items:center;gap:10px}
+.btl{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;padding:5px 12px;border-radius:18px;font-size:.78rem;cursor:pointer;font-weight:600}
+.blo{background:transparent;border:1px solid rgba(255,255,255,.35);color:#fff;padding:5px 12px;border-radius:18px;font-size:.78rem;cursor:pointer}
+/* LAYOUT */
+.lay{display:flex;min-height:calc(100vh - 62px)}
+/* SIDEBAR */
+.sb{width:260px;background:#fff;border-right:1px solid var(--bd);padding:10px 0;position:sticky;top:62px;height:calc(100vh - 62px);overflow-y:auto;flex-shrink:0}
+.sbs{padding:6px 15px;font-size:.66rem;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:1px;margin-top:8px}
+.sbi{display:flex;align-items:center;padding:8px 16px;cursor:pointer;font-size:.83rem;color:var(--txt);border-left:3px solid transparent;transition:background .15s}
+.sbi:hover{background:#f1f5f9}.sbi.active{background:#eff6ff;color:var(--p);border-left-color:var(--p);font-weight:600}
+.wb{background:var(--p);color:#fff;font-size:.6rem;font-weight:700;padding:1px 6px;border-radius:9px;margin-left:auto}
+.sbpw{padding:12px 16px}.pbr{height:5px;background:#e2e8f0;border-radius:3px;overflow:hidden;margin-top:4px}
+.pbf{height:100%;background:var(--gr);border-radius:3px;transition:width .5s}
+/* MAIN */
+.main{flex:1;padding:26px;max-width:860px}.pg{display:none}.pg.active{display:block}
+/* WEEK HEADER */
+.wh{border-radius:14px;padding:26px;color:#fff;margin-bottom:22px;background:var(--gr)}
+.wtg{background:var(--a);color:#fff;font-size:.7rem;font-weight:700;padding:3px 10px;border-radius:18px;text-transform:uppercase;letter-spacing:1px;display:inline-block;margin-bottom:9px}
+.wtt{font-size:1.7rem;font-weight:900;letter-spacing:-.8px}.wst{opacity:.8;margin-top:5px;font-size:.93rem}
+.wmeta{display:flex;gap:16px;margin-top:14px;flex-wrap:wrap;font-size:.8rem;opacity:.85}
+/* CARDS */
+.lgrid{display:grid;gap:13px}
+.lcard{background:#fff;border-radius:11px;border:1px solid var(--bd);overflow:hidden}
+.lhd{padding:15px 17px;cursor:pointer;display:flex;align-items:center;gap:11px}
+.lnum{width:33px;height:33px;background:var(--p);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700;flex-shrink:0}
+.ltit{font-weight:700;font-size:.9rem;flex:1}.lmta{font-size:.72rem;color:var(--mu);margin-top:2px}
+.lch{color:var(--mu);transition:transform .3s;font-size:1rem}.lcard.open .lch{transform:rotate(180deg)}
+.lbd{display:none;padding:0 17px 17px}.lcard.open .lbd{display:block}
+.con{line-height:1.78;font-size:.89rem;color:#374151}.con h3{color:var(--p);margin:16px 0 7px;font-size:.94rem}
+.con p{margin-bottom:10px}.con ul,.con ol{padding-left:17px;margin-bottom:10px}.con li{margin-bottom:5px}
+.con a{color:var(--p)}
+/* COMPONENTS */
+.sp{background:#f0f4ff;border-left:4px solid var(--p);border-radius:8px;padding:13px;margin:13px 0}
+.sp strong{color:var(--p);display:block;margin-bottom:5px;font-size:.73rem;text-transform:uppercase;letter-spacing:.5px}
+.sp em{font-style:normal;color:#374151;font-size:.86rem;line-height:1.68}
+.ht{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:13px;margin:13px 0}
+.ht strong{color:var(--g);display:block;margin-bottom:8px;font-size:.73rem;text-transform:uppercase;letter-spacing:.5px}
+.stp{display:flex;gap:10px;margin-bottom:8px;font-size:.86rem}
+.sn{background:var(--g);color:#fff;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.66rem;font-weight:700;flex-shrink:0;margin-top:1px}
+.ct{width:100%;border-collapse:collapse;margin:11px 0;font-size:.83rem}
+.ct th{background:var(--p);color:#fff;padding:8px 12px;text-align:left}.ct td{padding:7px 12px;border-bottom:1px solid var(--bd)}
+.ct tr:nth-child(even) td{background:#f8fafc}
+.vl{display:flex;align-items:center;gap:9px;background:#fff7ed;border:1px solid #fed7aa;border-radius:8px;padding:10px 13px;margin:8px 0;text-decoration:none;color:var(--txt)}
+.vl:hover{background:#ffedd5}.vi{font-size:1.2rem}.vlt{font-size:.83rem}.vlt strong{display:block;color:var(--p)}
+.qb{background:#eff6ff;border-left:4px solid var(--a);border-radius:0 8px 8px 0;padding:11px 16px;margin:13px 0;font-style:italic;color:var(--p)}
+.mbtn{background:var(--p);color:#fff;border:none;padding:10px 22px;border-radius:8px;font-size:.86rem;font-weight:700;cursor:pointer;margin-top:13px}
+/* QUIZ */
+.qsec{background:#fff;border-radius:11px;border:1px solid var(--bd);padding:21px;margin-top:20px}
+.qtit{font-weight:800;color:var(--p);font-size:1rem;margin-bottom:3px}
+.qsub{color:var(--mu);font-size:.82rem;margin-bottom:16px}
+.qq{margin-bottom:17px}.qqt{font-weight:600;font-size:.88rem;margin-bottom:10px}
+.qopts{display:grid;gap:6px}
+.qopt{display:flex;align-items:center;gap:8px;padding:8px 12px;border:2px solid var(--bd);border-radius:8px;cursor:pointer;font-size:.85rem;transition:all .2s}
+.qopt:hover{border-color:var(--p);background:#eff6ff}.qopt.sel{border-color:var(--p);background:#eff6ff}
+.qopt.cor{border-color:var(--g);background:#f0fdf4;color:var(--g)}.qopt.wrg{border-color:var(--rd);background:#fef2f2;color:var(--rd)}
+.qopt input{accent-color:var(--p)}
+.qbtn{background:var(--p);color:#fff;border:none;padding:10px 24px;border-radius:8px;font-size:.88rem;font-weight:700;cursor:pointer;margin-top:7px}
+.qres{margin-top:13px;padding:13px;border-radius:8px;font-weight:600;display:none}
+.qres.pass{background:#f0fdf4;color:var(--g);border:1px solid #bbf7d0}
+.qres.fail{background:#fef2f2;color:var(--rd);border:1px solid #fecaca}
+/* PLAYBOX */
+.pb{background:linear-gradient(135deg,#fef3c7,#fff7ed);border:2px solid var(--a);border-radius:12px;padding:21px;margin-top:21px}
+.pbt{color:var(--a);font-weight:800;font-size:1rem;margin-bottom:7px}
+.ptask{display:flex;gap:10px;margin-bottom:8px;font-size:.86rem;align-items:flex-start}
+.tck{width:17px;height:17px;border:2px solid var(--a);border-radius:4px;cursor:pointer;flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;font-size:.65rem}
+.tck.done{background:var(--a);color:#fff;border-color:var(--a)}
+.wabtn{display:flex;align-items:center;gap:8px;background:#25d366;color:#fff;border:none;padding:12px 18px;border-radius:8px;font-size:.88rem;font-weight:700;cursor:pointer;margin-top:13px;width:100%;justify-content:center}
+/* DASHBOARD */
+.dg{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:22px}
+.sc{background:#fff;border-radius:11px;padding:16px;border:1px solid var(--bd)}
+.snum{font-size:1.9rem;font-weight:900;color:var(--p)}.slbl{font-size:.78rem;color:var(--mu);margin-top:2px}
+.wb2{background:var(--gr);border-radius:13px;padding:22px;color:#fff;margin-bottom:18px}
+/* MEGA QUIZ */
+.mqh{background:linear-gradient(135deg,#7c3aed,#6d28d9);border-radius:13px;padding:24px;color:#fff;margin-bottom:20px}
+.mqcard{background:#fff;border-radius:11px;border:1px solid var(--bd);padding:17px;margin-bottom:13px}
+.wlbl{font-size:.67rem;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:1px;margin-bottom:5px}
+/* CERT */
+.certbox{background:#fff;border-radius:13px;padding:28px;border:2px solid var(--g);text-align:center}
+/* FOOTER */
+.ftr{background:#1e293b;color:#94a3b8;text-align:center;padding:16px;font-size:.74rem;margin-top:32px}
+.ftr a{color:var(--a);text-decoration:none}
+@media(max-width:768px){.sb{display:none}.main{padding:13px}.wtt{font-size:1.25rem}}
+</style>
+</head>
+<body>
+<!-- LOGIN -->
+<div id="LS">
+<div class="lbox">
+  <div class="lbr">TEAM21</div><div class="lsub">Academy</div>
+  <div class="lbdg">AI Unlocked — Level 2: OPERATE</div>
+  <div class="fg"><label>Username</label><input id="ui" type="text" placeholder="Enter username"/></div>
+  <div class="fg"><label>Password</label><input id="pi" type="password" placeholder="Enter password" onkeydown="if(event.key==='Enter')doL()"/></div>
+  <button class="lbtn" onclick="doL()">Sign In to Course</button>
+  <div id="lerr">❌ Invalid username or password</div>
+  <p style="font-size:.69rem;color:#94a3b8;margin-top:13px">© Innocent Forteh · Team21 Academy 2026</p>
+</div>
+</div>
+<!-- APP -->
+<div id="APP">
+<div class="hdr">
+  <div class="hbr">TEAM<span>21</span> Academy</div>
+  <div class="ha">
+    <button class="btl" onclick="togL()">🌐 <span id="llbl">Français</span></button>
+    <button class="blo" onclick="doLo()">Logout</button>
+  </div>
+</div>
+<div class="lay">
+<div class="sb">
+  <div class="sbpw">
+    <div style="font-size:.73rem;font-weight:600;color:var(--mu)">COURSE PROGRESS</div>
+    <div class="pbr"><div class="pbf" id="spb" style="width:0%"></div></div>
+    <div style="font-size:.71rem;color:var(--mu);margin-top:3px"><span id="spc">0</span>% Complete</div>
+  </div>
+  <div class="sbi" onclick="gp('dash')" id="n-dash">🏠 Dashboard</div>
+  <div class="sbs">WEEK 1 — THINK SMARTER</div>
+  <div class="sbi" onclick="gp('w1l1')" id="n-w1l1">1.1 User to Operator <span class="wb">W1</span></div>
+  <div class="sbi" onclick="gp('w1l2')" id="n-w1l2">1.2 Advanced Prompting</div>
+  <div class="sbi" onclick="gp('w1l3')" id="n-w1l3">1.3 Chain-of-Thought</div>
+  <div class="sbi" onclick="gp('w1l4')" id="n-w1l4">1.4 Google AI Studio</div>
+  <div class="sbi" onclick="gp('w1l5')" id="n-w1l5">1.5 Claude Advanced</div>
+  <div class="sbi" onclick="gp('w1l6')" id="n-w1l6">1.6-7 Prompt Library &amp; PAIOS</div>
+  <div class="sbi" onclick="gp('w1q')" id="n-w1q">📝 Week 1 Quiz</div>
+  <div class="sbi" onclick="gp('w1pb')" id="n-w1pb">🎯 Week 1 plAIbox</div>
+  <div class="sbs">WEEK 2 — BUILD SYSTEMS</div>
+  <div class="sbi" onclick="gp('w2l1')" id="n-w2l1">2.1 Workflows <span class="wb">W2</span></div>
+  <div class="sbi" onclick="gp('w2l2')" id="n-w2l2">2.2 Make (Integromat)</div>
+  <div class="sbi" onclick="gp('w2l3')" id="n-w2l3">2.3 Zapier</div>
+  <div class="sbi" onclick="gp('w2l4')" id="n-w2l4">2.4 Notion AI</div>
+  <div class="sbi" onclick="gp('w2l5')" id="n-w2l5">2.5 NotebookLM</div>
+  <div class="sbi" onclick="gp('w2l6')" id="n-w2l6">2.6-7 Pipeline &amp; Blogger</div>
+  <div class="sbi" onclick="gp('w2q')" id="n-w2q">📝 Week 2 Quiz</div>
+  <div class="sbi" onclick="gp('w2pb')" id="n-w2pb">🎯 Week 2 plAIbox</div>
+  <div class="sbs">WEEK 3 — MEDIA STUDIO</div>
+  <div class="sbi" onclick="gp('w3l1')" id="n-w3l1">3.1 One-Person Studio <span class="wb">W3</span></div>
+  <div class="sbi" onclick="gp('w3l2')" id="n-w3l2">3.2 Video Production</div>
+  <div class="sbi" onclick="gp('w3l3')" id="n-w3l3">3.3 Audio Production</div>
+  <div class="sbi" onclick="gp('w3l4')" id="n-w3l4">3.4-5 Visual Identity</div>
+  <div class="sbi" onclick="gp('w3l5')" id="n-w3l5">3.6 Publishing Media</div>
+  <div class="sbi" onclick="gp('w3q')" id="n-w3q">📝 Week 3 Quiz</div>
+  <div class="sbi" onclick="gp('w3pb')" id="n-w3pb">🎯 Week 3 plAIbox</div>
+  <div class="sbs">WEEK 4 — BUILD INCOME</div>
+  <div class="sbi" onclick="gp('w4l1')" id="n-w4l1">4.1 Knowledge Economy <span class="wb">W4</span></div>
+  <div class="sbi" onclick="gp('w4l2')" id="n-w4l2">4.2 Digital Products</div>
+  <div class="sbi" onclick="gp('w4l3')" id="n-w4l3">4.3 Sales System</div>
+  <div class="sbi" onclick="gp('w4l4')" id="n-w4l4">4.4-5 Freelancing &amp; Proposals</div>
+  <div class="sbi" onclick="gp('w4l5')" id="n-w4l5">4.6 Client Management</div>
+  <div class="sbi" onclick="gp('w4q')" id="n-w4q">📝 Week 4 Quiz</div>
+  <div class="sbi" onclick="gp('w4pb')" id="n-w4pb">🎯 Week 4 plAIbox</div>
+  <div class="sbs">FINALE</div>
+  <div class="sbi" onclick="gp('mq')" id="n-mq">🏆 MEGA QUIZ (All 4 Weeks)</div>
+  <div class="sbi" onclick="gp('cert')" id="n-cert">🎓 Your Certificate</div>
+</div>
+<div class="main">
+<!-- DASHBOARD -->
+<div class="pg active" id="pg-dash">
+<div class="wb2">
+  <div style="font-size:1.35rem;font-weight:800" id="wlc-en">Welcome back, AI Operator! 👋</div>
+  <div style="font-size:1.35rem;font-weight:800;display:none" id="wlc-fr">Bon retour, Opérateur IA! 👋</div>
+  <div style="opacity:.8;margin-top:4px;font-size:.92rem" id="wsd-en">AI Unlocked Level 2: OPERATE — Your 4-Week Transformation</div>
+  <div style="opacity:.8;margin-top:4px;font-size:.92rem;display:none" id="wsd-fr">IA Débloquée Niveau 2: OPÉRER — Votre Transformation en 4 Semaines</div>
+</div>
+<div class="dg">
+  <div class="sc"><div class="snum" id="stL">0</div><div class="slbl">Lessons Done</div></div>
+  <div class="sc"><div class="snum" id="stQ">0</div><div class="slbl">Quizzes Passed</div></div>
+  <div class="sc"><div class="snum" id="stC">0</div><div class="slbl">Check-ins Sent</div></div>
+  <div class="sc"><div class="snum" id="stP">0%</div><div class="slbl">Overall Progress</div></div>
+</div>
+<div style="background:#fff;border-radius:11px;padding:20px;border:1px solid var(--bd);margin-bottom:16px">
+  <h3 style="color:var(--p);margin-bottom:13px" id="cov-en">📚 Course Overview — 4 Weeks to AI Operator</h3>
+  <h3 style="color:var(--p);margin-bottom:13px;display:none" id="cov-fr">📚 Aperçu du Cours — 4 Semaines</h3>
+  <div style="display:grid;gap:9px">
+    <div onclick="gp('w1l1')" style="display:flex;align-items:center;gap:11px;padding:11px;background:#f0f4ff;border-radius:9px;cursor:pointer;border:1px solid #c7d2fe">
+      <div style="width:40px;height:40px;background:var(--p);border-radius:9px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;flex-shrink:0">W1</div>
+      <div><div style="font-weight:700">Think Smarter</div><div style="font-size:.76rem;color:var(--mu)">Advanced AI Reasoning, Google AI Studio &amp; Personal Intelligence System</div></div>
+    </div>
+    <div onclick="gp('w2l1')" style="display:flex;align-items:center;gap:11px;padding:11px;background:#f0fdf4;border-radius:9px;cursor:pointer;border:1px solid #bbf7d0">
+      <div style="width:40px;height:40px;background:var(--g);border-radius:9px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;flex-shrink:0">W2</div>
+      <div><div style="font-weight:700">Build Your Systems</div><div style="font-size:.76rem;color:var(--mu)">No-Code AI Automation, Workflows &amp; Knowledge Base</div></div>
+    </div>
+    <div onclick="gp('w3l1')" style="display:flex;align-items:center;gap:11px;padding:11px;background:#fff7ed;border-radius:9px;cursor:pointer;border:1px solid #fed7aa">
+      <div style="width:40px;height:40px;background:var(--a);border-radius:9px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;flex-shrink:0">W3</div>
+      <div><div style="font-weight:700">Build Your Media Studio</div><div style="font-size:.76rem;color:var(--mu)">Video, Audio, Visual Identity &amp; Multi-Platform Production</div></div>
+    </div>
+    <div onclick="gp('w4l1')" style="display:flex;align-items:center;gap:11px;padding:11px;background:#fdf4ff;border-radius:9px;cursor:pointer;border:1px solid #e9d5ff">
+      <div style="width:40px;height:40px;background:#7c3aed;border-radius:9px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;flex-shrink:0">W4</div>
+      <div><div style="font-weight:700">Build Your Income</div><div style="font-size:.76rem;color:var(--mu)">Digital Products, Freelancing &amp; AI-Powered Revenue Streams</div></div>
+    </div>
+  </div>
+</div>
+<div style="background:var(--gr);border-radius:11px;padding:18px;color:#fff;text-align:center">
+  <div style="font-weight:700;font-size:.97rem;margin-bottom:5px">"You are not behind. You are exactly where you need to be. Now it is time to build."</div>
+  <div style="opacity:.75;font-size:.82rem">— Innocent Forteh, Team21 Academy</div>
+</div>
+</div>
+<!-- ===== WEEK 1 LESSONS ===== -->
+<div class="pg" id="pg-w1l1">
+<div class="wh"><div class="wtg">Week 1 · Lesson 1</div><div class="wtt">The Shift from User to Operator</div><div class="wst">Think Smarter · Advanced AI Reasoning</div><div class="wmeta"><span>📖 15 min</span><span>🎯 Reflection exercise</span></div></div>
+<div class="lgrid">
+<div class="lcard open"><div class="lhd" onclick="tl(this)"><div class="lnum">1</div><div><div class="ltit">From Reactive to Proactive AI Use</div><div class="lmta">Core Concept — The Operator Mindset</div></div><span class="lch">▾</span></div>
+<div class="lbd"><div class="con">
+<p>Most people who use AI are in a <strong>reactive relationship</strong> with it. They have a problem, ask AI for help, copy the output. Useful — but limited. An AI operator has a fundamentally different relationship with the technology.</p>
+<p>Operators <strong>design systems in advance</strong>. They build libraries of prompts ready the moment they're needed. They chain tools so one action triggers ten outcomes. They use AI to <em>think</em>, not just to produce.</p>
+<table class="ct"><tr><th>AI User</th><th>AI Operator</th></tr><tr><td>Asks questions one at a time</td><td>Designs prompt systems in advance</td></tr><tr><td>Copies output and moves on</td><td>Builds reusable templates &amp; workflows</td></tr><tr><td>Uses one tool at a time</td><td>Chains tools for compound results</td></tr><tr><td>Reacts to problems</td><td>Anticipates and automates responses</td></tr><tr><td>Gets help from AI</td><td>Gets <strong>leverage</strong> from AI</td></tr></table>
+<div class="qb">"The difference between a user and an operator: a user asks AI what to do. An operator tells AI what to build." — Innocent Forteh, Team21 Academy</div>
+<h3>The 5 Team21 Level 2 Principles</h3>
+<ol><li><strong>OPERATE, DON'T JUST USE</strong> — Build systems that work for you overnight. AI should save you hours every week.</li><li><strong>PUBLISH BEFORE YOU ARE READY</strong> — Done and published beats perfect and hidden.</li><li><strong>FREE TOOLS ARE POWERFUL TOOLS</strong> — Budget is not your barrier; creativity and consistency are.</li><li><strong>TEACH WHAT YOU LEARN</strong> — The fastest way to master AI is to teach someone else.</li><li><strong>REVIEW FOR HALLUCINATIONS</strong> — Always keep a human in the loop.</li></ol>
+</div>
+<a class="vl" href="https://www.youtube.com/results?search_query=AI+operator+mindset+systems+thinking+2024" target="_blank"><span class="vi">▶️</span><div class="vlt"><strong>Video: AI Operator Mindset</strong>Search on YouTube — Systems vs Single Prompts</div></a>
+<a class="vl" href="https://www.youtube.com/results?search_query=how+to+use+AI+like+a+pro+not+a+beginner+2024" target="_blank"><span class="vi">▶️</span><div class="vlt"><strong>Video: Use AI Like a Pro</strong>Moving Beyond Basic Prompting</div></a>
+<button class="mbtn" onclick="mld('w1l1')">✅ Mark as Complete</button>
+</div></div>
+</div></div>
+
+<div class="pg" id="pg-w1l2">
+<div class="wh"><div class="wtg">Week 1 · Lesson 2</div><div class="wtt">Advanced Prompting: AI as a Thinking Partner</div><div class="wst">4 Techniques That Transform Your AI Use</div><div class="wmeta"><span>📖 22 min</span><span>🧪 4 prompts to practice</span></div></div>
+<div class="lgrid">
+<div class="lcard open"><div class="lhd" onclick="tl(this)"><div class="lnum">1</div><div><div class="ltit">Technique 1: Scenario Modelling</div><div class="lmta">Map multiple futures from one decision</div></div><span class="lch">▾</span></div>
+<div class="lbd"><div class="con"><p>Scenario modelling feeds a real decision into AI and asks it to map out <strong>multiple possible futures</strong>. Instead of "what should I do?", you ask: "if I do X, walk me through best-case, worst-case, and most-likely outcomes over 90 days."</p>
+<div class="sp"><strong>Sample Prompt — Scenario Modelling</strong><em>You are a senior strategic adviser with 20 years of experience in small business development in Central Africa. I am considering [describe your situation]. Map out three scenarios — optimistic, realistic, and pessimistic — for the next 90 days. For each, identify the top 3 risks and one specific action I should take in the first 7 days. Be direct and specific.</em></div>
+</div></div></div>
+<div class="lcard"><div class="lhd" onclick="tl(this)"><div class="lnum">2</div><div><div class="ltit">Technique 2: Devil's Advocate Prompting</div><div class="lmta">Find every flaw before you commit</div></div><span class="lch">▾</span></div>
+<div class="lbd"><div class="con"><p>Have AI actively <strong>argue against your plan</strong>. Before committing to a business decision, ask AI to find every flaw. Uncomfortable — but enormously valuable.</p>
+<div class="sp"><strong>Sample Prompt — Devil's Advocate</strong><em>I am about to [describe your plan]. Before I proceed, act as the most intelligent, well-informed critic of this idea. Identify every significant weakness, hidden risk, false assumption, and alternative I haven't considered. Do not soften your critique. Be comprehensive and ruthless. Then suggest the top 3 ways I could strengthen this plan.</em></div>
+</div></div></div>
+<div class="lcard"><div class="lhd" onclick="tl(this)"><div class="lnum">3</div><div><div class="ltit">Technique 3: Iterative Refinement Chains</div><div class="lmta">Build conversations that get progressively better</div></div><span class="lch">▾</span></div>
+<div class="lbd"><div class="con"><p>Rather than asking for a final output in one prompt, build a <strong>conversation that improves</strong> over multiple rounds. Start broad, then refine.</p>
+<div class="ht"><strong>How to Do It — Step by Step</strong>
+<div class="stp"><div class="sn">1</div><div>Give Claude the context and ask for a first draft or outline.</div></div>
+<div class="stp"><div class="sn">2</div><div>Review — identify what's right, missing, or tonally wrong.</div></div>
+<div class="stp"><div class="sn">3</div><div>Feed back: "The structure is good but the tone is too formal. Paragraph 3 misses the point. Revise."</div></div>
+<div class="stp"><div class="sn">4</div><div>Repeat. 3–5 iterations typically produces something excellent.</div></div>
+</div></div></div></div>
+<div class="lcard"><div class="lhd" onclick="tl(this)"><div class="lnum">4</div><div><div class="ltit">Technique 4: Role Stacking</div><div class="lmta">An interdisciplinary team in one response</div></div><span class="lch">▾</span></div>
+<div class="lbd"><div class="con"><p>Assign Claude a <strong>composite expert identity</strong> drawing on multiple perspectives simultaneously.</p>
+<div class="sp"><strong>Sample Prompt — Role Stacking</strong><em>You will combine the analytical perspective of a McKinsey consultant, the communication instincts of an experienced journalist, and the practical wisdom of a Cameroonian entrepreneur who has built businesses with limited resources. From this combined perspective, review the following [plan/idea] and give me: your assessment, top 3 recommendations, and the single most important thing I am currently overlooking.</em></div>
+</div>
+<a class="vl" href="https://www.youtube.com/results?search_query=advanced+prompt+engineering+techniques+Claude+Gemini+2024" target="_blank"><span class="vi">▶️</span><div class="vlt"><strong>Video: Advanced Prompting Techniques</strong>Scenario modelling, role stacking &amp; more</div></a>
+<button class="mbtn" onclick="mld('w1l2')">✅ Mark as Complete</button>
+</div></div>
+</div></div>
+
+<div class="pg" id="pg-w1l3">
+<div class="wh"><div class="wtg">Week 1 · Lesson 3</div><div class="wtt">Chain-of-Thought Prompting</div><div class="wst">Getting AI to Show Its Full Reasoning</div><div class="wmeta"><span>📖 12 min</span><span>🧪 Practice with a real decision</span></div></div>
+<div class="lgrid"><div class="lcard open"><div class="lhd" onclick="tl(this)"><div class="lnum">1</div><div><div class="ltit">What is Chain-of-Thought &amp; Why Does It Work?</div><div class="lmta">Research-backed technique for complex problems</div></div><span class="lch">▾</span></div>
+<div class="lbd"><div class="con">
+<p>Chain-of-thought prompting asks the AI to <strong>think out loud</strong> — to show its reasoning step-by-step before giving a conclusion. Research shows this produces more accurate, nuanced, and actionable responses for complex problems.</p>
+<div class="sp"><strong>Sample Prompt — Chain-of-Thought</strong><em>Before you give me your final answer, I want you to think through this problem step by step. Show me your reasoning at each stage. Consider what information you have, what assumptions you are making, where there is uncertainty, and what the logic is before you conclude. Only then give me your recommendation. Question: [your question here]</em></div>
+<p><strong>When to use it:</strong> Complex business decisions, strategic analysis, evaluating competing options, risk assessment. When stakes are high — always prompt for chain-of-thought reasoning.</p>
+</div>
+<a class="vl" href="https://www.youtube.com/results?search_query=chain+of+thought+prompting+AI+reasoning+explained+tutorial" target="_blank"><span class="vi">▶️</span><div class="vlt"><strong>Video: Chain-of-Thought Explained</strong>Why it dramatically improves AI output</div></a>
+<button class="mbtn" onclick="mld('w1l3')">✅ Mark as Complete</button>
+</div></div></div></div>
+
+<div class="pg" id="pg-w1l4">
+<div class="wh"><div class="wtg">Week 1 · Lesson 4</div><div class="wtt">Google AI Studio: Your Free Advanced AI Lab</div><div class="wst">Direct Access to Gemini Models — No Cost</div><div class="wmeta"><span>📖 20 min</span><span>🛠️ Set up your AI Studio today</span></div></div>
+<div class="lgrid"><div class="lcard open"><div class="lhd" onclick="tl(this)"><div class="lnum">1</div><div><div class="ltit">What Makes Google AI Studio Different</div><div class="lmta">aistudio.google.com — Free</div></div><span class="lch">▾</span></div>
+<div class="lbd"><div class="con">
+<p>Google AI Studio (<a href="https://aistudio.google.com" target="_blank">aistudio.google.com</a>) gives you direct access to Google's Gemini models — the same AI behind Gemini Advanced — with capabilities far beyond standard chat. Completely free.</p>
+<table class="ct"><tr><th>Feature</th><th>What You Can Do</th></tr><tr><td>System Prompts</td><td>Set a permanent AI persona for every session</td></tr><tr><td>Long Context Window</td><td>Upload &amp; analyse full documents, books, audio files</td></tr><tr><td>Multimodal Input</td><td>Analyse images, audio &amp; video alongside text</td></tr><tr><td>Free API Key</td><td>Power Make/Zapier automations with Gemini AI</td></tr><tr><td>Code Generation</td><td>Build HTML tools &amp; web apps from one prompt</td></tr></table>
+<div class="ht"><strong>Getting Started with Google AI Studio</strong>
+<div class="stp"><div class="sn">1</div><div>Go to aistudio.google.com. Sign in with your Google account.</div></div>
+<div class="stp"><div class="sn">2</div><div>Click "Create new prompt." Choose Chat, Stream, or Code mode.</div></div>
+<div class="stp"><div class="sn">3</div><div>In System Instructions, type your AI's role (e.g., "You are a Cameroonian business strategy consultant").</div></div>
+<div class="stp"><div class="sn">4</div><div>Click "Get API key" in the left sidebar — this free key powers your automations in Make/Zapier.</div></div>
+</div>
+</div>
+<a class="vl" href="https://www.youtube.com/results?search_query=Google+AI+Studio+tutorial+Gemini+API+beginners+2024" target="_blank"><span class="vi">▶️</span><div class="vlt"><strong>Tutorial: Google AI Studio Setup</strong>Complete Beginner Guide with API Key</div></a>
+<a class="vl" href="https://www.youtube.com/results?search_query=Google+AI+Studio+system+prompts+use+cases+2024" target="_blank"><span class="vi">▶️</span><div class="vlt"><strong>Video: System Prompts Deep Dive</strong>Build your AI persona in Google AI Studio</div></a>
+<button class="mbtn" onclick="mld('w1l4')">✅ Mark as Complete</button>
+</div></div></div></div>
+
+<div class="pg" id="pg-w1l5">
+<div class="wh"><div class="wtg">Week 1 · Lesson 5</div><div class="wtt">Claude Advanced: Projects, Long Context &amp; System Prompts</div><div class="wst">Build Persistent AI Workspaces That Remember You</div><div class="wmeta"><span>📖 18 min</span><span>🛠️ Create your first Project now</span></div></div>
+<div class="lgrid"><div class="lcard open"><div class="lhd" onclick="tl(this)"><div class="lnum">1</div><div><div class="ltit">Claude Projects: Persistent AI Workspaces</div><div class="lmta">claude.ai — Context, memory &amp; documents across sessions</div></div><span class="lch">▾</span></div>
+<div class="lbd"><div class="con">
+<p>Claude Projects allow you to create <strong>persistent AI workspaces</strong> where Claude remembers your context, preferences, and uploaded files across multiple conversations.</p>
+<div class="ht"><strong>Creating Your First Claude Project</strong>
+<div class="stp"><div class="sn">1</div><div>Go to claude.ai. Click "Projects" in the left sidebar.</div></div>
+<div class="stp"><div class="sn">2</div><div>Click "Create project." Name it clearly (e.g., "My Business Strategy Adviser").</div></div>
+<div class="stp"><div class="sn">3</div><div>Click "Add instructions." Write your system prompt — Claude's permanent personality for this project.</div></div>
+<div class="stp"><div class="sn">4</div><div>Upload relevant documents (business plan, reports). Claude remembers them across all conversations in this project.</div></div>
+</div>
+<div class="sp"><strong>Sample System Prompt — Business Adviser Project</strong><em>You are my senior business adviser specialising in African markets — specifically Cameroon. You have deep knowledge of local business conditions, mobile money (MTN Mobile Money, Orange Money), supply chains, and market dynamics in Central Africa. When I bring problems: 1) Ask clarifying questions if needed, 2) Give direct, practical advice for the Cameroonian context, 3) Always flag assumptions, 4) End with one specific action I can take today.</em></div>
+</div>
+<a class="vl" href="https://www.youtube.com/results?search_query=Claude+AI+Projects+tutorial+system+prompts+2024" target="_blank"><span class="vi">▶️</span><div class="vlt"><strong>Tutorial: Claude Projects</strong>Setup, system prompts &amp; document upload</div></a>
+<button class="mbtn" onclick="mld('w1l5')">✅ Mark as Complete</button>
+</div></div></div></div>
+
+<div class="pg" id="pg-w1l6">
+<div class="wh"><div class="wtg">Week 1 · Lessons 6 &amp; 7</div><div class="wtt">Prompt Library &amp; Your Personal AI Operating System</div><div class="wst">Build Systems That Run While You Sleep</div><div class="wmeta"><span>📖 16 min</span><span>🛠️ Build your PAIOS document today</span></div></div>
+<div class="lgrid">
+<div class="lcard open"><div class="lhd" onclick="tl(this)"><div class="lnum">1</div><div><div class="ltit">Building Your Personal Prompt Library</div><div class="lmta">Lesson 1.6 — Your most valuable professional asset</div></div><span class="lch">▾</span></div>
+<div class="lbd"><div class="con">
+<p>A prompt library is a <strong>curated, tested collection of prompts</strong> that produce excellent results. Rather than writing from scratch every time, you pull from the library, customise the variables, and get consistent high-quality outputs immediately.</p>
+<p><strong>Structure each prompt entry with:</strong></p>
+<ul><li><strong>Prompt Name</strong> — descriptive and searchable</li><li><strong>Category</strong> — Writing / Analysis / Research / Creative / Business</li><li><strong>When to Use</strong></li><li><strong>Full Prompt Text</strong> — with [VARIABLES] clearly marked</li><li><strong>Best Tool</strong> — Claude / Gemini / ChatGPT</li><li><strong>Notes</strong> — what works, what to watch for</li></ul>
+<p>Store it in Notion or Google Docs. Start with the 25 Power Prompts in Appendix B of your manual — all immediately usable and professionally tested.</p>
+</div></div></div>
+<div class="lcard"><div class="lhd" onclick="tl(this)"><div class="lnum">2</div><div><div class="ltit">Your Personal AI Operating System (PAIOS)</div><div class="lmta">Lesson 1.7 — A living document you update weekly</div></div><span class="lch">▾</span></div>
+<div class="lbd"><div class="con">
+<p>Your PAIOS is a <strong>living document</strong> that describes how AI fits into your daily professional life. Not a plan — a running system. Update it every week throughout this course.</p>
+<p><strong>PAIOS v1 — Complete These 6 Sections Today:</strong></p>
+<ul><li>🌅 <strong>Morning AI Routine:</strong> 3 things you do with AI before starting work</li><li>⚙️ <strong>Automated Tasks:</strong> What currently runs without you</li><li>📚 <strong>Prompt Library Location:</strong> Where your prompts live and how you access them</li><li>🛠️ <strong>Tool Stack:</strong> Which AI tools you use for which specific tasks</li><li>🔍 <strong>Weekly AI Review:</strong> How you audit and improve your system</li><li>💰 <strong>Income Streams:</strong> How AI currently (or will) contribute to your income</li></ul>
+</div>
+<a class="vl" href="https://www.youtube.com/results?search_query=personal+AI+workflow+system+second+brain+notion+2024" target="_blank"><span class="vi">▶️</span><div class="vlt"><strong>Inspiration: Personal AI Workflow</strong>Build a second brain with AI</div></a>
+<button class="mbtn" onclick="mld('w1l6')">✅ Mark as Complete</button>
+</div></div>
+</div></div>
+
+<!-- W1 QUIZ -->
+<div class="pg" id="pg-w1q">
+<div class="wh" style="background:linear-gradient(135deg,#1a237e,#0d47a1)"><div class="wtg">Week 1 Assessment</div><div class="wtt">Think Smarter — Weekly Quiz</div><div class="wst">8 questions · 70% minimum to pass</div></div>
+<div class="qsec"><div class="qtit">📝 Week 1 Knowledge Check</div><div class="qsub">Select the best answer for each question. You need 70% to pass and unlock Week 2 achievements.</div><div id="w1q-qs"></div><button class="qbtn" onclick="subQ('w1')">Submit Answers</button><div class="qres" id="w1q-r"></div></div>
+</div>
+
+<!-- W1 PLAYBOX -->
+<div class="pg" id="pg-w1pb">
+<div class="wh" style="background:linear-gradient(135deg,#92400e,#b45309)"><div class="wtg">Week 1 · plAIbox</div><div class="wtt">plAIbox: Think Smarter Challenge</div><div class="wst">Real outputs · Real systems · Real value</div></div>
+<div class="pb">
+<div class="pbt">🎯 Week 1 Hands-On Challenge</div>
+<p style="font-size:.84rem;margin-bottom:13px;color:#78350f"><strong>Scenario:</strong> You are the strategic director of Team21 Academy's Cameroon campus expansion. The board is deciding between Bafoussam or Garoua for the new campus. Use AI as your thinking partner.</p>
+<div id="w1pb-t"></div>
+<button class="wabtn" onclick="subCI('Week 1 plAIbox — Think Smarter')">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+Send Check-In via WhatsApp to Mentor
+</button>
+</div></div>
+<!-- ===== WEEK 2 ===== -->
+<div class="pg" id="pg-w2l1">
+<div class="wh" style="background:linear-gradient(135deg,#065f46,#047857)"><div class="wtg">Week 2 · Lesson 1</div><div class="wtt">What Is a Workflow &amp; Why Does It Matter?</div><div class="wst">Build Your Systems — No-Code AI Automation</div><div class="wmeta"><span>📖 12 min</span><span>🛠️ Identify 3 tasks to automate</span></div></div>
+<div class="lgrid"><div class="lcard open"><div class="lhd" onclick="tl(this)"><div class="lnum">1</div><div><div class="ltit">From Manual to Automated: The Mindset Shift</div><div class="lmta">Every repetitive task is a workflow waiting to be automated</div></div><span class="lch">▾</span></div>
+<div class="lbd"><div class="con">
+<p>A workflow is a <strong>sequence of actions</strong> — a chain of 'when this happens, do that.' Every repetitive task is, at its core, a workflow. The question automation asks: which of these can a machine run reliably so you don't have to?</p>
+<div class="qb">"Automation is not about replacing yourself. It is about replacing the version of yourself that does the same thing the same way every week." — Team21 Academy</div>
+<table class="ct"><tr><th>Manual Workflow</th><th>Automated Alternative</th></tr><tr><td>Typing same email responses</td><td>AI-generated response triggered by keywords</td></tr><tr><td>Posting to 3 platforms separately</td><td>One trigger publishes to all simultaneously</td></tr><tr><td>Manually tracking client communications</td><td>Notion database auto-updated when clients email</td></tr><tr><td>Re-reading documents to find info</td><td>NotebookLM knowledge base queried in seconds</td></tr><tr><td>Creating weekly reports from scratch</td><td>Template auto-populated from your tools</td></tr></table>
+</div>
+<a class="vl" href="https://www.youtube.com/results?search_query=business+automation+beginner+no+code+workflow+2024" target="_blank"><span class="vi">▶️</span><div class="vlt"><strong>Video: Business Automation for Beginners</strong>No-code workflows that save real time</div></a>
+<button class="mbtn" onclick="mld('w2l1')">✅ Mark as Complete</button>
+</div></div></div></div>
+
+<div class="pg" id="pg-w2l2">
+<div class="wh" style="background:linear-gradient(135deg,#065f46,#047857)"><div class="wtg">Week 2 · Lesson 2</div><div class="wtt">Make (Integromat): Visual Automation for Everyone</div><div class="wst">Build scenarios that run without you · make.com</div><div class="wmeta"><span>📖 18 min</span><span>🛠️ Build your first scenario</span></div></div>
+<div class="lgrid"><div class="lcard open"><div class="lhd" onclick="tl(this)"><div class="lnum">1</div><div><div class="ltit">Getting Started with Make</div><div class="lmta">Free: 1,000 ops/month · 5 active scenarios</div></div><span class="lch">▾</span></div>
+<div class="lbd"><div class="con">
+<p>Make (<a href="https://make.com" target="_blank">make.com</a>) is a visual automation platform. You build <strong>scenarios</strong> by dragging and dropping app icons — Gmail, Google Sheets, WhatsApp, Notion, Instagram — and drawing connections between them. Make's free tier: <strong>1,000 operations/month, 5 active scenarios</strong>.</p>
+<div class="ht"><strong>Building Your First Scenario — Step by Step</strong>
+<div class="stp"><div class="sn">1</div><div>Go to make.com. Create a free account.</div></div>
+<div class="stp"><div class="sn">2</div><div>Click 'Create a new scenario.' You'll see a blank canvas with a + button in the centre.</div></div>
+<div class="stp"><div class="sn">3</div><div>Click + to add your trigger app (Gmail, Google Forms, or WhatsApp). Choose the trigger event.</div></div>
+<div class="stp"><div class="sn">4</div><div>Click + on the right to add your action module (e.g., "Create Row in Google Sheets").</div></div>
+<div class="stp"><div class="sn">5</div><div>Connect your accounts by clicking each module and following the authentication steps.</div></div>
+<div class="stp"><div class="sn">6</div><div>Click 'Run once' to test. If it works correctly, activate the schedule.</div></div>
+</div>
+<p><strong>Starter scenario idea:</strong> New Google Form response → Create Notion database entry + Send yourself a WhatsApp notification.</p>
+</div>
+<a class="vl" href="https://www.youtube.com/results?search_query=Make.com+tutorial+beginners+automation+2024" target="_blank"><span class="vi">▶️</span><div class="vlt"><strong>Tutorial: Make.com for Beginners</strong>Build your first automation scenario</div></a>
+<a class="vl" href="https://www.youtube.com/results?search_query=Make.com+Google+Sheets+Gmail+Notion+integration" target="_blank"><span class="vi">▶️</span><div class="vlt"><strong>Practical: Make + Google Sheets + Gmail</strong>Real workflow walkthrough</div></a>
+<button class="mbtn" onclick="mld('w2l2')">✅ Mark as Complete</button>
+</div></div></div></div>
+
+<div class="pg" id="pg-w2l3">
+<div class="wh" style="background:linear-gradient(135deg,#065f46,#047857)"><div class="wtg">Week 2 · Lesson 3</div><div class="wtt">Zapier: Connecting Your Apps Without Code</div><div class="wst">6,000+ app integrations · zapier.com</div><div class="wmeta"><span>📖 15 min</span><span>🛠️ Build your first Zap</span></div></div>
+<div class="lgrid"><div class="lcard open"><div class="lhd" onclick="tl(this)"><div class="lnum">1</div><div><div class="ltit">Make vs Zapier — When to Use Which</div><div class="lmta">Choose the right tool for your workflow</div></div><span class="lch">▾</span></div>
+<div class="lbd"><div class="con">
+<table class="ct"><tr><th>Feature</th><th>Make</th><th>Zapier</th></tr><tr><td>Visual Style</td><td>Flowchart canvas</td><td>Step-by-step list</td></tr><tr><td>Best For</td><td>Complex, branching logic</td><td>Simple trigger-action flows</td></tr><tr><td>Free Tier</td><td>1,000 ops/month</td><td>100 tasks/month</td></tr><tr><td>App Integrations</td><td>1,500+</td><td>6,000+</td></tr></table>
+<div class="ht"><strong>Building Your First Zap — Step by Step</strong>
+<div class="stp"><div class="sn">1</div><div>Go to zapier.com. Create a free account.</div></div>
+<div class="stp"><div class="sn">2</div><div>Click "Create Zap." Choose trigger app (Gmail) and event (New Email).</div></div>
+<div class="stp"><div class="sn">3</div><div>Set a filter: only run when emails contain specific keywords.</div></div>
+<div class="stp"><div class="sn">4</div><div>Add action: Create a new row in Google Sheets with email subject, sender, date.</div></div>
+<div class="stp"><div class="sn">5</div><div>Test and turn on. Your automation now runs automatically.</div></div>
+</div>
+</div>
+<a class="vl" href="https://www.youtube.com/results?search_query=Zapier+tutorial+beginners+2024+automation+free" target="_blank"><span class="vi">▶️</span><div class="vlt"><strong>Tutorial: Zapier for Beginners</strong>Your first Zap in 10 minutes</div></a>
+<button class="mbtn" onclick="mld('w2l3')">✅ Mark as Complete</button>
+</div></div></div></div>
+
+<div class="pg" id="pg-w2l4">
+<div class="wh" style="background:linear-gradient(135deg,#065f46,#047857)"><div class="wtg">Week 2 · Lesson 4</div><div class="wtt">Notion AI: Your Knowledge Command Centre</div><div class="wst">Organise, think, and execute in one place · notion.so</div><div class="wmeta"><span>📖 16 min</span><span>🛠️ Build your Notion hub today</span></div></div>
+<div class="lgrid"><div class="lcard open"><div class="lhd" onclick="tl(this)"><div class="lnum">1</div><div><div class="ltit">Building Your Notion AI Hub — 6 Essential Pages</div><div class="lmta">Free plan · Your professional command centre</div></div><span class="lch">▾</span></div>
+<div class="lbd"><div class="con">
+<p>Notion combines notes, databases, task management, and AI in a single platform. Your Notion AI Hub becomes the <strong>command centre for your entire professional life</strong>.</p>
+<p><strong>Recommended 6-page hub structure:</strong></p>
+<ul><li>📚 <strong>Prompt Library</strong> — Curated prompts with labels and notes</li><li>🤖 <strong>Active Automations</strong> — All Make/Zapier scenarios tracked here</li><li>📋 <strong>Project Tracker</strong> — Client projects and deliverables database</li><li>💡 <strong>Ideas &amp; Research</strong> — AI-summarised notes from articles and meetings</li><li>🎯 <strong>PAIOS Document</strong> — Your Personal AI Operating System</li><li>📊 <strong>Content Calendar</strong> — Scheduled posts across all platforms</li></ul>
+<div class="ht"><strong>Notion AI Quick Commands</strong>
+<div class="stp"><div class="sn">1</div><div>Type <strong>/AI</strong> in any Notion page to access AI features.</div></div>
+<div class="stp"><div class="sn">2</div><div>Choose 'Summarise' to condense long notes or meeting transcripts.</div></div>
+<div class="stp"><div class="sn">3</div><div>Choose 'Continue writing' to expand brief notes into full sections.</div></div>
+<div class="stp"><div class="sn">4</div><div>Highlight text → 'Improve writing' for instant professional polish.</div></div>
+</div>
+</div>
+<a class="vl" href="https://www.youtube.com/results?search_query=Notion+AI+workspace+setup+tutorial+2024+productivity" target="_blank"><span class="vi">▶️</span><div class="vlt"><strong>Tutorial: Notion AI Setup Guide</strong>Build your professional command centre</div></a>
+<button class="mbtn" onclick="mld('w2l4')">✅ Mark as Complete</button>
+</div></div></div></div>
+
+<div class="pg" id="pg-w2l5">
+<div class="wh" style="background:linear-gradient(135deg,#065f46,#047857)"><div class="wtg">Week 2 · Lesson 5</div><div class="wtt">NotebookLM: Making Your Documents Talk to You</div><div class="wst">Google's Free AI Research &amp; Podcast Tool</div><div class="wmeta"><span>📖 14 min</span><span>🎙️ Create your first Audio Overview</span></div></div>
+<div class="lgrid"><div class="lcard open"><div class="lhd" onclick="tl(this)"><div class="lnum">1</div><div><div class="ltit">What Makes NotebookLM Uniquely Valuable</div><div class="lmta">notebooklm.google.com — Free · 50 sources per notebook</div></div><span class="lch">▾</span></div>
+<div class="lbd"><div class="con">
+<p>NotebookLM only answers from <strong>your uploaded documents</strong> — not the general internet. This makes it reliable for professional use: analysing reports, grants, legal docs, course materials, or your own research. It always cites the exact source it used.</p>
+<div class="ht"><strong>Creating Your Knowledge Base — Step by Step</strong>
+<div class="stp"><div class="sn">1</div><div>Go to notebooklm.google.com. Sign in with Google.</div></div>
+<div class="stp"><div class="sn">2</div><div>Click 'New Notebook.' Name it clearly (e.g., "2025 Business Research").</div></div>
+<div class="stp"><div class="sn">3</div><div>Click 'Add source.' Upload PDFs, Google Docs, or paste text. Up to 50 sources.</div></div>
+<div class="stp"><div class="sn">4</div><div>Type questions in the chat. NotebookLM answers using only your documents and shows which source it used.</div></div>
+<div class="stp"><div class="sn">5</div><div>Click 'Audio Overview' to generate a 5–15 minute podcast discussion. Download as MP3.</div></div>
+</div>
+</div>
+<a class="vl" href="https://www.youtube.com/results?search_query=NotebookLM+tutorial+2024+Google+AI+research+audio+overview" target="_blank"><span class="vi">▶️</span><div class="vlt"><strong>Tutorial: NotebookLM 2024</strong>Upload documents, query, and create podcasts</div></a>
+<button class="mbtn" onclick="mld('w2l5')">✅ Mark as Complete</button>
+</div></div></div></div>
+
+<div class="pg" id="pg-w2l6">
+<div class="wh" style="background:linear-gradient(135deg,#065f46,#047857)"><div class="wtg">Week 2 · Lessons 6 &amp; 7</div><div class="wtt">Content Pipeline &amp; Deploying Free Apps with Blogger</div><div class="wst">From single idea to multi-platform publish — automatically</div><div class="wmeta"><span>📖 16 min</span><span>🛠️ Deploy your first web app live</span></div></div>
+<div class="lgrid">
+<div class="lcard open"><div class="lhd" onclick="tl(this)"><div class="lnum">1</div><div><div class="ltit">Your 4-Step AI Content Pipeline</div><div class="lmta">Lesson 2.6 — One idea → multi-platform content</div></div><span class="lch">▾</span></div>
+<div class="lbd"><div class="con">
+<p>A content pipeline transforms a single idea into multiple pieces for multiple platforms — automatically or semi-automatically.</p>
+<div class="ht"><strong>The 4-Step Pipeline</strong>
+<div class="stp"><div class="sn">1</div><div><strong>GENERATE:</strong> Enter topic into Google AI Studio. Get LinkedIn post, WhatsApp message, Instagram caption, Twitter post — all in one prompt.</div></div>
+<div class="stp"><div class="sn">2</div><div><strong>REVIEW:</strong> Read each piece. Apply human judgment — authentic? Factually correct?</div></div>
+<div class="stp"><div class="sn">3</div><div><strong>SCHEDULE:</strong> Copy to Buffer (free: 3 channels). Schedule posts for optimal times.</div></div>
+<div class="stp"><div class="sn">4</div><div><strong>AUTOMATE:</strong> Connect Google Sheet + Make to auto-generate content when you add a new topic row.</div></div>
+</div>
+</div></div></div>
+<div class="lcard"><div class="lhd" onclick="tl(this)"><div class="lnum">2</div><div><div class="ltit">Deploying Free Apps to Blogger.com</div><div class="lmta">Lesson 2.7 — Live web app in under 10 minutes</div></div><span class="lch">▾</span></div>
+<div class="lbd"><div class="con">
+<p>Blogger.com (Google's free platform) can host <strong>fully functional HTML web apps</strong> — quizzes, calculators, resource guides, interactive tools — for free, with a professional URL.</p>
+<div class="ht"><strong>Deploy to Blogger — 5 Steps</strong>
+<div class="stp"><div class="sn">1</div><div>In Google AI Studio, prompt: "Build me a [quiz/calculator/checklist] HTML page for [your topic]. Professional, mobile-friendly, single HTML file."</div></div>
+<div class="stp"><div class="sn">2</div><div>Copy the complete HTML output.</div></div>
+<div class="stp"><div class="sn">3</div><div>Go to blogger.com. Create a new post. Switch to HTML view.</div></div>
+<div class="stp"><div class="sn">4</div><div>Paste your HTML. Remove default Blogger template elements if needed.</div></div>
+<div class="stp"><div class="sn">5</div><div>Click Publish. Share your live URL.</div></div>
+</div>
+</div>
+<a class="vl" href="https://www.youtube.com/results?search_query=Blogger.com+deploy+HTML+web+app+free+2024" target="_blank"><span class="vi">▶️</span><div class="vlt"><strong>Tutorial: Deploy HTML Apps to Blogger</strong>Free hosting for your AI-built tools</div></a>
+<button class="mbtn" onclick="mld('w2l6')">✅ Mark as Complete</button>
+</div></div>
+</div></div>
+
+<!-- W2 QUIZ -->
+<div class="pg" id="pg-w2q">
+<div class="wh" style="background:linear-gradient(135deg,#065f46,#0d47a1)"><div class="wtg">Week 2 Assessment</div><div class="wtt">Build Your Systems — Weekly Quiz</div><div class="wst">8 questions · 70% minimum to pass</div></div>
+<div class="qsec"><div class="qtit">📝 Week 2 Knowledge Check</div><div class="qsub">Test your understanding of automation, Notion, NotebookLM and workflows.</div><div id="w2q-qs"></div><button class="qbtn" onclick="subQ('w2')">Submit Answers</button><div class="qres" id="w2q-r"></div></div>
+</div>
+
+<!-- W2 PLAYBOX -->
+<div class="pg" id="pg-w2pb">
+<div class="wh" style="background:linear-gradient(135deg,#064e3b,#065f46)"><div class="wtg">Week 2 · plAIbox</div><div class="wtt">plAIbox: Build Three Working Automations</div><div class="wst">Real systems that save you real time — starting now</div></div>
+<div class="pb">
+<div class="pbt">🎯 Week 2 Hands-On Challenge</div>
+<p style="font-size:.84rem;margin-bottom:13px;color:#78350f"><strong>Goal:</strong> Build 3 real, working automations this week — systems that will genuinely save you time from the moment you complete them. Every automation must be live before submission.</p>
+<div id="w2pb-t"></div>
+<button class="wabtn" onclick="subCI('Week 2 plAIbox — Build Your Systems')">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+Send Check-In via WhatsApp to Mentor
+</button>
+</div></div>
+<!-- ===== WEEK 3 ===== -->
+<div class="pg" id="pg-w3l1">
+<div class="wh" style="background:linear-gradient(135deg,#7c2d12,#c2410c)"><div class="wtg">Week 3 · Lesson 1</div><div class="wtt">The One-Person Media Studio</div><div class="wst">Build Your Media Studio — 4 Capabilities, All Free</div><div class="wmeta"><span>📖 12 min</span><span>🎬 4 production capabilities</span></div></div>
+<div class="lgrid"><div class="lcard open"><div class="lhd" onclick="tl(this)"><div class="lnum">1</div><div><div class="ltit">Your Complete Free Media Stack</div><div class="lmta">Video + Audio + Design + Distribution</div></div><span class="lch">▾</span></div>
+<div class="lbd"><div class="con">
+<div class="qb">"In the attention economy, the person who shows up consistently with quality content wins. AI just made it possible for one person to show up like a team." — Team21 Academy</div>
+<table class="ct"><tr><th>Capability</th><th>Free Tools</th><th>What You Can Produce</th></tr><tr><td>Video Production</td><td>InVideo AI, Runway ML, Canva Video</td><td>YouTube videos, Reels, promo clips, course content</td></tr><tr><td>Audio Production</td><td>ElevenLabs (free), NotebookLM, Suno</td><td>Podcasts, radio spots, music beds, audio logos</td></tr><tr><td>Visual Design</td><td>Ideogram, InsMind, Canva AI</td><td>Logos, brand kits, social graphics, posters</td></tr><tr><td>Distribution</td><td>Blogger, YouTube, Anchor/Spotify</td><td>Global audience, professional presence</td></tr></table>
+</div>
+<button class="mbtn" onclick="mld('w3l1')">✅ Mark as Complete</button>
+</div></div></div></div>
+
+<div class="pg" id="pg-w3l2">
+<div class="wh" style="background:linear-gradient(135deg,#7c2d12,#c2410c)"><div class="wtg">Week 3 · Lesson 2</div><div class="wtt">Professional Video Production with Free Tools</div><div class="wst">InVideo AI · ElevenLabs · Suno · Runway ML</div><div class="wmeta"><span>📖 22 min</span><span>🎬 Build a complete 60-sec video</span></div></div>
+<div class="lgrid"><div class="lcard open"><div class="lhd" onclick="tl(this)"><div class="lnum">1</div><div><div class="ltit">The 5-Component AI Video Workflow</div><div class="lmta">Script + Voiceover + Visuals + Music + Edit</div></div><span class="lch">▾</span></div>
+<div class="lbd"><div class="con">
+<p>Every professional video is built from the same <strong>5 components</strong>: script, voiceover, visuals, music, and editing. AI now handles all five. Your role is creative direction.</p>
+<div class="ht"><strong>Full AI Video Production — Step by Step</strong>
+<div class="stp"><div class="sn">1</div><div><strong>SCRIPT:</strong> Use Claude. Specify duration (60 sec = ~150 words), audience, tone, and single message.</div></div>
+<div class="stp"><div class="sn">2</div><div><strong>VOICEOVER:</strong> Paste script into ElevenLabs (elevenlabs.io). Choose your voice. Free tier: 10,000 characters/month. Download MP3.</div></div>
+<div class="stp"><div class="sn">3</div><div><strong>VISUALS:</strong> Upload script to InVideo AI (invideo.io). It auto-selects video clips synced to your script.</div></div>
+<div class="stp"><div class="sn">4</div><div><strong>MUSIC:</strong> Go to Suno (suno.com). Describe the mood ("uplifting African corporate, moderate tempo, no lyrics"). Download track.</div></div>
+<div class="stp"><div class="sn">5</div><div><strong>EDIT:</strong> In InVideo, overlay voiceover, add Suno music at ~20% volume, add logo + text overlays. Export.</div></div>
+</div>
+<div class="sp"><strong>Video Script Prompt for Claude</strong><em>You are an experienced scriptwriter for short-form African audience content. Write a 90-second script (~225 words) for: SUBJECT: [your topic] AUDIENCE: [who watches] PLATFORM: [YouTube/Instagram/LinkedIn] TONE: [professional/inspirational] KEY MESSAGE: [main takeaway] CALL TO ACTION: [what viewers should do]. Include SPEAKER cues and VISUAL DIRECTION notes. Make it punchy and specific to the Cameroonian or African context.</em></div>
+</div>
+<a class="vl" href="https://www.youtube.com/results?search_query=InVideo+AI+tutorial+2024+text+to+video+beginner" target="_blank"><span class="vi">▶️</span><div class="vlt"><strong>Tutorial: InVideo AI</strong>Text to video in minutes — free tier</div></a>
+<a class="vl" href="https://www.youtube.com/results?search_query=ElevenLabs+text+to+speech+tutorial+free+2024" target="_blank"><span class="vi">▶️</span><div class="vlt"><strong>Tutorial: ElevenLabs</strong>Professional AI voiceover for free</div></a>
+<a class="vl" href="https://www.youtube.com/results?search_query=Suno+AI+music+generation+tutorial+2024" target="_blank"><span class="vi">▶️</span><div class="vlt"><strong>Tutorial: Suno AI Music</strong>Generate background music in seconds</div></a>
+<button class="mbtn" onclick="mld('w3l2')">✅ Mark as Complete</button>
+</div></div></div></div>
+
+<div class="pg" id="pg-w3l3">
+<div class="wh" style="background:linear-gradient(135deg,#7c2d12,#c2410c)"><div class="wtg">Week 3 · Lesson 3</div><div class="wtt">Audio Production: Podcasts, Radio Spots &amp; Voice Brands</div><div class="wst">NotebookLM · ElevenLabs · Suno · Anchor</div><div class="wmeta"><span>📖 18 min</span><span>🎙️ Record your first podcast episode</span></div></div>
+<div class="lgrid"><div class="lcard open"><div class="lhd" onclick="tl(this)"><div class="lnum">1</div><div><div class="ltit">Create a Podcast with NotebookLM</div><div class="lmta">5–15 minute professional episodes from your documents</div></div><span class="lch">▾</span></div>
+<div class="lbd"><div class="con">
+<p>NotebookLM's Audio Overview feature creates a <strong>genuinely impressive podcast</strong> from any documents you upload. Two AI voices discuss the content naturally. Audio content in Africa grew over 40% between 2023–2025.</p>
+<div class="ht"><strong>Create a Podcast — Step by Step</strong>
+<div class="stp"><div class="sn">1</div><div>Create a new NotebookLM notebook for your podcast topic.</div></div>
+<div class="stp"><div class="sn">2</div><div>Upload source material — research docs, your own writing, or a Claude-written script.</div></div>
+<div class="stp"><div class="sn">3</div><div>Click 'Audio Overview' in the right sidebar. Generate a 5–15 min discussion.</div></div>
+<div class="stp"><div class="sn">4</div><div>Click 'Customise' to guide content direction before generating.</div></div>
+<div class="stp"><div class="sn">5</div><div>Download the MP3. Upload to Anchor (anchor.fm) — free hosting + automatic distribution to Spotify &amp; Apple Podcasts.</div></div>
+</div>
+<h3>Your Audio Brand Identity</h3>
+<table class="ct"><tr><th>Audio Brand Element</th><th>How to Create</th></tr><tr><td>Brand Jingle (15 sec)</td><td>Suno — describe your brand personality</td></tr><tr><td>Podcast Intro/Outro</td><td>Suno — 5–10 second version of jingle</td></tr><tr><td>Consistent Brand Voice</td><td>ElevenLabs — choose and save a voice</td></tr><tr><td>Sound Logo (3 sec)</td><td>Suno — audio signature before content</td></tr></table>
+</div>
+<a class="vl" href="https://www.youtube.com/results?search_query=NotebookLM+audio+overview+podcast+create+tutorial" target="_blank"><span class="vi">▶️</span><div class="vlt"><strong>Tutorial: NotebookLM Podcast</strong>AI podcast from your documents in minutes</div></a>
+<button class="mbtn" onclick="mld('w3l3')">✅ Mark as Complete</button>
+</div></div></div></div>
+
+<div class="pg" id="pg-w3l4">
+<div class="wh" style="background:linear-gradient(135deg,#7c2d12,#c2410c)"><div class="wtg">Week 3 · Lessons 4 &amp; 5</div><div class="wtt">Visual Identity &amp; Your Complete Brand Kit</div><div class="wst">Ideogram · Canva AI · InsMind — Professional Branding for Free</div><div class="wmeta"><span>📖 20 min</span><span>🎨 Build your full brand kit</span></div></div>
+<div class="lgrid">
+<div class="lcard open"><div class="lhd" onclick="tl(this)"><div class="lnum">1</div><div><div class="ltit">Ideogram: Text-to-Image for Professional Design</div><div class="lmta">ideogram.ai — Best free tool for text-in-image accuracy</div></div><span class="lch">▾</span></div>
+<div class="lbd"><div class="con">
+<p>Ideogram is the best free AI image generator for work that includes text — logos, banners, posters, branded graphics. <strong>It handles lettering with exceptional accuracy</strong>, unlike other generators that distort text.</p>
+<div class="sp"><strong>Logo Generation Prompt for Ideogram</strong><em>A professional logo for [organisation name], a [type of organisation] based in Cameroon. The logo should use [colour palette], feature [visual element — e.g., a stylised map of Africa, a rising sun], include the organisation name in clean modern typography, be simple enough to work at small sizes and in black and white, and convey [values — e.g., innovation, trust, community]. Style: minimalist corporate. White background.</em></div>
+</div></div></div>
+<div class="lcard"><div class="lhd" onclick="tl(this)"><div class="lnum">2</div><div><div class="ltit">Building Your Complete Brand Kit</div><div class="lmta">Canva + Ideogram — All assets in one session</div></div><span class="lch">▾</span></div>
+<div class="lbd"><div class="con">
+<p>A brand kit ensures <strong>visual consistency</strong> across everything you produce. Build all these assets in one session:</p>
+<ul><li>Primary logo (colour) + dark background + black &amp; white + icon-only versions</li><li>5-colour brand palette (primary + secondary + accent + neutral + white)</li><li>Typography: heading font + body font</li><li>Instagram post template (1080×1080)</li><li>Instagram Story template (1080×1920)</li><li>LinkedIn banner (1584×396)</li><li>Business card design</li><li>Professional letterhead</li></ul>
+</div>
+<a class="vl" href="https://www.youtube.com/results?search_query=Ideogram+AI+logo+design+tutorial+2024+free" target="_blank"><span class="vi">▶️</span><div class="vlt"><strong>Tutorial: Ideogram AI Design</strong>Logos, banners &amp; branded graphics</div></a>
+<a class="vl" href="https://www.youtube.com/results?search_query=Canva+brand+kit+setup+social+media+templates+2024" target="_blank"><span class="vi">▶️</span><div class="vlt"><strong>Tutorial: Canva Brand Kit</strong>Full brand kit setup guide</div></a>
+<button class="mbtn" onclick="mld('w3l4')">✅ Mark as Complete</button>
+</div></div>
+</div></div>
+
+<div class="pg" id="pg-w3l5">
+<div class="wh" style="background:linear-gradient(135deg,#7c2d12,#c2410c)"><div class="wtg">Week 3 · Lesson 6</div><div class="wtt">Publishing Your Media on Free Platforms</div><div class="wst">YouTube · Anchor · Blogger · Instagram · Buffer</div><div class="wmeta"><span>📖 12 min</span><span>📤 Publish across all platforms</span></div></div>
+<div class="lgrid"><div class="lcard open"><div class="lhd" onclick="tl(this)"><div class="lnum">1</div><div><div class="ltit">Multi-Platform Publishing Strategy</div><div class="lmta">Maximum reach for zero budget</div></div><span class="lch">▾</span></div>
+<div class="lbd"><div class="con">
+<table class="ct"><tr><th>Platform</th><th>URL</th><th>Best Content</th><th>Free?</th></tr><tr><td>YouTube</td><td>youtube.com</td><td>Long-form video, tutorials, course content</td><td>✅</td></tr><tr><td>Anchor/Spotify</td><td>anchor.fm</td><td>Podcasts + automatic global distribution</td><td>✅</td></tr><tr><td>Blogger</td><td>blogger.com</td><td>Blog posts, HTML apps, resource pages</td><td>✅</td></tr><tr><td>Instagram</td><td>instagram.com</td><td>Short video, designed graphics, Reels</td><td>✅</td></tr><tr><td>Buffer</td><td>buffer.com</td><td>Schedule 3 channels, 10 posts each in queue</td><td>✅</td></tr></table>
+<p><strong>Publishing workflow:</strong> Create once with AI → schedule to all platforms via Buffer → Blogger hosts your written tools and resources → YouTube and Anchor reach global audiences for free.</p>
+</div>
+<button class="mbtn" onclick="mld('w3l5')">✅ Mark as Complete</button>
+</div></div></div></div>
+
+<!-- W3 QUIZ -->
+<div class="pg" id="pg-w3q">
+<div class="wh" style="background:linear-gradient(135deg,#7c2d12,#0d47a1)"><div class="wtg">Week 3 Assessment</div><div class="wtt">Build Your Media Studio — Weekly Quiz</div><div class="wst">8 questions · 70% minimum to pass</div></div>
+<div class="qsec"><div class="qtit">📝 Week 3 Knowledge Check</div><div class="qsub">Test your understanding of video, audio, and visual production tools.</div><div id="w3q-qs"></div><button class="qbtn" onclick="subQ('w3')">Submit Answers</button><div class="qres" id="w3q-r"></div></div>
+</div>
+
+<!-- W3 PLAYBOX -->
+<div class="pg" id="pg-w3pb">
+<div class="wh" style="background:linear-gradient(135deg,#7c2d12,#92400e)"><div class="wtg">Week 3 · plAIbox</div><div class="wtt">plAIbox: Build a Complete Media Studio</div><div class="wst">Shea Butter Business scenario — full media production from scratch</div></div>
+<div class="pb">
+<div class="pbt">🎯 Week 3 Hands-On Challenge</div>
+<p style="font-size:.84rem;margin-bottom:13px;color:#78350f"><strong>Scenario:</strong> You are the marketing director of a shea butter business in the Western Highlands of Cameroon. Build a complete media presence from scratch using AI tools.</p>
+<div id="w3pb-t"></div>
+<button class="wabtn" onclick="subCI('Week 3 plAIbox — Build Your Media Studio')">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+Send Check-In via WhatsApp to Mentor
+</button>
+</div></div>
+<!-- ===== WEEK 4 ===== -->
+<div class="pg" id="pg-w4l1">
+<div class="wh" style="background:linear-gradient(135deg,#4c1d95,#6d28d9)"><div class="wtg">Week 4 · Lesson 1</div><div class="wtt">The Knowledge Economy &amp; Your Expertise Gap</div><div class="wst">Build Your Income — Digital Products &amp; Freelancing</div><div class="wmeta"><span>📖 14 min</span><span>💰 Identify your monetisable knowledge</span></div></div>
+<div class="lgrid"><div class="lcard open"><div class="lhd" onclick="tl(this)"><div class="lnum">1</div><div><div class="ltit">Your Knowledge Has Real Monetary Value</div><div class="lmta">The gap between what you know and what others know is sellable</div></div><span class="lch">▾</span></div>
+<div class="lbd"><div class="con">
+<div class="qb">"Most people are sitting on a goldmine of knowledge that other people would pay to access. AI just made it possible to package and sell that knowledge in an afternoon." — Innocent Forteh, Team21 Academy</div>
+<p>Everyone who has completed this program has knowledge most people in their community do not have. You can use AI tools professionally. You can automate workflows. You can produce media that took professionals weeks. <strong>This gap is valuable.</strong></p>
+<div class="sp"><strong>Monetisable Knowledge Discovery Prompt</strong><em>I have recently completed an advanced AI training program and now have skills in: [list your skills]. I also have background expertise in [your profession/industry]. I am based in [city/country] and my network includes [describe]. Given this profile, suggest 10 specific knowledge products or services I could create and sell. For each: estimate the price in XAF, time to create, and primary audience. Focus on what's realistic to produce in the next 2 weeks using AI tools.</em></div>
+</div>
+<button class="mbtn" onclick="mld('w4l1')">✅ Mark as Complete</button>
+</div></div></div></div>
+
+<div class="pg" id="pg-w4l2">
+<div class="wh" style="background:linear-gradient(135deg,#4c1d95,#6d28d9)"><div class="wtg">Week 4 · Lesson 2</div><div class="wtt">Creating Your First Digital Product with AI</div><div class="wst">PDF Guides · Template Packs · Mini-Courses · Tools</div><div class="wmeta"><span>📖 20 min</span><span>📦 Build your first product today</span></div></div>
+<div class="lgrid"><div class="lcard open"><div class="lhd" onclick="tl(this)"><div class="lnum">1</div><div><div class="ltit">The 5 Best Digital Products for AI Graduates</div><div class="lmta">Start earning this week — no inventory, no shipping</div></div><span class="lch">▾</span></div>
+<div class="lbd"><div class="con">
+<table class="ct"><tr><th>Product Type</th><th>Example</th><th>XAF Range</th></tr><tr><td>AI Starter Guide (PDF)</td><td>"Cameroonian Entrepreneur's Guide to AI Tools" — 30 pages</td><td>5,000–15,000</td></tr><tr><td>Prompt Template Pack</td><td>"50 AI Prompts for NGO Professionals" — PDF/Google Doc</td><td>3,000–10,000</td></tr><tr><td>Mini Video Course</td><td>3×15-min InVideo videos on using Claude for business</td><td>15,000–50,000</td></tr><tr><td>Automation Setup Service</td><td>Install &amp; configure Make/Zapier for a client</td><td>25,000–100,000</td></tr><tr><td>AI Toolkit Web App</td><td>HTML calculator or assessment tool for your industry</td><td>10,000–30,000</td></tr></table>
+<div class="ht"><strong>Create Your PDF Guide in 1 Hour</strong>
+<div class="stp"><div class="sn">1</div><div>Claude: "Write a 30-page guide titled [title] for [audience]. Include: intro, 5 chapters, practical exercises, resource list."</div></div>
+<div class="stp"><div class="sn">2</div><div>Copy content into Canva. Select a professional document template.</div></div>
+<div class="stp"><div class="sn">3</div><div>Add your brand colours, logo, and free photos from Unsplash.</div></div>
+<div class="stp"><div class="sn">4</div><div>Download as PDF. Your product is ready to sell.</div></div>
+</div>
+</div>
+<a class="vl" href="https://www.youtube.com/results?search_query=create+sell+digital+product+AI+PDF+guide+2024" target="_blank"><span class="vi">▶️</span><div class="vlt"><strong>Tutorial: Create &amp; Sell Digital Products</strong>AI-powered product creation walkthrough</div></a>
+<button class="mbtn" onclick="mld('w4l2')">✅ Mark as Complete</button>
+</div></div></div></div>
+
+<div class="pg" id="pg-w4l3">
+<div class="wh" style="background:linear-gradient(135deg,#4c1d95,#6d28d9)"><div class="wtg">Week 4 · Lesson 3</div><div class="wtt">Setting Up Your Free Sales &amp; Delivery System</div><div class="wst">Selar · Gumroad · WhatsApp Business — Sell From Day One</div><div class="wmeta"><span>📖 16 min</span><span>🛒 Set up your storefront now</span></div></div>
+<div class="lgrid"><div class="lcard open"><div class="lhd" onclick="tl(this)"><div class="lnum">1</div><div><div class="ltit">Digital Sales Platforms — Africa &amp; Global</div><div class="lmta">Sell without a website or technical setup</div></div><span class="lch">▾</span></div>
+<div class="lbd"><div class="con">
+<table class="ct"><tr><th>Platform</th><th>Best For</th><th>Fee</th></tr><tr><td>Selar (selar.co)</td><td>Africa — MTN &amp; Orange Mobile Money</td><td>10% + payment fees</td></tr><tr><td>Gumroad (gumroad.com)</td><td>Global — PDF, courses, templates</td><td>10% + fees</td></tr><tr><td>WhatsApp Business</td><td>Direct sales to local Cameroon network</td><td>Free</td></tr><tr><td>Payhip (payhip.com)</td><td>EU/US buyers — digital downloads</td><td>5% + fees</td></tr></table>
+<p><strong>Recommended start:</strong> List on <strong>Selar</strong> (XAF + MTN Mobile Money) AND <strong>Gumroad</strong> (USD/EUR). Use WhatsApp Business for direct outreach to your immediate network.</p>
+<div class="ht"><strong>Set Up Selar in 15 Minutes</strong>
+<div class="stp"><div class="sn">1</div><div>Go to selar.co. Register with your email and phone number.</div></div>
+<div class="stp"><div class="sn">2</div><div>Click 'Add Product.' Upload your PDF and set your price in XAF.</div></div>
+<div class="stp"><div class="sn">3</div><div>Connect your MTN Mobile Money or Orange Money number for payments.</div></div>
+<div class="stp"><div class="sn">4</div><div>Copy your product link. Share in WhatsApp groups, Instagram bio, and LinkedIn.</div></div>
+</div>
+</div>
+<a class="vl" href="https://www.youtube.com/results?search_query=Selar+tutorial+sell+digital+products+Africa+2024" target="_blank"><span class="vi">▶️</span><div class="vlt"><strong>Tutorial: Selar — Africa's Digital Store</strong>Set up in 15 minutes with mobile money</div></a>
+<button class="mbtn" onclick="mld('w4l3')">✅ Mark as Complete</button>
+</div></div></div></div>
+
+<div class="pg" id="pg-w4l4">
+<div class="wh" style="background:linear-gradient(135deg,#4c1d95,#6d28d9)"><div class="wtg">Week 4 · Lessons 4 &amp; 5</div><div class="wtt">AI-Powered Freelancing &amp; Writing Winning Proposals</div><div class="wst">Build your service offer · Write proposals that win</div><div class="wmeta"><span>📖 22 min</span><span>📄 Write your first proposal today</span></div></div>
+<div class="lgrid">
+<div class="lcard open"><div class="lhd" onclick="tl(this)"><div class="lnum">1</div><div><div class="ltit">In-Demand AI Services in the African Market</div><div class="lmta">Lesson 4.4 — Services people are paying for right now</div></div><span class="lch">▾</span></div>
+<div class="lbd"><div class="con">
+<ul><li><strong>AI-Powered Content Creation</strong> — Blog posts, social content, newsletters for businesses</li><li><strong>Automation Setup</strong> — Build Make/Zapier workflows for SMEs and NGOs</li><li><strong>AI Training &amp; Workshops</strong> — Teach teams and organisations to use AI</li><li><strong>Grant Proposal Writing</strong> — AI-accelerated proposal writing for NGOs</li><li><strong>Video &amp; Podcast Production</strong> — Complete content packages for brands</li><li><strong>Brand Kit Creation</strong> — Logo, colours, templates using AI tools</li><li><strong>WhatsApp Automation</strong> — Customer response bots for local businesses</li></ul>
+</div></div></div>
+<div class="lcard"><div class="lhd" onclick="tl(this)"><div class="lnum">2</div><div><div class="ltit">Writing Winning Proposals with Claude</div><div class="lmta">Lesson 4.5 — The 5 rules of proposals that get hired</div></div><span class="lch">▾</span></div>
+<div class="lbd"><div class="con">
+<div class="sp"><strong>Winning Proposal Prompt for Claude</strong><em>Write a compelling 400-word proposal for [client name] requesting [service type]. Open with their specific problem — not a generic introduction. Demonstrate deep understanding of their situation. Present your solution with clear deliverables and a realistic timeline. Include 2 relevant examples or results. Close with one specific, frictionless next step (a call, demo, or sample deliverable). No generic filler language. Every sentence must earn its place.</em></div>
+<p><strong>The 5 Rules of Winning Proposals:</strong></p>
+<ol><li>Open with their problem, not your credentials</li><li>Demonstrate you understand their situation specifically</li><li>Give a clear scope — exactly what they get</li><li>Show proof — even from your training exercises</li><li>End with one easy next step (call, demo, sample deliverable)</li></ol>
+</div>
+<a class="vl" href="https://www.youtube.com/results?search_query=freelance+proposal+writing+tips+win+clients+2024" target="_blank"><span class="vi">▶️</span><div class="vlt"><strong>Strategy: Proposals That Win</strong>How to write client proposals with AI</div></a>
+<button class="mbtn" onclick="mld('w4l4')">✅ Mark as Complete</button>
+</div></div>
+</div></div>
+
+<div class="pg" id="pg-w4l5">
+<div class="wh" style="background:linear-gradient(135deg,#4c1d95,#6d28d9)"><div class="wtg">Week 4 · Lesson 6</div><div class="wtt">Managing Clients with Free Automation Tools</div><div class="wst">Notion CRM + Make + WhatsApp — Professional Client Management</div><div class="wmeta"><span>📖 14 min</span><span>🤝 Set up your client system</span></div></div>
+<div class="lgrid"><div class="lcard open"><div class="lhd" onclick="tl(this)"><div class="lnum">1</div><div><div class="ltit">Your Free Client Management System</div><div class="lmta">Notion + Make + WhatsApp = professional CRM</div></div><span class="lch">▾</span></div>
+<div class="lbd"><div class="con">
+<div class="ht"><strong>Build Your Notion CRM + Automations</strong>
+<div class="stp"><div class="sn">1</div><div>Create a Notion database "Client Tracker." Columns: Client Name, Project, Status (Lead/Active/Complete), Next Action, Deadline, Contact, Notes.</div></div>
+<div class="stp"><div class="sn">2</div><div>In Make: when a new email containing "project" arrives → create a new row in your Notion Client Tracker automatically.</div></div>
+<div class="stp"><div class="sn">3</div><div>Add a Zapier Zap: when a new row appears in Notion → send a WhatsApp reminder with client name and next action.</div></div>
+<div class="stp"><div class="sn">4</div><div>Use Notion AI to generate client update emails: "Write a professional project update for [client] covering: [progress points]."</div></div>
+</div>
+</div>
+<button class="mbtn" onclick="mld('w4l5')">✅ Mark as Complete</button>
+</div></div></div></div>
+
+<!-- W4 QUIZ -->
+<div class="pg" id="pg-w4q">
+<div class="wh" style="background:linear-gradient(135deg,#4c1d95,#312e81)"><div class="wtg">Week 4 Assessment</div><div class="wtt">Build Your Income — Weekly Quiz</div><div class="wst">8 questions · 70% minimum to pass</div></div>
+<div class="qsec"><div class="qtit">📝 Week 4 Knowledge Check</div><div class="qsub">Test your understanding of digital products, freelancing, and income strategies.</div><div id="w4q-qs"></div><button class="qbtn" onclick="subQ('w4')">Submit Answers</button><div class="qres" id="w4q-r"></div></div>
+</div>
+
+<!-- W4 PLAYBOX -->
+<div class="pg" id="pg-w4pb">
+<div class="wh" style="background:linear-gradient(135deg,#4c1d95,#5b21b6)"><div class="wtg">Week 4 · plAIbox</div><div class="wtt">plAIbox: Build Your Income</div><div class="wst">Real products · Real profiles · Real proposals</div></div>
+<div class="pb">
+<div class="pbt">🎯 Week 4 Hands-On Challenge</div>
+<p style="font-size:.84rem;margin-bottom:13px;color:#78350f"><strong>Goal:</strong> By the end of this week you will have: a live digital product, an active sales profile, and your first freelance proposal written and sent.</p>
+<div id="w4pb-t"></div>
+<button class="wabtn" onclick="subCI('Week 4 plAIbox — Build Your Income')">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+Send Check-In via WhatsApp to Mentor
+</button>
+</div></div>
+<!-- ===== MEGA QUIZ ===== -->
+<div class="pg" id="pg-mq">
+<div class="mqh">
+  <div style="font-size:.78rem;background:rgba(255,255,255,.2);display:inline-block;padding:3px 11px;border-radius:18px;margin-bottom:11px;font-weight:700">FINAL ASSESSMENT — ALL 4 WEEKS</div>
+  <div style="font-size:1.9rem;font-weight:900;letter-spacing:-.8px">🏆 4-Week Mega Quiz</div>
+  <div style="opacity:.8;margin-top:7px">40 Questions · All Weeks · Score 70%+ to Earn Your Certificate</div>
+</div>
+<div class="qsec">
+<div class="qtit">🎓 AI Unlocked Level 2 — Final Assessment</div>
+<div class="qsub">Complete all 40 questions covering all 4 weeks. You need 70% (28/40) to unlock your graduation certificate.</div>
+<div id="mq-qs"></div>
+<button class="qbtn" style="background:linear-gradient(135deg,#7c3aed,#6d28d9);font-size:.95rem;padding:12px 28px" onclick="subMQ()">Submit Final Assessment</button>
+<div class="qres" id="mq-r"></div>
+</div>
+</div>
+
+<!-- ===== CERTIFICATE ===== -->
+<div class="pg" id="pg-cert">
+<div class="wh" style="background:linear-gradient(135deg,#064e3b,#065f46)"><div class="wtg">Graduation</div><div class="wtt">🎓 Your Certificate</div><div class="wst">AI Unlocked Level 2: OPERATE — Team21 Academy</div></div>
+<div id="cert-locked" style="background:#fff;border-radius:13px;padding:36px;text-align:center;border:2px dashed #cbd5e1">
+  <div style="font-size:3.5rem;margin-bottom:14px">🔒</div>
+  <div style="font-size:1.2rem;font-weight:700;color:var(--mu)">Certificate Locked</div>
+  <p style="color:var(--mu);margin-top:8px;font-size:.88rem">Complete the 4-Week Mega Quiz with a score of 70% or above to unlock your graduation certificate from Team21 Academy.</p>
+  <button onclick="gp('mq')" style="margin-top:18px;background:var(--p);color:#fff;border:none;padding:11px 22px;border-radius:8px;font-size:.92rem;font-weight:700;cursor:pointer">Take the Mega Quiz →</button>
+</div>
+<div id="cert-unlocked" style="display:none">
+<div class="certbox">
+  <div style="font-size:3rem;margin-bottom:14px">🎉</div>
+  <div style="font-size:1.4rem;font-weight:900;color:var(--g)">Congratulations! Certificate Unlocked!</div>
+  <p style="color:var(--mu);margin-top:8px;font-size:.9rem">Final Score: <strong id="certScore" style="color:var(--p)">—</strong></p>
+  <p style="color:var(--mu);font-size:.86rem;margin-top:4px">You have successfully completed the AI Unlocked Level 2: OPERATE program at Team21 Academy.</p>
+  <button onclick="genCert()" style="margin-top:18px;background:var(--g);color:#fff;border:none;padding:13px 30px;border-radius:9px;font-size:.97rem;font-weight:700;cursor:pointer">📄 Download PDF Certificate</button>
+</div>
+</div>
+</div>
+
+</div><!-- end main -->
+</div><!-- end layout -->
+<div class="ftr">
+  <div>© Innocent Forteh · Team21 Academy 2026 · All Rights Reserved</div>
+  <div style="margin-top:4px"><a href="mailto:team21online@gmail.com">team21online@gmail.com</a> · AI Unlocked Level 2: OPERATE</div>
+</div>
+</div><!-- end APP -->
+<script>
+// ═══════ AUTH ═══════
+function doL(){
+  const u=document.getElementById('ui').value.trim(),p=document.getElementById('pi').value.trim();
+  if(u==='t21studentnew'&&p==='admin'){
+    document.getElementById('LS').style.display='none';
+    document.getElementById('APP').style.display='block';
+    loadSt();initQ();initTasks();updSt();
+  }else{document.getElementById('lerr').style.display='block'}
+}
+function doLo(){document.getElementById('APP').style.display='none';document.getElementById('LS').style.display='flex'}
+
+// ═══════ STATE ═══════
+let ST={done:{},scores:{},ci:0,mega:null};
+function saveSt(){try{localStorage.setItem('t21v2',JSON.stringify(ST))}catch(e){}}
+function loadSt(){try{const s=localStorage.getItem('t21v2');if(s)ST=JSON.parse(s)}catch(e){}}
+
+// ═══════ NAV ═══════
+function gp(id){
+  document.querySelectorAll('.pg').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.sbi').forEach(n=>n.classList.remove('active'));
+  const pg=document.getElementById('pg-'+id);if(pg)pg.classList.add('active');
+  const nb=document.getElementById('n-'+id);if(nb)nb.classList.add('active');
+  window.scrollTo(0,0);
+}
+
+// ═══════ LESSONS ═══════
+function tl(hd){hd.closest('.lcard').classList.toggle('open')}
+function mld(id){
+  ST.done[id]=true;saveSt();updSt();
+  event.target.textContent='✅ Completed!';
+  event.target.style.background='var(--g)';
+  event.target.disabled=true;
+}
+
+// ═══════ STATS ═══════
+function updSt(){
+  const total=26,done=Object.keys(ST.done).length;
+  const pct=Math.round(done/total*100);
+  document.getElementById('stL').textContent=done;
+  document.getElementById('stQ').textContent=Object.keys(ST.scores).length;
+  document.getElementById('stC').textContent=ST.ci;
+  document.getElementById('stP').textContent=pct+'%';
+  document.getElementById('spb').style.width=pct+'%';
+  document.getElementById('spc').textContent=pct;
+}
+
+// ═══════ QUIZ DATA ═══════
+const QD={
+w1:[
+  {q:"An AI operator, as defined in this course, primarily:",opts:["Uses AI to answer questions faster","Designs prompt systems, builds workflows, and chains tools for compound results","Pays for premium AI subscriptions","Has a computer science background"],c:1},
+  {q:"Chain-of-thought prompting asks the AI to:",opts:["Give a longer and more detailed response","Reason step-by-step and show its logic before reaching a conclusion","Use only verified factual information","Role-play as a specific expert"],c:1},
+  {q:"Role stacking in prompting means:",opts:["Sending the same prompt multiple times","Assigning AI a composite identity drawing on multiple expert perspectives simultaneously","Combining outputs from two AI tools","Sending follow-up prompts"],c:1},
+  {q:"Iterative refinement chains involve:",opts:["Asking for a final answer in one prompt","Building a conversation that improves through multiple rounds of feedback and revision","Copying AI output without editing","Using AI for software code iterations"],c:1},
+  {q:"Google AI Studio's free API key is most useful for:",opts:["Training a new AI model","Powering Make/Zapier automations with Gemini AI","Accessing Claude","Getting paid AI features for free"],c:1},
+  {q:"A PAIOS (Personal AI Operating System) document describes:",opts:["A new operating system by Google","How AI fits into your daily professional life — a living document updated weekly","Claude's built-in features","A specific type of system prompt"],c:1},
+  {q:"The Team21 principle 'Publish Before You Are Ready' means:",opts:["Publish all drafts regardless of quality","Done and published beats perfect and hidden — start before you're fully ready","Share all unfinished work for public feedback","Never review your work before publishing"],c:1},
+  {q:"Devil's advocate prompting is most useful for:",opts:["Writing first drafts of creative content","Finding weaknesses and flaws in your plans before you commit to them","Creating social media posts","Building workflow automations"],c:1}
+],
+w2:[
+  {q:"Make (formerly Integromat) is best described as:",opts:["A content creation platform","A visual automation platform that connects apps in workflows called scenarios","An AI chatbot with 6,000 integrations","A note-taking application"],c:1},
+  {q:"What makes NotebookLM's answers uniquely trustworthy for professional use?",opts:["It uses GPT-4 technology","It only answers from your specific uploaded documents, not general internet knowledge","It has a human reviewer for each answer","It is updated in real time"],c:1},
+  {q:"A workflow is best defined as:",opts:["A type of AI model","A sequence of actions — when this happens, do that — that can be automated","A social media content strategy","A type of content calendar"],c:1},
+  {q:"When would you choose Zapier over Make?",opts:["When you need complex, branching automation logic","When you need simple trigger-action flows and access to more app integrations (6,000+)","When creating video content","When building a podcast"],c:1},
+  {q:"The 4-step content pipeline in order is:",opts:["Plan, Write, Edit, Publish","Generate, Review, Schedule, Automate","Research, Draft, Design, Share","Idea, Prompt, Post, Repeat"],c:1},
+  {q:"NotebookLM's Audio Overview feature creates:",opts:["A text summary of your documents","A 5–15 minute podcast-format audio discussion of your uploaded documents","A video presentation","A quiz from your documents"],c:1},
+  {q:"Blogger.com can be used to host:",opts:["Only traditional blog posts","Fully functional HTML web apps built with AI — completely free with a professional URL","Only photo galleries","Only video content"],c:1},
+  {q:"Notion AI is activated in any Notion page by typing:",opts:["#AI","/AI","@AI","!AI"],c:1}
+],
+w3:[
+  {q:"Ideogram is particularly valuable for AI image generation because:",opts:["It produces the most photorealistic images","It handles text in images with exceptional accuracy — ideal for logos, banners, and branded graphics","It is the fastest image generator","It creates animated content"],c:1},
+  {q:"The 5 components of a professional AI-produced video are:",opts:["Idea, research, brief, design, publish","Script, voiceover, visuals, music, editing","Concept, storyboard, filming, colour grading, export","Plot, character, setting, conflict, resolution"],c:1},
+  {q:"ElevenLabs free tier provides:",opts:["Unlimited text-to-speech conversions","10,000 characters of text-to-speech per month","Only 1,000 characters per month","No free tier — paid access only"],c:1},
+  {q:"Suno (suno.com) is primarily used for:",opts:["Social media scheduling","AI-generated music, jingles, and audio content","Video editing","Podcast hosting and distribution"],c:1},
+  {q:"A complete brand kit should include:",opts:["Only a logo in one colour","Logo versions (colour, dark, B&W, icon), colour palette, typography, and templates for visual consistency","Only social media templates","Only business cards and letterheads"],c:1},
+  {q:"Anchor.fm (Spotify for Podcasters) provides:",opts:["Paid podcast hosting only","Free podcast hosting with automatic distribution to Spotify, Apple Podcasts, and other major platforms","Only video hosting","Only short-form audio clips"],c:1},
+  {q:"Buffer's free plan allows you to schedule content to:",opts:["Unlimited social media channels","3 channels with approximately 10 scheduled posts per channel in the queue","Only 1 channel","Only Twitter/X"],c:1},
+  {q:"Approximately how many words is a professional 30-second radio advertisement?",opts:["About 80 words","150 words","200 words","300 words"],c:0}
+],
+w4:[
+  {q:"The 'knowledge economy' rewards people who:",opts:["Have university degrees from prestigious institutions","Package and sell knowledge that helps others save time, solve problems, or gain capabilities","Work in large technology companies","Have large social media followings"],c:1},
+  {q:"Selar (selar.co) is best described as:",opts:["A European digital commerce platform","An Africa-optimised digital sales platform supporting MTN Mobile Money and Orange Money","A free website builder for Cameroon","A freelancing marketplace like Upwork"],c:1},
+  {q:"A winning freelance proposal should open with:",opts:["Your credentials, qualifications, and years of experience","The client's specific problem — not a generic introduction about yourself","A price list with your rates","A formal thank-you note for their consideration"],c:1},
+  {q:"The best digital product type for a new AI Unlocked graduate to create first is:",opts:["A mobile app requiring development","A PDF guide or template pack — low creation effort with immediate market among local professionals","A physical product requiring inventory","A Netflix-style streaming subscription"],c:1},
+  {q:"For selling digital products to Cameroonian customers using mobile money, which platform is best?",opts:["Amazon Marketplace","Etsy","Selar — supports MTN Mobile Money and Orange Money payments","PayPal only"],c:2},
+  {q:"The Notion CRM database for client management should include these columns:",opts:["Only client name and phone number","Client Name, Project, Status, Next Action, Deadline, Contact, and Notes","Only invoices and payment status","Only completed projects and testimonials"],c:1},
+  {q:"The core Week 4 principle about publishing states:",opts:["Perfect products always sell better than imperfect ones","Wait until you are fully prepared before showing anything to anyone","Publish before you are ready — done and published beats perfect and hidden","Focus exclusively on digital sales platforms for income"],c:2},
+  {q:"Team21's principle 'Review for Hallucinations' means:",opts:["AI is always factually accurate and needs no review","Always keep a human in the loop to verify AI outputs for accuracy and truthfulness","Only use AI for creative tasks where accuracy doesn't matter","Trust all AI outputs that seem confident"],c:1}
+]
+};
+
+// MEGA QUIZ — 40 Questions
+const MQD=[
+{w:"W1",q:"An AI operator designs systems in advance, builds prompt libraries, and chains tools for compound results — compared to a user who:",opts:["Pays for premium AI tools","Asks questions one at a time and reacts to problems rather than automating them","Has technical programming skills","Only uses one AI tool"],c:1},
+{w:"W1",q:"Which prompting technique asks you to feed a real decision into AI and map out optimistic, realistic, and pessimistic scenarios?",opts:["Devil's advocate prompting","Role stacking","Scenario modelling","Chain-of-thought prompting"],c:2},
+{w:"W1",q:"Chain-of-thought prompting is particularly effective for:",opts:["Simple one-word answers","Complex, multi-part problems where step-by-step reasoning produces more accurate conclusions","Fast content generation","Social media post creation"],c:1},
+{w:"W1",q:"Role stacking assigns Claude:",opts:["A single professional role","Multiple expert perspectives simultaneously — like a consultant, journalist, and entrepreneur combined","Only one task at a time","No specific role or persona"],c:1},
+{w:"W1",q:"Google AI Studio's system prompt feature allows you to:",opts:["Train a new custom AI model on your data","Set a permanent AI persona or role that shapes every response in that session","Access paid Gemini features for free","Connect to real-time internet data"],c:1},
+{w:"W1",q:"Iterative refinement typically produces excellent results after how many rounds?",opts:["1–2 iterations","10–15 iterations","3–5 iterations","20+ iterations"],c:2},
+{w:"W1",q:"A Personal Prompt Library should include for each entry:",opts:["Only the prompt text","Prompt name, category, when to use, full prompt text with variables, best tool, and notes","Only prompts that worked once","Only prompts for business writing"],c:1},
+{w:"W1",q:"What does PAIOS stand for?",opts:["Personal Artificial Intelligence Output System","Personal AI Operating System — a living document of how AI fits into your professional life","Professional AI Operations Interface","Platform AI Organisation System"],c:1},
+{w:"W1",q:"The Team21 principle 'Teach What You Learn' states the fastest way to master AI is:",opts:["To read more technical books about it","To use it every day in isolation","To teach it to others — in communities, workplaces, and networks","To attend multiple training programs"],c:2},
+{w:"W1",q:"Claude Projects allow you to:",opts:["Train Claude on your personal data","Create persistent AI workspaces where Claude remembers context and uploaded files across conversations","Access Claude unlimited times for free","Share your Claude account with other users"],c:1},
+{w:"W2",q:"Make's free tier allows how many operations per month?",opts:["500 operations","1,000 operations","5,000 operations","Unlimited operations"],c:1},
+{w:"W2",q:"What makes NotebookLM's answers uniquely reliable for professional research?",opts:["It uses the most advanced GPT model","It only answers from your specific uploaded sources — never from the general internet","It has no risk of hallucination whatsoever","It is updated with new information daily"],c:1},
+{w:"W2",q:"In Make, a 'scenario' is:",opts:["A business plan document","A visual workflow connecting apps that runs automatically when triggered","A type of AI prompt strategy","A Google Sheets template"],c:1},
+{w:"W2",q:"Which automation tool has 6,000+ app integrations?",opts:["Make (Integromat)","Notion","Zapier","Buffer"],c:2},
+{w:"W2",q:"The content pipeline's final 'automate' step involves:",opts:["Manually posting to each platform one by one","Connecting Google Sheets + Make so content generates automatically when you add a new topic row","Using Buffer to manually schedule posts","Writing all content fresh in Claude each week"],c:1},
+{w:"W2",q:"Buffer's free plan includes scheduling for:",opts:["Unlimited social media channels","3 channels with approximately 10 posts per channel in the queue","Only 1 channel","Paid plan only — no free tier"],c:1},
+{w:"W2",q:"To deploy an HTML app to Blogger requires:",opts:["A paid monthly hosting plan","Switching to HTML view and pasting AI-generated HTML code into a Blogger post — then publishing","Advanced programming knowledge","Purchasing a domain name separately"],c:1},
+{w:"W2",q:"NotebookLM allows uploading up to how many sources per notebook?",opts:["10 sources","50 sources","100 sources","Unlimited sources"],c:1},
+{w:"W2",q:"The main advantage of Make over Zapier for complex workflows is:",opts:["More app integrations (6,000+)","A superior visual flowchart canvas that handles complex, branching logic workflows better","Lower monthly cost","Faster execution speed"],c:1},
+{w:"W2",q:"Notion AI quick command to access AI features in any page:",opts:["#AI to activate features","/AI to access AI features","@AI to call the assistant","!AI to start a session"],c:1},
+{w:"W3",q:"Why is Ideogram the recommended AI image tool for text-based graphics?",opts:["It generates the most photorealistic images","It handles text in images with exceptional accuracy — unlike other generators that distort lettering","It is the cheapest available option","It has the largest training dataset"],c:1},
+{w:"W3",q:"The ideal background music volume in a video with voiceover is approximately:",opts:["50% to match the voiceover volume","80% for a professional sound","About 20% so it doesn't overpower the voiceover","100% for maximum impact"],c:2},
+{w:"W3",q:"A NotebookLM Audio Overview podcast episode typically runs:",opts:["30 seconds to 1 minute","5–15 minutes","About 1 hour","2+ hours"],c:1},
+{w:"W3",q:"Anchor (Spotify for Podcasters) automatically distributes your podcast to:",opts:["Only Spotify platform","Spotify, Apple Podcasts, and other major platforms — all for free","YouTube only","Only paid streaming platforms"],c:1},
+{w:"W3",q:"A sound logo in audio branding is typically:",opts:["A full 60-second theme song","A 2–3 second audio signature that plays before your content","A 30-second advertising jingle","A complete podcast intro and outro"],c:1},
+{w:"W3",q:"InVideo AI's free tier exports videos with:",opts:["No watermark at all","An InVideo watermark on the exported video","Only 30-second maximum duration","Very low resolution only"],c:1},
+{w:"W3",q:"A complete brand kit must include logo variations for which use cases?",opts:["Only the colour version","Colour version, dark background version, black-and-white version, and icon-only version","Only digital screen use","Only print production use"],c:1},
+{w:"W3",q:"Runway ML offers advanced AI video features including:",opts:["Basic video editing and trimming only","Text-to-video generation, video-to-video transformation, and image-to-video animation","Only screen recording capabilities","Only YouTube publishing tools"],c:1},
+{w:"W3",q:"A 60-second video script requires approximately how many words?",opts:["About 50 words","About 300 words","About 150 words","About 500 words"],c:2},
+{w:"W3",q:"Suno (suno.com) is used to generate:",opts:["AI-powered voiceover narration","AI music, jingles, and audio content","AI logo and graphic designs","AI video scripts and screenplays"],c:1},
+{w:"W4",q:"Team21's 'Teach What You Learn' principle states the fastest path to mastery is:",opts:["Reading more advanced technical books","Using AI every day completely alone","Teaching it to others — in your communities, workplaces, and networks","Attending as many training programs as possible"],c:2},
+{w:"W4",q:"Selar supports which payment methods critical for the Cameroonian market?",opts:["International credit cards only","PayPal payments only","MTN Mobile Money and Orange Money — Africa's dominant mobile payment systems","Bank wire transfers only"],c:2},
+{w:"W4",q:"Gumroad charges what percentage transaction fee?",opts:["Free — no transaction fees","5% + payment processing fees","10% + payment processing fees","25% + payment processing fees"],c:2},
+{w:"W4",q:"A winning freelance proposal should close with:",opts:["A comprehensive list of your qualifications and certifications","A price negotiation and discount offer","One specific, frictionless next step — a call, demo, or sample deliverable","A lengthy formal thank-you"],c:2},
+{w:"W4",q:"Which of these is a Team21 Level 2 core principle?",opts:["Avoid free tools — only paid professional tools deliver quality","Free tools are powerful tools — budget is not your barrier; creativity and consistency are","Never publish work until it has been fully reviewed and perfected","Always wait until you are completely ready before starting"],c:1},
+{w:"W4",q:"A Notion CRM database for client management should include columns for:",opts:["Only client name and phone number","Client Name, Project, Status, Next Action, Deadline, Contact, and Notes","Only invoices and payment records","Only completed and archived projects"],c:1},
+{w:"W4",q:"A well-priced prompt template pack for NGO professionals might sell for approximately:",opts:["Completely free as a loss leader","100,000 XAF (premium pricing)","3,000–10,000 XAF (accessible professional pricing)","1,000,000 XAF (enterprise pricing)"],c:2},
+{w:"W4",q:"The key Week 4 publishing principle states:",opts:["Perfect products consistently sell better than imperfect ones","Always wait until everything is fully ready before publishing anything","Publish before you are ready — done and published beats perfect and hidden","Never sell content that was created with AI assistance"],c:2},
+{w:"W4",q:"'Review for Hallucinations' — the final Team21 principle — means:",opts:["AI is always 100% accurate and can be trusted completely","Always keep a human in the loop to verify AI outputs for factual accuracy","Only use AI for non-critical creative tasks","You can fully trust all AI outputs that are delivered confidently"],c:1},
+{w:"W4",q:"The most effective strategy to identify your monetisable knowledge is to:",opts:["Only look at what competitors in your market are selling","Use Claude to analyse your specific skills, background, and network to suggest 10 concrete products with XAF price estimates","Ask friends informally what they think you could sell","Copy the most successful products you can find and replicate them"],c:1}
+];
+
+// ═══════ QUIZ RENDERING ═══════
+const UA={};
+function initQ(){
+  ['w1','w2','w3','w4'].forEach(w=>{
+    const c=document.getElementById(w+'q-qs');if(!c)return;
+    QD[w].forEach((q,i)=>{c.innerHTML+=rQ(w+'-'+i,q,i)});
+  });
+  const mc=document.getElementById('mq-qs');if(!mc)return;
+  MQD.forEach((q,i)=>{mc.innerHTML+=rMQ('m-'+i,q,i)});
+}
+function rQ(id,q,idx){
+  return`<div class="qq"><div class="qqt">${idx+1}. ${q.q}</div><div class="qopts">${q.opts.map((o,j)=>`<label class="qopt" id="o-${id}-${j}"><input type="radio" name="q-${id}" onchange="sa('${id}',${j})"> ${o}</label>`).join('')}</div></div>`;
+}
+function rMQ(id,q,idx){
+  return`<div class="mqcard"><div class="wlbl">Week ${q.w}</div><div class="qqt">${idx+1}. ${q.q}</div><div class="qopts">${q.opts.map((o,j)=>`<label class="qopt" id="o-${id}-${j}"><input type="radio" name="q-${id}" onchange="sa('${id}',${j})"> ${o}</label>`).join('')}</div></div>`;
+}
+function sa(qid,val){
+  UA[qid]=val;
+  const prefix=qid;
+  document.querySelectorAll(`[id^="o-${qid}-"]`).forEach(el=>el.classList.remove('sel'));
+  const el=document.getElementById('o-'+qid+'-'+val);if(el)el.classList.add('sel');
+}
+function subQ(w){
+  const qs=QD[w];let score=0;
+  qs.forEach((q,i)=>{
+    const qid=w+'-'+i,ans=UA[qid];
+    const cor=q.c;
+    const cel=document.getElementById('o-'+qid+'-'+cor);if(cel)cel.classList.add('cor');
+    if(ans!==undefined&&parseInt(ans)!==cor){const wel=document.getElementById('o-'+qid+'-'+ans);if(wel)wel.classList.add('wrg')}
+    if(ans!==undefined&&parseInt(ans)===cor)score++;
+  });
+  const pct=Math.round(score/qs.length*100);
+  const r=document.getElementById(w+'q-r');r.style.display='block';
+  if(pct>=70){r.className='qres pass';r.textContent='✅ Passed! Score: '+score+'/'+qs.length+' ('+pct+'%). Great work!';ST.scores[w]=pct;saveSt();updSt();}
+  else{r.className='qres fail';r.textContent='❌ Score: '+score+'/'+qs.length+' ('+pct+'%). You need 70% to pass. Review the lessons and try again!';}
+}
+function subMQ(){
+  let score=0;
+  MQD.forEach((q,i)=>{
+    const qid='m-'+i,ans=UA[qid];
+    const cor=q.c;
+    const cel=document.getElementById('o-'+qid+'-'+cor);if(cel)cel.classList.add('cor');
+    if(ans!==undefined&&parseInt(ans)!==cor){const wel=document.getElementById('o-'+qid+'-'+ans);if(wel)wel.classList.add('wrg')}
+    if(ans!==undefined&&parseInt(ans)===cor)score++;
+  });
+  const pct=Math.round(score/MQD.length*100);
+  const r=document.getElementById('mq-r');r.style.display='block';
+  ST.mega=pct;saveSt();
+  if(pct>=70){
+    r.className='qres pass';r.innerHTML='🎉 <strong>Congratulations! You passed with '+score+'/'+MQD.length+' ('+pct+'%)!</strong><br>Your certificate is now unlocked. Go to the Certificate page!';
+    document.getElementById('cert-locked').style.display='none';
+    document.getElementById('cert-unlocked').style.display='block';
+    document.getElementById('certScore').textContent=pct+'%';
+  }else{r.className='qres fail';r.textContent='Score: '+score+'/'+MQD.length+' ('+pct+'%). You need 70% to earn your certificate. Review the course and try again!';}
+}
+
+// ═══════ TASKS ═══════
+const TD={
+w1:["Configure a Claude Project 'Team21 Strategic Adviser' with a custom system prompt","Use Claude to model the Bafoussam vs Garoua expansion decision (3 scenarios)","Run devil's advocate — ask Claude to find every flaw in your preferred option. Document 5 objections","Set up Google AI Studio with a 'Cameroon Education Market Analyst' system prompt","Run chain-of-thought prompting on the same question in both Claude and Google AI Studio. Compare","Create your PAIOS v1 document — fill in all 6 sections","Add 5 most useful prompts from this week to your Personal Prompt Library with labels and notes"],
+w2:["Build your Notion AI Hub with all 6 sub-pages. Add 10+ prompts to your Prompt Library","Create a NotebookLM notebook. Upload 3 sources. Generate and download the Audio Overview MP3","Build a Make scenario: new Google Sheet entry → AI content for 2 platforms. Test with 3 topics","Build a Zapier Zap: important emails → captured automatically in Notion/Google Sheets. Test with 3 emails","Using Google AI Studio, generate a useful HTML tool. Deploy it live on Blogger. Share the URL","Customise your Blogger theme with AI-generated XML. Take before/after screenshots","Update your PAIOS to reflect the automations you've now built — what can you stop doing manually?"],
+w3:["Create full brand identity for the shea butter business (name, mission, logo with Ideogram, 5-colour palette)","In Canva: create an Instagram post template, Story template, and business card using your new brand","Write 60-sec product video script with Claude. Voiceover in ElevenLabs. Assemble in InVideo. Export","Write 30-sec radio ad in Claude. Record in ElevenLabs. Layer with Suno music bed. Export as MP3","Create NotebookLM podcast on shea butter in Cameroon. Upload 2–3 sources. Generate &amp; share MP3","Generate brand jingle (15 sec), sound logo (3 sec), and podcast intro/outro using Suno","Using Google AI Studio, generate HTML product showcase page. Deploy to Blogger. Share live URL","Create a one-page PDF media kit in Canva with brand, products, and contact details"],
+w4:["Use Claude to identify your top 5 monetisable knowledge areas with XAF price estimates for each","Create your first digital product: a PDF guide or prompt template pack (minimum 10 pages/prompts)","Set up a Selar store. List your product with a professional description and correct pricing. Share the link","Write a professional AI service description for your top service. Post on LinkedIn","Write a winning proposal for an imaginary (or real!) client using the Claude proposal prompt","Build your Notion CRM — database set up + connected to a Make or Zapier automation","Update your PAIOS — add your income streams, client system, and new automation upgrades"]
+};
+function initTasks(){
+  Object.keys(TD).forEach(w=>{
+    ['w1pb','w2pb','w3pb','w4pb'].forEach(pbid=>{
+      if(pbid.startsWith(w)){
+        const el=document.getElementById(pbid+'-t');if(!el)return;
+        TD[w].forEach((t,i)=>{
+          const key=w+'t'+i,done=ST.done[key]||false;
+          el.innerHTML+=`<div class="ptask"><div class="tck ${done?'done':''}" id="tc-${key}" onclick="togT('${key}')">${done?'✓':''}</div><div>${t}</div></div>`;
+        });
+      }
+    });
+  });
+}
+function togT(key){
+  const el=document.getElementById('tc-'+key),done=!ST.done[key];
+  ST.done[key]=done;el.className='tck '+(done?'done':'');el.textContent=done?'✓':'';
+  saveSt();updSt();
+}
+
+// ═══════ WHATSAPP CHECK-IN ═══════
+function subCI(label){
+  ST.ci++;saveSt();updSt();
+  const msg=encodeURIComponent('Team21 Academy Check-In 📚\n\nStudent: t21studentnew\nModule: '+label+'\nDate: '+new Date().toLocaleDateString()+'\n\nI have completed my plAIbox tasks and am ready for mentor review!\n\n#Team21AI');
+  window.open('https://wa.me/237694294406?text='+msg,'_blank');
+}
+
+// ═══════ LANGUAGE TOGGLE ═══════
+let isF=false;
+function togL(){
+  isF=!isF;
+  document.getElementById('llbl').textContent=isF?'English':'Français';
+  const fr=['wlc-fr','wsd-fr','cov-fr'],en=['wlc-en','wsd-en','cov-en'];
+  fr.forEach(id=>{const e=document.getElementById(id);if(e)e.style.display=isF?'block':'none'});
+  en.forEach(id=>{const e=document.getElementById(id);if(e)e.style.display=isF?'none':'block'});
+  if(isF){
+    document.querySelectorAll('.wtg').forEach(e=>{if(e.dataset.fr)e.textContent=e.dataset.fr});
+  }
+}
+
+// ═══════ CERTIFICATE PDF ═══════
+function genCert(){
+  const{jsPDF}=window.jspdf;
+  const doc=new jsPDF({orientation:'landscape',unit:'mm',format:'a4'});
+  const W=297,H=210;
+  // Background
+  doc.setFillColor(26,35,126);doc.rect(0,0,W,H,'F');
+  doc.setFillColor(21,101,192);doc.rect(0,H-55,W,55,'F');
+  // Gold borders
+  doc.setDrawColor(249,115,22);doc.setLineWidth(3);doc.rect(9,9,W-18,H-18,'S');
+  doc.setLineWidth(0.8);doc.rect(13,13,W-26,H-26,'S');
+  // Academy name
+  doc.setTextColor(249,115,22);doc.setFont('helvetica','bold');doc.setFontSize(10);
+  doc.text('TEAM21 ACADEMY',W/2,28,{align:'center'});
+  doc.setFontSize(7);doc.setFont('helvetica','normal');doc.setTextColor(200,220,255);
+  doc.text('AI UNLOCKED LEVEL 2: OPERATE PROGRAM',W/2,36,{align:'center'});
+  // Main title
+  doc.setTextColor(255,255,255);doc.setFont('helvetica','bold');doc.setFontSize(24);
+  doc.text('CERTIFICATE OF COMPLETION',W/2,56,{align:'center'});
+  doc.setFontSize(10);doc.setFont('helvetica','normal');
+  doc.text('This certifies that the following student has successfully completed',W/2,68,{align:'center'});
+  doc.setFont('helvetica','bold');doc.setFontSize(18);doc.setTextColor(249,115,22);
+  doc.text('AI Unlocked Level 2: OPERATE Graduate',W/2,80,{align:'center'});
+  doc.setFont('helvetica','normal');doc.setFontSize(9.5);doc.setTextColor(255,255,255);
+  doc.text('has completed all 4 weeks of the AI Unlocked Level 2: OPERATE Program at Team21 Academy',W/2,91,{align:'center'});
+  // Modules
+  doc.setFontSize(8.5);doc.setTextColor(180,210,255);
+  const mods=[
+    ['Week 1: Think Smarter — Advanced AI Reasoning',ST.scores.w1?ST.scores.w1+'%':'Completed'],
+    ['Week 2: Build Your Systems — No-Code Automation',ST.scores.w2?ST.scores.w2+'%':'Completed'],
+    ['Week 3: Build Your Media Studio — Video, Audio &amp; Design',ST.scores.w3?ST.scores.w3+'%':'Completed'],
+    ['Week 4: Build Your Income — Digital Products &amp; Freelancing',ST.scores.w4?ST.scores.w4+'%':'Completed'],
+    ['Final Assessment — 4-Week Mega Quiz',(ST.mega||0)+'%']
+  ];
+  let my=104;
+  mods.forEach(([title,score])=>{
+    doc.setTextColor(180,210,255);doc.text('• '+title,55,my);
+    doc.setTextColor(249,115,22);doc.text(score,245,my,{align:'right'});
+    my+=9;
+  });
+  // Signature line
+  doc.setDrawColor(249,115,22);doc.setLineWidth(0.4);
+  doc.line(55,170,145,170);doc.line(155,170,242,170);
+  doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(255,255,255);
+  doc.text('Innocent Forteh',100,176,{align:'center'});
+  doc.text(new Date().toLocaleDateString('en-GB',{year:'numeric',month:'long',day:'numeric'}),198,176,{align:'center'});
+  doc.setFont('helvetica','normal');doc.setFontSize(7.5);doc.setTextColor(180,210,255);
+  doc.text('Program Director, Team21 Academy',100,182,{align:'center'});
+  doc.text('Date of Completion',198,182,{align:'center'});
+  // Footer
+  doc.setFontSize(6.5);doc.setTextColor(130,160,210);
+  doc.text('© Innocent Forteh · Team21 Academy 2026 · team21online@gmail.com',W/2,H-12,{align:'center'});
+  doc.save('Team21_Academy_AI_Unlocked_Level2_Certificate.pdf');
+}
+
+// ═══════ INIT ═══════
+document.addEventListener('DOMContentLoaded',function(){
+  document.getElementById('pi').addEventListener('keydown',e=>{if(e.key==='Enter')doL()});
+  // Restore cert if already passed
+  loadSt();
+  if(ST.mega&&ST.mega>=70){
+    document.getElementById('cert-locked').style.display='none';
+    document.getElementById('cert-unlocked').style.display='block';
+    document.getElementById('certScore').textContent=ST.mega+'%';
+  }
+});
+</script>
+</body>
+</html>

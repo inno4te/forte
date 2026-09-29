@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Team21 Academy — Servant Leadership Exams</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0a1628;
+    --navy-mid: #0f2040;
+    --blue: #1a4b8c;
+    --blue-mid: #2563b8;
+    --blue-light: #3b82d4;
+    --green: #0d5c2e;
+    --green-mid: #157a3e;
+    --green-light: #1ea851;
+    --gold: #c8a93a;
+    --gold-light: #f0c94a;
+    --white: #f8f9fa;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Barlow', sans-serif;
+    background: var(--navy);
+    color: var(--white);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed; inset: 0; pointer-events: none; z-index: 0;
+    background-image:
+      repeating-linear-gradient(0deg, transparent, transparent 79px, rgba(255,255,255,0.012) 80px),
+      repeating-linear-gradient(90deg, transparent, transparent 79px, rgba(255,255,255,0.012) 80px);
+  }
+
+  #app-root { position: relative; z-index: 1; }
+
+  /* ---- FONTS ---- */
+  .font-display { font-family: 'Playfair Display', serif; }
+  .font-cond { font-family: 'Barlow Condensed', sans-serif; }
+
+  /* ---- SCROLLBAR ---- */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--navy); }
+  ::-webkit-scrollbar-thumb { background: var(--blue); border-radius: 3px; }
+
+  /* ---- CERTIFICATE SPECIFIC ---- */
+  .cert-border-outer {
+    border: 12px double #1a3a6e;
+  }
+  .cert-border-inner {
+    border: 3px solid rgba(200,169,58,0.4);
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+  }
+  .animate-fadeup { animation: fadeUp 0.5s ease both; }
+  .animate-spin   { animation: spin 1s linear infinite; }
+
+  .clip-arrow {
+    clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+  }
+
+  /* Progress bar */
+  .progress-track { background: rgba(255,255,255,0.1); border-radius: 2px; height: 4px; }
+  .progress-fill  { background: linear-gradient(90deg, var(--blue-mid), var(--gold)); height: 4px; border-radius: 2px; transition: width 0.5s ease; }
+
+  /* Week card hover */
+  .week-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.07);
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+  .week-card:hover {
+    background: rgba(26,75,140,0.25);
+    border-color: rgba(37,99,184,0.5);
+    transform: translateY(-4px);
+    box-shadow: 0 16px 40px rgba(0,0,0,0.4);
+  }
+
+  /* Answer option */
+  .answer-opt {
+    background: rgba(255,255,255,0.04);
+    border: 1.5px solid rgba(255,255,255,0.1);
+    transition: all 0.2s ease;
+    cursor: pointer;
+  }
+  .answer-opt:hover  { border-color: rgba(37,99,184,0.6); background: rgba(26,75,140,0.2); }
+  .answer-opt.sel    { border-color: var(--gold); background: rgba(200,169,58,0.12); }
+
+  /* @print */
+  @media print {
+    .no-print { display: none !important; }
+    body { background: white !important; }
+    body::before { display: none; }
+    #certificate-content { box-shadow: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<div id="app-root"></div>
+
+<script>
+// ============================================================
+// QUESTION BANK — all 21 weeks
+// ============================================================
+const QUESTION_BANK = {
+  1:[
+    {id:1,question:"Who originally coined the term 'Servant Leadership' in a 1970 essay?",options:["John Maxwell","Robert Greenleaf","Peter Drucker","Abraham Lincoln"],correctAnswer:1},
+    {id:2,question:"What is the primary goal of a Servant Leader?",options:["To increase company profits","To serve the highest priority needs of others","To gain power and authority","To maintain strict order"],correctAnswer:1},
+    {id:3,question:"According to Greenleaf, what is the 'Best Test' of a servant leader?",options:["Do those served grow as persons?","Does the stock price go up?","Do followers obey without question?","Is the leader popular?"],correctAnswer:0},
+    {id:4,question:"Servant leadership flips the traditional pyramid. Who is at the top of an inverted pyramid?",options:["The CEO","The Managers","The Employees/Customers","The Shareholders"],correctAnswer:2},
+    {id:5,question:"Which of these is NOT a characteristic of Servant Leadership?",options:["Listening","Coercion","Empathy","Stewardship"],correctAnswer:1},
+    {id:6,question:"True or False: Servant Leadership implies that the leader lacks authority.",options:["True, they are just servants","False, they lead through influence","True, they cannot make decisions","False, they rule with an iron fist"],correctAnswer:1},
+    {id:7,question:"Which historical figure is often cited as a prime example of Servant Leadership?",options:["Niccolò Machiavelli","Genghis Khan","Martin Luther King Jr.","Henry Ford"],correctAnswer:2},
+    {id:8,question:"The servant-leader is 'servant' first. What is the other type of leader defined by Greenleaf?",options:["Leader-first","Boss-first","Manager-first","King-first"],correctAnswer:0},
+    {id:9,question:"In the context of Team21, what drives the servant leader?",options:["Ego","Salary","Humility and Impact","Fear of failure"],correctAnswer:2},
+    {id:10,question:"Servant Leadership is primarily about:",options:["A set of techniques","A fundamental change of heart","A management checklist","A hiring strategy"],correctAnswer:1}
+  ],
+  2:[
+    {id:1,question:"What is the most critical communication skill for a servant leader?",options:["Public Speaking","Active Listening","Persuasive Writing","Debating"],correctAnswer:1},
+    {id:2,question:"Empathy involves:",options:["Feeling sorry for someone","Understanding and sharing feelings","Giving advice immediately","Ignoring emotions"],correctAnswer:1},
+    {id:3,question:"When listening, a servant leader seeks to identify:",options:["The will of the group","Who to blame","The quickest solution","Errors in logic"],correctAnswer:0},
+    {id:4,question:"Which response best demonstrates 'listening to understand'?",options:["'You should do this...'","'That reminds me of a time I...'","'Tell me more about why you feel that way.'","'I don't agree with that.'"],correctAnswer:2},
+    {id:5,question:"Silence in a conversation is usually:",options:["Awkward","A sign of weakness","A powerful tool for reflection","A waste of time"],correctAnswer:2},
+    {id:6,question:"True or False: You must agree with someone to show them empathy.",options:["True","False"],correctAnswer:1},
+    {id:7,question:"The highest form of listening is:",options:["Downloading","Factual Listening","Empathic Listening","Generative Listening"],correctAnswer:3},
+    {id:8,question:"What gets in the way of true listening?",options:["Curiosity","Silence","Internal Chatter/Judgment","Eye contact"],correctAnswer:2},
+    {id:9,question:"Which body language cue suggests active listening?",options:["Crossed arms","Checking phone","Leaning forward and nodding","Looking at the clock"],correctAnswer:2},
+    {id:10,question:"Empathy builds what crucial element in a team?",options:["Competition","Trust","Speed","Hierarchy"],correctAnswer:1}
+  ],
+  3:[
+    {id:1,question:"According to Ken Blanchard, what is the key to successful leadership today?",options:["Absolute Authority","Influence","Position and Title","Strict Rules"],correctAnswer:1},
+    {id:2,question:"In Matthew 20:25-26, Jesus instructs his disciples NOT to do what?",options:["Lord it over people like the Gentiles","Serve others humbly","Wash each other's feet","Pay taxes to Caesar"],correctAnswer:0},
+    {id:3,question:"What does 'SLIT' stand for in the context of Team21 leadership?",options:["Strategic Leadership in Teams","Servant Leadership Influence Tactics","Standard Leader Intelligence Test","Self-Learning Internal Tools"],correctAnswer:1},
+    {id:4,question:"How is 'Emotional Intelligence' simply defined in the lesson?",options:["Suppressing your feelings to be professional","Knowing your emotions and those of others","Manipulating others' emotions for profit","Having a high IQ score"],correctAnswer:1},
+    {id:5,question:"Why is relying solely on titles and power dangerous for a leader?",options:["It is illegal","People will celebrate your absence when you are gone","It costs too much money","It makes you look weak"],correctAnswer:1},
+    {id:6,question:"Monday's assignment focuses on 'Self-Awareness'. What is the Bible verse associated with this?",options:["The Golden Rule (Matt 7:12)","The Great Commission","The speck and the plank (Matt 7:3)","Love one another (John 13:34)"],correctAnswer:2},
+    {id:7,question:"Leaders who lack 'Self-Regulation' (Tuesday) are prone to:",options:["Listening too much","Making rash decisions and stereotyping","Being too quiet","Over-planning"],correctAnswer:1},
+    {id:8,question:"For 'Motivation' (Wednesday), what habit is suggested to foster motivation?",options:["Gratitude and Optimism","Complaining to relieve stress","Ignoring the problem","Working 20 hours a day"],correctAnswer:0},
+    {id:9,question:"To improve 'Social Skills' (Friday) and increase team loyalty, you should:",options:["Correct mistakes publicly","Praise contributions publicly, but correct privately","Never correct mistakes","Praise privately only"],correctAnswer:1},
+    {id:10,question:"True or False: Emotional Intelligence involves responding to feelings, not just words.",options:["True","False","Only in personal life","Only during conflict"],correctAnswer:0}
+  ],
+  4:[
+    {id:1,question:"The lesson uses the acronym 'DRAFTED' for growth. What does the 'D' stand for?",options:["Do it now","Dream Again","Delay gratification","Daily discipline"],correctAnswer:1},
+    {id:2,question:"According to the lesson, 'Sow a thought, reap an action; sow an action, reap a...'",options:["Habit","Character","Destiny","Reward"],correctAnswer:0},
+    {id:3,question:"What is the difference between Mission and Vision?",options:["They are the same","Mission is the 'Why' (Purpose), Vision is the 'See' (Future)","Vision is the 'Why', Mission is the 'See'","Mission is temporal, Vision is eternal"],correctAnswer:1},
+    {id:4,question:"In the 'Aim' section, you were asked to list 30 things. Why?",options:["To keep you busy","To test your memory","To identify imbalance in your life's vision","To show off to your mentor"],correctAnswer:2},
+    {id:5,question:"Goals must be SMART. What does the 'M' stand for?",options:["Massive","Measurable","Meaningful","Moral"],correctAnswer:1},
+    {id:6,question:"The lesson calls Time the 'principal element'. Which scripture warns us to 'make the most of every opportunity'?",options:["John 3:16","Genesis 1:1","Ephesians 5:16","Psalm 23"],correctAnswer:2},
+    {id:7,question:"Why is 'Evaluation' (the E in DRAFTED) crucial?",options:["To make you feel guilty","To track progress and adapt strategies","To waste time","To impress others"],correctAnswer:1},
+    {id:8,question:"According to the lesson, what is the definition of Discipline?",options:["Punishing yourself","Dealing with distractions","Working without sleep","Reading many books"],correctAnswer:1},
+    {id:9,question:"Which of these is NOT one of the 3 things those who 'wait on the Lord' will do (Isaiah 40:31)?",options:["Soar on wings like eagles","Run and not grow weary","Walk and not faint","Sleep and dream dreams"],correctAnswer:3},
+    {id:10,question:"Physical health is described in the lesson as:",options:["Vanity","Optional","Stewardship of the Temple of the Holy Spirit","Less important than spiritual health"],correctAnswer:2}
+  ],
+  5:[
+    {id:1,question:"How is a 'Steward' defined in this lesson?",options:["Someone who owns everything","Someone entrusted with managing another's property/resources","A person who works in a restaurant","A leader with absolute power"],correctAnswer:1},
+    {id:2,question:"Who said: 'Servant leaders are brokers of resources, for which they are stewards'?",options:["Stephen Covey","Ken Blanchard","Forteh","John Maxwell"],correctAnswer:2},
+    {id:3,question:"In Luke 12:42-46, Jesus describes the good manager as:",options:["Faithful and Wise","Rich and Powerful","Strict and Fearing","Busy and Distracted"],correctAnswer:0},
+    {id:4,question:"Joseph in Egypt (Genesis 41) is cited as an example of:",options:["A bad steward","Conceptualization and sustaining a nation","Seeking personal glory","Ignoring the future"],correctAnswer:1},
+    {id:5,question:"What is 'Conceptualization'?",options:["Dreaming without acting","The process of turning ideas into actionable plans","Ignoring the cost of a project","Writing a mission statement only"],correctAnswer:1},
+    {id:6,question:"According to Luke 14:28, what must a builder do before building a tower?",options:["Lay the foundation immediately","Sit down and count the cost","Hire the cheapest workers","Pray only"],correctAnswer:1},
+    {id:7,question:"Which tool involves gathering a group to list as many ideas as possible without judgment?",options:["Mind-Mapping","Brainstorming","Focus Groups","Expert Advice"],correctAnswer:1},
+    {id:8,question:"What is the benefit of 'Co-Creation' with your team?",options:["People are more committed when they help shape the vision","It saves time","The leader doesn't have to work","It creates conflict"],correctAnswer:0},
+    {id:9,question:"Which tool starts with a central idea and branches out visually?",options:["Brainstorming","Focus Groups","Mind-Mapping","Stewardship"],correctAnswer:2},
+    {id:10,question:"A good steward doesn't just protect resources, they...",options:["Hide them","Spend them all","Multiply them","Ignore them"],correctAnswer:2}
+  ],
+  6:[
+    {id:1,question:"According to Martin Luther King Jr., what do you need to serve?",options:["A college degree","A subject and verb that agree","A heart full of grace","A lot of money"],correctAnswer:2},
+    {id:2,question:"What is the Servant Leader's principal goal?",options:["To add value to others","To gain recognition","To be served by others","To maintain authority"],correctAnswer:0},
+    {id:3,question:"In Acts 4:13, why did the religious leaders marvel at Peter and John?",options:["They were well dressed","They were bold and wise despite being 'ordinary'","They were rich","They had political power"],correctAnswer:1},
+    {id:4,question:"John Maxwell proposes 3 things to add value. The first is:",options:["Value others","Add value to yourself","Do things God values","Ignore your weaknesses"],correctAnswer:1},
+    {id:5,question:"Why must you 'Add value to yourself' first?",options:["To show off","Because you cannot give what you do not have","To get a promotion","To be better than everyone else"],correctAnswer:1},
+    {id:6,question:"According to Matthew 25:35-40, how does God judge us?",options:["By our bank account","By our titles","By how we treat the hungry, thirsty, and imprisoned","By our church attendance"],correctAnswer:2},
+    {id:7,question:"A 4th way to add value mentioned in the lesson is:",options:["Leading with fear","Leading with love","Leading with silence","Leading with speed"],correctAnswer:1},
+    {id:8,question:"Love in leadership is mostly about:",options:["What you say","How you feel","What you do","Writing poems"],correctAnswer:2},
+    {id:9,question:"Servant Leaders are deliberate about seeking to ensure that the people they serve are:",options:["In a much better place than when they met","Dependent on them forever","Afraid of them","Just doing their job"],correctAnswer:0},
+    {id:10,question:"Which statement best summarises adding value through love?",options:["Speak kindly","Act consistently with love regardless of feelings","Write encouraging notes only","Buy gifts for everyone"],correctAnswer:1}
+  ],
+  7:[
+    {id:1,question:"Who said: 'It is true that integrity alone won't make you a leader, but without integrity you will never be one'?",options:["Norman Schwarzkopf","Zig Ziglar","Seth Godin","John Maxwell"],correctAnswer:1},
+    {id:2,question:"Based on the lesson, integrity is defined by words such as:",options:["Uprightness, Whole, Morality","Rich, Famous, Powerful","Smart, Fast, Efficient","Popular, Liked, Followed"],correctAnswer:0},
+    {id:3,question:"Which negative example was used to show the cost of lack of integrity?",options:["Bernie Madoff","Enron","Nixon","Ponzi"],correctAnswer:0},
+    {id:4,question:"What is a main issue promoted by Postmodernism regarding truth?",options:["Truth is absolute","Truth is relative and socially constructed","Truth is found in the Bible only","Truth does not exist"],correctAnswer:1},
+    {id:5,question:"Jesus was tempted in three main areas. What are they?",options:["Food, Water, Sleep","Pride, Lust, Power","Money, Fame, Politics","Fear, Doubt, Anger"],correctAnswer:1},
+    {id:6,question:"How did Jesus respond to all three temptations?",options:["He argued with the devil","He ignored them","He responded with the Word of God","He called his angels"],correctAnswer:2},
+    {id:7,question:"What is the first step listed towards building a solid foundation of trust?",options:["Pre-determine your values","Make a lot of money","Get a promotion","Hide your mistakes"],correctAnswer:0},
+    {id:8,question:"To 'renew your mind' involves reflecting God's image in your:",options:["Reason, personality, and intellect","Bank account","Clothing style","Social media posts"],correctAnswer:0},
+    {id:9,question:"Proverbs 12:22 states that the Lord detests what?",options:["Lazy hands","Lying lips","Loud voices","Slow walkers"],correctAnswer:1},
+    {id:10,question:"The Week 7 assignment asks you to design a plan based on how many points?",options:["3 points","5 points","8 points","10 points"],correctAnswer:2}
+  ],
+  8:[
+    {id:1,question:"According to Anthony D'Souza, what is the 'core of all leadership activity'?",options:["Effective Communication","Making Money","Giving Orders","Writing Books"],correctAnswer:0},
+    {id:2,question:"Dr. Mehrabian estimated that spoken communication consists of what percentage of body language?",options:["7%","38%","55%","90%"],correctAnswer:2},
+    {id:3,question:"Which Bible verse says: 'He that answereth a matter before he heareth it, it is folly and shame unto him'?",options:["James 1:19","Proverbs 18:13","Psalm 19:14","Matthew 8:26"],correctAnswer:1},
+    {id:4,question:"Communication is termed 'successful' only when:",options:["The speaker is loud","Meaning is transferred and corresponding action is taken","The email is sent","Everyone claps"],correctAnswer:1},
+    {id:5,question:"Which of these is NOT listed as a common hindrance to communication?",options:["Receiver's bias","Distractions","Too much coffee","Poor listening skills"],correctAnswer:2},
+    {id:6,question:"James 1:19 advises us to be:",options:["Swift to speak, slow to hear","Swift to hear, slow to speak","Swift to anger","Slow to listen"],correctAnswer:1},
+    {id:7,question:"To ensure effective communication, the sender must define the Who, What, Why, When, and...?",options:["Where","How","Cost","Color"],correctAnswer:1},
+    {id:8,question:"What does the phrase about 'loquacious personages intoxicated by verbosity' warn against?",options:["Drinking alcohol","Using overly complex language instead of keeping it simple","Speaking too softly","Writing short emails"],correctAnswer:1},
+    {id:9,question:"Active listening involves:",options:["Interrupting to correct the speaker","Withholding judgment and repeating back what you heard","Thinking about your response while they talk","Checking your phone"],correctAnswer:1},
+    {id:10,question:"Ephesians 4:29 instructs that our communication should be for:",options:["Edifying (building up) the hearers","Showing off our knowledge","Corrupting others","Winning arguments"],correctAnswer:0}
+  ],
+  9:[
+    {id:1,question:"In 1 Kings 3:9, what did the servant ask God for?",options:["Long life","Riches and honor","An understanding mind to discern","Victory over enemies"],correctAnswer:2},
+    {id:2,question:"The lesson uses the story of Zelophehad's daughters (Numbers 27). What was their petition regarding?",options:["Marriage","Inheritance of land","Leadership positions","Food distribution"],correctAnswer:1},
+    {id:3,question:"How did Moses respond to the daughters' difficult request?",options:["He rejected it immediately based on the law","He asked the elders","He took the matter before the Lord","He guessed the answer"],correctAnswer:2},
+    {id:4,question:"How is 'Discernment' defined in this lesson?",options:["The ability to predict the lottery","Making good decisions based on a relationship with God","Intellectual superiority","Judging others critically"],correctAnswer:1},
+    {id:5,question:"Proverbs 15:14 states: 'The discerning heart seeks knowledge, but the mouth of a fool feeds on...'",options:["Bread","Folly","Lies","Pride"],correctAnswer:1},
+    {id:6,question:"Which is NOT one of the 3 tests for a decision mentioned in the lesson?",options:["Does it align with God's word?","Does it bring peace?","Does it make me rich?","Does it serve others/glorify God?"],correctAnswer:2},
+    {id:7,question:"What is 'Foresight'?",options:["Guessing the future","Understanding lessons from the past, present realities, and future consequences","Ignoring the past","Only looking at the present"],correctAnswer:1},
+    {id:8,question:"The SWOT analysis stands for:",options:["Strengths, Weaknesses, Opportunities, Threats","Serve, Work, Observe, Teach","System, Wisdom, Order, Time","Strategies, Wins, Options, Targets"],correctAnswer:0},
+    {id:9,question:"In SWOT, which two factors are usually 'Internal'?",options:["Opportunities and Threats","Strengths and Weaknesses","Strengths and Opportunities","Weaknesses and Threats"],correctAnswer:1},
+    {id:10,question:"The acronym PESTEL is used to evaluate:",options:["Internal emotions","Spiritual gifts","The external environment","Family relationships"],correctAnswer:2}
+  ],
+  10:[
+    {id:1,question:"Who said: 'Leaders touch a heart before they ask for a hand'?",options:["Martin Luther King Jr.","John Maxwell","King David","Apostle Paul"],correctAnswer:1},
+    {id:2,question:"Psalm 78:72 says David shepherded them with integrity of heart and led them with:",options:["Iron fist","Skillful hands","Loud voice","Great riches"],correctAnswer:1},
+    {id:3,question:"Which historical figure is used as an example of connecting with audiences to drive change?",options:["Abraham Lincoln","Martin Luther King Jr.","George Washington","Winston Churchill"],correctAnswer:1},
+    {id:4,question:"According to the lesson, people are more engaged when they know their leaders:",options:["Are rich and powerful","Listen, are available, and share success","Are distant and mysterious","Never make mistakes"],correctAnswer:1},
+    {id:5,question:"Romans 12:8 says if your gift is to lead, do it with:",options:["Cheerfulness","Generosity","Diligence","Prophecy"],correctAnswer:2},
+    {id:6,question:"The first of the 8 practical steps for connecting is:",options:["Connect with yourself","Connect with the crowd","Connect with donors","Connect with enemies"],correctAnswer:0},
+    {id:7,question:"Servant Leaders are described as 'Dealers in...':",options:["Money","Hope","Rules","Fear"],correctAnswer:1},
+    {id:8,question:"What does 'Go where your people are' imply?",options:["Spying on them","Mingling and being close to them","Micromanaging them","Moving your office"],correctAnswer:1},
+    {id:9,question:"Galatians 6:9 encourages leaders not to become weary in doing good, for at the proper time we will:",options:["Retire","Reap a harvest","Be famous","Sleep"],correctAnswer:1},
+    {id:10,question:"Maxwell calls the principle of touching a heart before asking for a hand:",options:["The Law of Connection","The Law of Authority","The Law of Gravity","The Law of Respect"],correctAnswer:0}
+  ],
+  11:[
+    {id:1,question:"Complete the African Proverb: 'If you want to go fast, go alone. If you want to go far, ...'",options:["Take a car","Go together","Run harder","Go with money"],correctAnswer:1},
+    {id:2,question:"According to John Maxwell, a leader's potential is determined by:",options:["Their bank account","Their education","Those in their inner circle","Their physical strength"],correctAnswer:2},
+    {id:3,question:"In Exodus 17, who held up Moses' hands so Israel could defeat the Amalekites?",options:["Joshua and Caleb","Aaron and Hur","Peter and John","David and Goliath"],correctAnswer:1},
+    {id:4,question:"What did Jesus do immediately before selecting His 12 disciples (Luke 6:12-13)?",options:["He slept","He fasted for 40 days","He spent the night in prayer","He interviewed them"],correctAnswer:2},
+    {id:5,question:"Who were the 3 disciples in Jesus' core inner circle?",options:["Peter, James, and John","Matthew, Mark, and Luke","Judas, Thomas, and Simon","Paul, Barnabas, and Silas"],correctAnswer:0},
+    {id:6,question:"Which benefit of an inner circle ensures the vision survives if the leader is not available?",options:["Strength","Continuity","Fellowship","Budgeting"],correctAnswer:1},
+    {id:7,question:"How does an inner circle help with 'Mutual Accountability'?",options:["They judge you constantly","They help fight temptations and compromise","They hide your mistakes","They compete with you"],correctAnswer:1},
+    {id:8,question:"To build a solid inner circle, the lesson suggests creating an atmosphere of:",options:["Fear","Equality","Secrecy","Competition"],correctAnswer:1},
+    {id:9,question:"What three 'P's should you do with your inner circle?",options:["Pay, Push, Punish","Play, Plan, Pray","Preach, Practice, Perform","Promise, Promote, Pay"],correctAnswer:1},
+    {id:10,question:"Ecclesiastes 4:9 states that two are better than one because:",options:["They have a good return for their labor","They can fight better","They are less lonely","They can share food"],correctAnswer:0}
+  ],
+  12:[
+    {id:1,question:"How does Google define a 'blind spot'?",options:["A medical condition","An area where a person's view is obstructed","A dark room","A hidden treasure"],correctAnswer:1},
+    {id:2,question:"In 1 Corinthians 1:10, Paul appeals that there be:",options:["No divisions among you","Many arguments","Separate groups","Competition"],correctAnswer:0},
+    {id:3,question:"What personal medical example did the author use to explain blind spots?",options:["High Blood Pressure","Poor Eyesight","Elevated Uric Acid (Gout)","Broken Leg"],correctAnswer:2},
+    {id:4,question:"What is a major consequence of ignoring blind spots?",options:["You become popular","You destroy what you intended to build (like team cohesion)","You save money","You gain authority"],correctAnswer:1},
+    {id:5,question:"The lesson mentions a false generalization made in a meeting about:",options:["Men from Europe","Cameroonian women in America","Children in Asia","Leaders in Africa"],correctAnswer:1},
+    {id:6,question:"Regarding non-verbal communication, avoiding eye contact with a boss is considered:",options:["Respectful in America","Respectful in African contexts but suspicious in America","Disrespectful everywhere","Lying in Africa"],correctAnswer:1},
+    {id:7,question:"To deal with blind spots, the first step is to:",options:["Ignore them","Blame others","Recognize them and ask God for forgiveness","Write a book"],correctAnswer:2},
+    {id:8,question:"Tribalism is described in the lesson as:",options:["A clear example of a huge blind spot","A good leadership strategy","A way to build culture","Harmless"],correctAnswer:0},
+    {id:9,question:"Galatians 5:19-21 warns that those who practice 'dissensions and divisions' will:",options:["Be successful","Not inherit the kingdom of God","Be famous","Win elections"],correctAnswer:1},
+    {id:10,question:"What disqualifies you from Servant Leadership according to the lesson?",options:["Being poor","Having a condescending attitude due to someone's background/race","Not having a degree","Speaking only one language"],correctAnswer:1}
+  ],
+  13:[
+    {id:1,question:"Jesus warned in Matthew 23:3 to do what the Pharisees say but NOT what they do. Why?",options:["They are not educated","They talk but don't act","They are too strict","They are foreigners"],correctAnswer:1},
+    {id:2,question:"According to Maxwell, 'People do, what people...'",options:["Hear","Read","See","Guess"],correctAnswer:2},
+    {id:3,question:"Which Apostle boldly said, 'Imitate me, just as I also imitate Christ' (1 Cor 11:1)?",options:["Peter","Paul","James","John"],correctAnswer:1},
+    {id:4,question:"The lesson uses a personal story about a child putting his feet on the table to demonstrate:",options:["Discipline","Mirroring actions","Poor furniture design","Resting"],correctAnswer:1},
+    {id:5,question:"The 'Law of Sowing and Reaping' states that you usually reap:",options:["Exactly what you sow","Less than what you sow","More than what you sow","Nothing at all"],correctAnswer:2},
+    {id:6,question:"Which King's private sin was multiplied publicly in his sons Absalom and Solomon?",options:["Saul","David","Hezekiah","Ahab"],correctAnswer:1},
+    {id:7,question:"The lesson contrasts the godly legacy of Jonathan Edwards with the tragic legacy of:",options:["Max Jukes","Karl Marx","John Wilkes","Bill Gates"],correctAnswer:0},
+    {id:8,question:"What happens if your actions do not reflect the values you preach?",options:["You succeed","You fail","You become popular","You get promoted"],correctAnswer:1},
+    {id:9,question:"To increase your impact, the lesson suggests carrying out a personal _______ of your values vs. actions.",options:["Audit","Guess","Erasure","Marketing"],correctAnswer:0},
+    {id:10,question:"Finish the quote: 'Talk is cheap, but when it comes to action...'",options:["Everyone wins","Many fail","It is easy","Nobody cares"],correctAnswer:1}
+  ],
+  14:[
+    {id:1,question:"Complete the saying: 'A team is as strong as its...'",options:["Best player","Weakest link","Loudest member","Wealthiest investor"],correctAnswer:1},
+    {id:2,question:"In Numbers 11:25, God took the Spirit from Moses and put it on whom?",options:["Joshua only","Aaron only","The seventy elders","The whole congregation"],correctAnswer:2},
+    {id:3,question:"Why do great ideas often die with the vision carrier?",options:["Lack of money","Team members were not empowered to ensure continuity","The government stopped them","They were bad ideas"],correctAnswer:1},
+    {id:4,question:"The lesson states that concentrating power on one individual is:",options:["Strategic","Smart security","Counter-productive","Necessary"],correctAnswer:2},
+    {id:5,question:"What tragic example was given regarding a man who hid his bank code from his wife?",options:["He lost the money gambling","He had a stroke and his family couldn't access funds","He forgot the code","The bank closed down"],correctAnswer:1},
+    {id:6,question:"One of the biggest causes of premature death mentioned in the lesson is:",options:["Poorly managed stress","Overeating","Car accidents","Old age"],correctAnswer:0},
+    {id:7,question:"How can Servant Leaders reduce chronic stress in their team?",options:["By doing everything themselves","By empowering members through delegation","By firing everyone","By ignoring the work"],correctAnswer:1},
+    {id:8,question:"Why do some leaders fear empowering others?",options:["They do not feel secure","They don't have time","They don't know how","It costs too much"],correctAnswer:0},
+    {id:9,question:"To empower others, the lesson suggests you must first:",options:["Be rich","Be empowered yourself","Be famous","Be retired"],correctAnswer:1},
+    {id:10,question:"The core message of this week is: 'Think Future, Think...'",options:["Me","Now","Continuity","Profit"],correctAnswer:2}
+  ],
+  15:[
+    {id:1,question:"According to John C. Maxwell, what do leaders do?",options:["Find a way for the team to win","Find a way to make money","Find a way to retire early","Find a way to avoid work"],correctAnswer:0},
+    {id:2,question:"Joshua 1:7-8 states that to have 'good success', one must:",options:["Work 24 hours a day","Meditate on the Book of the Law and do it","Ignore the law","Travel the world"],correctAnswer:1},
+    {id:3,question:"How does Maurice Ndansi define success?",options:["The accumulation of wealth","The application of wisdom","Winning at all costs","Being famous"],correctAnswer:1},
+    {id:4,question:"What did King Solomon ask God for in 1 Kings 3?",options:["Long life","Death of his enemies","Wisdom to lead the people","Great riches"],correctAnswer:2},
+    {id:5,question:"True success is described as twofold — accomplishment of goals AND:",options:["The destruction of competitors","The wellbeing and development of the team","The leader's personal fame","Saving money"],correctAnswer:1},
+    {id:6,question:"Why is 'Accountability' important for success?",options:["It helps you evaluate and focus on results","It makes people fear you","It slows down the process","It is required by law"],correctAnswer:0},
+    {id:7,question:"What is described as a servant leader's best tool for creating buy-in?",options:["Money","Passion","Authority","Fear"],correctAnswer:1},
+    {id:8,question:"Adaptability in this lesson means:",options:["Compromising your values","Changing your face","Blending in without compromising values (empathy)","Running away"],correctAnswer:2},
+    {id:9,question:"According to the lesson, where does 'good success' ultimately come from?",options:["Sheer will power","Strategy alone","God alone","Luck"],correctAnswer:2},
+    {id:10,question:"The Book of Proverbs says: 'The fear of the Lord is the beginning of...'",options:["Success","Wisdom","Wealth","Power"],correctAnswer:1}
+  ],
+  16:[
+    {id:1,question:"Complete the quote: 'Show me your weekly schedule and I should be able to predict...'",options:["How rich you are","Where you will be in a few months","Who your friends are","What you ate"],correctAnswer:1},
+    {id:2,question:"We all start each day with a credit of how many hours?",options:["12 hours","18 hours","24 hours","48 hours"],correctAnswer:2},
+    {id:3,question:"According to John Maxwell, 'Busyness does not equal...'",options:["Business","Productivity","Happiness","Stress"],correctAnswer:1},
+    {id:4,question:"Stephen Covey defines 'Putting first things first' as being driven by:",options:["The principles you value most","The agendas of others","Urgent phone calls","Social media trends"],correctAnswer:0},
+    {id:5,question:"What is 'Wasted Time' defined as in the lesson?",options:["Sleeping 8 hours","Resting on Sabbath","Activity that does not reflect your life mission/goals","Eating lunch"],correctAnswer:2},
+    {id:6,question:"In the Time Management Quadrant, which box is most important for a leader's planning and growth?",options:["Box 1 (Urgent, Important)","Box 2 (Not Urgent, Important)","Box 3 (Urgent, Not Important)","Box 4 (Not Urgent, Not Important)"],correctAnswer:1},
+    {id:7,question:"Box 2 includes activities like:",options:["Crises and deadlines","Planning, Mission, Vision, Values","Interruptions and phone calls","Trivia and time wasters"],correctAnswer:1},
+    {id:8,question:"Jesus' prioritization (Ministering, Praying, Empowering) reflected His:",options:["Desire to be famous","Mission Statement (Luke 4:18)","Need for money","Political ambition"],correctAnswer:1},
+    {id:9,question:"What tool helps you prioritize the week in terms of relevant goals?",options:["A stopwatch","A weekly planner","A calculator","A thermometer"],correctAnswer:1},
+    {id:10,question:"Jesus said: 'But seek ye first the kingdom of God... and all these things shall be...'",options:["Taken away","Hidden","Added unto you","Sold"],correctAnswer:2}
+  ],
+  17:[
+    {id:1,question:"Personal discipline is described as what in the lesson?",options:["A punishment","The vehicle through which leaders achieve their mission","A way to earn money","Something for athletes only"],correctAnswer:1},
+    {id:2,question:"According to Psalm 126:5-6, those who sow in tears shall reap in:",options:["Sorrow","Joy","Confusion","Debt"],correctAnswer:1},
+    {id:3,question:"The lesson warns against the negative impact of the IT revolution, specifically:",options:["Faster communication","Addiction to social media and procrastination","Scientific advances","Online banking"],correctAnswer:1},
+    {id:4,question:"In the author's personal story, how much time was lost watching a video series?",options:["30 minutes","1 hour","4 hours","10 minutes"],correctAnswer:2},
+    {id:5,question:"What is 'The Big C' that causes people to die without accomplishing purpose?",options:["Cancer","Complacency","Corruption","Confusion"],correctAnswer:1},
+    {id:6,question:"A lack of discipline can lead to:",options:["A poor self-image and unaccomplished goals","Greater happiness","More friends","Better health"],correctAnswer:0},
+    {id:7,question:"To build discipline, the lesson suggests viewing time as:",options:["Unlimited","A scarce resource you steward","Something to kill","Unimportant"],correctAnswer:1},
+    {id:8,question:"The lesson advises to 'Train your appetites'. What is the only thing you should consume without limitation?",options:["Chocolate","News","God's Word","Sports"],correctAnswer:2},
+    {id:9,question:"Fear is described as:",options:["A healthy emotion","The absence of faith","A leadership tool","A gift from God"],correctAnswer:1},
+    {id:10,question:"The Week 17 assignment challenges you to restrict social media usage to:",options:["Never","Only weekends","Two 1-hour periods for 3 days","Only at night"],correctAnswer:2}
+  ],
+  18:[
+    {id:1,question:"Romans 12:10 instructs us to 'Outdo one another in showing...'",options:["Wealth","Honor","Strength","Knowledge"],correctAnswer:1},
+    {id:2,question:"What is identified as a major factor that breaks friendships and destroys teamwork?",options:["Conflict","Poverty","Distance","Hard work"],correctAnswer:0},
+    {id:3,question:"The lesson states that while you cannot completely prevent conflicts, you can:",options:["Ignore them","Manage them to build a win-win culture","Fire everyone involved","Complain about them"],correctAnswer:1},
+    {id:4,question:"The first strategy for developing a win-win culture is to put what first?",options:["Projects","Money","People","Deadlines"],correctAnswer:2},
+    {id:5,question:"Why should you allow team members to participate in developing goals?",options:["So you can blame them later","They feel more committed to goals they helped develop","It saves you time","It is required by law"],correctAnswer:1},
+    {id:6,question:"When dealing with conflict, the mature thing to do is:",options:["Ignore it and hope it goes away","Take sides immediately","Acknowledge it and seek common ground","Gossip about it"],correctAnswer:2},
+    {id:7,question:"A leader who takes credit for his team's ideas will likely:",options:["Gain influence","Lose all influence with subordinates","Be promoted quickly","Be loved"],correctAnswer:1},
+    {id:8,question:"Promoting a culture of ________ helps build cooperation rather than competitive finger-pointing.",options:["Forgiveness","Revenge","Secrecy","Silence"],correctAnswer:0},
+    {id:9,question:"Strategy #5 suggests developing what kind of mindset?",options:["Survival of the fittest","One team, one goal","Every man for himself","Win at all costs"],correctAnswer:1},
+    {id:10,question:"Taking sides in a conflict disqualifies you as a ________ leader.",options:["Rich","Transparent and trustworthy","Smart","Powerful"],correctAnswer:1}
+  ],
+  19:[
+    {id:1,question:"How is 'Resilience' defined in this lesson?",options:["The ability to bounce back after adversity","The ability to fight everyone","Ignoring feelings","Being rich"],correctAnswer:0},
+    {id:2,question:"A leader with low personal resilience may show signs of:",options:["Happiness and joy","Irritability, moodiness, and despair","High energy","Great memory"],correctAnswer:1},
+    {id:3,question:"Which Apostle is used as an example of resilience (2 Cor 4:7-9 'afflicted but not crushed')?",options:["Peter","Paul","John","Judas"],correctAnswer:1},
+    {id:4,question:"The first way to build resilience is to 'Take care of yourself'. This involves focusing on things within your:",options:["Circle of influence","Circle of friends","Bank account","Circle of enemies"],correctAnswer:0},
+    {id:5,question:"When facing problems, the lesson warns AGAINST using this strategy:",options:["Active problem solving","Prayer","Avoidance","Writing"],correctAnswer:2},
+    {id:6,question:"When life throws tests at you, the lesson suggests reminding yourself of:",options:["Your failures","The promises of God","The news","Your bank balance"],correctAnswer:1},
+    {id:7,question:"What does the acronym 'OSS' stand for in this lesson?",options:["Over Subscribed Syndrome","Old School Style","Only Seven Seconds","Over Sleeping Syndrome"],correctAnswer:0},
+    {id:8,question:"What causes OSS?",options:["Taking on too many responsibilities and not saying no","Eating too much","Sleeping too much","Not having a job"],correctAnswer:0},
+    {id:9,question:"Developing a 'Support System' includes having an attitude of:",options:["Gratitude","Arrogance","Indifference","Complaint"],correctAnswer:0},
+    {id:10,question:"Your 'Personal Support System' (PSS) are the people:",options:["You pay to work for you","Who you count on when times are rough (the 1 am call)","Who hate you","Who are famous"],correctAnswer:1}
+  ],
+  20:[
+    {id:1,question:"According to Colossians 3:23-24, whatever you do, you should work at it as working for:",options:["Your boss","Money","The Lord","Fame"],correctAnswer:2},
+    {id:2,question:"What is described as the 'Ultimate Goal' of a servant leader?",options:["To be rich","To serve as a signpost pointing people to Jesus","To be famous","To retire early"],correctAnswer:1},
+    {id:3,question:"In John 14:6, Jesus says: 'I am the way and the truth and the...'",options:["Light","Life","Love","Law"],correctAnswer:1},
+    {id:4,question:"The lesson states that a lazy leader has:",options:["Great potential","No business with servant leadership","A lot of free time","Smart delegation skills"],correctAnswer:1},
+    {id:5,question:"Proverbs 6:6 instructs us to learn diligence from which creature?",options:["The Lion","The Eagle","The Ant","The Dog"],correctAnswer:2},
+    {id:6,question:"If your goal is to be pleasing to God (your true boss), this serves as a powerful motivation for:",options:["Mediocrity","Extrinsic rewards","Highest levels of service/excellence","Fear"],correctAnswer:2},
+    {id:7,question:"What is the danger of working just to be a 'men-pleaser'?",options:["You will be limited and your motivation is only extrinsic","You will get promoted faster","God will be happy","Everyone will love you"],correctAnswer:0},
+    {id:8,question:"The lesson says God gave you gifts/skills for the specific reason of:",options:["Making you rich","Showing His excellence and making Him known","Hiding them","Competing with others"],correctAnswer:1},
+    {id:9,question:"If we miss the 'Big Picture' (pointing to God), we miss our:",options:["Bonus","Vacation","Raison d'être (reason for being)","Flight"],correctAnswer:2},
+    {id:10,question:"The end goal of Jesus empowering His disciples was to:",options:["Make them kings","Make disciples of Jesus","Build big temples","Write books"],correctAnswer:1}
+  ],
+  21:[
+    {id:1,question:"2 Timothy 2:2 instructs us to teach truths to trustworthy people who will be able to:",options:["Keep it a secret","Pass them on to others","Sell them","Write a book"],correctAnswer:1},
+    {id:2,question:"The lesson states that true success lies in the ability to:",options:["Make a lot of money","Pass on the baton of leadership to the next generation","Live forever","Build big buildings"],correctAnswer:1},
+    {id:3,question:"Why do many promising businesses die after the owner passes on?",options:["Taxes","Lack of succession planning","Bad luck","No customers"],correctAnswer:1},
+    {id:4,question:"What sports metaphor is used to describe succession?",options:["A boxing match","A relay race","A football game","A marathon"],correctAnswer:1},
+    {id:5,question:"In a relay race, what happens if the last runner finishes without the baton?",options:["They win","The team is disqualified","They get a participation medal","It doesn't matter"],correctAnswer:1},
+    {id:6,question:"Some churches in Europe without succession plans have become:",options:["Museums","Schools","Factories","Hospitals"],correctAnswer:0},
+    {id:7,question:"Jesus spent 3 years investing in His disciples. What was the first thing He did before selecting them?",options:["He prayed","He slept","He advertised","He tested them"],correctAnswer:0},
+    {id:8,question:"When Samuel went to select a King, he almost missed David because:",options:["He wasn't discerning (looking at outward appearance)","David was hiding","He didn't like David","God didn't speak"],correctAnswer:0},
+    {id:9,question:"The lesson says: 'You do not prepare for battle when...'",options:["You are tired","The war has already started","You are hungry","It is raining"],correctAnswer:1},
+    {id:10,question:"Competence does not grow on trees. You must:",options:["Buy it","Pay the price to train and mentor today","Hope for the best","Ignore it"],correctAnswer:1}
+  ]
+};
+
+// French translations of questions
+const QUESTION_BANK_FR = {
+  1:[
+    {id:1,question:"Qui a inventé le terme 'Leadership de Service' dans un essai de 1970?",options:["John Maxwell","Robert Greenleaf","Peter Drucker","Abraham Lincoln"],correctAnswer:1},
+    {id:2,question:"Quel est l'objectif principal d'un leader serviteur?",options:["Augmenter les profits de l'entreprise","Servir les besoins prioritaires des autres","Acquérir du pouvoir et de l'autorité","Maintenir un ordre strict"],correctAnswer:1},
+    {id:3,question:"Selon Greenleaf, quel est le 'Meilleur Test' d'un leader serviteur?",options:["Ceux servis grandissent-ils en tant que personnes?","Le cours de l'action monte-t-il?","Les disciples obéissent-ils sans questionner?","Le leader est-il populaire?"],correctAnswer:0},
+    {id:4,question:"Le leadership de service renverse la pyramide traditionnelle. Qui est au sommet de la pyramide inversée?",options:["Le PDG","Les Managers","Les Employés/Clients","Les Actionnaires"],correctAnswer:2},
+    {id:5,question:"Lequel de ces éléments N'EST PAS une caractéristique du Leadership de Service?",options:["L'écoute","La coercition","L'empathie","La gérance"],correctAnswer:1},
+    {id:6,question:"Vrai ou Faux: Le Leadership de Service implique que le leader manque d'autorité.",options:["Vrai, ils ne sont que des serviteurs","Faux, ils dirigent par l'influence","Vrai, ils ne peuvent pas prendre de décisions","Faux, ils gouvernent d'une main de fer"],correctAnswer:1},
+    {id:7,question:"Quelle figure historique est souvent citée comme exemple de Leadership de Service?",options:["Niccolò Machiavelli","Gengis Khan","Martin Luther King Jr.","Henry Ford"],correctAnswer:2},
+    {id:8,question:"Le leader-serviteur est 'd'abord serviteur'. Quel est l'autre type de leader défini par Greenleaf?",options:["D'abord leader","D'abord patron","D'abord manager","D'abord roi"],correctAnswer:0},
+    {id:9,question:"Dans le contexte de Team21, qu'est-ce qui motive le leader serviteur?",options:["L'égo","Le salaire","L'humilité et l'impact","La peur de l'échec"],correctAnswer:2},
+    {id:10,question:"Le Leadership de Service concerne principalement:",options:["Un ensemble de techniques","Un changement fondamental de cœur","Une liste de contrôle de gestion","Une stratégie de recrutement"],correctAnswer:1}
+  ],
+  2:[
+    {id:1,question:"Quelle est la compétence de communication la plus critique pour un leader serviteur?",options:["La prise de parole en public","L'écoute active","L'écriture persuasive","Le débat"],correctAnswer:1},
+    {id:2,question:"L'empathie implique:",options:["Plaindre quelqu'un","Comprendre et partager les sentiments","Donner des conseils immédiatement","Ignorer les émotions"],correctAnswer:1},
+    {id:3,question:"En écoutant, un leader serviteur cherche à identifier:",options:["La volonté du groupe","Qui blâmer","La solution la plus rapide","Les erreurs de logique"],correctAnswer:0},
+    {id:4,question:"Quelle réponse démontre le mieux 'écouter pour comprendre'?",options:["'Tu devrais faire ceci...'","'Ça me rappelle une fois où moi...'","'Dis-moi pourquoi tu ressens cela.'","'Je ne suis pas d'accord.'"],correctAnswer:2},
+    {id:5,question:"Le silence dans une conversation est généralement:",options:["Gênant","Un signe de faiblesse","Un outil puissant pour la réflexion","Une perte de temps"],correctAnswer:2},
+    {id:6,question:"Vrai ou Faux: Vous devez être d'accord avec quelqu'un pour lui montrer de l'empathie.",options:["Vrai","Faux"],correctAnswer:1},
+    {id:7,question:"La forme la plus haute d'écoute est:",options:["Le téléchargement","L'écoute factuelle","L'écoute empathique","L'écoute générative"],correctAnswer:3},
+    {id:8,question:"Qu'est-ce qui entrave la vraie écoute?",options:["La curiosité","Le silence","Le bavardage intérieur/le jugement","Le contact visuel"],correctAnswer:2},
+    {id:9,question:"Quel indice de langage corporel suggère une écoute active?",options:["Bras croisés","Vérifier son téléphone","Se pencher en avant et hocher la tête","Regarder l'horloge"],correctAnswer:2},
+    {id:10,question:"L'empathie construit quel élément crucial dans une équipe?",options:["La compétition","La confiance","La vitesse","La hiérarchie"],correctAnswer:1}
+  ],
+  3:[
+    {id:1,question:"Selon Ken Blanchard, quelle est la clé du leadership réussi aujourd'hui?",options:["L'autorité absolue","L'influence","Le poste et le titre","Des règles strictes"],correctAnswer:1},
+    {id:2,question:"Dans Matthieu 20:25-26, Jésus dit à ses disciples de NE PAS faire quoi?",options:["Dominer les gens comme les Gentils","Servir les autres humblement","Se laver mutuellement les pieds","Payer des impôts à César"],correctAnswer:0},
+    {id:3,question:"Que signifie 'SLIT' dans le contexte du leadership Team21?",options:["Leadership Stratégique en Équipes","Tactiques d'Influence du Leadership de Service","Test d'Intelligence Standard du Leader","Outils Internes d'Auto-Apprentissage"],correctAnswer:1},
+    {id:4,question:"Comment l'Intelligence Émotionnelle est-elle simplement définie dans la leçon?",options:["Supprimer vos émotions pour être professionnel","Connaître vos émotions et celles des autres","Manipuler les émotions d'autrui pour le profit","Avoir un score de QI élevé"],correctAnswer:1},
+    {id:5,question:"Pourquoi se fier uniquement aux titres et au pouvoir est-il dangereux pour un leader?",options:["C'est illégal","Les gens célébreront votre absence quand vous serez parti","Ça coûte trop cher","Ça vous fait paraître faible"],correctAnswer:1},
+    {id:6,question:"L'exercice du lundi se concentre sur la 'Conscience de Soi'. Quel est le verset biblique associé?",options:["La Règle d'or (Matt 7:12)","La Grande Commission","La paille et la poutre (Matt 7:3)","Aimez-vous les uns les autres (Jean 13:34)"],correctAnswer:2},
+    {id:7,question:"Les leaders qui manquent de 'maîtrise de soi' (mardi) sont enclins à:",options:["Trop écouter","Prendre des décisions irréfléchies et stéréotyper","Être trop silencieux","Trop planifier"],correctAnswer:1},
+    {id:8,question:"Pour la 'Motivation' (mercredi), quelle habitude est suggérée?",options:["La gratitude et l'optimisme","Se plaindre pour soulager le stress","Ignorer le problème","Travailler 20 heures par jour"],correctAnswer:0},
+    {id:9,question:"Pour améliorer les 'Compétences sociales' (vendredi), vous devriez:",options:["Corriger les erreurs publiquement","Féliciter publiquement, corriger en privé","Ne jamais corriger les erreurs","Féliciter en privé seulement"],correctAnswer:1},
+    {id:10,question:"Vrai ou Faux: L'Intelligence Émotionnelle implique de répondre aux émotions, pas seulement aux mots.",options:["Vrai","Faux","Seulement dans la vie personnelle","Seulement en cas de conflit"],correctAnswer:0}
+  ]
+  // Note: For weeks 4-21, French uses the same logic/answers. 
+  // In production you'd provide full translations; for now weeks 4-21 fall back to English with a notice.
+};
+
+// ============================================================
+// COURSE DATA
+// ============================================================
+const COURSE_WEEKS = [
+  {id:1,  titleEn:"Introduction to Servant Leadership",     titleFr:"Introduction au Leadership de Service",          descEn:"Laying the foundation of service-oriented leading.",                           descFr:"Poser les bases d'une direction orientée vers le service."},
+  {id:2,  titleEn:"Listening and Empathy",                   titleFr:"Écoute et Empathie",                              descEn:"Mastering the core communication skills of a servant leader.",                  descFr:"Maîtriser les compétences de communication essentielles."},
+  {id:3,  titleEn:"Emotional Intelligence",                  titleFr:"Intelligence Émotionnelle",                       descEn:"Building influence through self-awareness and empathy.",                       descFr:"Construire l'influence par la conscience de soi."},
+  {id:4,  titleEn:"Mission, Vision and Goals",               titleFr:"Mission, Vision et Objectifs",                    descEn:"Practical steps for achieving growth using the DRAFTED model.",                descFr:"Étapes pratiques pour la croissance — modèle DRAFTED."},
+  {id:5,  titleEn:"Stewardship and Conceptualization",       titleFr:"Gérance et Conceptualisation",                    descEn:"Managing resources and turning ideas into actionable plans.",                  descFr:"Gérer les ressources et transformer les idées en plans."},
+  {id:6,  titleEn:"Lift Others Up!",                         titleFr:"Élever les Autres!",                              descEn:"Adding value to others to make them better.",                                  descFr:"Ajouter de la valeur aux autres pour les rendre meilleurs."},
+  {id:7,  titleEn:"Integrity",                               titleFr:"Intégrité",                                       descEn:"The foundation of trust and character in leadership.",                         descFr:"Le fondement de la confiance et du caractère."},
+  {id:8,  titleEn:"Communicate with a Purpose",              titleFr:"Communiquer avec un But",                         descEn:"Effective communication as the core of leadership.",                           descFr:"La communication efficace comme cœur du leadership."},
+  {id:9,  titleEn:"Discernment: Leading with Wisdom",        titleFr:"Discernement: Diriger avec Sagesse",              descEn:"Making wise decisions through God's guidance and foresight.",                 descFr:"Prendre des décisions sages grâce à la direction de Dieu."},
+  {id:10, titleEn:"Connection: The Art of Engagement",       titleFr:"Connexion: L'Art d'Activer l'Engagement",         descEn:"Touching hearts to activate commitment.",                                     descFr:"Toucher les cœurs pour activer l'engagement."},
+  {id:11, titleEn:"Inner Circle: If You Want to Go Far...",  titleFr:"Cercle Intime: Si Vous Voulez Aller Loin...",     descEn:"Building a strong inner circle for sustainable leadership.",                  descFr:"Construire un cercle intime solide pour le leadership."},
+  {id:12, titleEn:"Blind Spots",                             titleFr:"Angles Morts",                                    descEn:"Identifying stereotypes and generalizations to build unity.",                  descFr:"Identifier les stéréotypes pour construire l'unité."},
+  {id:13, titleEn:"The Power of Example",                    titleFr:"Le Pouvoir de l'Exemple",                         descEn:"Leading by doing: matching actions with words.",                               descFr:"Diriger par l'acte: aligner les actions et les paroles."},
+  {id:14, titleEn:"Empowerment: Thinking Future",            titleFr:"Autonomisation: Penser à l'Avenir",               descEn:"Ensuring continuity by empowering your team.",                                descFr:"Assurer la continuité en autonomisant votre équipe."},
+  {id:15, titleEn:"Good Success: The Winning Team!",         titleFr:"Bon Succès: L'Équipe Gagnante!",                  descEn:"Defining true success through wisdom and team wellbeing.",                    descFr:"Définir le vrai succès par la sagesse et le bien-être."},
+  {id:16, titleEn:"Prioritization: Me Management",           titleFr:"Priorisation: Gestion de Soi",                    descEn:"Putting first things first using the Time Management Quadrant.",              descFr:"Donner la priorité aux priorités — quadrant de gestion."},
+  {id:17, titleEn:"Discipline: Overcoming Stagnation",       titleFr:"Discipline: Surmonter la Stagnation",             descEn:"Sowing seeds of discipline to reap joy and fruitfulness.",                    descFr:"Semer la discipline pour récolter la joie et la fécondité."},
+  {id:18, titleEn:"Develop a Win-Win Culture",               titleFr:"Développer une Culture Gagnant-Gagnant",          descEn:"Managing conflict and promoting unity and forgiveness.",                       descFr:"Gérer les conflits et promouvoir l'unité et le pardon."},
+  {id:19, titleEn:"Resilience: Preparing for Dark Days",     titleFr:"Résilience: Se Préparer aux Jours Sombres",       descEn:"Adapting successfully and bouncing back from adversity.",                     descFr:"S'adapter et rebondir après l'adversité."},
+  {id:20, titleEn:"Signposts: The Ultimate Goal",            titleFr:"Panneaux Indicateurs: Le But Ultime",             descEn:"Working as unto the Lord and pointing others to Him.",                        descFr:"Travailler pour le Seigneur et orienter les autres."},
+  {id:21, titleEn:"Succession: Pass on the Baton",           titleFr:"Succession: Passer le Témoin",                    descEn:"Ensuring continuity by preparing the next generation.",                       descFr:"Assurer la continuité en préparant la prochaine génération."}
+];
+
+// ============================================================
+// APP STATE
+// ============================================================
+const S = {
+  view: 'LOGIN',
+  user: null,
+  currentWeek: null,
+  questions: [],
+  qIndex: 0,
+  answers: [],
+  result: null,
+  pdfLoading: false,
+  tempLang: 'ENGLISH'
+};
+
+// ============================================================
+// HELPERS
+// ============================================================
+function isEn(){ return S.user ? S.user.language === 'ENGLISH' : S.tempLang === 'ENGLISH'; }
+function t(en, fr){ return isEn() ? en : fr; }
+function pad(n){ return n.toString().padStart(2,'0'); }
+function letterOf(i){ return ['A','B','C','D'][i] || String.fromCharCode(65+i); }
+
+function getQuestions(weekId){
+  const bank = isEn() ? QUESTION_BANK : (QUESTION_BANK_FR[weekId] ? QUESTION_BANK_FR : QUESTION_BANK);
+  return (bank[weekId] || QUESTION_BANK[weekId] || []);
+}
+
+// ============================================================
+// ACTIONS
+// ============================================================
+function handleLogin(e){
+  e.preventDefault();
+  const name = document.getElementById('input-name')?.value.trim();
+  if(!name) return;
+  S.user = { fullName: name, language: S.tempLang };
+  S.view = 'DASHBOARD';
+  render();
+}
+
+function setLang(lang){
+  S.tempLang = lang;
+  render();
+}
+
+async function startQuiz(weekId){
+  S.currentWeek = COURSE_WEEKS.find(w => w.id === weekId);
+  S.view = 'LOADING';
+  render();
+  await new Promise(r => setTimeout(r, 500));
+  S.questions = getQuestions(weekId);
+  if(!S.questions.length){
+    alert(t('Questions coming soon!','Questions bientôt disponibles!'));
+    S.view = 'DASHBOARD'; render(); return;
+  }
+  S.qIndex = 0;
+  S.answers = [];
+  S.result = null;
+  S.view = 'QUIZ';
+  render();
+}
+
+function answer(idx){
+  S.answers[S.qIndex] = idx;
+  render();
+}
+
+function next(){
+  if(S.qIndex < S.questions.length - 1){ S.qIndex++; render(); }
+  else finish();
+}
+
+function prev(){
+  if(S.qIndex > 0){ S.qIndex--; render(); }
+}
+
+function finish(){
+  let score = 0;
+  S.questions.forEach((q,i) => { if(S.answers[i] === q.correctAnswer) score++; });
+  S.result = {
+    score, total: S.questions.length,
+    passed: (score / S.questions.length) >= 0.8,
+    date: new Date().toLocaleDateString('en-GB', {day:'2-digit',month:'long',year:'numeric'})
+  };
+  S.view = 'RESULT'; render();
+}
+
+async function downloadPDF(){
+  const el = document.getElementById('cert-content');
+  if(!el) return;
+  S.pdfLoading = true; render();
+  try {
+    const canvas = await html2canvas(el, { scale: 2.5, useCORS: true, backgroundColor:'#ffffff', logging: false });
+    const imgData = canvas.toDataURL('image/png');
+    const {jsPDF} = window.jspdf;
+    const pdf = new jsPDF({orientation:'landscape', unit:'mm', format:'a4'});
+    const pw = pdf.internal.pageSize.getWidth();
+    const ph = pdf.internal.pageSize.getHeight();
+    pdf.addImage(imgData,'PNG',0,0,pw,ph);
+    const safeName = (S.user?.fullName||'Student').replace(/\s+/g,'-');
+    pdf.save(`Team21-SL-Certificate-${safeName}-Week${S.currentWeek.id}.pdf`);
+  } catch(err){
+    alert(t('PDF generation failed. Try printing instead.','Échec de génération du PDF. Essayez d\'imprimer.'));
+  } finally {
+    S.pdfLoading = false; render();
+  }
+}
+
+function toDashboard(){
+  S.view = 'DASHBOARD'; S.currentWeek = null; S.result = null; render();
+}
+
+function logout(){
+  S.user = null; S.view = 'LOGIN'; render();
+}
+
+// ============================================================
+// RENDER
+// ============================================================
+const root = document.getElementById('app-root');
+
+function render(){
+  root.innerHTML = '';
+
+  // ----- NAV (shown after login) -----
+  if(S.user && S.view !== 'CERTIFICATE'){
+    root.innerHTML += `
+      <nav style="position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(10,22,40,0.96);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,0.07);padding:1rem 2.5rem;display:flex;align-items:center;justify-content:space-between;">
+        <div style="display:flex;align-items:center;gap:1.5rem;">
+          <div style="width:36px;height:36px;background:linear-gradient(135deg,#1a4b8c,#0d5c2e);display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:0.85rem;color:#c8a93a;letter-spacing:-0.5px;">T21</div>
+          <div>
+            <div style="font-family:'Playfair Display',serif;font-weight:700;font-size:1rem;color:#f8f9fa;line-height:1;">Team21 Academy</div>
+            <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.65rem;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.4);">${t('Servant Leadership Exams','Examens Leadership de Service')}</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:1.5rem;">
+          ${S.view !== 'DASHBOARD' ? `<button onclick="toDashboard()" style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:0.8rem;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.5);background:none;border:none;cursor:pointer;">${t('← Dashboard','← Tableau de bord')}</button>` : ''}
+          <div style="width:1px;height:20px;background:rgba(255,255,255,0.1);"></div>
+          <span style="font-size:0.85rem;color:rgba(255,255,255,0.6);">${S.user.fullName}</span>
+          <button onclick="logout()" style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:0.75rem;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,100,100,0.6);background:none;border:none;cursor:pointer;">${t('Logout','Déconnexion')}</button>
+        </div>
+      </nav>
+      <div style="height:64px;"></div>`;
+  }
+
+  // ===== LOGIN =====
+  if(S.view === 'LOGIN'){
+    root.innerHTML = `
+      <div style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem;background:radial-gradient(ellipse at 30% 60%, rgba(26,75,140,0.3) 0%, transparent 60%), radial-gradient(ellipse at 70% 30%, rgba(13,92,46,0.2) 0%, transparent 55%), var(--navy);">
+        <div style="text-align:center;margin-bottom:3rem;animation:fadeUp 0.7s ease both;">
+          <div style="width:72px;height:72px;background:linear-gradient(135deg,#1a4b8c,#0d5c2e);margin:0 auto 1.5rem;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.5rem;color:#c8a93a;clip-path:polygon(0 0,calc(100% - 12px) 0,100% 12px,100% 100%,12px 100%,0 calc(100% - 12px));">T21</div>
+          <h1 style="font-family:'Playfair Display',serif;font-size:clamp(2rem,5vw,3.2rem);font-weight:700;color:#f8f9fa;line-height:1.1;margin-bottom:0.5rem;">Team21 Academy</h1>
+          <p style="font-family:'Barlow Condensed',sans-serif;font-size:0.8rem;letter-spacing:3px;text-transform:uppercase;color:#c8a93a;">Servant Leadership Examination Portal</p>
+        </div>
+        <div style="width:100%;max-width:420px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);padding:2.5rem;animation:fadeUp 0.8s 0.1s ease both;">
+          <form onsubmit="handleLogin(event)">
+            <div style="margin-bottom:1.5rem;">
+              <label style="display:block;font-family:'Barlow Condensed',sans-serif;font-size:0.75rem;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:0.6rem;">${S.tempLang === 'ENGLISH' ? 'Full Name' : 'Nom Complet'}</label>
+              <input id="input-name" type="text" required placeholder="${S.tempLang === 'ENGLISH' ? 'Enter your full name' : 'Entrez votre nom complet'}"
+                style="width:100%;background:rgba(255,255,255,0.06);border:1.5px solid rgba(255,255,255,0.12);color:#f8f9fa;padding:0.9rem 1rem;font-family:'Barlow',sans-serif;font-size:1rem;outline:none;transition:border-color 0.2s;"
+                onfocus="this.style.borderColor='#c8a93a'" onblur="this.style.borderColor='rgba(255,255,255,0.12)'">
+            </div>
+            <div style="margin-bottom:2rem;">
+              <label style="display:block;font-family:'Barlow Condensed',sans-serif;font-size:0.75rem;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:0.6rem;">${S.tempLang === 'ENGLISH' ? 'Language / Langue' : 'Langue / Language'}</label>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;">
+                <button type="button" onclick="setLang('ENGLISH')" style="padding:0.8rem;border:2px solid ${S.tempLang==='ENGLISH'?'#c8a93a':'rgba(255,255,255,0.12)'};background:${S.tempLang==='ENGLISH'?'rgba(200,169,58,0.12)':'transparent'};color:${S.tempLang==='ENGLISH'?'#c8a93a':'rgba(255,255,255,0.6)'};font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:0.9rem;letter-spacing:1px;cursor:pointer;transition:all 0.2s;">🇬🇧 English</button>
+                <button type="button" onclick="setLang('FRENCH')" style="padding:0.8rem;border:2px solid ${S.tempLang==='FRENCH'?'#c8a93a':'rgba(255,255,255,0.12)'};background:${S.tempLang==='FRENCH'?'rgba(200,169,58,0.12)':'transparent'};color:${S.tempLang==='FRENCH'?'#c8a93a':'rgba(255,255,255,0.6)'};font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:0.9rem;letter-spacing:1px;cursor:pointer;transition:all 0.2s;">🇫🇷 Français</button>
+              </div>
+            </div>
+            <button type="submit" class="clip-arrow" style="width:100%;background:linear-gradient(135deg,#1a4b8c,#2563b8);color:#f0c94a;padding:1rem;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.1rem;letter-spacing:2px;text-transform:uppercase;border:none;cursor:pointer;transition:all 0.3s;">
+              ${S.tempLang === 'ENGLISH' ? 'Enter Portal →' : 'Accéder au Portail →'}
+            </button>
+          </form>
+          <div style="margin-top:1.5rem;text-align:center;">
+            <a href="team21-consulting.html" style="font-family:'Barlow Condensed',sans-serif;font-size:0.75rem;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.3);text-decoration:none;">← ${S.tempLang === 'ENGLISH' ? 'Back to Team21 Consulting' : 'Retour à Team21 Consulting'}</a>
+          </div>
+        </div>
+        <div style="margin-top:2rem;font-family:'Barlow Condensed',sans-serif;font-size:0.7rem;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.2);text-align:center;animation:fadeUp 1s 0.3s ease both;">Score 80% or above to earn your certificate · Obtenez 80% ou plus pour obtenir votre certificat</div>
+      </div>`;
+    return;
+  }
+
+  // ===== DASHBOARD =====
+  if(S.view === 'DASHBOARD'){
+    const cards = COURSE_WEEKS.map(w => `
+      <div class="week-card animate-fadeup" style="padding:1.5rem;cursor:pointer;animation-delay:${(w.id*0.03).toFixed(2)}s;" onclick="startQuiz(${w.id})">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1rem;">
+          <div style="width:44px;height:44px;background:linear-gradient(135deg,rgba(26,75,140,0.5),rgba(13,92,46,0.3));display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-weight:700;font-size:1.2rem;color:#c8a93a;">${pad(w.id)}</div>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.65rem;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.25);">Week ${w.id}</div>
+        </div>
+        <h3 style="font-family:'Playfair Display',serif;font-weight:700;font-size:1rem;color:#f8f9fa;line-height:1.3;margin-bottom:0.5rem;min-height:2.6rem;">${isEn() ? w.titleEn : w.titleFr}</h3>
+        <p style="font-family:'Barlow',sans-serif;font-size:0.82rem;color:rgba(255,255,255,0.45);line-height:1.5;min-height:2.5rem;">${isEn() ? w.descEn : w.descFr}</p>
+        <div style="margin-top:1.2rem;border-top:1px solid rgba(255,255,255,0.07);padding-top:1rem;display:flex;align-items:center;gap:0.5rem;">
+          <div style="width:6px;height:6px;background:#c8a93a;"></div>
+          <span style="font-family:'Barlow Condensed',sans-serif;font-size:0.75rem;letter-spacing:1.5px;text-transform:uppercase;color:#c8a93a;font-weight:700;">${t('Take Exam','Passer l\'Examen')}</span>
+        </div>
+      </div>`).join('');
+
+    root.innerHTML += `
+      <div style="max-width:1280px;margin:0 auto;padding:3rem 2rem 5rem;">
+        <div style="margin-bottom:3.5rem;animation:fadeUp 0.6s ease both;">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.72rem;letter-spacing:3px;text-transform:uppercase;color:#c8a93a;margin-bottom:0.7rem;">${t('Assessment Portal','Portail d\'Évaluation')}</div>
+          <h2 style="font-family:'Playfair Display',serif;font-weight:700;font-size:clamp(2rem,4vw,3rem);color:#f8f9fa;line-height:1.1;margin-bottom:0.8rem;">${t('Servant Leadership Exams','Examens de Leadership de Service')}</h2>
+          <p style="color:rgba(255,255,255,0.5);font-size:1rem;max-width:550px;line-height:1.6;">${t(`Welcome, ${S.user.fullName}. Select any chapter below to begin your examination. Score 80% or above to earn a certificate.`,`Bienvenue, ${S.user.fullName}. Sélectionnez un chapitre pour commencer. Obtenez 80% ou plus pour un certificat.`)}</p>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.2rem;">${cards}</div>
+      </div>`;
+    return;
+  }
+
+  // ===== LOADING =====
+  if(S.view === 'LOADING'){
+    root.innerHTML += `
+      <div style="min-height:80vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.5rem;">
+        <div style="width:48px;height:48px;border:3px solid rgba(255,255,255,0.1);border-top-color:#c8a93a;border-radius:50%" class="animate-spin"></div>
+        <p style="font-family:'Barlow Condensed',sans-serif;letter-spacing:2px;text-transform:uppercase;font-size:0.85rem;color:rgba(255,255,255,0.4);">${t('Loading Questions...','Chargement des questions...')}</p>
+      </div>`;
+    return;
+  }
+
+  // ===== QUIZ =====
+  if(S.view === 'QUIZ'){
+    const q = S.questions[S.qIndex];
+    const prog = ((S.qIndex + 1) / S.questions.length) * 100;
+    const week = S.currentWeek;
+    const answered = S.answers[S.qIndex] !== undefined;
+
+    const opts = q.options.map((opt, i) => `
+      <button onclick="answer(${i})" class="answer-opt ${S.answers[S.qIndex]===i?'sel':''}"
+        style="width:100%;text-align:left;padding:1rem 1.2rem;margin-bottom:0.7rem;display:flex;align-items:center;gap:1rem;font-family:'Barlow',sans-serif;font-size:0.95rem;color:${S.answers[S.qIndex]===i?'#f0c94a':'rgba(255,255,255,0.75)'};transition:all 0.2s;cursor:pointer;background:none;">
+        <span style="width:32px;height:32px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:0.85rem;letter-spacing:0.5px;border:1.5px solid ${S.answers[S.qIndex]===i?'#c8a93a':'rgba(255,255,255,0.2)'};background:${S.answers[S.qIndex]===i?'rgba(200,169,58,0.2)':'transparent'};color:${S.answers[S.qIndex]===i?'#c8a93a':'rgba(255,255,255,0.4)'};">${letterOf(i)}</span>
+        ${opt}
+      </button>`).join('');
+
+    root.innerHTML += `
+      <div style="max-width:760px;margin:0 auto;padding:2rem 1.5rem 5rem;animation:fadeUp 0.4s ease both;">
+        <div style="margin-bottom:2rem;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.8rem;">
+            <div>
+              <span style="font-family:'Barlow Condensed',sans-serif;font-size:0.7rem;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.35);">Week ${week.id} — </span>
+              <span style="font-family:'Barlow Condensed',sans-serif;font-size:0.7rem;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.5);">${isEn()?week.titleEn:week.titleFr}</span>
+            </div>
+            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:0.8rem;letter-spacing:1px;color:#c8a93a;">${S.qIndex+1} / ${S.questions.length}</div>
+          </div>
+          <div class="progress-track"><div class="progress-fill" style="width:${prog}%"></div></div>
+        </div>
+
+        <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);padding:2.5rem;margin-bottom:1.5rem;">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.68rem;letter-spacing:2.5px;text-transform:uppercase;color:rgba(200,169,58,0.6);margin-bottom:1rem;">Question ${S.qIndex+1}</div>
+          <h3 style="font-family:'Playfair Display',serif;font-weight:600;font-size:clamp(1.1rem,2.5vw,1.35rem);color:#f8f9fa;line-height:1.5;">${q.question}</h3>
+        </div>
+
+        <div>${opts}</div>
+
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:2rem;padding-top:1.5rem;border-top:1px solid rgba(255,255,255,0.07);">
+          <button onclick="prev()" ${S.qIndex===0?'disabled':''} style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:0.85rem;letter-spacing:1.5px;text-transform:uppercase;color:${S.qIndex===0?'rgba(255,255,255,0.15)':'rgba(255,255,255,0.5)'};background:none;border:none;cursor:${S.qIndex===0?'default':'pointer'};transition:color 0.2s;">← ${t('Previous','Précédent')}</button>
+          <button onclick="${S.qIndex<S.questions.length-1?'next()':'finish()'}" ${!answered?'disabled':''} class="clip-arrow" style="background:${answered?'linear-gradient(135deg,#1a4b8c,#2563b8)':'rgba(255,255,255,0.06)'};color:${answered?'#f0c94a':'rgba(255,255,255,0.2)'};padding:0.85rem 2.5rem;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:0.9rem;letter-spacing:1.5px;text-transform:uppercase;border:none;cursor:${answered?'pointer':'default'};transition:all 0.3s;">
+            ${S.qIndex===S.questions.length-1?t('Finish Exam','Terminer l\'Examen'):t('Next →','Suivant →')}
+          </button>
+        </div>
+      </div>`;
+    return;
+  }
+
+  // ===== RESULT =====
+  if(S.view === 'RESULT'){
+    const {passed, score, total} = S.result;
+    const pct = Math.round((score/total)*100);
+    const week = S.currentWeek;
+
+    root.innerHTML += `
+      <div style="max-width:600px;margin:0 auto;padding:3rem 1.5rem;animation:fadeUp 0.5s ease both;text-align:center;">
+        <div style="width:100px;height:100px;margin:0 auto 2rem;background:${passed?'linear-gradient(135deg,rgba(13,92,46,0.4),rgba(21,122,62,0.2))':'linear-gradient(135deg,rgba(140,0,0,0.3),rgba(100,0,0,0.2))'};border:2px solid ${passed?'rgba(21,122,62,0.5)':'rgba(140,0,0,0.4)'};display:flex;align-items:center;justify-content:center;font-size:3rem;clip-path:polygon(0 0,calc(100% - 16px) 0,100% 16px,100% 100%,16px 100%,0 calc(100% - 16px));">
+          ${passed ? '🏆' : '💪'}
+        </div>
+
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.7rem;letter-spacing:3px;text-transform:uppercase;color:${passed?'#1ea851':'rgba(255,100,100,0.7)'};margin-bottom:0.8rem;">${passed?t('Passed','Réussi'):t('Not Yet','Pas encore')}</div>
+        <h2 style="font-family:'Playfair Display',serif;font-weight:700;font-size:clamp(1.8rem,4vw,2.5rem);color:#f8f9fa;margin-bottom:0.8rem;">
+          ${passed ? t('Congratulations!','Félicitations!') : t('Keep Practicing','Continuez à Pratiquer')}
+        </h2>
+        <p style="color:rgba(255,255,255,0.5);font-size:1rem;margin-bottom:2rem;">
+          ${t(`Week ${week.id}: ${week.titleEn}`,`Semaine ${week.id}: ${week.titleFr}`)}
+        </p>
+
+        <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);padding:2rem;margin-bottom:2rem;">
+          <div style="font-family:'Playfair Display',serif;font-size:4rem;font-weight:700;color:${passed?'#c8a93a':'rgba(255,255,255,0.3)'};">${pct}%</div>
+          <div style="color:rgba(255,255,255,0.4);font-size:0.9rem;margin-top:0.4rem;">${t(`${score} correct out of ${total} questions`,`${score} correctes sur ${total} questions`)}</div>
+          ${!passed ? `<div style="font-family:'Barlow Condensed',sans-serif;font-size:0.75rem;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,150,50,0.7);margin-top:1rem;">${t('Minimum 80% required to pass','80% minimum requis pour réussir')}</div>` : ''}
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:0.8rem;">
+          ${passed ? `<button onclick="S.view='CERTIFICATE';render()" class="clip-arrow" style="width:100%;background:linear-gradient(135deg,#0d5c2e,#157a3e);color:#f0c94a;padding:1rem;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1rem;letter-spacing:2px;text-transform:uppercase;border:none;cursor:pointer;">🎓 ${t('View & Download Certificate','Voir & Télécharger le Certificat')}</button>` : ''}
+          <button onclick="startQuiz(${week.id})" style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.7);padding:1rem;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:0.9rem;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;">${t('Retake Exam','Reprendre l\'Examen')}</button>
+          <button onclick="toDashboard()" style="width:100%;background:transparent;border:none;color:rgba(255,255,255,0.35);padding:0.8rem;font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:0.85rem;letter-spacing:1px;text-transform:uppercase;cursor:pointer;">${t('← Back to Dashboard','← Retour au Tableau de Bord')}</button>
+        </div>
+      </div>`;
+    return;
+  }
+
+  // ===== CERTIFICATE =====
+  if(S.view === 'CERTIFICATE'){
+    const week = S.currentWeek;
+    const lang = S.user.language;
+    const title = lang === 'ENGLISH' ? week.titleEn : week.titleFr;
+    const desc  = lang === 'ENGLISH' ? week.descEn : week.descFr;
+    const {score, total, date} = S.result;
+    const pct = Math.round((score/total)*100);
+
+    const certLabel = lang === 'ENGLISH' ? 'Certificate of Achievement' : 'Certificat de Réussite';
+    const certSub   = lang === 'ENGLISH' ? 'This is to certify that' : 'Ceci certifie que';
+    const certMid   = lang === 'ENGLISH' ? 'has successfully completed the examination for' : 'a réussi avec succès l\'examen pour';
+    const certChap  = lang === 'ENGLISH' ? `Chapter ${week.id}` : `Chapitre ${week.id}`;
+    const certConc  = lang === 'ENGLISH' ? 'Concepts Mastered' : 'Concepts Maîtrisés';
+    const certScore = lang === 'ENGLISH' ? `Examination Score: ${pct}% (${score}/${total})` : `Score d'examen: ${pct}% (${score}/${total})`;
+    const certDate  = lang === 'ENGLISH' ? 'Date of Completion' : 'Date d\'Achèvement';
+    const certSign  = lang === 'ENGLISH' ? 'Program Manager, Team21 Academy' : 'Directeur de Programme, Team21 Academy';
+
+    root.innerHTML = `
+      <div style="min-height:100vh;background:#e8ecf0;padding:2rem;display:flex;flex-direction:column;align-items:center;">
+
+        <!-- Controls -->
+        <div class="no-print" style="margin-bottom:1.5rem;display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;">
+          <button onclick="downloadPDF()" ${S.pdfLoading?'disabled':''} style="display:flex;align-items:center;gap:0.6rem;background:linear-gradient(135deg,#1a4b8c,#2563b8);color:#f0c94a;padding:0.8rem 2rem;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:0.9rem;letter-spacing:1.5px;text-transform:uppercase;border:none;cursor:${S.pdfLoading?'wait':'pointer'};transition:all 0.3s;clip-path:polygon(0 0,calc(100% - 8px) 0,100% 8px,100% 100%,8px 100%,0 calc(100% - 8px));">
+            ${S.pdfLoading ? '<span style="display:inline-block;width:16px;height:16px;border:2px solid rgba(240,201,74,0.3);border-top-color:#f0c94a;border-radius:50%;animation:spin 1s linear infinite;"></span>' : '⬇'} ${t('Download PDF Certificate','Télécharger le Certificat PDF')}
+          </button>
+          <button onclick="window.print()" style="display:flex;align-items:center;gap:0.6rem;background:#1e3d3d;color:white;padding:0.8rem 2rem;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:0.9rem;letter-spacing:1.5px;text-transform:uppercase;border:none;cursor:pointer;">
+            🖨 ${t('Print','Imprimer')}
+          </button>
+          <button onclick="S.view='RESULT';render()" style="background:transparent;border:1px solid rgba(0,0,0,0.15);color:#555;padding:0.8rem 2rem;font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:0.85rem;letter-spacing:1px;text-transform:uppercase;cursor:pointer;">
+            ← ${t('Back','Retour')}
+          </button>
+        </div>
+
+        <!-- CERTIFICATE -->
+        <div id="cert-content" style="width:297mm;max-width:100%;background:white;padding:14mm;position:relative;overflow:hidden;box-shadow:0 20px 80px rgba(0,0,0,0.2);">
+
+          <!-- Outer decorative border -->
+          <div style="position:absolute;inset:6mm;border:2px solid #1a3a6e;pointer-events:none;"></div>
+          <div style="position:absolute;inset:9mm;border:1px solid rgba(200,169,58,0.5);pointer-events:none;"></div>
+
+          <!-- Corner ornaments -->
+          <div style="position:absolute;top:4mm;left:4mm;width:16mm;height:16mm;border-top:3px solid #c8a93a;border-left:3px solid #c8a93a;"></div>
+          <div style="position:absolute;top:4mm;right:4mm;width:16mm;height:16mm;border-top:3px solid #c8a93a;border-right:3px solid #c8a93a;"></div>
+          <div style="position:absolute;bottom:4mm;left:4mm;width:16mm;height:16mm;border-bottom:3px solid #c8a93a;border-left:3px solid #c8a93a;"></div>
+          <div style="position:absolute;bottom:4mm;right:4mm;width:16mm;height:16mm;border-bottom:3px solid #c8a93a;border-right:3px solid #c8a93a;"></div>
+
+          <!-- Background watermark -->
+          <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;opacity:0.025;">
+            <div style="font-family:'Playfair Display',serif;font-size:140px;font-weight:700;color:#1a3a6e;transform:rotate(-30deg);white-space:nowrap;">TEAM21</div>
+          </div>
+
+          <!-- CONTENT -->
+          <div style="position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;min-height:180mm;padding:4mm 8mm;">
+
+            <!-- Logo row -->
+            <div style="display:flex;align-items:center;gap:1.5rem;margin-bottom:6mm;">
+              <div style="width:18mm;height:18mm;background:linear-gradient(135deg,#1a4b8c,#0d5c2e);display:flex;align-items:center;justify-content:center;clip-path:polygon(0 0,calc(100% - 4mm) 0,100% 4mm,100% 100%,4mm 100%,0 calc(100% - 4mm));">
+                <span style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.4rem;color:#c8a93a;letter-spacing:-1px;">T21</span>
+              </div>
+              <div>
+                <div style="font-family:'Playfair Display',serif;font-weight:700;font-size:1.1rem;color:#0a1628;line-height:1;">Team21 Academy</div>
+                <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.55rem;letter-spacing:2.5px;text-transform:uppercase;color:#5a7a7a;margin-top:2px;">Servant Leadership Programme</div>
+              </div>
+            </div>
+
+            <!-- Title -->
+            <div style="text-align:center;margin-bottom:4mm;">
+              <div style="display:inline-flex;align-items:center;gap:1rem;margin-bottom:3mm;">
+                <div style="height:1px;width:40px;background:linear-gradient(90deg,transparent,#c8a93a);"></div>
+                <span style="font-family:'Barlow Condensed',sans-serif;font-size:0.6rem;letter-spacing:3px;text-transform:uppercase;color:#c8a93a;">Official Recognition</span>
+                <div style="height:1px;width:40px;background:linear-gradient(90deg,#c8a93a,transparent);"></div>
+              </div>
+              <h1 style="font-family:'Playfair Display',serif;font-weight:700;font-size:2.6rem;color:#0a1628;letter-spacing:2px;text-transform:uppercase;line-height:1;">${certLabel}</h1>
+            </div>
+
+            <!-- Divider -->
+            <div style="width:80%;height:2px;background:linear-gradient(90deg,transparent,#c8a93a 20%,#c8a93a 80%,transparent);margin-bottom:4mm;"></div>
+
+            <!-- Presenter -->
+            <p style="font-family:'Playfair Display',serif;font-style:italic;font-size:1rem;color:#5a7a7a;margin-bottom:3mm;">${certSub}</p>
+
+            <!-- Name -->
+            <div style="text-align:center;margin-bottom:3mm;padding:2mm 16mm;">
+              <h2 style="font-family:'Playfair Display',serif;font-weight:700;font-size:2.4rem;color:#0a1628;border-bottom:2px solid #c8a93a;padding-bottom:2mm;letter-spacing:1px;">${S.user?.fullName || ''}</h2>
+            </div>
+
+            <!-- Achievement text -->
+            <p style="font-family:'Barlow',sans-serif;font-size:0.9rem;color:#3a5a5a;text-align:center;margin-bottom:2mm;line-height:1.6;">
+              ${certMid}
+            </p>
+            <div style="text-align:center;margin-bottom:4mm;">
+              <span style="font-family:'Barlow Condensed',sans-serif;font-size:0.65rem;letter-spacing:2px;text-transform:uppercase;color:#1a4b8c;">${certChap} —</span>
+              <span style="font-family:'Playfair Display',serif;font-weight:700;font-size:1.3rem;color:#1a4b8c;margin-left:0.5rem;">${title}</span>
+            </div>
+
+            <!-- Concepts & Score box -->
+            <div style="background:#f5f8fa;border:1px solid #d0dce0;padding:3mm 6mm;margin-bottom:5mm;max-width:80%;width:100%;text-align:center;">
+              <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.55rem;letter-spacing:2.5px;text-transform:uppercase;color:#5a7a7a;margin-bottom:1.5mm;">${certConc}</div>
+              <p style="font-family:'Barlow',sans-serif;font-size:0.82rem;color:#2a4a4a;font-style:italic;margin-bottom:1.5mm;">${desc}</p>
+              <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.7rem;font-weight:700;letter-spacing:1.5px;color:#c8a93a;">${certScore}</div>
+            </div>
+
+            <!-- Signatures row -->
+            <div style="width:100%;display:flex;justify-content:space-between;align-items:flex-end;margin-top:auto;padding:0 6mm;">
+              <div style="text-align:center;min-width:90px;">
+                <div style="border-bottom:1.5px solid #c0c0c0;width:120px;margin:0 auto 2mm;"></div>
+                <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.65rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#0a1628;">${date}</div>
+                <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.5rem;letter-spacing:1.5px;text-transform:uppercase;color:#8a9a9a;margin-top:1px;">${certDate}</div>
+              </div>
+
+              <div style="text-align:center;">
+                <div style="font-family:'Playfair Display',serif;font-style:italic;font-size:1.6rem;color:#1a4b8c;line-height:1;margin-bottom:1mm;">Innocent Forteh</div>
+                <div style="border-bottom:1.5px solid #c0c0c0;width:200px;margin:0 auto 2mm;"></div>
+                <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.65rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#0a1628;">Innocent Forteh, PMP®</div>
+                <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.5rem;letter-spacing:1.5px;text-transform:uppercase;color:#8a9a9a;margin-top:1px;">${certSign}</div>
+              </div>
+
+              <div style="text-align:center;min-width:90px;">
+                <div style="width:60px;height:60px;border:2px solid #1a3a6e;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 2mm;background:linear-gradient(135deg,rgba(26,75,140,0.06),rgba(13,92,46,0.04));">
+                  <div style="text-align:center;">
+                    <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.7rem;font-weight:900;color:#1a4b8c;line-height:1;">T21</div>
+                    <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.35rem;letter-spacing:1px;color:#5a7a7a;text-transform:uppercase;">Academy</div>
+                  </div>
+                </div>
+                <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.5rem;letter-spacing:1px;text-transform:uppercase;color:#8a9a9a;">Official Seal</div>
+              </div>
+            </div>
+
+            <!-- Footer strip -->
+            <div style="margin-top:4mm;width:100%;border-top:1px solid #e0e0e0;padding-top:2mm;display:flex;justify-content:center;">
+              <span style="font-family:'Barlow Condensed',sans-serif;font-size:0.5rem;letter-spacing:2px;text-transform:uppercase;color:#b0b8b8;">Team21 Academy · Servant Leadership Programme · https://team21on.blogspot.com · Cameroon & Global</span>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="no-print" style="margin-top:1.5rem;font-family:'Barlow Condensed',sans-serif;font-size:0.7rem;letter-spacing:1.5px;text-transform:uppercase;color:#888;text-align:center;">${t('Your certificate is ready to download or print','Votre certificat est prêt à être téléchargé ou imprimé')}</div>
+      </div>`;
+    return;
+  }
+}
+
+// Boot
+render();
+</script>
+</body>
+</html>

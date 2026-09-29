@@ -1,0 +1,16 @@
+{
+  "name": "fortenotes",
+  "version": "1.0.0",
+  "private": true,
+  "description": "ForTe Notes — S Pen notebook app, packaged for Android",
+  "scripts": {
+    "build": "echo 'Static app — nothing to compile, www/ is served as-is'"
+  },
+  "dependencies": {
+    "@capacitor/core": "latest",
+    "@capacitor/android": "latest"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "latest"
+  }
+}

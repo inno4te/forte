@@ -1,0 +1,127 @@
+{
+  "name": "Forte",
+  "tagline": "One platform for Team21 Academy, Forte apps, and inno4te ventures.",
+  "domains": {
+    "academy": {
+      "title": "Academy & Learning",
+      "blurb": "Team21 Academy portals, LMS, schools, kids coding, labs and trading/networking academies."
+    },
+    "ai": {
+      "title": "AI Programs",
+      "blurb": "AI Unlocked, AI Build, Training of Trainers, AI readiness and the Team21 AI workspace."
+    },
+    "certification": {
+      "title": "Certification & Assessment",
+      "blurb": "PMP prep, servant-leadership training and exams, 360 and leadership assessments."
+    },
+    "business": {
+      "title": "Business & Consulting",
+      "blurb": "Consulting sites, ERP, unified platforms, solar, publishing and design tooling."
+    },
+    "economics": {
+      "title": "Africa Economics",
+      "blurb": "ForTe Economics and the Encyclopedia Africa knowledge base."
+    },
+    "health": {
+      "title": "Health Platform",
+      "blurb": "Preventive health and chronic-disease intelligence."
+    },
+    "chad": {
+      "title": "Chad Public Health (INSAPT)",
+      "blurb": "INSAPT institutional site, procurement manual and NPHI quick reference."
+    },
+    "apps": {
+      "title": "Apps & Tools",
+      "blurb": "Family messaging, notes, PDF studio, live sessions, Web Swiss Knife, TV and news."
+    },
+    "profile": {
+      "title": "Profile",
+      "blurb": "Portfolio, resume and personal pages."
+    }
+  },
+  "adminOnly": [
+    "pmiceval",
+    "360",
+    "lat",
+    "consulting",
+    "jimit",
+    "zoeconsulting",
+    "forteErp",
+    "mobprod",
+    "t21prod"
+  ],
+  "sources": {
+    "360": "inno4te/360",
+    "team21": "inno4te/team21",
+    "team21academy": "inno4te/team21academy",
+    "team21lms": "inno4te/team21lms",
+    "practical": "inno4te/practical",
+    "L2T21": "inno4te/L2T21",
+    "10th": "inno4te/10th",
+    "10000women": "inno4te/10000women",
+    "kidscode": "inno4te/kidscode",
+    "learnonline": "inno4te/learnonline",
+    "nnschool": "inno4te/nnschool",
+    "t21bibleschool": "inno4te/t21bibleschool",
+    "tierworld": "inno4te/tierworld",
+    "team21IT": "inno4te/team21IT",
+    "innolan": "inno4te/innolan",
+    "labs": "inno4te/labs",
+    "innotrade": "inno4te/innotrade",
+    "AiReady": "inno4te/AiReady",
+    "AiR": "inno4te/AiR",
+    "AiUnlocked": "inno4te/AiUnlocked",
+    "Aiunlockedfr": "inno4te/Aiunlockedfr",
+    "Team21Ai-UnlockedL1": "inno4te/Team21Ai-UnlockedL1",
+    "Team21Ai-Build": "inno4te/Team21Ai-Build",
+    "T21AiBuild": "inno4te/T21AiBuild",
+    "tot": "inno4te/tot",
+    "totfr": "inno4te/totfr",
+    "team21ai": "inno4te/team21ai",
+    "Team21-MaDskillz": "inno4te/Team21-MaDskillz",
+    "madit": "inno4te/madit",
+    "madskillz-ai-readiness": "inno4te/madskillz-ai-readiness",
+    "ai": "inno4te/ai",
+    "Team21_PMP": "inno4te/Team21_PMP",
+    "Team21-PMP8": "inno4te/Team21-PMP8",
+    "t21pmp8prep": "inno4te/t21pmp8prep",
+    "Team21-SL-Training": "inno4te/Team21-SL-Training",
+    "sltest": "inno4te/sltest",
+    "pmiceval": "inno4te/pmiceval",
+    "lat": "inno4te/lat",
+    "consulting": "inno4te/consulting",
+    "jimit": "inno4te/jimit",
+    "zoeconsulting": "inno4te/zoeconsulting",
+    "IFconsulting": "inno4te/IFconsulting",
+    "team21-consulting": "inno4te/team21-consulting",
+    "team21-ae-app": "inno4te/team21-ae-app",
+    "forteErp": "inno4te/forteErp",
+    "mobprod": "inno4te/mobprod",
+    "t21prod": "inno4te/t21prod",
+    "sirrisolar": "inno4te/sirrisolar",
+    "lennoxbooks": "inno4te/lennoxbooks",
+    "Fortetemps": "inno4te/Fortetemps",
+    "FortEA": "inno4te/FortEA",
+    "FortEcon": "inno4te/FortEcon",
+    "health": "inno4te/health",
+    "team21-health": "inno4te/team21-health",
+    "Insapt": "inno4te/Insapt",
+    "manuelpdm": "inno4te/manuelpdm",
+    "tchadp": "inno4te/tchadp",
+    "fam": "inno4te/fam",
+    "ffmail": "inno4te/ffmail",
+    "fortehsm": "inno4te/fortehsm",
+    "ForteInter": "inno4te/ForteInter",
+    "interact": "inno4te/interact",
+    "ForTeSK": "inno4te/ForTeSK",
+    "fortehnote": "inno4te/fortehnote",
+    "forteditor": "inno4te/forteditor",
+    "vault": "inno4te/vault",
+    "judetv": "inno4te/judetv",
+    "news": "inno4te/news",
+    "aboutme": "inno4te/aboutme",
+    "inno": "inno4te/inno",
+    "workinprogress": "inno4te/workinprogress",
+    "Pictures": "inno4te/Pictures"
+  }
+}

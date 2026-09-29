@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Forte Admin Console</title>
+<link rel="icon" href="data:,"><link rel="stylesheet" href="../assets/forte.css">
+</head>
+<body>
+<section id="gate" class="login" hidden>
+  <h1>Forte Admin</h1>
+  <p id="gp"></p>
+  <form id="f"><input type="password" id="pw" autocomplete="current-password" placeholder="Passphrase" required minlength="10">
+  <button class="btn" id="go">Sign in</button><div class="err" id="err" role="alert"></div></form>
+  <p><a href="../">← Back to public portal</a></p>
+</section>
+<div id="app" hidden>
+<header class="top"><div class="wrap"><a class="logo" href="../">FOR<b>TE</b> <small style="color:var(--mute);font-weight:600">Admin</small></a><span class="spacer"></span>
+<nav><a href="../">Public site</a><button class="btn ghost" id="out">Sign out</button></nav></div></header>
+<main class="wrap">
+  <section class="hero" style="padding:36px 0 8px"><h1 style="font-size:2rem">Administration console</h1>
+  <div class="stats" id="stats"></div></section>
+  <div class="note"><b>Security note:</b> this console is a client-side gate on static hosting. It hides admin projects from the public catalog but cannot protect files that are deployed. Keep sensitive data out of the repo, or deploy behind real authentication (see docs/ACCESS.md).</div>
+  <h2 class="dom">Admin pages &amp; admin-only projects</h2><div class="grid" id="adm"></div>
+  <h2 class="dom">All projects</h2>
+  <div class="tools"><input type="search" id="q" placeholder="Filter by name, area, tech, source…"><div class="chips" id="chips">
+    <button class="chip" data-a="all" aria-pressed="true">All</button><button class="chip" data-a="public" aria-pressed="false">Public</button><button class="chip" data-a="admin" aria-pressed="false">Admin</button></div></div>
+  <div class="tw"><table><thead><tr><th data-k="title">Project</th><th data-k="domain">Area</th><th data-k="access">Access</th><th data-k="tech">Tech</th><th data-k="files">Files</th><th data-k="bytes">Size</th><th>Links</th></tr></thead><tbody id="rows"></tbody></table></div>
+  <footer>Regenerate data with <code>node scripts/build-registry.mjs</code>.</footer>
+</main></div>
+<script src="config.js"></script>
+<script src="../data/registry.js"></script>
+<script src="../assets/common.js"></script>
+<script>
+(()=>{
+const F=Forte,R=window.FORTE_REGISTRY,$=s=>document.querySelector(s),K="forte.admin.hash";
+const safe=(f,d)=>{try{return f()}catch{return d}};
+const stored=()=>window.FORTE_ADMIN.passHash||safe(()=>localStorage.getItem(K),"")||"";
+const authed=()=>safe(()=>sessionStorage.getItem("forte.admin.ok")==="1",false);
+function boot(){ if(authed()){$("#gate").hidden=true;$("#app").hidden=false;init();}else{$("#app").hidden=true;$("#gate").hidden=false;
+  $("#gp").textContent=stored()?"Enter the administrator passphrase.":"First run: choose a passphrase (10+ chars). It is stored as a hash in this browser only.";$("#go").textContent=stored()?"Sign in":"Set passphrase";} }
+$("#f").onsubmit=async e=>{e.preventDefault();const h=await F.sha256($("#pw").value);
+  if(!stored()){safe(()=>localStorage.setItem(K,h));}
+  else if(h!==stored()){$("#err").textContent="Incorrect passphrase.";return;}
+  safe(()=>sessionStorage.setItem("forte.admin.ok","1"));$("#pw").value="";boot();};
+$("#out").onclick=()=>{safe(()=>sessionStorage.removeItem("forte.admin.ok"));location.reload();};
+let acc="all",sk="title",dir=1,ready=false;
+function init(){ if(ready)return;ready=true;const P=R.projects;
+  $("#stats").innerHTML=[[P.length,"projects"],[P.filter(p=>p.access==="public").length,"public"],[P.filter(p=>p.access==="admin").length,"admin-only"],[P.reduce((a,p)=>a+p.files,0),"files"],[F.fmtBytes(P.reduce((a,p)=>a+p.bytes,0)),"content"]].map(([b,l])=>`<div class="stat"><b>${b}</b><span>${l}</span></div>`).join("");
+  $("#adm").innerHTML=P.filter(p=>p.access==="admin"||p.adminPages.length).map(p=>F.card(p,"../",true)).join("");
+  $("#chips").onclick=e=>{const b=e.target.closest("[data-a]");if(!b)return;acc=b.dataset.a;document.querySelectorAll("#chips .chip").forEach(c=>c.setAttribute("aria-pressed",c===b));rows();};
+  $("#q").oninput=rows;document.querySelector("thead").onclick=e=>{const t=e.target.closest("[data-k]");if(!t)return;dir=sk===t.dataset.k?-dir:1;sk=t.dataset.k;rows();};rows();}
+function rows(){const q=$("#q").value.toLowerCase(),E=F.esc;
+  const v=x=>Array.isArray(x)?x.join(","):x;
+  const L=R.projects.filter(p=>(acc==="all"||p.access===acc)&&(!q||(p.title+p.name+p.domain+p.tech.join()+(p.source||"")).toLowerCase().includes(q)))
+   .sort((a,b)=>(v(a[sk])>v(b[sk])?1:-1)*dir||0);
+  $("#rows").innerHTML=L.map(p=>`<tr><td><b>${E(p.title)}</b><br><small style="color:var(--mute)">${E(p.id)}</small></td><td>${E(R.domains[p.domain].title)}</td><td><span class="tag ${p.access}">${p.access}</span></td><td>${E(p.tech.join(", "))}</td><td>${p.files}</td><td>${F.fmtBytes(p.bytes)}</td><td class="links">${p.entry?`<a href="../${E(p.entry)}">Open</a>`:""}${p.source?`<a href="https://github.com/${E(p.source)}">Repo</a>`:""}</td></tr>`).join("");}
+boot();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Heart & Circulation — Team21 Health Platform</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700;9..144,800&family=Inter+Tight:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="brand">
+      <div class="brand-mark">T21</div>
+      <div>
+        <div class="brand-name">Team21 Health Platform</div>
+        <div class="brand-sub">Preventive Intelligence</div>
+      </div>
+    </a>
+    <div class="nav-cta" id="navCta"></div>
+  </div>
+</nav>
+
+<main class="page">
+  <header class="page-head" id="sysHead"></header>
+
+  <div class="search-bar">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+    <input type="text" id="sysSearch" placeholder="Search heart-health tips — e.g. salt, sleep, exercise…" />
+  </div>
+
+  <section>
+    <h2 class="sect">Targets that <em>matter</em></h2>
+    <p style="max-width:780px;color:var(--ink-soft);margin:0 0 14px">If you remember nothing else from this page, remember these numbers. Each is the threshold at which independent risk-reduction starts to flatten.</p>
+    <div class="kv-grid" id="sysKV"></div>
+  </section>
+
+  <section>
+    <h2 class="sect">Nine high-impact <em>practices</em></h2>
+    <div class="tip-grid" id="sysTips"></div>
+    <div id="sysWarns" style="margin-top:30px"></div>
+  </section>
+
+  <section>
+    <h2 class="sect">The cardio-friendly <em>plate</em></h2>
+    <div id="sysFoods"></div>
+  </section>
+
+  <section style="margin-top:50px">
+    <h2 class="sect">When to <em>seek help</em></h2>
+    <ol class="steps">
+      <li><strong>Sudden, severe chest pain or pressure</strong>Especially if accompanied by shortness of breath, sweating, nausea, or pain radiating to arm, jaw, neck or back. Call emergency services. Chewing aspirin 300 mg may help if you have no contraindications.</li>
+      <li><strong>Sudden one-sided weakness, slurred speech, or facial droop</strong>Possible stroke — time-critical. Call emergency services immediately. Note the time symptoms started: it determines treatment options.</li>
+      <li><strong>Palpitations with chest pain, dizziness or fainting</strong>Could indicate a serious arrhythmia. Seek urgent evaluation.</li>
+      <li><strong>New, persistent breathlessness; ankle swelling; waking gasping at night</strong>May indicate heart failure. See a clinician within days, not weeks.</li>
+      <li><strong>Calf pain, redness, swelling — especially after travel or immobility</strong>Possible deep vein thrombosis. Seek evaluation; do not massage the leg.</li>
+    </ol>
+  </section>
+
+  <section style="margin-top:50px">
+    <div class="note">
+      <strong>Track these habits daily</strong>
+      The Team21 Daily Tracker includes salt awareness, alcohol-free days, 30+ minutes of movement, sleep hours, mindfulness, and produce intake — all of which feed directly into cardiovascular protection. Sign in and start checking off today.
+      <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap"><a class="btn btn-sm btn-primary" href="tracker.html">Open tracker →</a><a class="btn btn-sm" href="quizzes.html">Take the heart quiz</a></div>
+    </div>
+  </section>
+</main>
+
+<script src="data.js"></script>
+<script src="data-ext.js"></script>
+<script src="lang-data.js"></script>
+<script src="lang.js"></script>
+<script src="shared.js"></script>
+<script src="components.js"></script>
+<script src="system-page.js"></script>
+<script>
+T21.boot('heart.html');
+renderSystemPage('heart');
+window.onUserAuthChange = ()=> {
+  const t = document.getElementById('sysTips');
+  if(t) refreshBookmarkStates(t);
+};
+</script>
+</body>
+</html>

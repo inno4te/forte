@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PC Builder Lab · Innov8te Labs4Africa</title>
+<meta name="description" content="Build a working PC by dragging compatible components into place, with a live power meter and real compatibility checks.">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23FF6A1A'/><text x='50' y='70' font-size='52' text-anchor='middle' fill='black' font-weight='bold'>i8</text></svg>">
+<script>window.PAGE_LABEL = "Lab: PC Builder";</script>
+</head>
+<body>
+
+<header class="site-header">
+  <nav class="wrap nav" aria-label="Primary">
+    <a class="brand" href="../index.html"><span class="brand-mark">i8</span>
+      <span class="brand-name">Innov<span>8</span>te Labs4Africa</span></a>
+    <button class="nav-toggle" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    <ul class="nav-links"><li><a href="../index.html">Home</a></li><li><a href="../index.html#labs">All labs</a></li><li><a href="../about.html">About</a></li></ul>
+  </nav>
+</header>
+
+<section class="lab-hero">
+  <div class="wrap">
+    <div>
+      <a href="../index.html#labs" class="back">← All labs</a>
+      <h1>🖥️ PC Builder Lab</h1>
+      <p>Assemble a working computer. Drag a part onto its slot — or tap a part, then tap the slot. Watch the live power meter, then hit <b>Check build</b>. Pick a consistent platform: the CPU socket must match the motherboard, RAM type (DDR4/DDR5) must match, the cooler must fit and be strong enough, and the power supply must handle the load.</p>
+    </div>
+    <div class="scoreboard">Score <b id="score">0</b><span>/100</span></div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="lab-layout" id="lab" style="grid-template-columns:300px 1fr 280px">
+
+      <!-- PARTS BIN -->
+      <div class="panel">
+        <div class="tray-title">Parts bin — drag me</div>
+        <div class="tray" id="tray">
+          <div class="part" data-type="cpu" data-name="Ryzen 5 5600" data-socket="AM4" data-power="65"><span class="ico">🧠</span><span><span class="pt-name">Ryzen 5 5600</span><br><span class="pt-spec">CPU · AM4 · 65W</span></span></div>
+          <div class="part" data-type="cpu" data-name="Ryzen 7 5800X" data-socket="AM4" data-power="105"><span class="ico">🧠</span><span><span class="pt-name">Ryzen 7 5800X</span><br><span class="pt-spec">CPU · AM4 · 105W</span></span></div>
+          <div class="part" data-type="cpu" data-name="Core i5-13400" data-socket="LGA1700" data-power="65"><span class="ico">🧠</span><span><span class="pt-name">Core i5-13400</span><br><span class="pt-spec">CPU · LGA1700 · 65W</span></span></div>
+          <div class="part" data-type="cooler" data-name="Stock cooler" data-sockets="AM4" data-tdp="95"><span class="ico">🌀</span><span><span class="pt-name">Stock cooler</span><br><span class="pt-spec">Cooler · AM4 only · up to 95W</span></span></div>
+          <div class="part" data-type="cooler" data-name="Tower cooler" data-sockets="AM4,LGA1700" data-tdp="220"><span class="ico">🌀</span><span><span class="pt-name">Tower cooler</span><br><span class="pt-spec">Cooler · AM4+LGA1700 · up to 220W</span></span></div>
+          <div class="part" data-type="mobo" data-name="B550 (AM4)" data-socket="AM4" data-ddr="DDR4"><span class="ico">🔲</span><span><span class="pt-name">B550 board</span><br><span class="pt-spec">Motherboard · AM4 · DDR4</span></span></div>
+          <div class="part" data-type="mobo" data-name="B660 (LGA1700)" data-socket="LGA1700" data-ddr="DDR5"><span class="ico">🔲</span><span><span class="pt-name">B660 board</span><br><span class="pt-spec">Motherboard · LGA1700 · DDR5</span></span></div>
+          <div class="part" data-type="ram" data-name="16GB DDR4" data-ddr="DDR4"><span class="ico">🧩</span><span><span class="pt-name">16GB DDR4</span><br><span class="pt-spec">Memory · DDR4</span></span></div>
+          <div class="part" data-type="ram" data-name="16GB DDR5" data-ddr="DDR5"><span class="ico">🧩</span><span><span class="pt-name">16GB DDR5</span><br><span class="pt-spec">Memory · DDR5</span></span></div>
+          <div class="part" data-type="gpu" data-name="GTX 1650" data-power="75"><span class="ico">🎮</span><span><span class="pt-name">GTX 1650</span><br><span class="pt-spec">Graphics · 75W</span></span></div>
+          <div class="part" data-type="gpu" data-name="RTX 3060" data-power="170"><span class="ico">🎮</span><span><span class="pt-name">RTX 3060</span><br><span class="pt-spec">Graphics · 170W</span></span></div>
+          <div class="part" data-type="gpu" data-name="RTX 4070" data-power="200"><span class="ico">🎮</span><span><span class="pt-name">RTX 4070</span><br><span class="pt-spec">Graphics · 200W</span></span></div>
+          <div class="part" data-type="storage" data-name="1TB NVMe SSD"><span class="ico">💾</span><span><span class="pt-name">1TB NVMe SSD</span><br><span class="pt-spec">Storage</span></span></div>
+          <div class="part" data-type="psu" data-name="300W PSU" data-watt="300"><span class="ico">🔌</span><span><span class="pt-name">300W PSU</span><br><span class="pt-spec">Power supply · 300W</span></span></div>
+          <div class="part" data-type="psu" data-name="550W PSU" data-watt="550"><span class="ico">🔌</span><span><span class="pt-name">550W PSU</span><br><span class="pt-spec">Power supply · 550W</span></span></div>
+          <div class="part" data-type="psu" data-name="750W PSU" data-watt="750"><span class="ico">🔌</span><span><span class="pt-name">750W PSU</span><br><span class="pt-spec">Power supply · 750W</span></span></div>
+        </div>
+      </div>
+
+      <!-- BUILD SLOTS -->
+      <div class="panel">
+        <div class="tray-title">Your build — drop here</div>
+        <div style="display:grid;gap:11px">
+          <div class="slot" data-slot="cpu"><span class="slot-label">CPU (processor)</span></div>
+          <div class="slot" data-slot="cooler"><span class="slot-label">CPU cooler</span></div>
+          <div class="slot" data-slot="mobo"><span class="slot-label">Motherboard</span></div>
+          <div class="slot" data-slot="ram"><span class="slot-label">Memory (RAM)</span></div>
+          <div class="slot" data-slot="gpu"><span class="slot-label">Graphics card</span></div>
+          <div class="slot" data-slot="storage"><span class="slot-label">Storage</span></div>
+          <div class="slot" data-slot="psu"><span class="slot-label">Power supply</span></div>
+        </div>
+        <div class="feedback" id="fb"></div>
+        <div class="lab-actions">
+          <button class="btn btn-primary" id="check">⚡ Check build</button>
+          <button class="btn btn-ghost btn-sm" id="reset">↺ Reset</button>
+        </div>
+      </div>
+
+      <!-- LIVE SUMMARY -->
+      <div class="panel">
+        <div class="tray-title">Live system monitor</div>
+        <div class="meter">
+          <div class="lbl"><span>Estimated power draw</span><span id="wNum">0 W</span></div>
+          <div class="bar"><i id="wBar" style="width:0"></i></div>
+          <div id="psuNote" style="font-size:.78rem;color:var(--muted);margin-top:6px">No power supply selected.</div>
+        </div>
+        <hr style="border:none;border-top:2px dashed var(--line);margin:16px 0">
+        <div class="tray-title">Build summary</div>
+        <ul class="spec-list" id="specs">
+          <li><span>CPU</span><b>—</b></li><li><span>Cooler</span><b>—</b></li>
+          <li><span>Board</span><b>—</b></li><li><span>RAM</span><b>—</b></li>
+          <li><span>GPU</span><b>—</b></li><li><span>Storage</span><b>—</b></li>
+          <li><span>PSU</span><b>—</b></li>
+        </ul>
+      </div>
+    </div>
+
+    <div style="margin-top:34px">
+      <h2 style="font-size:1.6rem;margin-bottom:6px">Go deeper</h2>
+      <p class="lead" style="margin-bottom:16px">Watch a full build, then try the other platform to compare.</p>
+      <div class="res-grid">
+        <div class="yt" data-yt="V7kUMC6CC6E" data-title="How to build a PC"><img alt=""><span class="play"></span><span class="cap">How to build a PC — step by step</span></div>
+        <div class="yt" data-yt="HtJ44_Bj0F4" data-title="PC parts explained"><img alt=""><span class="play"></span><span class="cap">Every PC part explained for beginners</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer"><div class="footer-bottom">© <span data-year></span> Innov8te Labs4Africa · Innocent Forteh — Paid All Links Foundation. All rights reserved.</div></footer>
+
+<script src="../js/analytics.js"></script>
+<script src="../js/main.js"></script>
+<script>
+(function () {
+  if (window.Analytics) window.Analytics.track("lab", "pc-builder");
+  var SLOTS = ["cpu","cooler","mobo","ram","gpu","storage","psu"];
+  var labels = { cpu:"CPU (processor)", cooler:"CPU cooler", mobo:"Motherboard", ram:"Memory (RAM)", gpu:"Graphics card", storage:"Storage", psu:"Power supply" };
+  var icons  = { cpu:"🧠", cooler:"🌀", mobo:"🔲", ram:"🧩", gpu:"🎮", storage:"💾", psu:"🔌" };
+  var build = {};
+  var fb = document.getElementById("fb");
+
+  function spec(i,v){ document.getElementById("specs").children[i].querySelector("b").textContent = v; }
+  function specIndex(t){ return SLOTS.indexOf(t); }
+
+  function refreshMonitor() {
+    var cpuP = build.cpu ? +build.cpu.getAttribute("data-power") : 0;
+    var gpuP = build.gpu ? +build.gpu.getAttribute("data-power") : 0;
+    var base = (build.cpu||build.gpu||build.mobo) ? 90 : 0; // board, drives, fans
+    var draw = cpuP + gpuP + base;
+    var psuW = build.psu ? +build.psu.getAttribute("data-watt") : 0;
+    document.getElementById("wNum").textContent = draw + " W";
+    var pct = psuW ? Math.min(100, draw / psuW * 100) : Math.min(100, draw / 4);
+    var barEl = document.getElementById("wBar");
+    barEl.style.width = pct + "%";
+    barEl.style.background = (psuW && draw > psuW) ? "var(--bad)" : "var(--orange)";
+    var note = document.getElementById("psuNote");
+    if (!psuW) note.textContent = "No power supply selected.";
+    else if (draw > psuW) note.innerHTML = "⚠️ Draw exceeds the " + psuW + "W PSU!";
+    else note.textContent = "PSU " + psuW + "W · headroom " + (psuW - draw) + "W";
+  }
+
+  function place(part, slot) {
+    var type = part.getAttribute("data-type"), want = slot.getAttribute("data-slot");
+    if (type !== want) {
+      slot.classList.add("wrong"); setTimeout(function(){ if(!slot.classList.contains("filled")) slot.classList.remove("wrong"); }, 500);
+      show(false, "That's a <b>" + (labels[type]||type) + "</b>. This slot needs the <b>" + labels[want] + "</b>.");
+      return;
+    }
+    if (build[want]) build[want].classList.remove("placed");
+    build[want] = part; part.classList.add("placed");
+    slot.className = "slot filled";
+    slot.innerHTML = '<span class="ico">' + icons[want] + '</span><span><b>' + part.getAttribute("data-name") + '</b><br><span class="slot-label">' + labels[want] + '</span></span>';
+    spec(specIndex(want), part.getAttribute("data-name"));
+    refreshMonitor(); hide();
+  }
+  function show(good, html){ fb.className = "feedback show " + (good?"good":"bad"); fb.innerHTML = html; }
+  function hide(){ fb.className = "feedback"; }
+
+  LabDnD.init({ container: document.getElementById("lab"), dragSel: ".part", dropSel: ".slot", onDrop: place });
+
+  document.getElementById("check").addEventListener("click", function () {
+    var missing = SLOTS.filter(function(s){ return !build[s]; });
+    if (missing.length) { show(false, "Build unfinished. Still need: <b>" + missing.map(function(m){return labels[m];}).join(", ") + "</b>."); return; }
+    var errs = [], cpu=build.cpu, cooler=build.cooler, mobo=build.mobo, ram=build.ram, gpu=build.gpu, psu=build.psu;
+
+    if (cpu.getAttribute("data-socket") !== mobo.getAttribute("data-socket"))
+      errs.push("Socket mismatch: the " + cpu.getAttribute("data-name") + " uses <b>" + cpu.getAttribute("data-socket") + "</b>, but the board is " + mobo.getAttribute("data-socket") + ". A CPU only fits its matching socket.");
+    if (ram.getAttribute("data-ddr") !== mobo.getAttribute("data-ddr"))
+      errs.push("Memory mismatch: this board needs <b>" + mobo.getAttribute("data-ddr") + "</b> RAM, but you fitted " + ram.getAttribute("data-ddr") + ". DDR4 and DDR5 don't interchange.");
+    var sockOk = cooler.getAttribute("data-sockets").split(",").indexOf(mobo.getAttribute("data-socket")) > -1;
+    if (!sockOk) errs.push("Cooler won't mount: the " + cooler.getAttribute("data-name") + " doesn't support socket <b>" + mobo.getAttribute("data-socket") + "</b>.");
+    else if (+cooler.getAttribute("data-tdp") < +cpu.getAttribute("data-power"))
+      errs.push("Cooler too weak: it handles " + cooler.getAttribute("data-tdp") + "W but the CPU is " + cpu.getAttribute("data-power") + "W. It would overheat.");
+    var draw = (+cpu.getAttribute("data-power")) + (+gpu.getAttribute("data-power")) + 90;
+    var need = Math.ceil(draw * 1.4);
+    if (+psu.getAttribute("data-watt") < need)
+      errs.push("Power supply too weak: parts need ~<b>" + need + "W</b> (with headroom) but the PSU is only " + psu.getAttribute("data-watt") + "W.");
+
+    document.querySelectorAll(".slot").forEach(function(s){ s.classList.remove("correct","wrong"); });
+    if (!errs.length) {
+      document.querySelectorAll(".slot").forEach(function(s){ s.classList.add("correct"); });
+      document.getElementById("score").textContent = "100";
+      show(true, "✅ <b>It boots!</b> Matching socket, matching memory, a cooler that fits and is strong enough, and a PSU with healthy headroom. That's exactly how a real build comes together. Try the other platform to compare!");
+      if (window.Analytics) window.Analytics.track("action","pc-builder:success");
+    } else {
+      document.getElementById("score").textContent = String(Math.max(0, 100 - errs.length*22));
+      show(false, "❌ <b>This build won't run reliably:</b><ul><li>" + errs.join("</li><li>") + "</li></ul>Fix these and check again.");
+    }
+  });
+
+  document.getElementById("reset").addEventListener("click", function () {
+    build = {};
+    document.querySelectorAll(".part").forEach(function(p){ p.classList.remove("placed"); });
+    document.querySelectorAll(".slot").forEach(function(s){ var t=s.getAttribute("data-slot"); s.className="slot"; s.innerHTML='<span class="slot-label">'+labels[t]+'</span>'; });
+    document.querySelectorAll("#specs b").forEach(function(b){ b.textContent="—"; });
+    document.getElementById("score").textContent = "0";
+    refreshMonitor(); hide();
+  });
+})();
+</script>
+</body>
+</html>
